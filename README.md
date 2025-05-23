@@ -1,28 +1,41 @@
 # Forum Generic
 
-This repository contains a simple client-side forum feed. The page uses CDN hosted libraries and communicates with a GraphQL backend.
+This repository contains a simple front-end application for viewing and creating forum posts. The project is entirely client-side and must be served from a local web server.
 
-## Setup
+## Prerequisites
 
-1. Copy `scripts/config.example.js` to `scripts/config.js`:
+- A local web server. You can use `http-server` from Node.js or Python's built in `http.server` module.
+- Optionally, Node.js if you want to use `http-server`.
+
+## Running locally
+
+1. Start a local web server in the project directory. Examples:
+
    ```bash
-   cp scripts/config.example.js scripts/config.js
+   # Using Node.js (http-server)
+   npm install -g http-server
+   http-server .
+
+   # Using Python
+   python3 -m http.server
    ```
-2. Edit `scripts/config.js` and replace the placeholder values with your API key and endpoint URLs.
 
-## External Libraries
+   By default the server runs on port 8080. Adjust the command if you want a different port.
 
-The application relies on several libraries loaded via CDN as referenced in `index.html`:
+2. Open your browser at `http://localhost:8080/index.html` (or the port you chose) to use the application.
 
-- [Tailwind CSS](https://cdn.tailwindcss.com)
-- Plyr CSS/JS from `cdn.jsdelivr.net` and `cdn.plyr.io`
-- FilePond and plugins (`filepond-plugin-file-validate-type`, `filepond-plugin-image-preview`, `filepond-plugin-media-preview`, `filepond-plugin-file-poster`, and `filepond` itself)
-- [Tribute.js](https://cdn.jsdelivr.net/npm/tributejs)
-- [jQuery 3.6.4](https://code.jquery.com)
-- [jsrender](https://cdn.jsdelivr.net/npm/jsrender)
-- [Mic Recorder to MP3](https://unpkg.com/mic-recorder-to-mp3)
+No build step is needed—serving the static files is enough to run the forum locally.
 
-## Usage
+## Configuration
 
-Open `index.html` in a web browser after configuring `config.js`. The page displays a forum feed where you can create posts, upload files, record audio, like, bookmark and filter posts. The script files under `scripts/` handle rendering, uploads and communication with the backend service.
+Create a `scripts/config.js` file or provide the values as environment variables when bundling. A template is available at `scripts/config.example.js`.
 
+### Fields
+
+- **API_KEY** – GraphQL API key used for both HTTP and WebSocket requests. Obtain this from your Ontraport account or whichever backend you use.
+- **AWS_PARAM** – Base64 encoded `awsParam` string required to request a pre-signed S3 upload URL. On an Ontraport page you can read this value from `window.awsParam`. The helper functions `decodeAwsParam()` and `encodeAwsParam()` in `scripts/handleFile.js` illustrate how to work with it.
+- **AWS_PARAM_URL** – Endpoint that receives the `awsParam` and returns S3 upload parameters. This is usually `https://<your-domain>/s/aws` when using Ontraport.
+- **HTTP_ENDPOINT** – URL of the GraphQL HTTP endpoint.
+- **WS_ENDPOINT** – GraphQL WebSocket endpoint for real-time updates. Typically the same host as `HTTP_ENDPOINT` using `wss://` and appending `?apiKey=YOUR_API_KEY`.
+
+When running in the browser without a bundler, copy `scripts/config.example.js` to `scripts/config.js` and fill in your actual values. Consider adding `scripts/config.js` to `.gitignore` if you wish to keep these secrets out of version control.
