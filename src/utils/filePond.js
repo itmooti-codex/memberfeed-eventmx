@@ -1,3 +1,5 @@
+import { setPendingFile, setFileTypeCheck } from '../events/uploadHandlers.js';
+
 FilePond.registerPlugin(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview,
@@ -166,8 +168,8 @@ export function initFilePond() {
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(file);
                     inputElement.files = dataTransfer.files;
-                    pendingFile = file;
-                    fileTypeCheck = "Audio";
+                    setPendingFile(file);
+                    setFileTypeCheck("Audio");
 
                     const nativeEvent = new Event("change", { bubbles: true });
                     inputElement.dispatchEvent(nativeEvent);
@@ -225,8 +227,8 @@ export function initFilePond() {
                   const dataTransfer = new DataTransfer();
                   dataTransfer.items.add(file);
                   inputElement.files = dataTransfer.files;
-                  pendingFile = file;
-                  fileTypeCheck = "Audio";
+                  setPendingFile(file);
+                  setFileTypeCheck("Audio");
 
                   const nativeEvent = new Event("change", { bubbles: true });
                   inputElement.dispatchEvent(nativeEvent);

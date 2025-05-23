@@ -19,7 +19,13 @@ import {
   GLOBAL_AUTHOR_ID,
 } from '../config.js';
 import { findNode, tmpl } from '../ui/render.js';
-import { pendingFile, fileTypeCheck } from './uploadHandlers.js';
+import {
+  pendingFile,
+  fileTypeCheck,
+  setPendingFile,
+  setFileTypeCheck,
+} from './uploadHandlers.js';
+import { tribute } from '../utils/tribute.js';
 import { processFileFields } from '../utils/handleFile.js';
 
 $(document).on("click", ".btn-comment", function (e) {
@@ -160,8 +166,8 @@ $(document).on("click", "#submit-post", async function () {
   try {
     await fetchGraphQL(CREATE_POST_MUTATION, { payload: finalPayload });
     editor.html("");
-    pendingFile = null;
-    fileTypeCheck = "";
+    setPendingFile(null);
+    setFileTypeCheck("");
     $("#file-input").val("");
   } catch (err) {
     console.error("Post failed", err);
@@ -227,8 +233,8 @@ $(document).on("click", ".btn-submit-comment", async function () {
 
   try {
     await fetchGraphQL(CREATE_COMMENT_MUTATION, { payload: finalPayload });
-    pendingFile = null;
-    fileTypeCheck = "";
+    setPendingFile(null);
+    setFileTypeCheck("");
     $form.remove();
     node.isCollapsed = false;
     $(`[data-uid="${uid}"]`).find(".children").addClass("visible");
