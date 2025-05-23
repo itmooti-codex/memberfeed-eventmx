@@ -12,14 +12,11 @@ import {
   DELETE_POST_BOOKMARK_MUTATION
 } from '../api/queries.js';
 import {
-  postsStore,
-  currentFilter,
-  currentFileFilter,
-  currentSearchTerm,
+  state,
   searchInput,
   clearIcon,
   searchIcon,
-  GLOBAL_AUTHOR_ID
+  GLOBAL_AUTHOR_ID,
 } from '../config.js';
 import { mergeWithExisting, findNode, tmpl } from '../ui/render.js';
 import { pendingFile, fileTypeCheck } from './uploadHandlers.js';
@@ -72,7 +69,7 @@ $(document).on("click", function (e) {
 
 $(document).on("click", ".ribbon", function () {
   const uid = $(this).data("uid");
-  let node = findNode(postsStore, uid);
+  let node = findNode(state.postsStore, uid);
   if (node) {
     node.isCollapsed = !node.isCollapsed;
     applyFilterAndRender();
@@ -94,7 +91,7 @@ $(document).on("click", ".btn-delete", function () {
       find(x.children);
       if (node) return;
     }
-  })(postsStore);
+  })(state.postsStore);
 
   const mutation =
     node.depth === 0
@@ -104,7 +101,7 @@ $(document).on("click", ".btn-delete", function () {
 
   fetchGraphQL(mutation, variables)
     .then(() => {
-      removeNode(postsStore, uid);
+      removeNode(state.postsStore, uid);
       applyFilterAndRender();
     })
     .catch((err) => {
@@ -190,7 +187,7 @@ $(document).on("click", ".btn-submit-comment", async function () {
   $btn.prop("disabled", true);
   $form.addClass("state-disabled");
   const uid = $btn.data("uid");
-  const node = findNode(postsStore, uid);
+  const node = findNode(state.postsStore, uid);
 
   const payload = {
     forum_post_id: node.depth === 0 ? node.id : null,
@@ -255,7 +252,7 @@ function removeNode(arr, uid) {
 // HANDLE LIKE / UNLIKE
 $(document).on("click", ".btn-like", async function () {
   const uid = $(this).data("uid");
-  const node = findNode(postsStore, uid);
+  const node = findNode(state.postsStore, uid);
   const isPost = node.depth === 0;
   $(this).addClass("state-disabled");
 
@@ -297,7 +294,7 @@ $(document).on("click", ".btn-like", async function () {
 // HANDLE BOOKMARK / UNBOOKMARK (posts only)
 $(document).on("click", ".btn-bookmark", async function () {
   const uid = $(this).data("uid");
-  const node = findNode(postsStore, uid);
+  const node = findNode(state.postsStore, uid);
   $(this).addClass("state-disabled");
 
   try {
@@ -330,8 +327,8 @@ export function applyFilterAndRender() {
   requestAnimationFrame(() => {
     Plyr.setup(".js-player");
   });
-  let items = postsStore;
-  switch (currentFilter) {
+  let items = state.postsStore;
+  switch (state.currentFilter) {
     case "Featured":
       items = items.filter((p) => p.isFeatured);
       break;
@@ -342,11 +339,11 @@ export function applyFilterAndRender() {
       items = items.filter((p) => p.hasBookmarked);
       break;
   }
-  if (currentFileFilter !== "All") {
-    items = items.filter((p) => p.fileType === currentFileFilter);
+  if (state.currentFileFilter !== "All") {
+    items = items.filter((p) => p.fileType === state.currentFileFilter);
   }
-  if (currentSearchTerm) {
-    const q = currentSearchTerm.toLowerCase();
+  if (state.currentSearchTerm) {
+    const q = state.currentSearchTerm.toLowerCase();
     items = items.filter(
       (p) =>
         p.authorName.toLowerCase().includes(q) ||
@@ -357,7 +354,7 @@ export function applyFilterAndRender() {
 }
 
 $(document).on("click", ".filter-btn", function () {
-  currentFilter = $(this).data("filter");
+  state.currentFilter = $(this).data("filter");
   $(".filter-btn").removeClass("active");
   $(this).addClass("active");
   applyFilterAndRender();
@@ -372,7 +369,7 @@ $("#file-filter-btn").on("click", function (e) {
 // pick a file type
 $(document).on("click", "#file-filter-menu li", function () {
   const type = $(this).data("type");
-  currentFileFilter = type;
+  state.currentFileFilter = type;
 
   // update button label & active menu item
   $("#file-filter-btn").text(type + " ▾");
@@ -392,10 +389,10 @@ $(document).on("click", function (e) {
 });
 
 searchInput.addEventListener("input", (e) => {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
+  clearTimeout(state.debounceTimer);
+  state.debounceTimer = setTimeout(() => {
     const q = e.target.value.trim();
-    currentSearchTerm = q;
+    state.currentSearchTerm = q;
     if (q) {
       clearIcon.classList.remove("hidden");
       searchIcon.classList.add("hidden");
@@ -413,7 +410,7 @@ clearIcon.addEventListener("click", () => {
   searchInput.value = "";
   clearIcon.classList.add("hidden");
   searchIcon.classList.remove("hidden");
-  currentSearchTerm = "";
+  state.currentSearchTerm = "";
   applyFilterAndRender();
   removeHighlights(document.getElementById("forum-root"));
 });
