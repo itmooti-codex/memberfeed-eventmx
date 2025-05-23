@@ -1,8 +1,22 @@
-const awsParam = "5d26643c9bf758f00272ffed8558a0d9";
-const awsParamUrl = "https://learn.eduflowpro.com/s/aws";
-const API_KEY = "uXVeRpnkFYHhT8SQK6JXo";
-const WS_ENDPOINT = `wss://eduflowpro.vitalstats.app/api/v1/graphql?apiKey=${API_KEY}`;
-const HTTP_ENDPOINT = "https://eduflowpro.vitalstats.app/api/v1/graphql";
+const env = (typeof process !== "undefined" && process.env) || {};
+const cfg = (typeof window !== "undefined" && window.APP_CONFIG) || {};
+
+const API_KEY = cfg.API_KEY || env.API_KEY || "";
+const awsParam = cfg.AWS_PARAM || env.AWS_PARAM || "";
+const awsParamUrl = cfg.AWS_PARAM_URL || env.AWS_PARAM_URL || "";
+const HTTP_ENDPOINT =
+  cfg.HTTP_ENDPOINT ||
+  env.HTTP_ENDPOINT ||
+  "https://eduflowpro.vitalstats.app/api/v1/graphql";
+const WS_ENDPOINT =
+  cfg.WS_ENDPOINT ||
+  env.WS_ENDPOINT ||
+  `wss://eduflowpro.vitalstats.app/api/v1/graphql?apiKey=${API_KEY}`;
+
+if (typeof window !== "undefined") {
+  window.awsParam = awsParam;
+  window.awsParamUrl = awsParamUrl;
+}
 const PROTOCOL = "vitalstats";
 const SUB_ID = "forum-subscription";
 const ANN_ID = "annoucnement-subscription";
