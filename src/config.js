@@ -4,7 +4,7 @@ window.APP_CONFIG = {
   AWS_PARAM_URL: "https://learn.eduflowpro.com/s/aws",
   HTTP_ENDPOINT: "https://eduflowpro.vitalstats.app/api/v1/graphql",
   WS_ENDPOINT:
-    "wss://eduflowpro.vitalstats.app/api/v1/graphql?apiKey=${API_KEY}",
+    "wss://eduflowpro.vitalstats.app/api/v1/graphql?apiKey=uXVeRpnkFYHhT8SQK6JXo",
 };
 
 export const env = (typeof process !== "undefined" && process.env) || {};
