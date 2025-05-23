@@ -129,6 +129,30 @@ export const GQL_QUERY = `
     }
   }
 `;
+export const COMMENTS_QUERY = `
+  subscription subscribeToForumComments {
+    subscribeToForumComments {
+      id
+      unique_id
+      author_id
+      Author {
+        display_name
+        profile_image
+      }
+      comment
+      file_type
+      file
+      forum_post_id
+      reply_to_comment_id
+      Member_Comment_Upvotes_Data {
+        id
+        forum_comment_upvote_id
+        member_comment_upvote_id
+      }
+    }
+  }
+`;
+
 
 export const CREATE_POST_VOTE_MUTATION = `
   mutation createMemberPostUpvotesPostUpvotes(

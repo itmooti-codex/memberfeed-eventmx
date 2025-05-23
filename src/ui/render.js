@@ -1,28 +1,43 @@
 import { safeArray, timeAgo, parseDate } from '../utils/formatter.js';
 import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR } from '../config.js';
 
-export function mergeWithExisting(existingPosts, newRawPosts, depth = 0) {
-  return newRawPosts.map(newRaw => {
-    // Find existing post by ID to preserve its state
-    const existingPost = existingPosts.find(p => p.id === newRaw.id);
-    // Map the raw data to a post object
-    const mappedPost = mapItem(newRaw, depth);
+export function buildTree(existingPosts, rawPosts, rawComments) {
+  const byUid = new Map();
 
-    if (existingPost) {
-      // Preserve the isCollapsed state from the existing post
-      mappedPost.isCollapsed = existingPost.isCollapsed;
-      // Recursively merge children (comments/replies)
-      const rawChildren = newRaw.ForumComments || [];
-      mappedPost.children = mergeWithExisting(existingPost.children, rawChildren, depth + 1);
-    }
+  function cloneState(uid) {
+    const existing = findNode(existingPosts, uid);
+    return existing ? { isCollapsed: existing.isCollapsed } : { isCollapsed: true };
+  }
 
-    return mappedPost;
+  const posts = rawPosts.map(raw => {
+    const node = mapItem(raw, 0);
+    Object.assign(node, cloneState(node.uid));
+    byUid.set(node.id, node);
+    return node;
   });
+
+  const comments = rawComments.map(raw => {
+    const node = mapItem(raw, 1);
+    Object.assign(node, cloneState(node.uid));
+    byUid.set(node.id, node);
+    return node;
+  });
+
+  comments.forEach(node => {
+    const parentId = node.reply_to_comment_id || node.forumPostId;
+    const parent = byUid.get(parentId);
+    if (parent) {
+      node.depth = parent.depth + 1;
+      if (node.depth > 3) node.depth = 3;
+      parent.children.push(node);
+    }
+  });
+
+  return posts;
 }
 
 export function mapItem(raw, depth = 0) {
-  const childrenRaw = safeArray(raw.ForumComments);
-  const createdAt = parseDate(raw.post_published_date);
+  const createdAt = parseDate(raw.post_published_date || raw.created_at);
 
   // find any upvote record by this user
   const postUpvotes = safeArray(raw.Member_Post_Upvotes_Data);
@@ -58,7 +73,7 @@ export function mapItem(raw, depth = 0) {
     voteRecordId: userUpvote?.id || null,
     hasBookmarked,
     bookmarkRecordId,
-    children: depth < 2 ? childrenRaw.map((c) => mapItem(c, depth + 1)) : [],
+    children: [],
     isCollapsed: true,
     forumPostId: depth === 0 ? raw.id : raw.forum_post_id,
     isFeatured: raw.featured_post === true,
