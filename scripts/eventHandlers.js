@@ -74,11 +74,11 @@ $(document).on("click", ".btn-delete", function () {
       ? DELETE_FORUM_POST_MUTATION
       : DELETE_FORUM_COMMENT_MUTATION;
   const variables = { id: node.id };
-  console.log(variables);
 
   fetchGraphQL(mutation, variables)
     .then(() => {
-      // remove locally and re-render
+      removeNode(postsStore, uid);
+      applyFilterAndRender();
     })
     .catch((err) => {
       console.error("Delete failed", err);
