@@ -26,6 +26,7 @@ import {
   setFileTypeCheck,
 } from './uploadHandlers.js';
 import { tribute } from '../utils/tribute.js';
+import { initFilePond } from '../utils/filePond.js';
 import { processFileFields } from '../utils/handleFile.js';
 
 $(document).on("click", ".btn-comment", function (e) {
