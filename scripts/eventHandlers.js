@@ -135,7 +135,7 @@ $(document).on("click", "#submit-post", async function () {
     await fetchGraphQL(CREATE_POST_MUTATION, { payload: finalPayload });
     editor.html("");
     pendingFile = null;
-    pendingFileType = "";
+    fileTypeCheck = "";
     $("#file-input").val("");
   } catch (err) {
     console.error("Post failed", err);
@@ -194,15 +194,15 @@ $(document).on("click", ".btn-submit-comment", async function () {
     fileData.type = fileData.type || pendingFile.type;
     finalPayload.file = JSON.stringify(fileData);
     // finalPayload.file_type =
-    //   pendingFileType.charAt(0).toUpperCase() +
-    //   pendingFileType.slice(1).toLowerCase();
+    //   fileTypeCheck.charAt(0).toUpperCase() +
+    //   fileTypeCheck.slice(1).toLowerCase();
     finalPayload.file_type = fileTypeCheck;
   }
 
   try {
     await fetchGraphQL(CREATE_COMMENT_MUTATION, { payload: finalPayload });
     pendingFile = null;
-    pendingFileType = "";
+    fileTypeCheck = "";
     $form.remove();
     node.isCollapsed = false;
     $(`[data-uid="${uid}"]`).find(".children").addClass("visible");
