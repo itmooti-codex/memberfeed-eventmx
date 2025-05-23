@@ -1,3 +1,6 @@
+import { safeArray, timeAgo, parseDate } from '../utils/formatter.js';
+import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR } from '../config.js';
+
 export function mergeWithExisting(existingPosts, newRawPosts, depth = 0) {
   return newRawPosts.map(newRaw => {
     // Find existing post by ID to preserve its state
