@@ -14,5 +14,5 @@ $(document).ready(() => {
 
 
 function attachTribute(){
-  tribute.attach(document.querySelector(".editor")[0]);
+  tribute.attach(document.querySelector(".editor"));
 }
