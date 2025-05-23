@@ -29,6 +29,7 @@ if (typeof window !== "undefined") {
 export const PROTOCOL = "vitalstats";
 export const SUB_ID = "forum-subscription";
 export const ANN_ID = "annoucnement-subscription";
+export const COM_SUB_ID = "comments-subscription";
 export const KEEPALIVE_MS = 80000;
 export const MAX_BACKOFF = 30000;
 export const GLOBAL_AUTHOR_ID = 73;
@@ -38,6 +39,8 @@ export const state = {
   socket: null,
   backoff: 1000,
   keepAliveTimer: null,
+  rawPosts: [],
+  rawComments: [],
   postsStore: [],
   currentFilter: "Recent",
   currentFileFilter: "All",

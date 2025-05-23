@@ -18,7 +18,7 @@ import {
   searchIcon,
   GLOBAL_AUTHOR_ID,
 } from '../config.js';
-import { mergeWithExisting, findNode, tmpl } from '../ui/render.js';
+import { findNode, tmpl } from '../ui/render.js';
 import { pendingFile, fileTypeCheck } from './uploadHandlers.js';
 import { processFileFields } from '../utils/handleFile.js';
 
@@ -34,10 +34,12 @@ $(document).on("click", ".btn-comment", function (e) {
   }
 
   $(".comment-form").remove();
+  const node = findNode(state.postsStore, uid);
+  const mentionHtml = `<span contenteditable="false" class="mention" data-mention-id="${node.authorId}">@${node.authorName}</span>&nbsp;`;
 
   const $form = $(`
     <div class="comment-form my-2">
-      <div class="editor min-h-[80px] resize-y p-2 rounded" contenteditable="true" data-placeholder="Write a reply..."></div>
+      <div class="editor min-h-[80px] resize-y p-2 rounded" contenteditable="true" data-placeholder="Write a reply...">${mentionHtml}</div>
       <div class="upload-section w-full mt-2 flex flex-col gap-2">
         <div class="flex items-center gap-2">
         <button id="recordBtn" class="recordBtn">🎙 Start Recording</button>

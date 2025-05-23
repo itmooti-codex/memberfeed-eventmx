@@ -3,11 +3,12 @@ import {
   PROTOCOL,
   WS_ENDPOINT,
   SUB_ID,
+  COM_SUB_ID,
   KEEPALIVE_MS,
   MAX_BACKOFF,
 } from './config.js';
-import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
-import { mergeWithExisting } from './ui/render.js';
+import { GQL_QUERY, COMMENTS_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
+import { buildTree } from './ui/render.js';
 import { applyFilterAndRender } from './events/forumEvents.js';
 import { fetchGraphQL } from './api/fetch.js';
 import { tribute } from './utils/tribute.js';
@@ -33,26 +34,31 @@ export function connect() {
       return;
     }
     if (msg.type === "CONNECTION_ACK") {
-        state.socket.send(
+      state.socket.send(
         JSON.stringify({
           id: SUB_ID,
           type: "GQL_START",
           payload: { query: GQL_QUERY },
         })
       );
-    } else if (
-      msg.type === "GQL_DATA" &&
-      msg.id === SUB_ID &&
-      msg.payload?.data
-    ) {
-      const raws = msg.payload.data.subscribeToForumPosts ?? [];
-      // Merge new data with existing posts to preserve UI state
-      state.postsStore = mergeWithExisting(state.postsStore, raws);
+      state.socket.send(
+        JSON.stringify({
+          id: COM_SUB_ID,
+          type: "GQL_START",
+          payload: { query: COMMENTS_QUERY },
+        })
+      );
+    } else if (msg.type === "GQL_DATA" && msg.id === SUB_ID && msg.payload?.data) {
+      state.rawPosts = msg.payload.data.subscribeToForumPosts ?? [];
+      state.postsStore = buildTree(state.postsStore, state.rawPosts, state.rawComments);
       applyFilterAndRender();
-      // iniitilize plyr js 
       requestAnimationFrame(() => {
         Plyr.setup('.js-player');
       });
+    } else if (msg.type === "GQL_DATA" && msg.id === COM_SUB_ID && msg.payload?.data) {
+      state.rawComments = msg.payload.data.subscribeToForumComments ?? [];
+      state.postsStore = buildTree(state.postsStore, state.rawPosts, state.rawComments);
+      applyFilterAndRender();
     } else if (msg.type === "GQL_ERROR") {
       console.error("Subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
