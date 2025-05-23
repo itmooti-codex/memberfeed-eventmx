@@ -1,0 +1,216 @@
+:root {
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --accent: #e83e8c;
+  --success: #28a745;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --info: #17a2b8;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --neutral: #adb5bd;
+  --plyr-color-main: var(--primary);
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.state-disabled {
+  opacity: 50%;
+  pointer-events: none;
+}
+
+button {
+  background: #fff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 12px !important;
+  line-height: normal;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+  width: max-content;
+
+  &:not(.plyr__control) {
+    padding: 8px 10px !important;
+  }
+
+  &:hover {
+    background: var(--primary);
+    color: white;
+  }
+}
+
+
+.btn-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  color: #e53935;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-bookmark {
+  margin-left: auto;
+}
+
+.btn-like.liked,
+.btn-bookmark.bookmarked {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.filter-btn.active {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.file-filter-menu {
+  display: none;
+}
+
+.file-filter-menu li:hover,
+.file-filter-menu li.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.file-filter.open .file-filter-menu {
+  display: block;
+}
+
+.clearIcon.hidden {
+  display: none;
+}
+
+.search-wrapper,
+.editor {
+  border-radius: 4px;
+  transition: 0.2s ease-in-out;
+  border: 2px solid #ccc;
+}
+
+.search-wrapper:hover,
+.search-wrapper:focus-within {
+  border: 2px solid var(--primary);
+}
+
+#searchPost {
+  border: none;
+  outline: none;
+}
+
+.editor:focus-within,
+.editor:focus-visible,
+.editor:focus,
+.editor:active,
+.editor:hover {
+  border: 1px solid var(--primary) !important;
+  outline: 1px solid var(--primary) !important;
+}
+
+.filepond--root {
+  cursor: pointer;
+}
+
+.filepond--file,
+.filepond--image-preview {
+  background-color: var(--primary) !important;
+}
+
+.filepond--drop-label:hover {
+  cursor: pointer;
+  background: var(--primary);
+}
+
+.filepond--file-action-button {
+  background-color: var(--accent) !important;
+}
+
+.filepond--credits {
+  display: none;
+}
+
+.filepond--drop-label {
+  padding: 2em;
+  border-radius: 8px;
+  font-family: Helvetica, sans-serif;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.filepond--panel-top,
+.filepond--panel-bottom,
+.filepond--panel-center {
+  background-color: var(--warning) !important;
+  cursor: pointer;
+}
+
+.plyr--audio {
+  background-color: var(--neutral) !important;
+  border: 1px solid var(--neutral) !important;
+}
+
+.children {
+  display: none;
+}
+
+.children.visible {
+  display: block;
+}
+
+.canvasWaveform {
+  margin-top: 1em;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  display: none;
+}
+.filepond--action-remove-item {
+  padding: 0 !important;
+}
+
+.notification-item.unread {
+  background-color: #e0f7fa;
+}
+
+.notification-item.read {
+  background-color: #f5f5f5;
+  opacity: 0.6;
+}
+
+.bell-indicator::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 9999px;
+  display: block;
+}
+
+/* Allow the native controls to extend beyond the FilePond frame */
+.filepond--file {
+  overflow: visible !important;
+}
+
+.filepond--file-wrapper{
+  height: 120px !important;
+}
+
+/* Optional: Give your media preview a max-height so it stays tidy */
+.media-preview {
+  width: 100%;
+  max-height: 300px;
+}
