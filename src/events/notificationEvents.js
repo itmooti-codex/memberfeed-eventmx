@@ -9,6 +9,7 @@ import {
   WS_ENDPOINT,
   ANN_ID,
   KEEPALIVE_MS,
+  MAX_BACKOFF,
   renderedNotificationIds
 } from '../config.js';
 
