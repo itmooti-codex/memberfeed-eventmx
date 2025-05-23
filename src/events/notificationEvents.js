@@ -12,6 +12,7 @@ import {
   MAX_BACKOFF,
   renderedNotificationIds
 } from '../config.js';
+import { parseDate, timeAgo } from '../utils/formatter.js';
 
 export function initNotifications() {
   const bell = document.querySelector(".notificationWrapperToggler");
