@@ -28,7 +28,6 @@ export function buildTree(existingPosts, rawPosts, rawComments) {
     const parent = byUid.get(parentId);
     if (parent) {
       node.depth = parent.depth + 1;
-      if (node.depth > 3) node.depth = 3;
       parent.children.push(node);
     }
   });
@@ -76,6 +75,7 @@ export function mapItem(raw, depth = 0) {
     children: [],
     isCollapsed: true,
     forumPostId: depth === 0 ? raw.id : raw.forum_post_id,
+    reply_to_comment_id: raw.reply_to_comment_id || null,
     isFeatured: raw.featured_post === true,
     fileType: raw.file_type || 'None',
     fileContent:
