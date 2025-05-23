@@ -1,5 +1,13 @@
 # Forum Generic
 
+<<<<<<< HEAD
+This repository contains static assets for a simple forum feed interface. The HTML
+page loads scripts from the `scripts/` directory and styles from `styles/`.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+=======
 This repository contains a simple front-end application for viewing and creating forum posts. The project is entirely client-side and must be served from a local web server.
 
 ## Prerequisites
@@ -39,3 +47,4 @@ Create a `scripts/config.js` file or provide the values as environment variables
 - **WS_ENDPOINT** – GraphQL WebSocket endpoint for real-time updates. Typically the same host as `HTTP_ENDPOINT` using `wss://` and appending `?apiKey=YOUR_API_KEY`.
 
 When running in the browser without a bundler, copy `scripts/config.example.js` to `scripts/config.js` and fill in your actual values. Consider adding `scripts/config.js` to `.gitignore` if you wish to keep these secrets out of version control.
+>>>>>>> main
