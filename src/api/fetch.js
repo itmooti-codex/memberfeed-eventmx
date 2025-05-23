@@ -1,4 +1,6 @@
-function fetchGraphQL(query, variables = {}) {
+import { HTTP_ENDPOINT, API_KEY } from '../config.js';
+
+export function fetchGraphQL(query, variables = {}) {
   return fetch(HTTP_ENDPOINT, {
     method: "POST",
     headers: {
@@ -8,3 +10,4 @@ function fetchGraphQL(query, variables = {}) {
     body: JSON.stringify({ query, variables }),
   }).then((r) => r.json());
 }
+

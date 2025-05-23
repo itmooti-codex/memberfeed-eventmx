@@ -1,4 +1,4 @@
-const tribute = new Tribute({
+export const tribute = new Tribute({
     collection: [
       {
         trigger: "@",
@@ -15,4 +15,3 @@ const tribute = new Tribute({
       },
     ],
   });
-  

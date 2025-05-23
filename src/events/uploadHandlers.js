@@ -1,5 +1,5 @@
-let pendingFile = null;
-let fileTypeCheck = "";
+export let pendingFile = null;
+export let fileTypeCheck = "";
 $(document).on("change", ".file-input, #file-input", function (e) {
   pendingFile = e.target.files[0] || null;
   if (pendingFile) {
@@ -17,3 +17,4 @@ $(document).on("change", ".file-input, #file-input", function (e) {
   // console.log("File selected:", pendingFile);
   // console.log("File type:", fileTypeCheck);
 });
+

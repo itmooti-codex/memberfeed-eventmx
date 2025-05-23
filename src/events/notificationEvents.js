@@ -1,4 +1,18 @@
-(function () {
+import { fetchGraphQL } from '../api/fetch.js';
+import {
+  NOTIFICATIONS_QUERY,
+  MARK_NOTIFICATION_READ
+} from '../api/queries.js';
+import {
+  GLOBAL_AUTHOR_ID,
+  PROTOCOL,
+  WS_ENDPOINT,
+  ANN_ID,
+  KEEPALIVE_MS,
+  renderedNotificationIds
+} from '../config.js';
+
+export function initNotifications() {
   const bell = document.querySelector(".notificationWrapperToggler");
   const wrapper = document.querySelector(".notificationsWrapper");
   let socket, backoff, keepAliveTimer;
@@ -116,7 +130,7 @@
   }
 
   connectNotifications();
-})();
+}
 
 document.getElementById("markAllAsRead").addEventListener("click", async () => {
   const unreadItems = document.querySelectorAll(".notification-item.unread");
@@ -145,3 +159,4 @@ function updateBellIndicator() {
 
   bell.classList.toggle("bell-indicator", unreadCount > 0);
 }
+

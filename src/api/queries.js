@@ -1,4 +1,4 @@
-let FETCH_CONTACTS_QUERY = `
+export const FETCH_CONTACTS_QUERY = `
   query calcContacts {
     calcContacts {
       Contact_ID: field(arg: ["id"])
@@ -8,7 +8,7 @@ let FETCH_CONTACTS_QUERY = `
   }
 `;
 
-let CREATE_POST_MUTATION = `
+export const CREATE_POST_MUTATION = `
   mutation createForumPost($payload: ForumPostCreateInput = null) {
     createForumPost(payload: $payload) {
       author_id
@@ -24,7 +24,7 @@ let CREATE_POST_MUTATION = `
   }
 `;
 
-let CREATE_COMMENT_MUTATION = `
+export const CREATE_COMMENT_MUTATION = `
   mutation createForumComment($payload: ForumCommentCreateInput = null) {
     createForumComment(payload: $payload) {
       author_id
@@ -41,7 +41,7 @@ let CREATE_COMMENT_MUTATION = `
   }
 `;
 
-let DELETE_FORUM_POST_MUTATION = `
+export const DELETE_FORUM_POST_MUTATION = `
   mutation deleteForumPost($id: EduflowproForumPostID) {
     deleteForumPost(query: [{ where: { id: $id } }]) {
       id
@@ -49,7 +49,7 @@ let DELETE_FORUM_POST_MUTATION = `
   }
 `;
 
-let DELETE_FORUM_COMMENT_MUTATION = `
+export const DELETE_FORUM_COMMENT_MUTATION = `
   mutation deleteForumComment($id: EduflowproForumCommentID) {
     deleteForumComment(query: [{ where: { id: $id } }]) {
       id
@@ -57,7 +57,7 @@ let DELETE_FORUM_COMMENT_MUTATION = `
   }
 `;
 
-let GQL_QUERY = `
+export const GQL_QUERY = `
   subscription subscribeToForumPosts {
     subscribeToForumPosts(
       query: [{ where: { post_status: "Published - Not flagged" } }]
@@ -130,7 +130,7 @@ let GQL_QUERY = `
   }
 `;
 
-let CREATE_POST_VOTE_MUTATION = `
+export const CREATE_POST_VOTE_MUTATION = `
   mutation createMemberPostUpvotesPostUpvotes(
     $payload: MemberPostUpvotesPostUpvotesCreateInput = null
   ) {
@@ -142,7 +142,7 @@ let CREATE_POST_VOTE_MUTATION = `
   }
 `;
 
-let DELETE_POST_VOTE_MUTATION = `
+export const DELETE_POST_VOTE_MUTATION = `
   mutation deleteMemberPostUpvotesPostUpvotes(
     $id: EduflowproMemberPostUpvotesPostUpvotesID
   ) {
@@ -154,7 +154,7 @@ let DELETE_POST_VOTE_MUTATION = `
   }
 `;
 
-let CREATE_POST_BOOKMARK_MUTATION = `
+export const CREATE_POST_BOOKMARK_MUTATION = `
   mutation createOSavedPostContact(
     $payload: OSavedPostContactCreateInput = null
   ) {
@@ -166,7 +166,7 @@ let CREATE_POST_BOOKMARK_MUTATION = `
   }
 `;
 
-let DELETE_POST_BOOKMARK_MUTATION = `
+export const DELETE_POST_BOOKMARK_MUTATION = `
   mutation deleteOSavedPostContact(
     $id: EduflowproOSavedPostContactID
   ) {
@@ -176,7 +176,7 @@ let DELETE_POST_BOOKMARK_MUTATION = `
   }
 `;
 
-let CREATE_COMMENT_VOTE_MUTATION = `
+export const CREATE_COMMENT_VOTE_MUTATION = `
   mutation createMemberCommentUpvotesForumCommentUpvotes(
     $payload: MemberCommentUpvotesForumCommentUpvotesCreateInput = null
   ) {
@@ -190,7 +190,7 @@ let CREATE_COMMENT_VOTE_MUTATION = `
   }
 `;
 
-let DELETE_COMMENT_VOTE_MUTATION = `
+export const DELETE_COMMENT_VOTE_MUTATION = `
   mutation deleteMemberCommentUpvotesForumCommentUpvotes(
     $id: EduflowproMemberCommentUpvotesForumCommentUpvotesID
   ) {
@@ -202,7 +202,7 @@ let DELETE_COMMENT_VOTE_MUTATION = `
   }
 `;
 
-let NOTIFICATIONS_QUERY = `
+export const NOTIFICATIONS_QUERY = `
   subscription subscribeToAnnouncements($author_id: EduflowproContactID) {
     subscribeToAnnouncements(
       query: [
@@ -249,7 +249,7 @@ let NOTIFICATIONS_QUERY = `
   }
 `;
 
-let MARK_NOTIFICATION_READ = `
+export const MARK_NOTIFICATION_READ = `
   mutation createOReadContactReadAnnouncement(
     $payload: OReadContactReadAnnouncementCreateInput = null
   ) {
@@ -259,3 +259,4 @@ let MARK_NOTIFICATION_READ = `
     }
   }
 `;
+

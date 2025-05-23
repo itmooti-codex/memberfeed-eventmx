@@ -175,7 +175,7 @@
  * That's the only reason they're documented as being
  * potentially `null`.
  */
-function decodeAwsParam(awsParam) {
+export function decodeAwsParam(awsParam) {
   if (!awsParam) {
     awsParam = window.awsParam;
   }
@@ -232,7 +232,7 @@ function decodeAwsParam(awsParam) {
  * @returns {string}
  * The `awsParam` as a base64 encoded string.
  */
-function encodeAwsParam(hash, currentEpoch) {
+export function encodeAwsParam(hash, currentEpoch) {
   if (typeof currentEpoch !== "number") {
     currentEpoch = Math.round(Date.now() / 1000);
   }
@@ -257,7 +257,7 @@ function encodeAwsParam(hash, currentEpoch) {
  * @param {string} filename - The original name of the file as
  * submitted by the User.
  */
-function createS3FileId(key, filename) {
+export function createS3FileId(key, filename) {
   return `${key.replace("_${filename}", "")}_${filename}`;
 }
 
@@ -311,7 +311,7 @@ function createS3FileId(key, filename) {
  * I just don't know what errors could occur, it took me
  * forever to map out the errors for API requests.
  */
-function getS3UploadParams(awsParam, url) {
+export function getS3UploadParams(awsParam, url) {
   if (typeof awsParam !== "string") {
     awsParam = window.awsParam;
   }
@@ -384,7 +384,7 @@ function getS3UploadParams(awsParam, url) {
  * by accessing the same index in the
  * provided `filesToUpload` Array.
  */
-function uploadFiles(filesToUpload, s3Params, toSubmit) {
+export function uploadFiles(filesToUpload, s3Params, toSubmit) {
   console.log(s3Params, "s3Params");
   const paramsInputs = s3Params.inputs;
   const method = s3Params.attributes.method;
@@ -477,7 +477,7 @@ function uploadFiles(filesToUpload, s3Params, toSubmit) {
  * from `filesToUpload` that failed to upload.
  */
 
-function processFileFields(toSubmit, filesToUpload, awsParamHash, awsParamUrl) {
+export function processFileFields(toSubmit, filesToUpload, awsParamHash, awsParamUrl) {
   let awsParam;
   if (!awsParamHash) {
     awsParam = window.awsParam;
@@ -509,3 +509,4 @@ function processFileFields(toSubmit, filesToUpload, awsParamHash, awsParamUrl) {
     });
   });
 }
+

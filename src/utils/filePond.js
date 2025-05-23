@@ -5,7 +5,7 @@ FilePond.registerPlugin(
   FilePondPluginFilePoster
 );
 
-function initFilePond() {
+export function initFilePond() {
   document.querySelectorAll(".upload-section").forEach((section) => {
     const inputElement = section.querySelector(".file-input");
     const recordBtn = section.querySelector(".recordBtn");
@@ -241,17 +241,10 @@ function initFilePond() {
   });
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  initFilePond();
-});
+export function resumeAudioContext() {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return;
+  const ctx = new AudioCtx();
+  if (ctx.state === "suspended") ctx.resume();
+}
 
-window.addEventListener(
-  "touchstart",
-  () => {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) return;
-    const ctx = new AudioCtx();
-    if (ctx.state === "suspended") ctx.resume();
-  },
-  { once: true }
-);
