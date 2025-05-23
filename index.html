@@ -96,7 +96,7 @@
       data-uid="{{:uid}}" 
       data-depth="{{:depth}}">
       {{if canDelete}}
-        <button class="btn-delete" data-uid="{{:uid}}">Delete</button>
+        <button class="btn-delete" data-uid="{{:uid}}">🗑</button>
       {{/if}}
       <div class="author flex items-center mb-2">
         <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]"
@@ -158,20 +158,24 @@
       <div class="actions">
         <div class = "flex items-center justify-between">
           <div class = "flex items-center gap-4">
-            <button class="btn-like{{:hasUpvoted ? ' liked' : ''}}" data-uid="{{:uid}}">{{:hasUpvoted ? 'Unlike' : 'Like'}} ({{:upvotes}})</button>
-            <button class="btn-comment" data-uid="{{:uid}}">Comment</button>
+            <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:uid}}">👍 <span class="ml-1">{{:upvotes}}</span></button>
+            <button class="btn-comment flex items-center" data-uid="{{:uid}}">💬</button>
           </div>
           {{if depth === 0}}
-            <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}}" data-uid="{{:uid}}">{{:hasBookmarked ? 'Bookmarked' : 'Bookmark'}}</button>
+            <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:uid}}">🔖</button>
           {{/if}}
         </div>
       </div>
 
       <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
-        {{:children.length}} {{:children.length === 1 ? 'Comment' : 'Comments'}}
+        {{if depth === 0}}
+          {{:children.length}} {{:children.length === 1 ? 'Comment' : 'Comments'}}
+        {{else}}
+          {{:children.length}} {{:children.length === 1 ? 'Reply' : 'Replies'}}
+        {{/if}}
       </div>
       {{if children.length && !isCollapsed}}
-        <div class="children visible my-4 pl-8 border-l border-2-[#e9ebee] ml-[12px]">
+        <div class="children visible my-4 {{:depth < 2 ? 'pl-8 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">
           {{for children}}
             {{include tmpl="#tmpl-item"/}}
           {{/for}}
