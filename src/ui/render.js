@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { safeArray, parseDate, timeAgo } from "../utils/formatter.js";
 import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR } from "../config.js";
+=======
+import { safeArray, timeAgo, parseDate } from '../utils/formatter.js';
+import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR } from '../config.js';
+>>>>>>> main
 
 export function mergeWithExisting(existingPosts, newRawPosts, depth = 0) {
   return newRawPosts.map(newRaw => {
