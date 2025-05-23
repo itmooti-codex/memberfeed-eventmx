@@ -1,11 +1,11 @@
-import * as cfg from './config.js';
-const {
+import {
+  state,
   PROTOCOL,
   WS_ENDPOINT,
   SUB_ID,
   KEEPALIVE_MS,
-  MAX_BACKOFF
-} = cfg;
+  MAX_BACKOFF,
+} from './config.js';
 import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
 import { mergeWithExisting } from './ui/render.js';
 import { applyFilterAndRender } from './events/forumEvents.js';
@@ -16,15 +16,15 @@ import { initNotifications } from './events/notificationEvents.js';
 import './events/uploadHandlers.js';
 
 export function connect() {
-  cfg.socket = new WebSocket(WS_ENDPOINT, PROTOCOL);
-  cfg.socket.addEventListener("open", () => {
-    cfg.backoff = 1000;
-    cfg.socket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
-    cfg.keepAliveTimer = setInterval(() => {
-      cfg.socket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
+  state.socket = new WebSocket(WS_ENDPOINT, PROTOCOL);
+  state.socket.addEventListener("open", () => {
+    state.backoff = 1000;
+    state.socket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
+    state.keepAliveTimer = setInterval(() => {
+      state.socket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
     }, KEEPALIVE_MS);
   });
-  cfg.socket.addEventListener("message", ({ data }) => {
+  state.socket.addEventListener("message", ({ data }) => {
     let msg;
     try {
       msg = JSON.parse(data);
@@ -33,7 +33,7 @@ export function connect() {
       return;
     }
     if (msg.type === "CONNECTION_ACK") {
-      cfg.socket.send(
+        state.socket.send(
         JSON.stringify({
           id: SUB_ID,
           type: "GQL_START",
@@ -47,7 +47,7 @@ export function connect() {
     ) {
       const raws = msg.payload.data.subscribeToForumPosts ?? [];
       // Merge new data with existing posts to preserve UI state
-      cfg.postsStore = mergeWithExisting(cfg.postsStore, raws);
+      state.postsStore = mergeWithExisting(state.postsStore, raws);
       applyFilterAndRender();
       // iniitilize plyr js 
       requestAnimationFrame(() => {
@@ -59,11 +59,11 @@ export function connect() {
       console.warn("Subscription complete");
     }
   });
-  cfg.socket.addEventListener("error", (e) => console.error("WebSocket error", e));
-  cfg.socket.addEventListener("close", () => {
-    clearInterval(cfg.keepAliveTimer);
-    setTimeout(connect, cfg.backoff);
-    cfg.backoff = Math.min(cfg.backoff * 2, MAX_BACKOFF);
+  state.socket.addEventListener("error", (e) => console.error("WebSocket error", e));
+  state.socket.addEventListener("close", () => {
+    clearInterval(state.keepAliveTimer);
+    setTimeout(connect, state.backoff);
+    state.backoff = Math.min(state.backoff * 2, MAX_BACKOFF);
   });
 }
 
