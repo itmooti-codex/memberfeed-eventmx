@@ -1,8 +1,8 @@
-function safeArray(x) {
+export function safeArray(x) {
   return Array.isArray(x) ? x : [];
 }
 
-function timeAgo(date) {
+export function timeAgo(date) {
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
   const intervals = [
     { label: "y", seconds: 31536000 },
@@ -19,10 +19,11 @@ function timeAgo(date) {
   return "just now";
 }
 
-function parseDate(timestamp) {
+export function parseDate(timestamp) {
   if (!timestamp) return null;
   if (typeof timestamp === "number") {
     return new Date(timestamp * 1000);
   }
   return new Date(timestamp);
 }
+

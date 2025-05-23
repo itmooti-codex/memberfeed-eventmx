@@ -1,4 +1,4 @@
-function mergeWithExisting(existingPosts, newRawPosts, depth = 0) {
+export function mergeWithExisting(existingPosts, newRawPosts, depth = 0) {
   return newRawPosts.map(newRaw => {
     // Find existing post by ID to preserve its state
     const existingPost = existingPosts.find(p => p.id === newRaw.id);
@@ -17,7 +17,7 @@ function mergeWithExisting(existingPosts, newRawPosts, depth = 0) {
   });
 }
 
-function mapItem(raw, depth = 0) {
+export function mapItem(raw, depth = 0) {
   const childrenRaw = safeArray(raw.ForumComments);
   const createdAt = parseDate(raw.post_published_date);
 
@@ -80,7 +80,7 @@ function mapItem(raw, depth = 0) {
   };
 }
 
-function findNode(arr, uid) {
+export function findNode(arr, uid) {
   for (const x of arr) {
     if (x.uid === uid) return x;
     const found = findNode(x.children, uid);
@@ -89,4 +89,5 @@ function findNode(arr, uid) {
   return null;
 }
 
-const tmpl = $.templates("#tmpl-item");
+export const tmpl = $.templates("#tmpl-item");
+

@@ -1,3 +1,30 @@
+import { fetchGraphQL } from '../api/fetch.js';
+import {
+  CREATE_POST_MUTATION,
+  CREATE_COMMENT_MUTATION,
+  DELETE_FORUM_POST_MUTATION,
+  DELETE_FORUM_COMMENT_MUTATION,
+  CREATE_POST_VOTE_MUTATION,
+  DELETE_POST_VOTE_MUTATION,
+  CREATE_COMMENT_VOTE_MUTATION,
+  DELETE_COMMENT_VOTE_MUTATION,
+  CREATE_POST_BOOKMARK_MUTATION,
+  DELETE_POST_BOOKMARK_MUTATION
+} from '../api/queries.js';
+import {
+  postsStore,
+  currentFilter,
+  currentFileFilter,
+  currentSearchTerm,
+  searchInput,
+  clearIcon,
+  searchIcon,
+  GLOBAL_AUTHOR_ID
+} from '../config.js';
+import { mergeWithExisting, findNode, tmpl } from '../ui/render.js';
+import { pendingFile, fileTypeCheck } from './uploadHandlers.js';
+import { processFileFields } from '../utils/handleFile.js';
+
 $(document).on("click", ".btn-comment", function (e) {
   e.stopPropagation();
   const uid = $(this).data("uid");
@@ -297,7 +324,7 @@ $(document).on("click", ".btn-bookmark", async function () {
   applyFilterAndRender();
 });
 
-function applyFilterAndRender() {
+export function applyFilterAndRender() {
   console.log("Function is running");
 
   requestAnimationFrame(() => {
@@ -420,3 +447,5 @@ function removeHighlights(el) {
     m.replaceWith(document.createTextNode(m.textContent));
   });
 }
+
+
