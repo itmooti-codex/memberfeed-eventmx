@@ -374,7 +374,13 @@ export function applyFilterAndRender() {
         p.content.toLowerCase().includes(q)
     );
   }
-  $("#forum-root").html(tmpl.render(items));
+  if (items.length === 0) {
+    $("#forum-root").html(
+      '<div class="empty-state text-center p-4">No posts found.</div>'
+    );
+  } else {
+    $("#forum-root").html(tmpl.render(items));
+  }
 }
 
 $(document).on("click", ".filter-btn", function () {
