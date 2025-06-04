@@ -108,6 +108,17 @@ button {
   display: block;
 }
 
+.toolbar {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.toolbar button {
+  padding: 4px 6px !important;
+  font-weight: bold;
+}
+
 .clearIcon.hidden {
   display: none;
 }

@@ -52,6 +52,12 @@ $(document).on("click", ".btn-comment", function (e) {
 
   const $form = $(`
     <div class="comment-form my-2">
+      <div class="toolbar mb-2">
+        <button data-cmd="bold"><b>B</b></button>
+        <button data-cmd="italic"><i>I</i></button>
+        <button data-cmd="underline"><u>U</u></button>
+        <button data-cmd="link">🔗</button>
+      </div>
       <div class="editor min-h-[80px] resize-y p-2 rounded" contenteditable="true" data-placeholder="Write a reply...">${mentionHtml}</div>
       <div class="upload-section w-full mt-2 flex flex-col gap-2">
         <div class="flex items-center gap-2">

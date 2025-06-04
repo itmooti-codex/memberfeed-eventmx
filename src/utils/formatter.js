@@ -27,3 +27,46 @@ export function parseDate(timestamp) {
   return new Date(timestamp);
 }
 
+export function formatContent(html = "") {
+  if (!html) return "";
+  // convert anchor tags to open in new tab and add video embeds
+  const anchorRegex = /<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/gi;
+  html = html.replace(anchorRegex, (match, url, text) => {
+    const embed = buildEmbed(url);
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>` + (embed || "");
+  });
+
+  // replace bare urls
+  const urlRegex = /(https?:\/\/[^\s<]+)/g;
+  html = html.replace(urlRegex, (url) => {
+    const embed = buildEmbed(url);
+    const anchor = `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    return anchor + (embed || "");
+  });
+  return html;
+}
+
+function buildEmbed(url) {
+  let id;
+  if (/youtu\.be\/.+|youtube\.com\/watch\?v=/.test(url)) {
+    id = url.split(/v=|youtu\.be\//)[1];
+    if (id) id = id.split(/[?&]/)[0];
+    if (id) {
+      return `<div class="video-embed"><iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen class="w-full h-64"></iframe></div>`;
+    }
+  } else if (/vimeo\.com\//.test(url)) {
+    id = url.split(/vimeo\.com\//)[1];
+    if (id) id = id.split(/[?&]/)[0];
+    if (id) {
+      return `<div class="video-embed"><iframe src="https://player.vimeo.com/video/${id}" frameborder="0" allowfullscreen class="w-full h-64"></iframe></div>`;
+    }
+  } else if (/loom\.com\//.test(url)) {
+    id = url.split(/loom\.com\/[^/]*\/?/).pop();
+    if (id) id = id.split(/[?&]/)[0];
+    if (id) {
+      return `<div class="video-embed"><iframe src="https://www.loom.com/embed/${id}" frameborder="0" allowfullscreen class="w-full h-64"></iframe></div>`;
+    }
+  }
+  return "";
+}
+

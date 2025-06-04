@@ -1,4 +1,4 @@
-import { safeArray, timeAgo, parseDate } from '../utils/formatter.js';
+import { safeArray, timeAgo, parseDate, formatContent } from '../utils/formatter.js';
 import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from '../config.js';
 
 export function buildTree(existingPosts, rawPosts, rawComments) {
@@ -80,7 +80,7 @@ export function mapItem(raw, depth = 0) {
     authorImage: raw.Author?.profile_image || DEFAULT_AVATAR,
     createdAt,
     timeAgo: createdAt ? timeAgo(createdAt) : "",
-    content: raw.post_copy ?? raw.comment ?? "",
+    content: formatContent(raw.post_copy ?? raw.comment ?? ""),
     upvotes: postUpvotes.length + commentUpvotes.length,
     hasUpvoted: Boolean(userUpvote),
     voteRecordId: userUpvote?.id || null,
