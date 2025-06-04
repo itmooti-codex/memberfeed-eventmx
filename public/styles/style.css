@@ -222,3 +222,14 @@ button {
   text-align: center;
   padding: 1rem;
 }
+@media (max-width: 640px) {
+  /* Hide controls except time, progress and settings on small screens */
+  .plyr__controls .plyr__controls__item {
+    display: none !important;
+  }
+  .plyr__controls button[data-plyr="settings"],
+  .plyr__controls .plyr__progress,
+  .plyr__controls .plyr__time {
+    display: inline-flex !important;
+  }
+}
