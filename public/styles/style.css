@@ -205,10 +205,6 @@ button {
   overflow: visible !important;
 }
 
-.filepond--file-wrapper{
-  height: 120px !important;
-}
-
 /* Optional: Give your media preview a max-height so it stays tidy */
 .media-preview {
   width: 100%;
