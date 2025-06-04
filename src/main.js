@@ -3,11 +3,11 @@ import {
   PROTOCOL,
   WS_ENDPOINT,
   SUB_ID,
-  COM_SUB_ID,
   KEEPALIVE_MS,
   MAX_BACKOFF,
 } from './config.js';
-import { GQL_QUERY, COMMENTS_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
+import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
+import { safeArray } from './utils/formatter.js';
 import { buildTree } from './ui/render.js';
 import { applyFilterAndRender } from './events/forumEvents.js';
 import { fetchGraphQL } from './api/fetch.js';
@@ -15,6 +15,18 @@ import { tribute } from './utils/tribute.js';
 import { initFilePond, resumeAudioContext } from './utils/filePond.js';
 import { initNotifications } from './events/notificationEvents.js';
 import './events/uploadHandlers.js';
+
+function flattenComments(posts) {
+  const result = [];
+  function gather(list) {
+    for (const c of safeArray(list)) {
+      result.push(c);
+      if (c.ForumComments) gather(c.ForumComments);
+    }
+  }
+  posts.forEach((p) => gather(p.ForumComments));
+  return result;
+}
 
 export function connect() {
   state.socket = new WebSocket(WS_ENDPOINT, PROTOCOL);
@@ -41,24 +53,14 @@ export function connect() {
           payload: { query: GQL_QUERY },
         })
       );
-      state.socket.send(
-        JSON.stringify({
-          id: COM_SUB_ID,
-          type: "GQL_START",
-          payload: { query: COMMENTS_QUERY },
-        })
-      );
     } else if (msg.type === "GQL_DATA" && msg.id === SUB_ID && msg.payload?.data) {
       state.rawPosts = msg.payload.data.subscribeToForumPosts ?? [];
+      state.rawComments = flattenComments(state.rawPosts);
       state.postsStore = buildTree(state.postsStore, state.rawPosts, state.rawComments);
       applyFilterAndRender();
       requestAnimationFrame(() => {
         Plyr.setup('.js-player');
       });
-    } else if (msg.type === "GQL_DATA" && msg.id === COM_SUB_ID && msg.payload?.data) {
-      state.rawComments = msg.payload.data.subscribeToForumComments ?? [];
-      state.postsStore = buildTree(state.postsStore, state.rawPosts, state.rawComments);
-      applyFilterAndRender();
     } else if (msg.type === "GQL_ERROR") {
       console.error("Subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
@@ -72,6 +74,25 @@ export function connect() {
     state.backoff = Math.min(state.backoff * 2, MAX_BACKOFF);
   });
 }
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    clearInterval(state.keepAliveTimer);
+    if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+      state.socket.close();
+    }
+  } else {
+    if (!state.socket || state.socket.readyState === WebSocket.CLOSED) {
+      connect();
+    } else {
+      state.keepAliveTimer = setInterval(() => {
+        if (state.socket.readyState === WebSocket.OPEN) {
+          state.socket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
+        }
+      }, KEEPALIVE_MS);
+    }
+  }
+});
 
 window.addEventListener('DOMContentLoaded', () => {
   tribute.attach(document.getElementById('post-editor'));
