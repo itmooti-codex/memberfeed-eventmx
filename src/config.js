@@ -41,6 +41,7 @@ export const state = {
   rawPosts: [],
   rawComments: [],
   postsStore: [],
+  collapsedState: {},
   currentFilter: "Recent",
   currentFileFilter: "All",
   currentSearchTerm: "",
