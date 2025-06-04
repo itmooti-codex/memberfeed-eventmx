@@ -90,6 +90,17 @@
 
   <div id="forum-root" class="w-full"></div>
 
+  <!-- Delete confirmation modal -->
+  <div id="delete-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white p-4 rounded shadow-lg w-[90%] max-w-sm">
+      <h2 id="delete-modal-title" class="text-lg font-bold mb-4"></h2>
+      <div class="flex justify-end gap-2">
+        <button id="delete-confirm" class="bg-red-500 text-white px-4 py-1 rounded">Delete</button>
+        <button id="delete-cancel" class="bg-gray-300 px-4 py-1 rounded">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <script id="tmpl-item" type="text/x-jsrender">
     <div 
       class="item rounded bg-white shadow-xl flex flex-col gap-2 my-4 p-4 relative border-2 border-[#e9ebee]" 
