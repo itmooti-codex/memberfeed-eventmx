@@ -19,7 +19,7 @@ export const emojiPickerHtml = `
 import { saveSelection, restoreSelection } from '../utils/caret.js';
 
 export function initEmojiHandlers() {
-  $(document).on('focus keyup mouseup', '.editor', function () {
+  $(document).on('keyup mouseup input', '.editor', function () {
     saveSelection();
   });
   $(document).on('click', '.emoji-toggle', function (e) {
