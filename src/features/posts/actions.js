@@ -22,6 +22,7 @@ import {
   setPendingFile,
   setFileTypeCheck,
 } from '../uploads/handlers.js';
+import { emojiPickerHtml } from '../../ui/emoji.js';
 import { tribute } from '../../utils/tribute.js';
 import { initFilePond } from '../../utils/filePond.js';
 import { processFileFields } from '../../utils/handleFile.js';
@@ -61,6 +62,7 @@ $(document).on("click", ".btn-comment", function (e) {
       <div class="editor min-h-[80px] resize-y p-2 rounded" contenteditable="true" data-placeholder="Write a reply...">${mentionHtml}</div>
       <div class="upload-section w-full mt-2 flex flex-col gap-2">
         <div class="flex items-center gap-2">
+        ${emojiPickerHtml}
         <button id="recordBtn" class="recordBtn">🎙 Start Recording</button>
         <button class="btn-submit-comment" data-uid="${uid}">Post</button>
         </div>
