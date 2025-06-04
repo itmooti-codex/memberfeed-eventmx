@@ -37,7 +37,8 @@ export function formatContent(html = "") {
   });
 
   // replace bare urls
-  const urlRegex = /(https?:\/\/[^\s<]+)/g;
+  // avoid matching URLs inside HTML attributes or within anchor text
+  const urlRegex = /(?<!["'=]|>)(https?:\/\/[^\s<]+)/g;
   html = html.replace(urlRegex, (url) => {
     const embed = buildEmbed(url);
     const anchor = `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
