@@ -90,6 +90,16 @@
           <li class="py-2 px-8 cursor-pointer" data-type="File">File</li>
         </ul>
       </div>
+
+      <div class="sort-filter relative ml-2">
+        <button id="sort-filter-btn" class="filter-btn">Latest ▾</button>
+        <ul id="sort-filter-menu"
+          class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[8em] z-[10]">
+          <li class="py-2 px-8 cursor-pointer active" data-sort="Latest">Latest</li>
+          <li class="py-2 px-8 cursor-pointer" data-sort="Oldest">Oldest</li>
+          <li class="py-2 px-8 cursor-pointer" data-sort="Most Popular">Most Popular</li>
+        </ul>
+      </div>
     </div>
     <div class="search-wrapper w-full my-4 relative">
       <input type="text" id="searchPost" class="py-2 px-4 rounded text-sm" placeholder="Search by author or text…"

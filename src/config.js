@@ -45,6 +45,7 @@ export const state = {
   collapsedState: {},
   currentFilter: "Recent",
   currentFileFilter: "All",
+  currentSort: "Latest",
   currentSearchTerm: "",
   debounceTimer: null,
 };

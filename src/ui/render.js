@@ -78,6 +78,7 @@ export function mapItem(raw, depth = 0) {
     depth,
     authorName: raw.Author?.display_name || "Anonymous",
     authorImage: raw.Author?.profile_image || DEFAULT_AVATAR,
+    createdAt,
     timeAgo: createdAt ? timeAgo(createdAt) : "",
     content: raw.post_copy ?? raw.comment ?? "",
     upvotes: postUpvotes.length + commentUpvotes.length,
