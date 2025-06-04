@@ -132,6 +132,24 @@ export function initNotifications() {
   }
 
   connectNotifications();
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      clearInterval(keepAliveTimer);
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.close();
+      }
+    } else {
+      if (!socket || socket.readyState === WebSocket.CLOSED) {
+        connectNotifications();
+      } else {
+        keepAliveTimer = setInterval(
+          () => sendSafe({ type: "KEEP_ALIVE" }),
+          KEEPALIVE_MS
+        );
+      }
+    }
+  });
 }
 
 document.getElementById("markAllAsRead").addEventListener("click", async () => {

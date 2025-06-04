@@ -73,6 +73,25 @@ export function connect() {
   });
 }
 
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    clearInterval(state.keepAliveTimer);
+    if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+      state.socket.close();
+    }
+  } else {
+    if (!state.socket || state.socket.readyState === WebSocket.CLOSED) {
+      connect();
+    } else {
+      state.keepAliveTimer = setInterval(() => {
+        if (state.socket.readyState === WebSocket.OPEN) {
+          state.socket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
+        }
+      }, KEEPALIVE_MS);
+    }
+  }
+});
+
 window.addEventListener('DOMContentLoaded', () => {
   tribute.attach(document.getElementById('post-editor'));
   fetchGraphQL(FETCH_CONTACTS_QUERY).then((res) => {
