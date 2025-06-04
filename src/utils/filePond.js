@@ -1,4 +1,4 @@
-import { setPendingFile, setFileTypeCheck } from '../events/uploadHandlers.js';
+import { setPendingFile, setFileTypeCheck } from '../features/uploads/handlers.js';
 
 FilePond.registerPlugin(
   FilePondPluginFileValidateType,
