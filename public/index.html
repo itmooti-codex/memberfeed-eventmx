@@ -190,6 +190,12 @@
 
   <script type="module" src="../src/main.js"></script>
 
+<div id="file-preview-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[99]">
+  <div class="modal-content bg-white p-4 rounded relative max-w-full max-h-full">
+    <button id="close-file-preview" class="absolute top-2 right-2">✕</button>
+    <div id="preview-container" class="max-h-[80vh] overflow-auto"></div>
+  </div>
+</div>
 </body>
 
 </html>
