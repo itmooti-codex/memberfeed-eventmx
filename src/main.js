@@ -9,12 +9,12 @@ import {
 import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
 import { safeArray } from './utils/formatter.js';
 import { buildTree } from './ui/render.js';
-import { applyFilterAndRender } from './events/forumEvents.js';
+import { applyFilterAndRender } from './features/posts/events.js';
 import { fetchGraphQL } from './api/fetch.js';
 import { tribute } from './utils/tribute.js';
 import { initFilePond, resumeAudioContext } from './utils/filePond.js';
-import { initNotifications } from './events/notificationEvents.js';
-import './events/uploadHandlers.js';
+import { initNotifications } from './features/notifications/events.js';
+import './features/uploads/handlers.js';
 
 function flattenComments(posts) {
   const result = [];

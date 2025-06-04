@@ -1,8 +1,8 @@
-import { fetchGraphQL } from '../api/fetch.js';
+import { fetchGraphQL } from '../../api/fetch.js';
 import {
   NOTIFICATIONS_QUERY,
   MARK_NOTIFICATION_READ
-} from '../api/queries.js';
+} from '../../api/queries.js';
 import {
   GLOBAL_AUTHOR_ID,
   PROTOCOL,
@@ -11,8 +11,8 @@ import {
   KEEPALIVE_MS,
   MAX_BACKOFF,
   renderedNotificationIds
-} from '../config.js';
-import { parseDate, timeAgo } from '../utils/formatter.js';
+} from '../../config.js';
+import { parseDate, timeAgo } from '../../utils/formatter.js';
 
 export function initNotifications() {
   const bell = document.querySelector(".notificationWrapperToggler");

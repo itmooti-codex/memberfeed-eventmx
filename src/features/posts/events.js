@@ -1,4 +1,4 @@
-import { fetchGraphQL } from '../api/fetch.js';
+import { fetchGraphQL } from '../../api/fetch.js';
 import {
   CREATE_POST_MUTATION,
   CREATE_COMMENT_MUTATION,
@@ -10,24 +10,24 @@ import {
   DELETE_COMMENT_VOTE_MUTATION,
   CREATE_POST_BOOKMARK_MUTATION,
   DELETE_POST_BOOKMARK_MUTATION
-} from '../api/queries.js';
+} from '../../api/queries.js';
 import {
   state,
   searchInput,
   clearIcon,
   searchIcon,
   GLOBAL_AUTHOR_ID,
-} from '../config.js';
-import { findNode, tmpl, mapItem } from '../ui/render.js';
+} from '../../config.js';
+import { findNode, tmpl, mapItem } from '../../ui/render.js';
 import {
   pendingFile,
   fileTypeCheck,
   setPendingFile,
   setFileTypeCheck,
-} from './uploadHandlers.js';
-import { tribute } from '../utils/tribute.js';
-import { initFilePond } from '../utils/filePond.js';
-import { processFileFields } from '../utils/handleFile.js';
+} from '../uploads/handlers.js';
+import { tribute } from '../../utils/tribute.js';
+import { initFilePond } from '../../utils/filePond.js';
+import { processFileFields } from '../../utils/handleFile.js';
 
 $(document).on("click", ".btn-comment", function (e) {
   e.stopPropagation();
