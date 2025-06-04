@@ -559,6 +559,7 @@ function removeHighlights(el) {
 const previewModal = document.getElementById('file-preview-modal');
 const previewContainer = document.getElementById('preview-container');
 const previewClose = document.getElementById('close-file-preview');
+const previewDownload = document.getElementById('download-preview');
 
 if (previewClose) {
   previewClose.addEventListener('click', () => {
@@ -603,6 +604,10 @@ $(document).on(
     }
     previewContainer.innerHTML = '';
     previewContainer.appendChild(el);
+    if (previewDownload) {
+      previewDownload.href = src;
+      previewDownload.download = src.split('/').pop();
+    }
     previewModal.classList.remove('hidden');
     previewModal.classList.add('show');
   }
