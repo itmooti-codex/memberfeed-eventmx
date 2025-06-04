@@ -331,8 +331,6 @@ $(document).on("click", ".btn-bookmark", async function () {
 });
 
 export function applyFilterAndRender() {
-  console.log("Function is running");
-
   requestAnimationFrame(() => {
     Plyr.setup(".js-player");
   });
