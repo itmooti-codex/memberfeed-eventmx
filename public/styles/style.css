@@ -314,3 +314,10 @@ button {
 .toast.visible {
   opacity: 1;
 }
+
+/* Style links inside post content and editor */
+.content a,
+.editor a {
+  color: var(--primary);
+  text-decoration: underline;
+}
