@@ -260,3 +260,27 @@ button {
   cursor: pointer;
   border-radius: 4px;
 }
+
+/* Toast styles */
+#toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toast {
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: opacity 0.3s;
+}
+
+.toast.visible {
+  opacity: 1;
+}

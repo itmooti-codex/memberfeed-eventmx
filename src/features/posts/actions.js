@@ -26,6 +26,7 @@ import { tribute } from '../../utils/tribute.js';
 import { initFilePond } from '../../utils/filePond.js';
 import { processFileFields } from '../../utils/handleFile.js';
 import { applyFilterAndRender } from "./filters.js";
+import { showToast } from '../../ui/toast.js';
 
 const deleteModal = document.getElementById('delete-modal');
 const deleteModalTitle = document.getElementById('delete-modal-title');
@@ -111,6 +112,7 @@ $(document).on("click", "#delete-cancel", function () {
 $(document).on("click", "#delete-confirm", function () {
   if (!pendingDelete) return;
   const uid = pendingDelete.uid;
+  deleteModal.classList.add("hidden");
   const $item = $(`[data-uid="${uid}"]`).closest(".item");
   $item.addClass("state-disabled");
 
@@ -136,13 +138,14 @@ $(document).on("click", "#delete-confirm", function () {
     .then(() => {
       removeNode(state.postsStore, uid);
       applyFilterAndRender();
+      showToast("Deleted");
     })
     .catch((err) => {
       console.error("Delete failed", err);
       $item.removeClass("state-disabled");
+      showToast("Delete failed");
     })
     .finally(() => {
-      deleteModal.classList.add("hidden");
       pendingDelete = null;
     });
 });
@@ -225,6 +228,7 @@ $(document).on("click", "#submit-post", async function () {
       newNode.isCollapsed = false;
       state.postsStore.unshift(newNode);
       applyFilterAndRender();
+      showToast("Post created");
     }
     editor.html("");
     setPendingFile(null);
@@ -301,6 +305,7 @@ $(document).on("click", ".btn-submit-comment", async function () {
       node.children.push(newComment);
       node.isCollapsed = false;
       applyFilterAndRender();
+      showToast("Comment posted");
     }
     setPendingFile(null);
     setFileTypeCheck("");
@@ -333,6 +338,7 @@ $(document).on("click", ".btn-like", async function () {
   const node = findNode(state.postsStore, uid);
   const isPost = node.depth === 0;
   $(this).addClass("state-disabled");
+  let toastMsg = "";
 
   try {
     if (node.hasUpvoted) {
@@ -343,6 +349,7 @@ $(document).on("click", ".btn-like", async function () {
       node.upvotes--;
       node.hasUpvoted = false;
       node.voteRecordId = null;
+      toastMsg = "Vote removed";
     } else {
       const payload = isPost
         ? { post_upvote_id: node.id, member_post_upvote_id: GLOBAL_AUTHOR_ID }
@@ -360,6 +367,7 @@ $(document).on("click", ".btn-like", async function () {
       node.upvotes++;
       node.hasUpvoted = true;
       node.voteRecordId = newId;
+      toastMsg = "Voted";
     }
   } catch (err) {
     console.log("error is", err);
@@ -367,6 +375,7 @@ $(document).on("click", ".btn-like", async function () {
     $(this).removeClass("state-disabled");
   }
   applyFilterAndRender();
+  if (toastMsg) showToast(toastMsg);
 });
 
 // HANDLE BOOKMARK / UNBOOKMARK (posts only)
@@ -374,6 +383,7 @@ $(document).on("click", ".btn-bookmark", async function () {
   const uid = $(this).data("uid");
   const node = findNode(state.postsStore, uid);
   $(this).addClass("state-disabled");
+  let toastMsg = "";
 
   try {
     if (node.hasBookmarked) {
@@ -382,6 +392,7 @@ $(document).on("click", ".btn-bookmark", async function () {
       });
       node.hasBookmarked = false;
       node.bookmarkRecordId = null;
+      toastMsg = "Bookmark removed";
     } else {
       const payload = { contact_id: GLOBAL_AUTHOR_ID, saved_post_id: node.id };
       const res = await fetchGraphQL(CREATE_POST_BOOKMARK_MUTATION, {
@@ -389,6 +400,7 @@ $(document).on("click", ".btn-bookmark", async function () {
       });
       node.hasBookmarked = true;
       node.bookmarkRecordId = res.data.createOSavedPostContact.id;
+      toastMsg = "Bookmarked";
     }
   } catch (err) {
     console.log("error is", err);
@@ -397,5 +409,6 @@ $(document).on("click", ".btn-bookmark", async function () {
   }
 
   applyFilterAndRender();
+  if (toastMsg) showToast(toastMsg);
 });
 }
