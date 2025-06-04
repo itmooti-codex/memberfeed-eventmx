@@ -10,6 +10,7 @@ import {
 import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
 import { safeArray } from './utils/formatter.js';
 import { buildTree } from './ui/render.js';
+import { mergeLists } from './utils/merge.js';
 import { applyFilterAndRender } from './features/posts/events.js';
 import { fetchGraphQL } from './api/fetch.js';
 import { tribute } from './utils/tribute.js';
@@ -55,7 +56,8 @@ export function connect() {
         })
       );
     } else if (msg.type === "GQL_DATA" && msg.id === SUB_ID && msg.payload?.data) {
-      state.rawPosts = msg.payload.data.subscribeToForumPosts ?? [];
+      const incoming = msg.payload.data.subscribeToForumPosts ?? [];
+      state.rawPosts = mergeLists(state.rawPosts, incoming);
       state.rawComments = flattenComments(state.rawPosts);
       state.postsStore = buildTree(state.postsStore, state.rawPosts, state.rawComments);
       applyFilterAndRender();
