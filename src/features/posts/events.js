@@ -67,6 +67,11 @@ $(document).on("click", ".btn-comment", function (e) {
     }
     container.find(".children").addClass("visible");
     initFilePond();
+    // scroll to the newly inserted textarea so it's in view
+    requestAnimationFrame(() => {
+      inserted[0].scrollIntoView({ behavior: "smooth", block: "center" });
+      editorEl?.focus();
+    });
   }
 });
 
