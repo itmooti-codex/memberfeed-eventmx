@@ -81,6 +81,7 @@ $(document).on("click", ".ribbon", function () {
   let node = findNode(state.postsStore, uid);
   if (node) {
     node.isCollapsed = !node.isCollapsed;
+    state.collapsedState[node.uid] = node.isCollapsed;
     applyFilterAndRender();
   }
 });
@@ -238,6 +239,7 @@ $(document).on("click", ".btn-submit-comment", async function () {
     setFileTypeCheck("");
     $form.remove();
     node.isCollapsed = false;
+    state.collapsedState[node.uid] = node.isCollapsed;
     $(`[data-uid="${uid}"]`).find(".children").addClass("visible");
   } catch (err) {
     console.error("Comment failed", err);
@@ -331,8 +333,6 @@ $(document).on("click", ".btn-bookmark", async function () {
 });
 
 export function applyFilterAndRender() {
-  console.log("Function is running");
-
   requestAnimationFrame(() => {
     Plyr.setup(".js-player");
   });

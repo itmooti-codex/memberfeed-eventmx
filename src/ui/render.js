@@ -1,19 +1,21 @@
-import { safeArray, timeAgo, parseDate } from "../utils/formatter.js";
-import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR } from "../config.js";
+import { safeArray, timeAgo, parseDate } from '../utils/formatter.js';
+import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from '../config.js';
 
 export function buildTree(existingPosts, rawPosts, rawComments) {
   const byUid = new Map();
 
   function cloneState(uid) {
-    const existing = findNode(existingPosts, uid);
-    return existing
-      ? { isCollapsed: existing.isCollapsed }
-      : { isCollapsed: true };
+    if (state.collapsedState.hasOwnProperty(uid)) {
+      return { isCollapsed: state.collapsedState[uid] };
+    }
+    state.collapsedState[uid] = true;
+    return { isCollapsed: true };
   }
 
   const posts = rawPosts.map((raw) => {
     const node = mapItem(raw, 0);
     Object.assign(node, cloneState(node.uid));
+    state.collapsedState[node.uid] = node.isCollapsed;
     byUid.set(node.id, node);
     return node;
   });
@@ -21,6 +23,7 @@ export function buildTree(existingPosts, rawPosts, rawComments) {
   const comments = rawComments.map((raw) => {
     const node = mapItem(raw, 1);
     Object.assign(node, cloneState(node.uid));
+    state.collapsedState[node.uid] = node.isCollapsed;
     byUid.set(node.id, node);
     return node;
   });
