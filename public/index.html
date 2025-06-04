@@ -29,16 +29,17 @@
   <script src="https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.min.js"></script>
 
 </head>
- 
+
 <body class="max-w-[700px] bg-[#f1f1f1] flex flex-col items-center justify-center m-auto p-6 max-[768px]:p-2">
-<div id="topOfForum"></div>
-<div onclick="document.getElementById('topOfForum').scrollIntoView({ behavior: 'smooth' })"
-  class="p-3 bg-[var(--primary)] flex items-center justify-center cursor-pointer fixed bottom-[10%] right-[5%]"> <svg width="24"
-    height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M20.4228 10.9233C20.3455 11.0008 20.2535 11.0622 20.1524 11.1042C20.0512 11.1461 19.9428 11.1677 19.8333 11.1677C19.7238 11.1677 19.6153 11.1461 19.5142 11.1042C19.413 11.0622 19.3211 11.0008 19.2437 10.9233L13.1668 4.84535V21.1667C13.1668 21.3877 13.079 21.5997 12.9228 21.7559C12.7665 21.9122 12.5545 22 12.3335 22C12.1125 22 11.9006 21.9122 11.7443 21.7559C11.588 21.5997 11.5002 21.3877 11.5002 21.1667V4.84535L5.42333 10.9233C5.26697 11.0796 5.0549 11.1675 4.83377 11.1675C4.61264 11.1675 4.40057 11.0796 4.24421 10.9233C4.08784 10.7669 4 10.5548 4 10.3337C4 10.1126 4.08784 9.90051 4.24421 9.74415L11.744 2.2444C11.8214 2.16692 11.9133 2.10546 12.0144 2.06352C12.1156 2.02158 12.224 2 12.3335 2C12.443 2 12.5515 2.02158 12.6526 2.06352C12.7538 2.10546 12.8457 2.16692 12.9231 2.2444L20.4228 9.74415C20.5003 9.82154 20.5618 9.91345 20.6037 10.0146C20.6457 10.1158 20.6672 10.2242 20.6672 10.3337C20.6672 10.4432 20.6457 10.5517 20.6037 10.6528C20.5618 10.754 20.5003 10.8459 20.4228 10.9233Z"
-      fill="white"></path>
-  </svg></div>
+  <div id="topOfForum"></div>
+  <div onclick="document.getElementById('topOfForum').scrollIntoView({ behavior: 'smooth' })"
+    class="p-3 bg-[var(--primary)] flex items-center justify-center cursor-pointer fixed bottom-[1rem] right-[1rem] max-[768px]:hidden z-[99]"> <svg
+      width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M20.4228 10.9233C20.3455 11.0008 20.2535 11.0622 20.1524 11.1042C20.0512 11.1461 19.9428 11.1677 19.8333 11.1677C19.7238 11.1677 19.6153 11.1461 19.5142 11.1042C19.413 11.0622 19.3211 11.0008 19.2437 10.9233L13.1668 4.84535V21.1667C13.1668 21.3877 13.079 21.5997 12.9228 21.7559C12.7665 21.9122 12.5545 22 12.3335 22C12.1125 22 11.9006 21.9122 11.7443 21.7559C11.588 21.5997 11.5002 21.3877 11.5002 21.1667V4.84535L5.42333 10.9233C5.26697 11.0796 5.0549 11.1675 4.83377 11.1675C4.61264 11.1675 4.40057 11.0796 4.24421 10.9233C4.08784 10.7669 4 10.5548 4 10.3337C4 10.1126 4.08784 9.90051 4.24421 9.74415L11.744 2.2444C11.8214 2.16692 11.9133 2.10546 12.0144 2.06352C12.1156 2.02158 12.224 2 12.3335 2C12.443 2 12.5515 2.02158 12.6526 2.06352C12.7538 2.10546 12.8457 2.16692 12.9231 2.2444L20.4228 9.74415C20.5003 9.82154 20.5618 9.91345 20.6037 10.0146C20.6457 10.1158 20.6672 10.2242 20.6672 10.3337C20.6672 10.4432 20.6457 10.5517 20.6037 10.6528C20.5618 10.754 20.5003 10.8459 20.4228 10.9233Z"
+        fill="white"></path>
+    </svg>
+  </div>
 
 
   <div class="flex px-4 py-6 bg-[#d1d1d1] w-full mb-4 relative">
@@ -71,34 +72,36 @@
   </div>
 
   <div id="post-filters" class="bg-white post-filters w-full shadow-lg p-4 flex items-center flex-col my-4 rounded">
-    <div class="flex items-center justify-between w-full  ">
+    <div class="flex items-center justify-between w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
       <div class="flex items-center gap-4 ">
         <button class="filter-btn active" data-filter="Recent">🕒</button>
         <button class="filter-btn" data-filter="Featured">⭐</button>
         <button class="filter-btn" data-filter="My Posts">👤</button>
         <button class="filter-btn" data-filter="Saved Posts">🔖</button>
       </div>
-      
-      <div class="file-filter relative">
-        <button id="file-filter-btn" class="filter-btn">All ▾</button>
-        <ul id="file-filter-menu"
-          class="file-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[6em] z-[10]">
-          <li class="py-2 px-8 cursor-pointer" data-type="All" class="active">All</li>
-          <li class="py-2 px-8 cursor-pointer" data-type="Image">Image</li>
-          <li class="py-2 px-8 cursor-pointer" data-type="Video">Video</li>
-          <li class="py-2 px-8 cursor-pointer" data-type="Audio">Audio</li>
-          <li class="py-2 px-8 cursor-pointer" data-type="File">File</li>
-        </ul>
-      </div>
 
-      <div class="sort-filter relative ml-2">
-        <button id="sort-filter-btn" class="filter-btn">Latest ▾</button>
-        <ul id="sort-filter-menu"
-          class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[8em] z-[10]">
-          <li class="py-2 px-8 cursor-pointer active" data-sort="Latest">Latest</li>
-          <li class="py-2 px-8 cursor-pointer" data-sort="Oldest">Oldest</li>
-          <li class="py-2 px-8 cursor-pointer" data-sort="Most Popular">Most Popular</li>
-        </ul>
+      <div class="flex items-center gap-4">
+
+        <div class="sort-filter relative">
+          <button id="sort-filter-btn" class="filter-btn">Latest ▾</button>
+          <ul id="sort-filter-menu"
+            class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] w-fit z-[10]">
+            <li class="py-2 px-8 cursor-pointer active" data-sort="Latest">Latest</li>
+            <li class="py-2 px-8 cursor-pointer" data-sort="Oldest">Oldest</li>
+            <li class="py-2 px-8 cursor-pointer text-nowrap" data-sort="Most Popular">Most Popular</li>
+          </ul>
+        </div>
+        <div class="file-filter relative">
+          <button id="file-filter-btn" class="filter-btn">All ▾</button>
+          <ul id="file-filter-menu"
+            class="file-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[6em] z-[10]">
+            <li class="py-2 px-8 cursor-pointer" data-type="All" class="active">All</li>
+            <li class="py-2 px-8 cursor-pointer" data-type="Image">Image</li>
+            <li class="py-2 px-8 cursor-pointer" data-type="Video">Video</li>
+            <li class="py-2 px-8 cursor-pointer" data-type="Audio">Audio</li>
+            <li class="py-2 px-8 cursor-pointer" data-type="File">File</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="search-wrapper w-full my-4 relative">
@@ -223,7 +226,7 @@
   <script type="module" src="../src/main.js"></script>
 
   <div id="toast-container" class="toast-container"></div>
- 
+
   <div id="file-preview-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[99]">
     <div class="modal-content bg-white p-4 m-4 rounded relative max-w-full max-h-full">
 
