@@ -223,14 +223,16 @@ button {
   padding: 1rem;
 }
 @media (max-width: 640px) {
-  /* Hide controls except time, progress and settings on small screens */
-  .plyr__controls .plyr__controls__item {
+ .plyr__control[data-plyr="rewind"],
+ .plyr__control[data-plyr="fast-forward"],
+ .plyr__control[data-plyr="mute"],
+  .plyr__control[data-plyr="restart"],
+  .plyr_time,
+  .plyr__volume,
+  .plyr__control[data-plyr="pip"],
+  .plyr__control[data-plyr="fullscreen"]
+ {
     display: none !important;
-  }
-  .plyr__controls button[data-plyr="settings"],
-  .plyr__controls .plyr__progress,
-  .plyr__controls .plyr__time {
-    display: inline-flex !important;
   }
 }
 /* file preview modal */
