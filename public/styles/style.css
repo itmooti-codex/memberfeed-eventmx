@@ -119,6 +119,12 @@ button {
   font-weight: bold;
 }
 
+/* Display emojis in a horizontal row with spacing */
+.emoji-picker {
+  display: flex;
+  gap: 8px;
+}
+
 .clearIcon.hidden {
   display: none;
 }
