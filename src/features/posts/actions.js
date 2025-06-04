@@ -27,6 +27,8 @@ import { initFilePond } from '../../utils/filePond.js';
 import { processFileFields } from '../../utils/handleFile.js';
 import { applyFilterAndRender } from "./filters.js";
 import { showToast } from '../../ui/toast.js';
+import { removeRawById, flattenComments, findRawById } from '../../utils/posts.js';
+import { safeArray } from '../../utils/formatter.js';
 
 const deleteModal = document.getElementById('delete-modal');
 const deleteModalTitle = document.getElementById('delete-modal-title');
@@ -137,6 +139,8 @@ $(document).on("click", "#delete-confirm", function () {
   fetchGraphQL(mutation, variables)
     .then(() => {
       removeNode(state.postsStore, uid);
+      removeRawById(state.rawPosts, node.id);
+      state.rawComments = flattenComments(state.rawPosts);
       applyFilterAndRender();
       showToast("Deleted");
     })
@@ -346,6 +350,15 @@ $(document).on("click", ".btn-like", async function () {
         isPost ? DELETE_POST_VOTE_MUTATION : DELETE_COMMENT_VOTE_MUTATION,
         { id: node.voteRecordId }
       );
+      const rawItem = findRawById(state.rawPosts, node.id);
+      if (rawItem) {
+        const key = isPost
+          ? 'Member_Post_Upvotes_Data'
+          : 'Member_Comment_Upvotes_Data';
+        rawItem[key] = safeArray(rawItem[key]).filter(
+          (u) => u.id !== node.voteRecordId
+        );
+      }
       node.upvotes--;
       node.hasUpvoted = false;
       node.voteRecordId = null;
@@ -364,6 +377,26 @@ $(document).on("click", ".btn-like", async function () {
       const newId =
         res.data.createMemberPostUpvotesPostUpvotes?.id ||
         res.data.createMemberCommentUpvotesForumCommentUpvotes?.id;
+      const rawItem = findRawById(state.rawPosts, node.id);
+      if (rawItem) {
+        const key = isPost
+          ? 'Member_Post_Upvotes_Data'
+          : 'Member_Comment_Upvotes_Data';
+        rawItem[key] = [
+          ...safeArray(rawItem[key]),
+          isPost
+            ? {
+                id: newId,
+                post_upvote_id: node.id,
+                member_post_upvote_id: GLOBAL_AUTHOR_ID,
+              }
+            : {
+                id: newId,
+                forum_comment_upvote_id: node.id,
+                member_comment_upvote_id: GLOBAL_AUTHOR_ID,
+              },
+        ];
+      }
       node.upvotes++;
       node.hasUpvoted = true;
       node.voteRecordId = newId;
@@ -390,6 +423,12 @@ $(document).on("click", ".btn-bookmark", async function () {
       await fetchGraphQL(DELETE_POST_BOOKMARK_MUTATION, {
         id: node.bookmarkRecordId,
       });
+      const rawItem = findRawById(state.rawPosts, node.id);
+      if (rawItem) {
+        rawItem.Contacts_Data = safeArray(rawItem.Contacts_Data).filter(
+          (c) => c.id !== node.bookmarkRecordId
+        );
+      }
       node.hasBookmarked = false;
       node.bookmarkRecordId = null;
       toastMsg = "Bookmark removed";
@@ -398,6 +437,17 @@ $(document).on("click", ".btn-bookmark", async function () {
       const res = await fetchGraphQL(CREATE_POST_BOOKMARK_MUTATION, {
         payload,
       });
+      const rawItem = findRawById(state.rawPosts, node.id);
+      if (rawItem) {
+        rawItem.Contacts_Data = [
+          ...safeArray(rawItem.Contacts_Data),
+          {
+            id: res.data.createOSavedPostContact.id,
+            saved_post_id: node.id,
+            contact_id: GLOBAL_AUTHOR_ID,
+          },
+        ];
+      }
       node.hasBookmarked = true;
       node.bookmarkRecordId = res.data.createOSavedPostContact.id;
       toastMsg = "Bookmarked";
