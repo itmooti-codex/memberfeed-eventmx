@@ -4,6 +4,14 @@ import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from '../config.js';
 export function buildTree(existingPosts, rawPosts, rawComments) {
   const byUid = new Map();
 
+  const collapsedMap = new Map();
+  (function gather(arr) {
+    for (const item of arr) {
+      collapsedMap.set(item.uid, item.isCollapsed);
+      gather(item.children || []);
+    }
+  })(existingPosts);
+
   function cloneState(uid) {
     if (state.collapsedState.hasOwnProperty(uid)) {
       return { isCollapsed: state.collapsedState[uid] };
@@ -12,7 +20,7 @@ export function buildTree(existingPosts, rawPosts, rawComments) {
     return { isCollapsed: true };
   }
 
-  const posts = rawPosts.map(raw => {
+  const posts = rawPosts.map((raw) => {
     const node = mapItem(raw, 0);
     Object.assign(node, cloneState(node.uid));
     state.collapsedState[node.uid] = node.isCollapsed;
@@ -20,7 +28,7 @@ export function buildTree(existingPosts, rawPosts, rawComments) {
     return node;
   });
 
-  const comments = rawComments.map(raw => {
+  const comments = rawComments.map((raw) => {
     const node = mapItem(raw, 1);
     Object.assign(node, cloneState(node.uid));
     state.collapsedState[node.uid] = node.isCollapsed;
@@ -28,7 +36,7 @@ export function buildTree(existingPosts, rawPosts, rawComments) {
     return node;
   });
 
-  comments.forEach(node => {
+  comments.forEach((node) => {
     const parentId = node.reply_to_comment_id || node.forumPostId;
     const parent = byUid.get(parentId);
     if (parent) {
@@ -82,24 +90,20 @@ export function mapItem(raw, depth = 0) {
     forumPostId: depth === 0 ? raw.id : raw.forum_post_id,
     reply_to_comment_id: raw.reply_to_comment_id || null,
     isFeatured: raw.featured_post === true,
-    fileType: raw.file_type || 'None',
+    fileType: raw.file_type || "None",
     fileContent:
-      typeof raw.file_content === 'string'
+      typeof raw.file_content === "string"
         ? raw.file_content
-        : raw.file_content?.link || '',
-    fileContentName :
-      typeof raw.file_content === 'string'
+        : raw.file_content?.link || "",
+    fileContentName:
+      typeof raw.file_content === "string"
         ? raw.file_content
-        : raw.file_content?.name || '',
+        : raw.file_content?.name || "",
 
-    fileContentComment :
-    typeof raw.file === 'string'
-      ? raw.file
-      : raw.file?.link || null,
+    fileContentComment:
+      typeof raw.file === "string" ? raw.file : raw.file?.link || null,
     fileContentCommentName:
-      typeof raw.file === 'string'
-        ? raw.file
-        : raw.file?.name || '',
+      typeof raw.file === "string" ? raw.file : raw.file?.name || "",
   };
 }
 
@@ -113,4 +117,3 @@ export function findNode(arr, uid) {
 }
 
 export const tmpl = $.templates("#tmpl-item");
-
