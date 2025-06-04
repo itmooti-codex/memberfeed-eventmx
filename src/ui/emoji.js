@@ -25,13 +25,13 @@ export function initEmojiHandlers() {
   $(document).on('click', '.emoji-toggle', function (e) {
     e.stopPropagation();
     const picker = $(this).siblings('.emoji-picker');
-    $('.emoji-picker').not(picker).hide();
-    picker.toggle();
+    $('.emoji-picker').not(picker).addClass('hidden');
+    picker.toggleClass('hidden');
   });
 
   $(document).on('click', function (e) {
     if (!$(e.target).closest('.emoji-picker, .emoji-toggle').length) {
-      $('.emoji-picker').hide();
+      $('.emoji-picker').addClass('hidden');
     }
   });
 
