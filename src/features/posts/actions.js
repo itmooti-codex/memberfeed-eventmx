@@ -231,6 +231,9 @@ $(document).on("click", "#submit-post", async function () {
       const newNode = mapItem(raw, 0);
       newNode.isCollapsed = false;
       state.postsStore.unshift(newNode);
+      raw.ForumComments = [];
+      state.rawPosts.unshift(raw);
+      state.rawComments = flattenComments(state.rawPosts);
       applyFilterAndRender();
       showToast("Post created");
     }
@@ -308,6 +311,13 @@ $(document).on("click", ".btn-submit-comment", async function () {
       newComment.isCollapsed = false;
       node.children.push(newComment);
       node.isCollapsed = false;
+      const parentRaw = findRawById(state.rawPosts, node.id);
+      if (parentRaw) {
+        parentRaw.ForumComments = parentRaw.ForumComments || [];
+        raw.ForumComments = [];
+        parentRaw.ForumComments.push(raw);
+        state.rawComments = flattenComments(state.rawPosts);
+      }
       applyFilterAndRender();
       showToast("Comment posted");
     }
