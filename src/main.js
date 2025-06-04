@@ -60,7 +60,32 @@ export function connect() {
       state.postsStore = buildTree(state.postsStore, state.rawPosts, state.rawComments);
       applyFilterAndRender();
       requestAnimationFrame(() => {
-        Plyr.setup('.js-player');
+        Plyr.setup('.js-player', {
+          controls: [
+            'play-large',
+            'restart',
+            'rewind',
+            'play',
+            'fast-forward',
+            'progress',
+            'current-time',
+            'duration',
+            'mute',
+            'volume',
+            'captions',
+            'settings',
+            'pip',
+            'airplay',
+            'download',
+            'fullscreen',
+          ],
+          settings: ['captions', 'quality', 'speed'],
+          tooltips: { controls: true, seek: true },
+          clickToPlay: true,
+          autoplay: false,
+          muted: false,
+          loop: { active: false },
+        });
       });
     } else if (msg.type === "GQL_ERROR") {
       console.error("Subscription error", msg.payload);

@@ -122,7 +122,32 @@ $(document).on("click", ".btn-delete", function () {
 
 $(document).on("click", "#submit-post", async function () {
   requestAnimationFrame(() => {
-    Plyr.setup(".js-player");
+    Plyr.setup('.js-player', {
+      controls: [
+        'play-large',
+        'restart',
+        'rewind',
+        'play',
+        'fast-forward',
+        'progress',
+        'current-time',
+        'duration',
+        'mute',
+        'volume',
+        'captions',
+        'settings',
+        'pip',
+        'airplay',
+        'download',
+        'fullscreen',
+      ],
+      settings: ['captions', 'quality', 'speed'],
+      tooltips: { controls: true, seek: true },
+      clickToPlay: true,
+      autoplay: false,
+      muted: false,
+      loop: { active: false },
+    });
   });
   const $btn = $(this);
   const formWrapper = document.querySelector(".post-form ");
@@ -349,7 +374,32 @@ $(document).on("click", ".btn-bookmark", async function () {
 
 export function applyFilterAndRender() {
   requestAnimationFrame(() => {
-    Plyr.setup(".js-player");
+    Plyr.setup('.js-player', {
+      controls: [
+        'play-large',
+        'restart',
+        'rewind',
+        'play',
+        'fast-forward',
+        'progress',
+        'current-time',
+        'duration',
+        'mute',
+        'volume',
+        'captions',
+        'settings',
+        'pip',
+        'airplay',
+        'download',
+        'fullscreen',
+      ],
+      settings: ['captions', 'quality', 'speed'],
+      tooltips: { controls: true, seek: true },
+      clickToPlay: true,
+      autoplay: false,
+      muted: false,
+      loop: { active: false },
+    });
   });
   let items = state.postsStore;
   switch (state.currentFilter) {
