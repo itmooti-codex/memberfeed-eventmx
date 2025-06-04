@@ -52,6 +52,16 @@ export function applyFilterAndRender() {
         p.content.toLowerCase().includes(q)
     );
   }
+
+  // sort posts
+  if (state.currentSort === "Latest") {
+    items = items.slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  } else if (state.currentSort === "Oldest") {
+    items = items.slice().sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  } else if (state.currentSort === "Most Popular") {
+    const score = (p) => (p.upvotes || 0) + (Array.isArray(p.children) ? p.children.length : 0);
+    items = items.slice().sort((a, b) => score(b) - score(a));
+  }
   if (items.length === 0) {
     $("#forum-root").html(
       '<div class="empty-state text-center p-4">No posts found.</div>'
@@ -75,6 +85,12 @@ $("#file-filter-btn").on("click", function (e) {
   $(".file-filter").toggleClass("open");
 });
 
+// toggle sort menu
+$("#sort-filter-btn").on("click", function (e) {
+  e.stopPropagation();
+  $(".sort-filter").toggleClass("open");
+});
+
 // pick a file type
 $(document).on("click", "#file-filter-menu li", function () {
   const type = $(this).data("type");
@@ -90,10 +106,28 @@ $(document).on("click", "#file-filter-menu li", function () {
   applyFilterAndRender();
 });
 
+// pick a sort type
+$(document).on("click", "#sort-filter-menu li", function () {
+  const sort = $(this).data("sort");
+  state.currentSort = sort;
+
+  // update button label & active menu item
+  $("#sort-filter-btn").text(sort + " ▾");
+  $("#sort-filter-menu li").removeClass("active");
+  $(this).addClass("active");
+
+  // close dropdown and re-render
+  $(".sort-filter").removeClass("open");
+  applyFilterAndRender();
+});
+
 // click outside to close
 $(document).on("click", function (e) {
   if (!$(e.target).closest(".file-filter").length) {
     $(".file-filter").removeClass("open");
+  }
+  if (!$(e.target).closest(".sort-filter").length) {
+    $(".sort-filter").removeClass("open");
   }
 });
 

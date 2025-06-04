@@ -94,6 +94,20 @@ button {
   display: block;
 }
 
+.sort-filter-menu {
+  display: none;
+}
+
+.sort-filter-menu li:hover,
+.sort-filter-menu li.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.sort-filter.open .sort-filter-menu {
+  display: block;
+}
+
 .clearIcon.hidden {
   display: none;
 }
