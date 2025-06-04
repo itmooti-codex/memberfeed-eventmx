@@ -8,8 +8,14 @@ export function initRichText() {
     if (!editor) return;
     editor.focus();
     if (cmd === 'link') {
-      const url = prompt('Enter URL');
-      if (url) document.execCommand('createLink', false, url);
+      let url = prompt('Enter URL');
+      if (url) {
+        url = url.trim();
+        if (!/^https?:\/\//i.test(url)) {
+          url = `https://${url}`;
+        }
+        document.execCommand('createLink', false, url);
+      }
     } else {
       document.execCommand(cmd, false, null);
     }

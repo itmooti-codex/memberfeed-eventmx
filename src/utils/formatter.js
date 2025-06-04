@@ -29,19 +29,25 @@ export function parseDate(timestamp) {
 
 export function formatContent(html = "") {
   if (!html) return "";
-  // convert anchor tags to open in new tab and add video embeds
+  // convert anchor tags to open in new tab
+  // if the link text is the url itself, also embed previews
   const anchorRegex = /<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/gi;
   html = html.replace(anchorRegex, (match, url, text) => {
-    const embed = buildEmbed(url);
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>` + (embed || "");
+    let normalized = url;
+    if (!/^https?:\/\//i.test(url)) {
+      normalized = `https://${url}`;
+    }
+    const embed = text.trim() === url.trim() ? buildEmbed(normalized) : "";
+    return `<a href="${normalized}" target="_blank" rel="noopener noreferrer">${text}</a>` + embed;
   });
 
-  // replace bare urls
+  // replace bare urls including those without protocol
   // avoid matching URLs inside HTML attributes or within anchor text
-  const urlRegex = /(?<!["'=]|>)(https?:\/\/[^\s<]+)/g;
-  html = html.replace(urlRegex, (url) => {
+  const urlRegex = /(?<!["'=]|>)(https?:\/\/|www\.)[^\s<]+/g;
+  html = html.replace(urlRegex, (raw) => {
+    const url = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
     const embed = buildEmbed(url);
-    const anchor = `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    const anchor = `<a href="${url}" target="_blank" rel="noopener noreferrer">${raw}</a>`;
     return anchor + (embed || "");
   });
   return html;
