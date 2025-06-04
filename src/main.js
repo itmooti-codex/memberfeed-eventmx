@@ -10,6 +10,7 @@ import {
 import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
 import { safeArray } from './utils/formatter.js';
 import { buildTree } from './ui/render.js';
+import { flattenComments } from './utils/posts.js';
 import { mergeLists } from './utils/merge.js';
 import { initPosts, applyFilterAndRender } from './features/posts/index.js';
 import { fetchGraphQL } from './api/fetch.js';
@@ -17,18 +18,6 @@ import { tribute } from './utils/tribute.js';
 import { initFilePond, resumeAudioContext } from './utils/filePond.js';
 import { initNotifications } from './features/notifications/index.js';
 import './features/uploads/handlers.js';
-
-function flattenComments(posts) {
-  const result = [];
-  function gather(list) {
-    for (const c of safeArray(list)) {
-      result.push(c);
-      if (c.ForumComments) gather(c.ForumComments);
-    }
-  }
-  posts.forEach((p) => gather(p.ForumComments));
-  return result;
-}
 
 export function connect() {
   state.socket = new WebSocket(WS_ENDPOINT, PROTOCOL);
