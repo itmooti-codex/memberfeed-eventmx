@@ -4,9 +4,18 @@ import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR } from '../config.js';
 export function buildTree(existingPosts, rawPosts, rawComments) {
   const byUid = new Map();
 
+  const collapsedMap = new Map();
+  (function gather(arr) {
+    for (const item of arr) {
+      collapsedMap.set(item.uid, item.isCollapsed);
+      gather(item.children || []);
+    }
+  })(existingPosts);
+
   function cloneState(uid) {
-    const existing = findNode(existingPosts, uid);
-    return existing ? { isCollapsed: existing.isCollapsed } : { isCollapsed: true };
+    return collapsedMap.has(uid)
+      ? { isCollapsed: collapsedMap.get(uid) }
+      : { isCollapsed: true };
   }
 
   const posts = rawPosts.map(raw => {

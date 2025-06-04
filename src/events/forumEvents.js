@@ -18,7 +18,7 @@ import {
   searchIcon,
   GLOBAL_AUTHOR_ID,
 } from '../config.js';
-import { findNode, tmpl } from '../ui/render.js';
+import { findNode, tmpl, mapItem } from '../ui/render.js';
 import {
   pendingFile,
   fileTypeCheck,
@@ -165,7 +165,14 @@ $(document).on("click", "#submit-post", async function () {
   }
 
   try {
-    await fetchGraphQL(CREATE_POST_MUTATION, { payload: finalPayload });
+    const res = await fetchGraphQL(CREATE_POST_MUTATION, { payload: finalPayload });
+    const raw = res.data?.createForumPost;
+    if (raw) {
+      const newNode = mapItem(raw, 0);
+      newNode.isCollapsed = false;
+      state.postsStore.unshift(newNode);
+      applyFilterAndRender();
+    }
     editor.html("");
     setPendingFile(null);
     setFileTypeCheck("");
@@ -233,11 +240,18 @@ $(document).on("click", ".btn-submit-comment", async function () {
   }
 
   try {
-    await fetchGraphQL(CREATE_COMMENT_MUTATION, { payload: finalPayload });
+    const res = await fetchGraphQL(CREATE_COMMENT_MUTATION, { payload: finalPayload });
+    const raw = res.data?.createForumComment;
+    if (raw) {
+      const newComment = mapItem(raw, node.depth + 1);
+      newComment.isCollapsed = false;
+      node.children.push(newComment);
+      node.isCollapsed = false;
+      applyFilterAndRender();
+    }
     setPendingFile(null);
     setFileTypeCheck("");
     $form.remove();
-    node.isCollapsed = false;
     $(`[data-uid="${uid}"]`).find(".children").addClass("visible");
   } catch (err) {
     console.error("Comment failed", err);
