@@ -11,12 +11,29 @@ export const FETCH_CONTACTS_QUERY = `
 export const CREATE_POST_MUTATION = `
   mutation createForumPost($payload: ForumPostCreateInput = null) {
     createForumPost(payload: $payload) {
+      id
+      unique_id
       author_id
+      Author {
+        display_name
+        profile_image
+      }
       file_type
       file_content
       post_copy
       post_status
       post_published_date
+      featured_post
+      Contacts_Data {
+        id
+        contact_id
+        saved_post_id
+      }
+      Member_Post_Upvotes_Data {
+        id
+        post_upvote_id
+        member_post_upvote_id
+      }
       Mentioned_Users_Data {
         mentioned_user_id
       }
@@ -27,13 +44,24 @@ export const CREATE_POST_MUTATION = `
 export const CREATE_COMMENT_MUTATION = `
   mutation createForumComment($payload: ForumCommentCreateInput = null) {
     createForumComment(payload: $payload) {
+      id
+      unique_id
       author_id
+      Author {
+        display_name
+        profile_image
+      }
       comment
       created_at
       reply_to_comment_id
       forum_post_id
       file
       file_type
+      Member_Comment_Upvotes_Data {
+        id
+        forum_comment_upvote_id
+        member_comment_upvote_id
+      }
       Comment_or_Reply_Mentions_Data {
         comment_or_reply_mention_id
       }
