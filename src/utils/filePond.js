@@ -80,6 +80,13 @@ export function initFilePond() {
       container.appendChild(mediaEl);
     });
 
+    pond.on("removefile", () => {
+      setPendingFile(null);
+      setFileTypeCheck("");
+      inputElement.value = "";
+      canvas.style.display = "none";
+    });
+
     const recorder = new MicRecorder({ bitRate: 128 });
     let isRecording = false;
     let audioContext, analyser, dataArray, source, animationId, mediaStream;
