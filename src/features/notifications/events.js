@@ -10,6 +10,7 @@ import {
   ANN_ID,
   KEEPALIVE_MS,
   MAX_BACKOFF,
+  INACTIVITY_MS,
   renderedNotificationIds
 } from '../../config.js';
 import { parseDate, timeAgo } from '../../utils/formatter.js';
@@ -17,7 +18,7 @@ import { parseDate, timeAgo } from '../../utils/formatter.js';
 export function initNotifications() {
   const bell = document.querySelector(".notificationWrapperToggler");
   const wrapper = document.querySelector(".notificationsWrapper");
-  let socket, backoff, keepAliveTimer;
+  let socket, backoff, keepAliveTimer, inactivityTimer;
 
   bell.addEventListener("click", () => {
     wrapper.classList.toggle("hidden");
@@ -135,14 +136,18 @@ export function initNotifications() {
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-      clearInterval(keepAliveTimer);
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.close();
-      }
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        clearInterval(keepAliveTimer);
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          socket.close();
+        }
+      }, INACTIVITY_MS);
     } else {
+      clearTimeout(inactivityTimer);
       if (!socket || socket.readyState === WebSocket.CLOSED) {
         connectNotifications();
-      } else {
+      } else if (!keepAliveTimer) {
         keepAliveTimer = setInterval(
           () => sendSafe({ type: "KEEP_ALIVE" }),
           KEEPALIVE_MS

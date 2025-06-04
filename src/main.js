@@ -5,6 +5,7 @@ import {
   SUB_ID,
   KEEPALIVE_MS,
   MAX_BACKOFF,
+  INACTIVITY_MS,
 } from './config.js';
 import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
 import { safeArray } from './utils/formatter.js';
@@ -75,16 +76,22 @@ export function connect() {
   });
 }
 
+let inactivityTimer;
+
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
-    clearInterval(state.keepAliveTimer);
-    if (state.socket && state.socket.readyState === WebSocket.OPEN) {
-      state.socket.close();
-    }
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+      clearInterval(state.keepAliveTimer);
+      if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+        state.socket.close();
+      }
+    }, INACTIVITY_MS);
   } else {
+    clearTimeout(inactivityTimer);
     if (!state.socket || state.socket.readyState === WebSocket.CLOSED) {
       connect();
-    } else {
+    } else if (!state.keepAliveTimer) {
       state.keepAliveTimer = setInterval(() => {
         if (state.socket.readyState === WebSocket.OPEN) {
           state.socket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
