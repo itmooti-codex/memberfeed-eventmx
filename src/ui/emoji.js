@@ -16,7 +16,12 @@ export const emojiPickerHtml = `
   </div>
 `;
 
+import { saveSelection, restoreSelection } from '../utils/caret.js';
+
 export function initEmojiHandlers() {
+  $(document).on('focus keyup mouseup', '.editor', function () {
+    saveSelection();
+  });
   $(document).on('click', '.emoji-toggle', function (e) {
     e.stopPropagation();
     const picker = $(this).siblings('.emoji-picker');
@@ -40,5 +45,7 @@ export function initEmojiHandlers() {
 
 function insertEmoji(editor, emoji) {
   editor.focus();
+  restoreSelection(editor);
   document.execCommand('insertText', false, emoji);
+  saveSelection();
 }

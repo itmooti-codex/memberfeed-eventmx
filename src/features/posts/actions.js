@@ -23,6 +23,7 @@ import {
   setFileTypeCheck,
 } from '../uploads/handlers.js';
 import { emojiPickerHtml } from '../../ui/emoji.js';
+import { moveCursorToEnd } from '../../utils/caret.js';
 import { tribute } from '../../utils/tribute.js';
 import { initFilePond } from '../../utils/filePond.js';
 import { processFileFields } from '../../utils/handleFile.js';
@@ -84,7 +85,9 @@ $(document).on("click", ".btn-comment", function (e) {
     // scroll to the newly inserted textarea so it's in view
     requestAnimationFrame(() => {
       inserted[0].scrollIntoView({ behavior: "smooth", block: "center" });
-      editorEl?.focus();
+      if (editorEl) {
+        moveCursorToEnd(editorEl);
+      }
     });
   }
 });
