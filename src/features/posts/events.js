@@ -29,6 +29,10 @@ import { tribute } from '../../utils/tribute.js';
 import { initFilePond } from '../../utils/filePond.js';
 import { processFileFields } from '../../utils/handleFile.js';
 
+const deleteModal = document.getElementById('delete-modal');
+const deleteModalTitle = document.getElementById('delete-modal-title');
+let pendingDelete = null;
+
 $(document).on("click", ".btn-comment", function (e) {
   e.stopPropagation();
   const uid = $(this).data("uid");
@@ -88,7 +92,22 @@ $(document).on("click", ".ribbon", function () {
 
 $(document).on("click", ".btn-delete", function () {
   const uid = $(this).data("uid");
-  const $item = $(this).closest(".item");
+  pendingDelete = { uid };
+  const node = findNode(state.postsStore, uid);
+  const label = node.depth === 0 ? "post" : node.depth === 1 ? "comment" : "reply";
+  deleteModalTitle.textContent = `Do you want to delete this ${label}?`;
+  deleteModal.classList.remove("hidden");
+});
+
+$(document).on("click", "#delete-cancel", function () {
+  deleteModal.classList.add("hidden");
+  pendingDelete = null;
+});
+
+$(document).on("click", "#delete-confirm", function () {
+  if (!pendingDelete) return;
+  const uid = pendingDelete.uid;
+  const $item = $(`[data-uid="${uid}"]`).closest(".item");
   $item.addClass("state-disabled");
 
   let node;
@@ -117,6 +136,10 @@ $(document).on("click", ".btn-delete", function () {
     .catch((err) => {
       console.error("Delete failed", err);
       $item.removeClass("state-disabled");
+    })
+    .finally(() => {
+      deleteModal.classList.add("hidden");
+      pendingDelete = null;
     });
 });
 
