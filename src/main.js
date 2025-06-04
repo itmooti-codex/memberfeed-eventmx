@@ -18,6 +18,7 @@ import { tribute } from './utils/tribute.js';
 import { initFilePond, resumeAudioContext } from './utils/filePond.js';
 import { initNotifications } from './features/notifications/index.js';
 import './features/uploads/handlers.js';
+import { initEmojiHandlers } from './ui/emoji.js';
 
 export function connect() {
   state.socket = new WebSocket(WS_ENDPOINT, PROTOCOL);
@@ -131,6 +132,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initFilePond();
   connect();
   initNotifications();
+  initEmojiHandlers();
 });
 
 window.addEventListener('touchstart', () => {
