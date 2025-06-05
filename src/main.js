@@ -182,8 +182,8 @@ window.addEventListener('DOMContentLoaded', () => {
   let initialized = false;
 
   function init(id) {
-    if (!initialized) {
-      if (id) setGlobalAuthorId(id);
+    if (!initialized && id) {
+      setGlobalAuthorId(id);
       loginModal?.classList.add('hidden');
       startApp();
       initialized = true;
@@ -196,7 +196,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   closeLoginBtn?.addEventListener('click', () => {
-    init();
+    loginModal?.classList.add('hidden');
   });
 });
 
