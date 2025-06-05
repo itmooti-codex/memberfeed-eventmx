@@ -27,32 +27,6 @@ export function parseDate(timestamp) {
   return new Date(timestamp);
 }
 
-export function formatContent(html = "") {
-  if (!html) return "";
-
-  html = decodeEntities(html);
-
-  html = html.replace(/<span[^>]*class=["']mention[^>]*>(.*?)<\/span>/gi, "$1");
-
-  const anchorRegex = /<a\s+[^>]*href=(['"])([^'"<>]+)\1[^>]*>(.*?)<\/a>/gi;
-  html = html.replace(anchorRegex, (match, _quote, url, text) => {
-    let normalized = url;
-    if (!/^https?:\/\//i.test(url)) normalized = `https://${url}`;
-    const embed = shouldEmbed(normalized) ? buildEmbed(normalized) : "";
-    const styledAnchor = `<a href="${normalized}" target="_blank" rel="noopener noreferrer" style="color: blue; text-decoration: underline;">${text}</a>`;
-    return styledAnchor + embed;
-  });
-
-  const urlRegex = /(^|[^"'>=])((?:https?:\/\/|www\.)[^\s<]+)/g;
-  html = html.replace(urlRegex, (match, prefix, raw) => {
-    const url = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
-    const embed = shouldEmbed(url) ? buildEmbed(url) : "";
-    const anchor = `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: blue; text-decoration: underline;">${raw}</a>`;
-    return (prefix || "") + anchor + embed;
-  });
-
-  return html;
-}
 
 function shouldEmbed(url) {
   return /(youtube\.com|youtu\.be|loom\.com|vimeo\.com)/i.test(url);

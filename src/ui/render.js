@@ -1,4 +1,4 @@
-import { safeArray, timeAgo, parseDate, formatContent } from '../utils/formatter.js';
+import { safeArray, timeAgo, parseDate } from '../utils/formatter.js';
 import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from '../config.js';
 
 $.views.helpers({
