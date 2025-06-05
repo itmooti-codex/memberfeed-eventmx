@@ -135,6 +135,32 @@ window.addEventListener('DOMContentLoaded', () => {
   initNotifications();
   initEmojiHandlers();
   initRichText();
+
+  const trigger = document.getElementById('create-post-trigger');
+  const modal = document.getElementById('create-post-modal');
+  const closeBtn = document.getElementById('close-post-modal');
+
+  if (trigger && modal) {
+    trigger.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+      modal.classList.add('show');
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('show');
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeBtn?.click();
+      }
+    });
+  }
 });
 
 window.addEventListener('touchstart', () => {

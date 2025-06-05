@@ -283,6 +283,12 @@ button {
 #file-preview-modal.show {
   display: flex;
 }
+#create-post-modal {
+  display: none;
+}
+#create-post-modal.show {
+  display: flex;
+}
 #file-preview-modal img,
 #file-preview-modal video,
 #file-preview-modal audio,
