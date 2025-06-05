@@ -106,9 +106,15 @@ export function connect() {
       console.error("Subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
       console.warn("Subscription complete");
-      // Avoid reconnect loops by not closing the socket. Some backends send
-      // GQL_COMPLETE after each mutation even though the subscription can
-      // continue. New data will still arrive on the same connection.
+      // Modern servers keep the connection open after sending GQL_COMPLETE.
+      // Avoid sending an extra GQL_START which previously caused the server
+      // to close the socket and trigger a reconnect.
+      // Close the connection gracefully so the reconnect logic can
+      // establish a fresh subscription if needed.
+      if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+        state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
+        state.socket.close();
+      }
     }
   });
   state.socket.addEventListener("error", (e) => {
