@@ -67,6 +67,7 @@ export function startNotificationSocket(renderNotification) {
       clearInterval(keepAliveTimer);
       keepAliveTimer = null;
       if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'CONNECTION_TERMINATE' }));
         socket.close();
       }
     },
