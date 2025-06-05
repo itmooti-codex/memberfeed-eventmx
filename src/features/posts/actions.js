@@ -216,6 +216,7 @@ $(document).on("click", "#delete-confirm", function () {
       state.rawComments = flattenComments(state.rawPosts);
       $(`[data-uid="${uid}"]`).closest('.item').remove();
       showToast("Deleted");
+      state.ignoreNextSocketUpdate = true;
     })
     .catch((err) => {
       console.error("Delete failed", err);
@@ -314,6 +315,7 @@ $(document).on("click", "#submit-post", async function () {
       state.rawPosts.unshift(raw);
       state.rawComments = flattenComments(state.rawPosts);
       applyFilterAndRender();
+      state.ignoreNextSocketUpdate = true;
       showToast("Post created");
       $("#create-post-modal").addClass("hidden").removeClass("show");
     }
@@ -401,10 +403,11 @@ $(document).on("click", ".btn-submit-comment", async function () {
       if (parentRaw) {
         parentRaw.ForumComments = parentRaw.ForumComments || [];
         raw.ForumComments = [];
-        parentRaw.ForumComments.push(raw);
-        state.rawComments = flattenComments(state.rawPosts);
+      parentRaw.ForumComments.push(raw);
+      state.rawComments = flattenComments(state.rawPosts);
       }
       applyFilterAndRender();
+      state.ignoreNextSocketUpdate = true;
       showToast("Comment posted");
     }
     setPendingFile(null);
