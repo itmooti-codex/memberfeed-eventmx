@@ -1,6 +1,13 @@
 import { state, searchInput, clearIcon, searchIcon, GLOBAL_AUTHOR_ID } from "../../config.js";
 import { tmpl } from "../../ui/render.js";
 export function applyFilterAndRender() {
+  const skeleton = document.getElementById('skeleton-loader');
+  if (!state.initialPostsLoaded) {
+    skeleton?.classList.remove('hidden');
+    return;
+  } else {
+    skeleton?.classList.add('hidden');
+  }
   requestAnimationFrame(() => {
     Plyr.setup('.js-player', {
       controls: [

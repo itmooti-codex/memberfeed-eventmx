@@ -49,6 +49,7 @@ export const state = {
   currentSearchTerm: "",
   debounceTimer: null,
   currentUser: null,
+  initialPostsLoaded: false,
 };
 export const searchInput = document.getElementById("searchPost");
 export const clearIcon = document.querySelector(".clearIcon");
