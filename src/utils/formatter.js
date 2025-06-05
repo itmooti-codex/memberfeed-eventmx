@@ -30,6 +30,8 @@ export function parseDate(timestamp) {
 export function formatContent(html = "") {
   if (!html) return "";
   html = decodeEntities(html);
+  // remove mention wrappers
+  html = html.replace(/<span[^>]*class=["']mention[^>]*>(.*?)<\/span>/gi, "$1");
   // convert anchor tags to open in new tab
   // if the link text is the url itself, also embed previews
   const anchorRegex = /<a\s+[^>]*href=(['"])([^'"<>]+)\1[^>]*>(.*?)<\/a>/gi;
@@ -80,8 +82,16 @@ function buildEmbed(url) {
 }
 
 function decodeEntities(str) {
-  const textarea = document.createElement("textarea");
-  textarea.innerHTML = str;
-  return textarea.value;
+  if (typeof document !== "undefined" && document.createElement) {
+    const div = document.createElement("div");
+    div.innerHTML = str;
+    return div.textContent || div.innerText || "";
+  }
+  return str
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
 }
 
