@@ -15,7 +15,9 @@ $.views.helpers({
     } else if (vi) {
       return `<iframe class="!w-full" width="560" height="315" src="https://player.vimeo.com/video/${vi[1]}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe>`;
     } else if (loom) {
-      return `<iframe class="!w-full"  width="560" height="315" src="https://www.loom.com/embed/${loom[1]}" frameborder="0" allowfullscreen></iframe>`;
+      return `<iframe class="!w-full" width="560" height="315" src="https://www.loom.com/embed/${loom[1]}" frameborder="0" allowfullscreen></iframe>`;
+    } else if (link) {
+      return `<a href="${link}" target="_blank" style="color: blue; text-decoration: underline;">${link}</a>`;
     }
 
     const container = document.createElement("div");
@@ -31,11 +33,11 @@ $.views.helpers({
       let iframeHTML = null;
 
       if (ytMatch) {
-        iframeHTML = `<iframe class="!w-full" width="315" height="315" src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
+        iframeHTML = `<iframe class="!w-full" width="300" height="315" src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
       } else if (viMatch) {
-        iframeHTML = `<iframe class="!w-full" width="315" height="315" src="https://player.vimeo.com/video/${viMatch[1]}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe>`;
+        iframeHTML = `<iframe class="!w-full" width="300" height="315" src="https://player.vimeo.com/video/${viMatch[1]}" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe>`;
       } else if (loomMatch) {
-        iframeHTML = `<iframe class="!w-full" width="315" height="315" src="https://www.loom.com/embed/${loomMatch[1]}" frameborder="0" allowfullscreen></iframe>`;
+        iframeHTML = `<iframe class="!w-full" width="300" height="315" src="https://www.loom.com/embed/${loomMatch[1]}" frameborder="0" allowfullscreen></iframe>`;
       }
 
       if (iframeHTML) {
@@ -54,7 +56,7 @@ $.views.helpers({
         tooltipWrapper.appendChild(tooltip);
       } else {
         a.setAttribute("target", "_blank");
-        a.style.color = "red";
+        a.style.color = "blue";
         a.style.textDecoration = "underline";
       }
     });
