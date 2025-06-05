@@ -27,6 +27,7 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsrender/jsrender.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
 
@@ -35,16 +36,12 @@
   <div id="topOfForum"></div>
   <div onclick="document.getElementById('topOfForum').scrollIntoView({ behavior: 'smooth' })"
     class="p-3 bg-[var(--primary)] flex items-center justify-center cursor-pointer fixed bottom-[1rem] right-[1rem] max-[768px]:hidden z-[99]">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M20.4228 10.9233C20.3455 11.0008 20.2535 11.0622 20.1524 11.1042C20.0512 11.1461 19.9428 11.1677 19.8333 11.1677C19.7238 11.1677 19.6153 11.1461 19.5142 11.1042C19.413 11.0622 19.3211 11.0008 19.2437 10.9233L13.1668 4.84535V21.1667C13.1668 21.3877 13.079 21.5997 12.9228 21.7559C12.7665 21.9122 12.5545 22 12.3335 22C12.1125 22 11.9006 21.9122 11.7443 21.7559C11.588 21.5997 11.5002 21.3877 11.5002 21.1667V4.84535L5.42333 10.9233C5.26697 11.0796 5.0549 11.1675 4.83377 11.1675C4.61264 11.1675 4.40057 11.0796 4.24421 10.9233C4.08784 10.7669 4 10.5548 4 10.3337C4 10.1126 4.08784 9.90051 4.24421 9.74415L11.744 2.2444C11.8214 2.16692 11.9133 2.10546 12.0144 2.06352C12.1156 2.02158 12.224 2 12.3335 2C12.443 2 12.5515 2.02158 12.6526 2.06352C12.7538 2.10546 12.8457 2.16692 12.9231 2.2444L20.4228 9.74415C20.5003 9.82154 20.5618 9.91345 20.6037 10.0146C20.6457 10.1158 20.6672 10.2242 20.6672 10.3337C20.6672 10.4432 20.6457 10.5517 20.6037 10.6528C20.5618 10.754 20.5003 10.8459 20.4228 10.9233Z"
-        fill="white"></path>
-    </svg>
+    <i class="fa-solid fa-arrow-up text-white"></i>
   </div>
 
   <div class="hidden px-4 py-6 bg-[#d1d1d1] w-full mb-4 relative">
     <div class="bell-wrapper relative ml-auto w-max">
-      <div class="bell text-sm cursor-pointer notificationWrapperToggler">🔔</div>
+      <div class="bell text-sm cursor-pointer notificationWrapperToggler"><i class="fa-solid fa-bell"></i></div>
     </div>
     <div
       class="notificationsWrapper hidden flex-col p-4 absolute top-[4rem] right-0 bg-white shadow-lg rounder w-full max-w-[400px] h-[400px] overflow-y-scroll z-[9]">
@@ -67,14 +64,14 @@
     <div class="bg-white p-4 rounded shadow-lg w-[90%] max-w-lg relative">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-bold">Create a Post</h2>
-        <button id="close-post-modal">✕</button>
+        <button id="close-post-modal"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div id="post-creation-form" class="post-form">
         <div class="toolbar">
           <button data-cmd="bold"><b>B</b></button>
           <button data-cmd="italic"><i>I</i></button>
           <button data-cmd="underline"><u>U</u></button>
-          <button data-cmd="link">🔗</button>
+          <button data-cmd="link"><i class="fa-solid fa-link"></i></button>
         </div>
         <div id="post-editor" class="editor min-h-[80px] resize-y p-2 rounded" contenteditable="true"
           data-placeholder="Write a post..."></div>
@@ -95,7 +92,7 @@
                 <span class="cursor-pointer px-1">🥳</span>
               </div>
             </div>
-            <button id="recordBtn" class="recordBtn">🎙 Start Recording</button>
+            <button id="recordBtn" class="recordBtn"><i class="fa-solid fa-microphone"></i> Start Recording</button>
           </div>
           <input type="file" id="file-input" class="file-input" style="display: none;"
             accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
@@ -110,10 +107,10 @@
     <div
       class="flex items-center justify-between w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
       <div class="flex items-center gap-4 ">
-        <button class="filter-btn active" data-filter="Recent">🕒</button>
-        <button class="filter-btn" data-filter="Featured">⭐</button>
-        <button class="filter-btn" data-filter="My Posts">👤</button>
-        <button class="filter-btn" data-filter="Saved Posts">🔖</button>
+        <button class="filter-btn active" data-filter="Recent"><i class="fa-solid fa-clock"></i></button>
+        <button class="filter-btn" data-filter="Featured"><i class="fa-solid fa-star"></i></button>
+        <button class="filter-btn" data-filter="My Posts"><i class="fa-solid fa-user"></i></button>
+        <button class="filter-btn" data-filter="Saved Posts"><i class="fa-solid fa-bookmark"></i></button>
       </div>
 
       <div class="flex items-center gap-4">
@@ -143,8 +140,8 @@
     <div class="search-wrapper w-full my-4 relative">
       <input type="text" id="searchPost" class="py-2 px-4 rounded text-sm" placeholder="Search by author or text…"
         autocomplete="off" />
-      <span class="clearIcon hidden absolute top-[50%] right-[8px] cursor-pointer text-sm translate-y-[-50%]">✕</span>
-      <span class="searchIcon absolute top-[50%] right-[8px] cursor-pointer text-sm translate-y-[-50%]">🔍</span>
+      <span class="clearIcon hidden absolute top-[50%] right-[8px] cursor-pointer text-sm translate-y-[-50%]"><i class="fa-solid fa-xmark"></i></span>
+      <span class="searchIcon absolute top-[50%] right-[8px] cursor-pointer text-sm translate-y-[-50%]"><i class="fa-solid fa-search"></i></span>
     </div>
   </div>
 
@@ -194,7 +191,7 @@
         data-uid="{{:uid}}" 
         data-depth="{{:depth}}">
         {{if canDelete}}
-          <button class="btn-delete" data-uid="{{:uid}}">🗑</button>
+          <button class="btn-delete" data-uid="{{:uid}}"><i class="fa-solid fa-trash"></i></button>
         {{/if}}
         <div class="author flex items-center mb-2">
           <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]"
@@ -256,11 +253,11 @@
         <div class="actions">
           <div class = "flex items-center justify-between">
             <div class = "flex items-center gap-4">
-              <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:uid}}">👍 <span class="ml-1">{{:upvotes}}</span></button>
-              <button class="btn-comment flex items-center" data-uid="{{:uid}}">💬</button>
+              <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-thumbs-up"></i> <span class="ml-1">{{:upvotes}}</span></button>
+              <button class="btn-comment flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-comment"></i></button>
             </div>
             {{if depth === 0}}
-              <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:uid}}">🔖</button>
+              <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-bookmark"></i></button>
             {{/if}}
           </div>
         </div>
@@ -296,16 +293,10 @@
       <div id="preview-container" class="max-h-[80vh] overflow-auto"></div>
     </div>
     <a id="download-preview" href="#" download class="absolute top-2 left-2 cursor-pointer">
-      <img
-        src="https://files.ontraport.com/media/ff0b848149c5404db647b4457eef571d.phpg4wpao?Expires=4902632030&Signature=Q8vECWWJ6o1mfs-NAwF7pb4NyjHcV2KIOU5TUy8XAiBIb5OHAzHa3t~RU5iqnYH9dIwi7AZoRwJlrl09aLJEmChFz7p~MvbYoTkxDlhWdY2kUtZFasEz3vPQaKGKQG3ghKpUeL3d9JTtT8mmudawUksD-Lp-eLk94jDvTtQPx0e6jb9xkvjnWns2Ux0AdiC60YuKR6J8fUGJfOarN6b8-lthzjjEfliYL~uto9d5ZyrDOi1c7aT0gLbtPRN8ROt3z6hMO0MndWlEtR252zVVEroRBeTymxLmxVzgOFB1bN6gqzUUJznOKuUb75tmybzYpz3B6yUhhF3UkaGa0ZDxVQ__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
-        alt="download">
+      <i class="fa-solid fa-download text-white text-2xl"></i>
     </a>
     <div id="close-file-preview" class="absolute top-2 cursor-pointer right-2 !p-0">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M20 2.5C10.25 2.5 2.5 10.25 2.5 20C2.5 29.75 10.25 37.5 20 37.5C29.75 37.5 37.5 29.75 37.5 20C37.5 10.25 29.75 2.5 20 2.5ZM26.75 28.75L20 22L13.25 28.75L11.25 26.75L18 20L11.25 13.25L13.25 11.25L20 18L26.75 11.25L28.75 13.25L22 20L28.75 26.75L26.75 28.75Z"
-          fill="white" />
-      </svg>
+      <i class="fa-solid fa-xmark text-white text-2xl"></i>
     </div>
   </div>
 </body>

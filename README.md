@@ -24,6 +24,7 @@ This project is licensed under the [MIT License](LICENSE).
 
    By default the server runs on port 8080. Adjust the command if you want a different port.
 Static files such as `index.html` and styles are now located in the `public/` folder. Application source code resides in `src/`.
+The UI uses [Font Awesome Free](https://fontawesome.com/) icons via a CDN link included in `public/index.html`.
 
 2. Open your browser at `http://localhost:8080/public/index.html` (or the port you chose) to use the application.
 
