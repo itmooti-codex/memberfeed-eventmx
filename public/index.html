@@ -56,39 +56,48 @@
     </div>
   </div>
 
-  <div id="post-creation-form" class="post-form bg-white shadow-lg p-4 rounded w-full">
+  <div id="create-post-trigger" class="bg-white shadow-lg rounded w-full p-4 flex items-center cursor-pointer mb-4">
+    <span class="text-gray-500">What's on your mind?</span>
+    <img src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA" alt="avatar" class="w-8 h-8 rounded-full ml-auto">
+  </div>
 
-    <div class="toolbar">
-      <button data-cmd="bold"><b>B</b></button>
-      <button data-cmd="italic"><i>I</i></button>
-      <button data-cmd="underline"><u>U</u></button>
-      <button data-cmd="link">🔗</button>
-    </div>
-    <div id="post-editor" class="editor min-h-[80px] resize-y p-2 rounded" contenteditable="true"
-      data-placeholder="Write a post..."></div>
-    <div class="upload-section">
-      <div class="flex item-center gap-4 my-4">
-        <div class="emoji-wrapper relative">
-          <button type="button" class="emoji-toggle">😊</button>
-          <div class="emoji-picker hidden absolute bg-white border rounded shadow-md p-1 mt-1 z-10">
-            <span class="cursor-pointer px-1">😀</span>
-            <span class="cursor-pointer px-1">😂</span>
-            <span class="cursor-pointer px-1">😍</span>
-            <span class="cursor-pointer px-1">😎</span>
-            <span class="cursor-pointer px-1">🤔</span>
-            <span class="cursor-pointer px-1">😢</span>
-            <span class="cursor-pointer px-1">👍</span>
-            <span class="cursor-pointer px-1">🎉</span>
-            <span class="cursor-pointer px-1">🚀</span>
-            <span class="cursor-pointer px-1">🥳</span>
-          </div>
+  <div id="create-post-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white p-4 rounded shadow-lg w-[90%] max-w-lg relative">
+      <button id="close-post-modal" class="absolute top-2 right-2">✕</button>
+      <div id="post-creation-form" class="post-form">
+        <div class="toolbar">
+          <button data-cmd="bold"><b>B</b></button>
+          <button data-cmd="italic"><i>I</i></button>
+          <button data-cmd="underline"><u>U</u></button>
+          <button data-cmd="link">🔗</button>
         </div>
-        <button id="recordBtn" class="recordBtn">🎙 Start Recording</button>
-        <button id="submit-post">Post</button>
+        <div id="post-editor" class="editor min-h-[80px] resize-y p-2 rounded" contenteditable="true"
+          data-placeholder="Write a post..."></div>
+        <div class="upload-section">
+          <div class="flex item-center gap-4 my-4">
+            <div class="emoji-wrapper relative">
+              <button type="button" class="emoji-toggle">😊</button>
+              <div class="emoji-picker hidden absolute bg-white border rounded shadow-md p-1 mt-1 z-10">
+                <span class="cursor-pointer px-1">😀</span>
+                <span class="cursor-pointer px-1">😂</span>
+                <span class="cursor-pointer px-1">😍</span>
+                <span class="cursor-pointer px-1">😎</span>
+                <span class="cursor-pointer px-1">🤔</span>
+                <span class="cursor-pointer px-1">😢</span>
+                <span class="cursor-pointer px-1">👍</span>
+                <span class="cursor-pointer px-1">🎉</span>
+                <span class="cursor-pointer px-1">🚀</span>
+                <span class="cursor-pointer px-1">🥳</span>
+              </div>
+            </div>
+            <button id="recordBtn" class="recordBtn">🎙 Start Recording</button>
+            <button id="submit-post">Post</button>
+          </div>
+          <input type="file" id="file-input" class="file-input" style="display: none;"
+            accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+          <canvas class="canvasWaveform waveform w-full" id="waveform" width="450" height="100"></canvas>
+        </div>
       </div>
-      <input type="file" id="file-input" class="file-input" style="display: none;"
-        accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
-      <canvas class="canvasWaveform waveform w-full" id="waveform" width="450" height="100"></canvas>
     </div>
   </div>
 
