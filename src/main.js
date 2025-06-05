@@ -99,6 +99,18 @@ export function connect() {
       console.error("Subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
       console.warn("Subscription complete");
+      // Some backends send GQL_COMPLETE after each mutation which would end the
+      // subscription without closing the socket. Re-subscribe using the same
+      // connection instead of waiting for a reconnect.
+      if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+        state.socket.send(
+          JSON.stringify({
+            id: SUB_ID,
+            type: "GQL_START",
+            payload: { query: GQL_QUERY },
+          })
+        );
+      }
     }
   });
   state.socket.addEventListener("error", (e) => {
