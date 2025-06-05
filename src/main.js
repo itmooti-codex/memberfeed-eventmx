@@ -53,6 +53,7 @@ export function connect() {
       state.rawPosts = mergeLists(state.rawPosts, incoming);
       state.rawComments = flattenComments(state.rawPosts);
       state.postsStore = buildTree(state.postsStore, state.rawPosts, state.rawComments);
+      state.initialPostsLoaded = true;
       applyFilterAndRender();
       requestAnimationFrame(() => {
         Plyr.setup('.js-player', {
