@@ -6,6 +6,19 @@ export function startNotificationSocket(renderNotification) {
   let backoff = 1000;
   let keepAliveTimer;
 
+  function startKeepAlive() {
+    if (!keepAliveTimer) {
+      keepAliveTimer = setInterval(
+        () => sendSafe({ type: 'KEEP_ALIVE' }),
+        KEEPALIVE_MS
+      );
+    }
+  }
+
+  function isOpen() {
+    return socket && socket.readyState === WebSocket.OPEN;
+  }
+
   function sendSafe(payload) {
     const msg = JSON.stringify(payload);
     if (socket.readyState === WebSocket.OPEN) {
@@ -20,7 +33,7 @@ export function startNotificationSocket(renderNotification) {
     socket.addEventListener('open', () => {
       backoff = 1000;
       sendSafe({ type: 'CONNECTION_INIT' });
-      keepAliveTimer = setInterval(() => sendSafe({ type: 'KEEP_ALIVE' }), KEEPALIVE_MS);
+      startKeepAlive();
     });
     socket.addEventListener('message', ({ data }) => {
       let msg;
@@ -41,6 +54,7 @@ export function startNotificationSocket(renderNotification) {
     });
     socket.addEventListener('close', () => {
       clearInterval(keepAliveTimer);
+      keepAliveTimer = null;
       setTimeout(connect, backoff);
       backoff = Math.min(backoff * 2, MAX_BACKOFF);
     });
@@ -51,13 +65,19 @@ export function startNotificationSocket(renderNotification) {
   return {
     close() {
       clearInterval(keepAliveTimer);
+      keepAliveTimer = null;
       if (socket && socket.readyState === WebSocket.OPEN) {
         socket.close();
       }
     },
     reconnect() {
-      connect();
+      if (!socket || socket.readyState === WebSocket.CLOSED) {
+        connect();
+      } else if (!keepAliveTimer) {
+        startKeepAlive();
+      }
     },
+    isOpen,
     sendSafe,
   };
 }
