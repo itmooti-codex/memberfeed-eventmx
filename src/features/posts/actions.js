@@ -32,6 +32,7 @@ import { applyFilterAndRender } from "./filters.js";
 import { showToast } from '../../ui/toast.js';
 import { removeRawById, flattenComments, findRawById } from '../../utils/posts.js';
 import { safeArray } from '../../utils/formatter.js';
+import { setupPlyr } from '../../utils/plyr.js';
 
 const deleteModal = document.getElementById('delete-modal');
 const deleteModalTitle = document.getElementById('delete-modal-title');
@@ -241,34 +242,7 @@ $(document).on("click", "#delete-confirm", function () {
 });
 
 $(document).on("click", "#submit-post", async function () {
-  requestAnimationFrame(() => {
-    Plyr.setup('.js-player', {
-      controls: [
-        'play-large',
-        'restart',
-        'rewind',
-        'play',
-        'fast-forward',
-        'progress',
-        'current-time',
-        'duration',
-        'mute',
-        'volume',
-        'captions',
-        'settings',
-        'pip',
-        'airplay',
-        'download',
-        'fullscreen',
-      ],
-      settings: ['captions', 'quality', 'speed'],
-      tooltips: { controls: true, seek: true },
-      clickToPlay: true,
-      autoplay: false,
-      muted: false,
-      loop: { active: false },
-    });
-  });
+  requestAnimationFrame(setupPlyr);
   const $btn = $(this);
   const formWrapper = document.querySelector(".post-form ");
   const editor = $("#post-editor");
