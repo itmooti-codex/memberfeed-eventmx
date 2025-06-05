@@ -14,6 +14,7 @@ import {
 import {
   state,
   GLOBAL_AUTHOR_ID,
+  DEFAULT_AVATAR,
 } from '../../config.js';
 import { findNode, tmpl, mapItem } from '../../ui/render.js';
 import {
@@ -239,6 +240,12 @@ $(document).on("click", "#submit-post", async function () {
     const res = await fetchGraphQL(CREATE_POST_MUTATION, { payload: finalPayload });
     const raw = res.data?.createForumPost;
     if (raw) {
+      if (!raw.Author) {
+        raw.Author = {
+          display_name: state.currentUser?.display_name || 'Anonymous',
+          profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
+        };
+      }
       const newNode = mapItem(raw, 0);
       newNode.isCollapsed = false;
       state.postsStore.unshift(newNode);
@@ -247,6 +254,7 @@ $(document).on("click", "#submit-post", async function () {
       state.rawComments = flattenComments(state.rawPosts);
       applyFilterAndRender();
       showToast("Post created");
+      $("#create-post-modal").addClass("hidden").removeClass("show");
     }
     editor.html("");
     setPendingFile(null);
@@ -318,6 +326,12 @@ $(document).on("click", ".btn-submit-comment", async function () {
     const res = await fetchGraphQL(CREATE_COMMENT_MUTATION, { payload: finalPayload });
     const raw = res.data?.createForumComment;
     if (raw) {
+      if (!raw.Author) {
+        raw.Author = {
+          display_name: state.currentUser?.display_name || 'Anonymous',
+          profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
+        };
+      }
       const newComment = mapItem(raw, node.depth + 1);
       newComment.isCollapsed = false;
       node.children.push(newComment);

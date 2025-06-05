@@ -6,6 +6,8 @@ import {
   KEEPALIVE_MS,
   MAX_BACKOFF,
   INACTIVITY_MS,
+  GLOBAL_AUTHOR_ID,
+  DEFAULT_AVATAR,
 } from './config.js';
 import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
 import { safeArray } from './utils/formatter.js';
@@ -128,6 +130,13 @@ window.addEventListener('DOMContentLoaded', () => {
       value: c.Contact_ID,
       image: c.Profile_Image,
     }));
+    const current = contacts.find((c) => c.Contact_ID === GLOBAL_AUTHOR_ID);
+    if (current) {
+      state.currentUser = {
+        display_name: current.Display_Name || 'Anonymous',
+        profile_image: current.Profile_Image || DEFAULT_AVATAR,
+      };
+    }
   });
   initPosts();
   initFilePond();
