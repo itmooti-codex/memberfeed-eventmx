@@ -23,6 +23,7 @@ import { initNotifications } from './features/notifications/index.js';
 import './features/uploads/handlers.js';
 import { initEmojiHandlers } from './ui/emoji.js';
 import { initRichText } from './utils/richText.js';
+import { setupPlyr } from './utils/plyr.js';
 
 function terminateAndClose() {
   if (state.socket && state.socket.readyState === WebSocket.OPEN) {
@@ -74,34 +75,7 @@ export function connect() {
       } else {
         applyFilterAndRender();
       }
-      requestAnimationFrame(() => {
-        Plyr.setup('.js-player', {
-          controls: [
-            'play-large',
-            'restart',
-            'rewind',
-            'play',
-            'fast-forward',
-            'progress',
-            'current-time',
-            'duration',
-            'mute',
-            'volume',
-            'captions',
-            'settings',
-            'pip',
-            'airplay',
-            'download',
-            'fullscreen',
-          ],
-          settings: ['captions', 'quality', 'speed'],
-          tooltips: { controls: true, seek: true },
-          clickToPlay: true,
-          autoplay: false,
-          muted: false,
-          loop: { active: false },
-        });
-      });
+      requestAnimationFrame(setupPlyr);
     } else if (msg.type === "GQL_ERROR") {
       console.error("Subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {

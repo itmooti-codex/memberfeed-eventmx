@@ -1,5 +1,6 @@
 import { state, searchInput, clearIcon, searchIcon, GLOBAL_AUTHOR_ID } from "../../config.js";
 import { tmpl } from "../../ui/render.js";
+import { setupPlyr } from "../../utils/plyr.js";
 export function applyFilterAndRender() {
   const skeleton = document.getElementById('skeleton-loader');
   if (!state.initialPostsLoaded) {
@@ -8,34 +9,7 @@ export function applyFilterAndRender() {
   } else {
     skeleton?.classList.add('hidden');
   }
-  requestAnimationFrame(() => {
-    Plyr.setup('.js-player', {
-      controls: [
-        'play-large',
-        'restart',
-        'rewind',
-        'play',
-        'fast-forward',
-        'progress',
-        'current-time',
-        'duration',
-        'mute',
-        'volume',
-        'captions',
-        'settings',
-        'pip',
-        'airplay',
-        'download',
-        'fullscreen',
-      ],
-      settings: ['captions', 'quality', 'speed'],
-      tooltips: { controls: true, seek: true },
-      clickToPlay: true,
-      autoplay: false,
-      muted: false,
-      loop: { active: false },
-    });
-  });
+  requestAnimationFrame(setupPlyr);
   let items = state.postsStore;
   switch (state.currentFilter) {
     case "Featured":
@@ -75,11 +49,11 @@ export function applyFilterAndRender() {
       '<div class="empty-state text-center p-4">No posts found.</div>'
     );
   } else {
-    // Preserve existing iframe elements to avoid reloads
+    // Preserve existing media elements to avoid reloads
     const frames = {};
     $container.find('.item').each(function () {
       const uid = $(this).data('uid');
-      const f = $(this).find('iframe');
+      const f = $(this).find('iframe, video.js-player, audio.js-player');
       if (f.length) {
         frames[uid] = f.toArray().map((el) => $(el).detach()[0]);
       }
@@ -90,7 +64,7 @@ export function applyFilterAndRender() {
     for (const uid in frames) {
       const $item = $container.find(`[data-uid="${uid}"]`);
       if ($item.length) {
-        const newFrames = $item.find('iframe');
+        const newFrames = $item.find('iframe, video.js-player, audio.js-player');
         newFrames.each(function (idx) {
           const oldFrame = frames[uid][idx];
           if (oldFrame) {
