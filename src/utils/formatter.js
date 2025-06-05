@@ -44,12 +44,13 @@ export function formatContent(html = "") {
 
   // replace bare urls including those without protocol
   // avoid matching URLs inside HTML attributes or within anchor text
-  const urlRegex = /(?<!["'=]|>)(https?:\/\/|www\.)[^\s<]+/g;
-  html = html.replace(urlRegex, (raw) => {
+  // capture any leading character so we can reinsert it during replacement
+  const urlRegex = /(^|[^"'>=])((?:https?:\/\/|www\.)[^\s<]+)/g;
+  html = html.replace(urlRegex, (match, prefix, raw) => {
     const url = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
     const embed = buildEmbed(url);
     const anchor = `<a href="${url}" target="_blank" rel="noopener noreferrer">${raw}</a>`;
-    return anchor + (embed || "");
+    return (prefix || "") + anchor + (embed || "");
   });
   return html;
 }
