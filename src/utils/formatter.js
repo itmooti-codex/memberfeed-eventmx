@@ -32,8 +32,8 @@ export function formatContent(html = "") {
   html = decodeEntities(html);
   // convert anchor tags to open in new tab
   // if the link text is the url itself, also embed previews
-  const anchorRegex = /<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/gi;
-  html = html.replace(anchorRegex, (match, url, text) => {
+  const anchorRegex = /<a\s+[^>]*href=(['"])([^'"<>]+)\1[^>]*>(.*?)<\/a>/gi;
+  html = html.replace(anchorRegex, (match, _quote, url, text) => {
     let normalized = url;
     if (!/^https?:\/\//i.test(url)) {
       normalized = `https://${url}`;
