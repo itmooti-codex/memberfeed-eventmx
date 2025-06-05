@@ -214,7 +214,7 @@ $(document).on("click", "#delete-confirm", function () {
       removeNode(state.postsStore, uid);
       removeRawById(state.rawPosts, node.id);
       state.rawComments = flattenComments(state.rawPosts);
-      applyFilterAndRender();
+      $(`[data-uid="${uid}"]`).closest('.item').remove();
       showToast("Deleted");
     })
     .catch((err) => {
@@ -503,7 +503,9 @@ $(document).on("click", ".btn-like", async function () {
   } finally {
     $(this).removeClass("state-disabled");
   }
-  applyFilterAndRender();
+  const $item = $(`[data-uid="${uid}"]`);
+  $item.find('.btn-like span').text(node.upvotes);
+  $item.find('.btn-like').toggleClass('liked', node.hasUpvoted);
   if (toastMsg) showToast(toastMsg);
 });
 
@@ -553,8 +555,8 @@ $(document).on("click", ".btn-bookmark", async function () {
   } finally {
     $(this).removeClass("state-disabled");
   }
-
-  applyFilterAndRender();
+  const $item = $(`[data-uid="${uid}"]`);
+  $item.find('.btn-bookmark').toggleClass('bookmarked', node.hasBookmarked);
   if (toastMsg) showToast(toastMsg);
 });
 }
