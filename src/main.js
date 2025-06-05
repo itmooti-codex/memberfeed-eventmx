@@ -25,6 +25,12 @@ import { initEmojiHandlers } from './ui/emoji.js';
 import { initRichText } from './utils/richText.js';
 
 export function connect() {
+  if (state.isConnecting || (state.socket &&
+      (state.socket.readyState === WebSocket.OPEN ||
+       state.socket.readyState === WebSocket.CONNECTING))) {
+    return;
+  }
+  state.isConnecting = true;
   state.socket = new WebSocket(WS_ENDPOINT, PROTOCOL);
   state.socket.addEventListener("open", () => {
     state.backoff = 1000;
@@ -32,6 +38,7 @@ export function connect() {
     state.keepAliveTimer = setInterval(() => {
       state.socket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
     }, KEEPALIVE_MS);
+    state.isConnecting = false;
   });
   state.socket.addEventListener("message", ({ data }) => {
     let msg;
@@ -94,9 +101,15 @@ export function connect() {
       console.warn("Subscription complete");
     }
   });
-  state.socket.addEventListener("error", (e) => console.error("WebSocket error", e));
+  state.socket.addEventListener("error", (e) => {
+    console.error("WebSocket error", e);
+    state.isConnecting = false;
+  });
   state.socket.addEventListener("close", () => {
     clearInterval(state.keepAliveTimer);
+    state.keepAliveTimer = null;
+    state.socket = null;
+    state.isConnecting = false;
     setTimeout(connect, state.backoff);
     state.backoff = Math.min(state.backoff * 2, MAX_BACKOFF);
   });
