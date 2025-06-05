@@ -33,8 +33,8 @@
 <body class="max-w-[700px] bg-[#f1f1f1] flex flex-col items-center justify-center m-auto p-6 max-[768px]:p-2">
   <div id="topOfForum"></div>
   <div onclick="document.getElementById('topOfForum').scrollIntoView({ behavior: 'smooth' })"
-    class="p-3 bg-[var(--primary)] flex items-center justify-center cursor-pointer fixed bottom-[1rem] right-[1rem] max-[768px]:hidden z-[99]"> <svg
-      width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    class="p-3 bg-[var(--primary)] flex items-center justify-center cursor-pointer fixed bottom-[1rem] right-[1rem] max-[768px]:hidden z-[99]">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M20.4228 10.9233C20.3455 11.0008 20.2535 11.0622 20.1524 11.1042C20.0512 11.1461 19.9428 11.1677 19.8333 11.1677C19.7238 11.1677 19.6153 11.1461 19.5142 11.1042C19.413 11.0622 19.3211 11.0008 19.2437 10.9233L13.1668 4.84535V21.1667C13.1668 21.3877 13.079 21.5997 12.9228 21.7559C12.7665 21.9122 12.5545 22 12.3335 22C12.1125 22 11.9006 21.9122 11.7443 21.7559C11.588 21.5997 11.5002 21.3877 11.5002 21.1667V4.84535L5.42333 10.9233C5.26697 11.0796 5.0549 11.1675 4.83377 11.1675C4.61264 11.1675 4.40057 11.0796 4.24421 10.9233C4.08784 10.7669 4 10.5548 4 10.3337C4 10.1126 4.08784 9.90051 4.24421 9.74415L11.744 2.2444C11.8214 2.16692 11.9133 2.10546 12.0144 2.06352C12.1156 2.02158 12.224 2 12.3335 2C12.443 2 12.5515 2.02158 12.6526 2.06352C12.7538 2.10546 12.8457 2.16692 12.9231 2.2444L20.4228 9.74415C20.5003 9.82154 20.5618 9.91345 20.6037 10.0146C20.6457 10.1158 20.6672 10.2242 20.6672 10.3337C20.6672 10.4432 20.6457 10.5517 20.6037 10.6528C20.5618 10.754 20.5003 10.8459 20.4228 10.9233Z"
         fill="white"></path>
@@ -58,12 +58,17 @@
 
   <div id="create-post-trigger" class="bg-white shadow-lg rounded w-full p-4 flex items-center cursor-pointer mb-4">
     <span class="text-gray-500">What's on your mind?</span>
-    <img src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA" alt="avatar" class="w-8 h-8 rounded-full ml-auto">
+    <img
+      src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
+      alt="avatar" class="w-8 h-8 rounded-full ml-auto">
   </div>
 
   <div id="create-post-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
     <div class="bg-white p-4 rounded shadow-lg w-[90%] max-w-lg relative">
-      <button id="close-post-modal" class="absolute top-2 right-2">✕</button>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold">Create a Post</h2>
+        <button id="close-post-modal">✕</button>
+      </div>
       <div id="post-creation-form" class="post-form">
         <div class="toolbar">
           <button data-cmd="bold"><b>B</b></button>
@@ -91,18 +96,19 @@
               </div>
             </div>
             <button id="recordBtn" class="recordBtn">🎙 Start Recording</button>
-            <button id="submit-post">Post</button>
           </div>
           <input type="file" id="file-input" class="file-input" style="display: none;"
             accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
           <canvas class="canvasWaveform waveform w-full" id="waveform" width="450" height="100"></canvas>
         </div>
       </div>
+      <button class="ml-auto block" id="submit-post">Post</button>
     </div>
   </div>
 
   <div id="post-filters" class="bg-white post-filters w-full shadow-lg p-4 flex items-center flex-col my-4 rounded">
-    <div class="flex items-center justify-between w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
+    <div
+      class="flex items-center justify-between w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
       <div class="flex items-center gap-4 ">
         <button class="filter-btn active" data-filter="Recent">🕒</button>
         <button class="filter-btn" data-filter="Featured">⭐</button>
@@ -156,98 +162,98 @@
   </div>
 
   <script id="tmpl-item" type="text/x-jsrender">
-    <div 
-      class="item rounded bg-white shadow-xl flex flex-col gap-2 my-4 p-4 relative border-2 border-[#e9ebee]" 
-      data-uid="{{:uid}}" 
-      data-depth="{{:depth}}">
-      {{if canDelete}}
-        <button class="btn-delete" data-uid="{{:uid}}">🗑</button>
-      {{/if}}
-      <div class="author flex items-center mb-2">
-        <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]"
-             src="{{:authorImage}}"
-             alt="{{:authorName}}"
-             onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';">
-        <div class="info">
-          <span class="name font-bold">{{:authorName}}</span>
-          <span class="timestamp text-sm text-[#65676b] ml-2">{{:timeAgo}}</span>
-        </div>
-      </div>
-      <div class="content my-2">{{>content}}</div>
-      <div class="file-preview">
-        {{if depth === 0}}
-          {{if fileContent}}
-              {{if fileContent}}
-                {{if fileType === "Image"}}
-                  <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
-                {{else fileType === "Audio"}}
-                  <audio class="js-player" controls>
-                    <source src="{{:fileContent}}" type="audio/mpeg" />
-                    Your browser does not support the audio tag.
-                  </audio>
-                {{else fileType === "Video"}}
-                  <video class="js-player" controls style="width: 100%; height: auto;">
-                    <source src="{{:fileContent}}" type="video/mp4" />
-                    Your browser does not support video.
-                  </video>
-                {{else}}
-                  <a href="{{:fileContent}}" target="_blank" class="line-clamp-1 cursor-pointer text-blue-600 hover:underline">{{:fileContentName}}</a>
-                {{/if}}
-              {{/if}}
-            {{/if}}
+      <div 
+        class="item rounded bg-white shadow-xl flex flex-col gap-2 my-4 p-4 relative border-2 border-[#e9ebee]" 
+        data-uid="{{:uid}}" 
+        data-depth="{{:depth}}">
+        {{if canDelete}}
+          <button class="btn-delete" data-uid="{{:uid}}">🗑</button>
         {{/if}}
-        {{if depth > 0}}
-        {{if fileContentComment}}
-              {{if fileContentComment}}
-                {{if fileType === "Image"}}
-                  <img src="{{:fileContentComment || fileContentComment}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
-                {{else fileType === "Audio"}}
-                  <audio class="js-player" controls>
-                    <source src="{{:fileContentComment}}" type="audio/mpeg" />
-                    Your browser does not support the audio tag.
-                  </audio>
-                {{else fileType === "Video"}}
-                  <video class="js-player" controls style="width: 100%; height: auto;">
-                    <source src="{{:fileContentComment}}" type="video/mp4" />
-                    Your browser does not support video.
-                  </video>
-                {{else}}
-                  <div>{{:fileContentCommentName}}</div>
+        <div class="author flex items-center mb-2">
+          <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]"
+              src="{{:authorImage}}"
+              alt="{{:authorName}}"
+              onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';">
+          <div class="info">
+            <span class="name font-bold">{{:authorName}}</span>
+            <span class="timestamp text-sm text-[#65676b] ml-2">{{:timeAgo}}</span>
+          </div>
+        </div>
+        <div class="content my-2">{{>content}}</div>
+        <div class="file-preview">
+          {{if depth === 0}}
+            {{if fileContent}}
+                {{if fileContent}}
+                  {{if fileType === "Image"}}
+                    <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
+                  {{else fileType === "Audio"}}
+                    <audio class="js-player" controls>
+                      <source src="{{:fileContent}}" type="audio/mpeg" />
+                      Your browser does not support the audio tag.
+                    </audio>
+                  {{else fileType === "Video"}}
+                    <video class="js-player" controls style="width: 100%; height: auto;">
+                      <source src="{{:fileContent}}" type="video/mp4" />
+                      Your browser does not support video.
+                    </video>
+                  {{else}}
+                    <a href="{{:fileContent}}" target="_blank" class="line-clamp-1 cursor-pointer text-blue-600 hover:underline">{{:fileContentName}}</a>
+                  {{/if}}
                 {{/if}}
               {{/if}}
+          {{/if}}
+          {{if depth > 0}}
+          {{if fileContentComment}}
+                {{if fileContentComment}}
+                  {{if fileType === "Image"}}
+                    <img src="{{:fileContentComment || fileContentComment}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
+                  {{else fileType === "Audio"}}
+                    <audio class="js-player" controls>
+                      <source src="{{:fileContentComment}}" type="audio/mpeg" />
+                      Your browser does not support the audio tag.
+                    </audio>
+                  {{else fileType === "Video"}}
+                    <video class="js-player" controls style="width: 100%; height: auto;">
+                      <source src="{{:fileContentComment}}" type="video/mp4" />
+                      Your browser does not support video.
+                    </video>
+                  {{else}}
+                    <div>{{:fileContentCommentName}}</div>
+                  {{/if}}
+                {{/if}}
+              {{/if}}
+        {{/if}}
+
+  </div>
+
+        <div class="actions">
+          <div class = "flex items-center justify-between">
+            <div class = "flex items-center gap-4">
+              <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:uid}}">👍 <span class="ml-1">{{:upvotes}}</span></button>
+              <button class="btn-comment flex items-center" data-uid="{{:uid}}">💬</button>
+            </div>
+            {{if depth === 0}}
+              <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:uid}}">🔖</button>
             {{/if}}
-      {{/if}}
-
-</div>
-
-      <div class="actions">
-        <div class = "flex items-center justify-between">
-          <div class = "flex items-center gap-4">
-            <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:uid}}">👍 <span class="ml-1">{{:upvotes}}</span></button>
-            <button class="btn-comment flex items-center" data-uid="{{:uid}}">💬</button>
           </div>
+        </div>
+
+        <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
           {{if depth === 0}}
-            <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:uid}}">🔖</button>
+            {{:children.length}} {{:children.length === 1 ? 'Comment' : 'Comments'}}
+          {{else}}
+            {{:children.length}} {{:children.length === 1 ? 'Reply' : 'Replies'}}
           {{/if}}
         </div>
-      </div>
-
-      <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
-        {{if depth === 0}}
-          {{:children.length}} {{:children.length === 1 ? 'Comment' : 'Comments'}}
-        {{else}}
-          {{:children.length}} {{:children.length === 1 ? 'Reply' : 'Replies'}}
+        {{if children.length && !isCollapsed}}
+          <div class="children visible my-4 {{:depth < 2 ? 'pl-8 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">
+            {{for children}}
+              {{include tmpl="#tmpl-item"/}}
+            {{/for}}
+          </div>
         {{/if}}
       </div>
-      {{if children.length && !isCollapsed}}
-        <div class="children visible my-4 {{:depth < 2 ? 'pl-8 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">
-          {{for children}}
-            {{include tmpl="#tmpl-item"/}}
-          {{/for}}
-        </div>
-      {{/if}}
-    </div>
-  </script>
+    </script>
 
 
   <script src="https://unpkg.com/mic-recorder-to-mp3@2.2.1/dist/index.min.js"></script>

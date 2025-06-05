@@ -289,11 +289,7 @@ button {
 #create-post-modal.show {
   display: flex;
 }
-#submit-post {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-}
+
 #file-preview-modal img,
 #file-preview-modal video,
 #file-preview-modal audio,
