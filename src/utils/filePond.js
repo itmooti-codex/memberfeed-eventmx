@@ -33,7 +33,7 @@ export function initFilePond() {
       ],
 
       labelIdle: `<span class="custom-upload-label" style="background:transparent; color:white;">
-                📁 <strong>Drag & drop your files</strong> or <span style="color:var(--accent)">Browse</span>
+                <i class="fa-solid fa-folder-open"></i> <strong>Drag & drop your files</strong> or <span style="color:var(--accent)">Browse</span>
             </span>`,
     });
 
@@ -186,18 +186,18 @@ export function initFilePond() {
 
                 safariRecorder.start();
                 isRecording = true;
-                recordBtn.textContent = "⏹ Stop Recording";
+                recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Recording';
                 recordBtn._safariRecorder = safariRecorder;
               } else {
                 recorder.start().then(() => {
                   isRecording = true;
-                  recordBtn.textContent = "⏹ Stop Recording";
+                  recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Recording';
                 });
               }
             })
             .catch((e) => {
               console.error("Mic access failed:", e.name, e.message);
-              recordBtn.textContent = "🎙 Start Recording";
+              recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
               inputElement.disabled = false;
               canvas.style.display = "none";
             });
@@ -208,7 +208,7 @@ export function initFilePond() {
 
           if (isSafari && recordBtn._safariRecorder) {
             recordBtn._safariRecorder.stop();
-            recordBtn.textContent = "🎙 Start Recording";
+            recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
             isRecording = false;
           } else {
             recorder
@@ -216,7 +216,7 @@ export function initFilePond() {
               .getMp3()
               .then(([buffer, blob]) => {
                 isRecording = false;
-                recordBtn.textContent = "🎙 Start Recording";
+                recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
 
                 const file = new File(buffer, "recorded-audio.mp3", {
                   type: blob.type,
