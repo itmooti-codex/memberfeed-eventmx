@@ -29,6 +29,7 @@ export function parseDate(timestamp) {
 
 export function formatContent(html = "") {
   if (!html) return "";
+  html = decodeEntities(html);
   // convert anchor tags to open in new tab
   // if the link text is the url itself, also embed previews
   const anchorRegex = /<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/gi;
@@ -75,5 +76,11 @@ function buildEmbed(url) {
     }
   }
   return "";
+}
+
+function decodeEntities(str) {
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = str;
+  return textarea.value;
 }
 
