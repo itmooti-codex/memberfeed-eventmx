@@ -69,12 +69,36 @@ export function applyFilterAndRender() {
     const score = (p) => (p.upvotes || 0) + (Array.isArray(p.children) ? p.children.length : 0);
     items = items.slice().sort((a, b) => score(b) - score(a));
   }
+  const $container = $("#forum-root");
   if (items.length === 0) {
-    $("#forum-root").html(
+    $container.html(
       '<div class="empty-state text-center p-4">No posts found.</div>'
     );
   } else {
-    $("#forum-root").html(tmpl.render(items));
+    // Preserve existing iframe elements to avoid reloads
+    const frames = {};
+    $container.find('.item').each(function () {
+      const uid = $(this).data('uid');
+      const f = $(this).find('iframe');
+      if (f.length) {
+        frames[uid] = f.toArray().map((el) => $(el).detach()[0]);
+      }
+    });
+
+    $container.html(tmpl.render(items));
+
+    for (const uid in frames) {
+      const $item = $container.find(`[data-uid="${uid}"]`);
+      if ($item.length) {
+        const newFrames = $item.find('iframe');
+        newFrames.each(function (idx) {
+          const oldFrame = frames[uid][idx];
+          if (oldFrame) {
+            $(this).replaceWith(oldFrame);
+          }
+        });
+      }
+    }
   }
 }
 

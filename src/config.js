@@ -53,6 +53,8 @@ export const state = {
   debounceTimer: null,
   currentUser: null,
   initialPostsLoaded: false,
+  isConnecting: false,
+  ignoreNextSocketUpdate: false,
 };
 export const searchInput = document.getElementById("searchPost");
 export const clearIcon = document.querySelector(".clearIcon");
