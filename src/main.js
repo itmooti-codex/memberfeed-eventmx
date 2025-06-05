@@ -24,6 +24,13 @@ import './features/uploads/handlers.js';
 import { initEmojiHandlers } from './ui/emoji.js';
 import { initRichText } from './utils/richText.js';
 
+function terminateAndClose() {
+  if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+    state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
+    state.socket.close();
+  }
+}
+
 export function connect() {
   if (state.isConnecting || (state.socket &&
       (state.socket.readyState === WebSocket.OPEN ||
@@ -102,6 +109,12 @@ export function connect() {
       // Modern servers keep the connection open after sending GQL_COMPLETE.
       // Avoid sending an extra GQL_START which previously caused the server
       // to close the socket and trigger a reconnect.
+      // Close the connection gracefully so the reconnect logic can
+      // establish a fresh subscription if needed.
+      if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+        state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
+        state.socket.close();
+      }
     }
   });
   state.socket.addEventListener("error", (e) => {
@@ -125,9 +138,7 @@ document.addEventListener("visibilitychange", () => {
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(() => {
       clearInterval(state.keepAliveTimer);
-      if (state.socket && state.socket.readyState === WebSocket.OPEN) {
-        state.socket.close();
-      }
+      terminateAndClose();
     }, INACTIVITY_MS);
   } else {
     clearTimeout(inactivityTimer);
