@@ -7,6 +7,7 @@ import {
   MAX_BACKOFF,
   INACTIVITY_MS,
   GLOBAL_AUTHOR_ID,
+  setGlobalAuthorId,
   DEFAULT_AVATAR,
 } from './config.js';
 import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
@@ -122,7 +123,7 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
-window.addEventListener('DOMContentLoaded', () => {
+function startApp() {
   tribute.attach(document.getElementById('post-editor'));
   fetchGraphQL(FETCH_CONTACTS_QUERY).then((res) => {
     const contacts = res.data.calcContacts;
@@ -171,6 +172,32 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const loginModal = document.getElementById('login-modal');
+  const loginBtn = document.getElementById('login-button');
+  const closeLoginBtn = document.getElementById('close-login-modal');
+  const loginInput = document.getElementById('login-user-id');
+  let initialized = false;
+
+  function init(id) {
+    if (!initialized) {
+      if (id) setGlobalAuthorId(id);
+      loginModal?.classList.add('hidden');
+      startApp();
+      initialized = true;
+    }
+  }
+
+  loginBtn?.addEventListener('click', () => {
+    const id = parseInt(loginInput?.value, 10);
+    init(isNaN(id) ? undefined : id);
+  });
+
+  closeLoginBtn?.addEventListener('click', () => {
+    init();
+  });
 });
 
 window.addEventListener('touchstart', () => {
