@@ -22,7 +22,5 @@ $(document).on("change", ".file-input, #file-input", function (e) {
       fileTypeCheck = "File";
     }
   }
-  // console.log("File selected:", pendingFile);
-  // console.log("File type:", fileTypeCheck);
 });
 
