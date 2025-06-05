@@ -55,7 +55,11 @@ export function connect() {
       state.rawComments = flattenComments(state.rawPosts);
       state.postsStore = buildTree(state.postsStore, state.rawPosts, state.rawComments);
       state.initialPostsLoaded = true;
-      applyFilterAndRender();
+      if (state.ignoreNextSocketUpdate) {
+        state.ignoreNextSocketUpdate = false;
+      } else {
+        applyFilterAndRender();
+      }
       requestAnimationFrame(() => {
         Plyr.setup('.js-player', {
           controls: [
