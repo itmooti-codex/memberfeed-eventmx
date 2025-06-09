@@ -33,6 +33,7 @@ export const KEEPALIVE_MS = 80000;
 export const MAX_BACKOFF = 30000;
 export const INACTIVITY_MS = 10 * 60 * 1000; // 10 minutes
 export let GLOBAL_AUTHOR_ID = 62;
+export const GLOBAL_PAGE_TAG ="2025";
 export function setGlobalAuthorId(id) {
   GLOBAL_AUTHOR_ID = Number(id);
 }

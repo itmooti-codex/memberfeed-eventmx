@@ -13,7 +13,8 @@ export const CREATE_POST_MUTATION = `
     createForumPost(payload: $payload) {
       id
       unique_id
-      author_id
+      author_id 
+      forum_tag 
       Author {
         display_name
         profile_image
@@ -84,11 +85,15 @@ export const DELETE_FORUM_COMMENT_MUTATION = `
     }
   }
 `;
-
 export const GQL_QUERY = `
-  subscription subscribeToForumPosts {
+  subscription subscribeToForumPosts(
+    $forum_tag: TextScalar
+  ) {
     subscribeToForumPosts(
-      query: [{ where: { post_status: "Published - Not flagged" } }]
+      query: [
+      { where: { post_status: "Published - Not flagged" } } 
+       { andWhere: { forum_tag: $forum_tag } }
+      ]
       orderBy: [{ path: ["post_published_date"], type: desc }]
     ) {
       author_id
@@ -307,3 +312,24 @@ export const MARK_NOTIFICATION_READ = `
   }
 `;
 
+export const GET_CONTACTS_BY_TAGS = `
+query calcContacts(
+  $id: EduflowproContactID
+  $name: TextScalar
+) {
+  calcContacts(
+    query: [
+      { where: { id: $id } }
+      {
+        andWhere: {
+          TagsData: [
+            { where: { Tag: [{ where: { name: $name } }] } }
+          ]
+        }
+      }
+    ]
+  ) {
+    Contact_ID: field(arg: ["id"])
+  }
+}
+`;
