@@ -162,7 +162,7 @@ function startApp() {
       connect();
     }else{
       const el = document.getElementById("forum-root");
-      document.getElementById("skeleton-loader")?.classList.add("hidden");
+      document.getElementById("skeleton-loader")?.remove();
       el.replaceChildren(
         Object.assign(document.createElement("h2"), {
           className: "text-center text-gray-500",
