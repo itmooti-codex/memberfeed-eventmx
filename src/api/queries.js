@@ -1,6 +1,18 @@
 export const FETCH_CONTACTS_QUERY = `
   query calcContacts {
-    calcContacts {
+    calcContacts(
+      query: [
+        {
+          where: {
+            TagsData: [
+              {
+                where: { Tag: [{ where: { name: "2025" } }] }
+              }
+            ]
+          }
+        }
+      ]
+    ) {
       Contact_ID: field(arg: ["id"])
       Display_Name: field(arg: ["display_name"])
       Profile_Image: field(arg: ["profile_image"])
@@ -85,6 +97,7 @@ export const DELETE_FORUM_COMMENT_MUTATION = `
     }
   }
 `;
+
 export const GQL_QUERY = `
   subscription subscribeToForumPosts(
     $forum_tag: TextScalar
