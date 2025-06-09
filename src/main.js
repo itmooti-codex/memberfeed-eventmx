@@ -15,7 +15,6 @@ import {
   FETCH_CONTACTS_QUERY,
   GET_CONTACTS_BY_TAGS,
 } from "./api/queries.js";
-import { safeArray } from "./utils/formatter.js";
 import { buildTree } from "./ui/render.js";
 import { flattenComments } from "./utils/posts.js";
 import { mergeLists } from "./utils/merge.js";
@@ -220,6 +219,8 @@ function startApp() {
     });
   }
 }
-window.addEventListener("DOMContentLoaded", () => {
+function loadSelectedUserForum(){
+  console.log("Loading selected user forum");
   startApp();
-});
+}
+window.loadSelectedUserForum = loadSelectedUserForum;
