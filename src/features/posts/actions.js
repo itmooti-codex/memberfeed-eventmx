@@ -13,6 +13,7 @@ import {
 } from '../../api/queries.js';
 import {
   state,
+  GLOBAL_PAGE_TAG,
   GLOBAL_AUTHOR_ID,
   DEFAULT_AVATAR,
 } from '../../config.js';
@@ -257,6 +258,7 @@ $(document).on("click", "#submit-post", async function () {
     author_id: GLOBAL_AUTHOR_ID,
     post_copy: processContent(htmlContent),
     post_status: "Published - Not flagged",
+    forum_tag: GLOBAL_PAGE_TAG,
     post_published_date: Date.now(),
     Mentioned_Users_Data: [],
   };

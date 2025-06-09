@@ -9,8 +9,9 @@ import {
   GLOBAL_AUTHOR_ID,
   setGlobalAuthorId,
   DEFAULT_AVATAR,
+  GLOBAL_PAGE_TAG
 } from './config.js';
-import { GQL_QUERY, FETCH_CONTACTS_QUERY } from './api/queries.js';
+import { GQL_QUERY, FETCH_CONTACTS_QUERY, GET_CONTACTS_BY_TAGS } from './api/queries.js';
 import { safeArray } from './utils/formatter.js';
 import { buildTree } from './ui/render.js';
 import { flattenComments } from './utils/posts.js';
@@ -61,7 +62,7 @@ export function connect() {
         JSON.stringify({
           id: SUB_ID,
           type: "GQL_START",
-          payload: { query: GQL_QUERY },
+          payload: { query: GQL_QUERY, variables: { forum_tag: GLOBAL_PAGE_TAG } },
         })
       );
     } else if (msg.type === "GQL_DATA" && msg.id === SUB_ID && msg.payload?.data) {
@@ -145,12 +146,31 @@ function startApp() {
       };
     }
   });
+
   initPosts();
   initFilePond();
-  connect();
   initNotifications();
   initEmojiHandlers();
   initRichText();
+
+  fetchGraphQL(GET_CONTACTS_BY_TAGS, {
+    id: GLOBAL_AUTHOR_ID,
+    name: GLOBAL_PAGE_TAG
+  }).then(res => {
+    const result = res?.data?.calcContacts;
+    if (Array.isArray(result) && result.length > 0) {
+      connect();
+    }else{
+      const el = document.getElementById("forum-root");
+      document.getElementById("skeleton-loader")?.classList.add("hidden");
+      el.replaceChildren(
+        Object.assign(document.createElement("h2"), {
+          className: "text-center text-gray-500",
+          textContent: "No posts found.",
+        })
+      );
+    }
+  });
 
   const trigger = document.getElementById('create-post-trigger');
   const modal = document.getElementById('create-post-modal');
