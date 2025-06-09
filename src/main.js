@@ -28,7 +28,7 @@ import "./features/uploads/handlers.js";
 import { initEmojiHandlers } from "./ui/emoji.js";
 import { initRichText } from "./utils/richText.js";
 import { setupPlyr } from "./utils/plyr.js";
-
+let contactIncludedInTag = false;
 function terminateAndClose() {
   if (state.socket && state.socket.readyState === WebSocket.OPEN) {
     state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
@@ -135,24 +135,11 @@ document.addEventListener("visibilitychange", () => {
   } else {
     clearTimeout(inactivityTimer);
     if (!state.socket || state.socket.readyState === WebSocket.CLOSED) {
-      fetchGraphQL(GET_CONTACTS_BY_TAGS, {
-        id: GLOBAL_AUTHOR_ID,
-        name: GLOBAL_PAGE_TAG,
-      }).then((res) => {
-        const result = res?.data?.calcContacts;
-        if (Array.isArray(result) && result.length > 0) {
-          connect();
-        } else {
-          const el = document.getElementById("forum-root");
-          document.getElementById("skeleton-loader")?.remove();
-          el.replaceChildren(
-            Object.assign(document.createElement("h2"), {
-              className: "text-center text-gray-500",
-              textContent: "No posts found.",
-            })
-          );
-        }
-      });
+      if (contactIncludedInTag) {
+        connect();
+      }else{
+        console.log("Contact not included in tag, skipping connection.");
+      }
     } else if (!state.keepAliveTimer) {
       state.keepAliveTimer = setInterval(() => {
         if (state.socket.readyState === WebSocket.OPEN) {
@@ -193,6 +180,7 @@ function startApp() {
   }).then((res) => {
     const result = res?.data?.calcContacts;
     if (Array.isArray(result) && result.length > 0) {
+      contactIncludedInTag = true;
       connect();
     } else {
       const el = document.getElementById("forum-root");
@@ -233,5 +221,5 @@ function startApp() {
   }
 }
 window.addEventListener("DOMContentLoaded", () => {
-      startApp();
+  startApp();
 });

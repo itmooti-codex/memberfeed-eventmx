@@ -34,7 +34,7 @@ export const MAX_BACKOFF = 30000;
 export const INACTIVITY_MS = 10 * 60 * 1000; // 10 minutes
 export let GLOBAL_AUTHOR_ID = 62;
 export const GLOBAL_PAGE_TAG ="2025";
-  GLOBAL_AUTHOR_ID = "40";
+  GLOBAL_AUTHOR_ID = "73";
 export const DEFAULT_AVATAR =
   "https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA";
 export const state = {
