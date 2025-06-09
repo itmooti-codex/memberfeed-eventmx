@@ -33,15 +33,6 @@
 
 <body class="max-w-[700px] bg-[#f1f1f1] flex flex-col items-center justify-center m-auto p-6 max-[768px]:p-2">
 
-  <div id="login-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div class="bg-white p-4 rounded shadow-lg w-[90%] max-w-sm relative">
-      <button id="close-login-modal" class="absolute top-2 right-2"><i class="fa-solid fa-xmark"></i></button>
-      <h2 class="text-lg font-bold mb-4">Enter your login user id</h2>
-      <input type="number" id="login-user-id" class="w-full border px-2 py-1 rounded mb-4" />
-      <button id="login-button" class="bg-blue-500 text-white px-4 py-1 rounded w-full">Login</button>
-    </div>
-  </div>
-
   <div id="topOfForum"></div>
   <div onclick="document.getElementById('topOfForum').scrollIntoView({ behavior: 'smooth' })"
     class="p-3 bg-[var(--primary)] flex items-center justify-center cursor-pointer fixed bottom-[1rem] right-[1rem] max-[768px]:hidden z-[99]">

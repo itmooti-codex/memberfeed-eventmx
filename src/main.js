@@ -7,7 +7,6 @@ import {
   MAX_BACKOFF,
   INACTIVITY_MS,
   GLOBAL_AUTHOR_ID,
-  setGlobalAuthorId,
   DEFAULT_AVATAR,
   GLOBAL_PAGE_TAG,
 } from "./config.js";
@@ -233,37 +232,6 @@ function startApp() {
     });
   }
 }
-
 window.addEventListener("DOMContentLoaded", () => {
-  const loginModal = document.getElementById("login-modal");
-  const loginBtn = document.getElementById("login-button");
-  const closeLoginBtn = document.getElementById("close-login-modal");
-  const loginInput = document.getElementById("login-user-id");
-  let initialized = false;
-
-  function init(id) {
-    if (!initialized && id) {
-      setGlobalAuthorId(id);
-      loginModal?.classList.add("hidden");
       startApp();
-      initialized = true;
-    }
-  }
-
-  loginBtn?.addEventListener("click", () => {
-    const id = parseInt(loginInput?.value, 10);
-    init(isNaN(id) ? undefined : id);
-  });
-
-  closeLoginBtn?.addEventListener("click", () => {
-    loginModal?.classList.add("hidden");
-  });
 });
-
-window.addEventListener(
-  "touchstart",
-  () => {
-    resumeAudioContext();
-  },
-  { once: true }
-);
