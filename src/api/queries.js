@@ -177,7 +177,6 @@ export const GQL_QUERY = `
   }
 `;
 
-
 export const CREATE_POST_VOTE_MUTATION = `
   mutation createMemberPostUpvotesPostUpvotes(
     $payload: MemberPostUpvotesPostUpvotesCreateInput = null
