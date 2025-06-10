@@ -1,8 +1,8 @@
 import { safeArray, timeAgo, parseDate } from '../utils/formatter.js';
 import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from '../config.js';
 
-export function buildTree(existingPosts, rawPosts, rawComments) {
-  const byUid = new Map();
+export function buildTree(existingPosts, rawItems) {
+  const byId = new Map();
 
   const collapsedMap = new Map();
   (function gather(arr) {
@@ -20,55 +20,54 @@ export function buildTree(existingPosts, rawPosts, rawComments) {
     return { isCollapsed: true };
   }
 
-  const posts = rawPosts.map((raw) => {
-    const node = mapItem(raw, 0);
+  const nodes = rawItems.map((raw) => {
+    const node = mapItem(raw, raw.depth || 0);
     Object.assign(node, cloneState(node.uid));
     state.collapsedState[node.uid] = node.isCollapsed;
-    byUid.set(node.id, node);
+    byId.set(node.id, node);
     return node;
   });
 
-  const comments = rawComments.map((raw) => {
-    const node = mapItem(raw, 1);
-    Object.assign(node, cloneState(node.uid));
-    state.collapsedState[node.uid] = node.isCollapsed;
-    byUid.set(node.id, node);
-    return node;
-  });
+  const roots = [];
 
-  comments.forEach((node) => {
-    const parentId = node.reply_to_comment_id || node.forumPostId;
-    const parent = byUid.get(parentId);
-    if (parent) {
-      node.depth = parent.depth + 1;
-      parent.children.push(node);
+  nodes.forEach((node) => {
+    if (node.depth === 0 || !node.parentId) {
+      roots.push(node);
+    } else {
+      const parent = byId.get(node.parentId);
+      if (parent) {
+        parent.children.push(node);
+      } else {
+        roots.push(node);
+      }
     }
   });
 
-  return posts;
+  return roots;
 }
 
 export function mapItem(raw, depth = 0) {
-  const createdAt = parseDate(raw.post_published_date || raw.created_at);
+  const createdAt = parseDate(raw.published_date || raw.created_at);
 
-  // find any upvote record by this user
-  const postUpvotes = safeArray(raw.Member_Post_Upvotes_Data);
-  const commentUpvotes = safeArray(raw.Member_Comment_Upvotes_Data);
-  const userUpvote =
-    depth === 0
-      ? postUpvotes.find((u) => u.member_post_upvote_id === GLOBAL_AUTHOR_ID)
-      : commentUpvotes.find(
-          (u) => u.member_comment_upvote_id === GLOBAL_AUTHOR_ID
-        );
+  const reactors = safeArray(raw.Forum_Reactors_Data);
+  const userReaction = reactors.find(
+    (r) => r.Forum_Reactor?.id === GLOBAL_AUTHOR_ID
+  );
 
-  // make sure Contacts_Data is always an array
-  const contacts = safeArray(raw.Contacts_Data);
-  const hasBookmarked =
-    depth === 0 && contacts.some((c) => c.contact_id === GLOBAL_AUTHOR_ID);
-  const bookmarkRecordId =
-    depth === 0
-      ? contacts.find((c) => c.contact_id === GLOBAL_AUTHOR_ID)?.id || null
-      : null;
+  const bookmarks = safeArray(raw.Bookmarking_Contacts_Data);
+  const userBookmark = bookmarks.find(
+    (b) => b.Bookmarking_Contact?.id === GLOBAL_AUTHOR_ID
+  );
+
+  const fileContentRaw = raw.file_content;
+  const fileContent =
+    typeof fileContentRaw === 'string'
+      ? fileContentRaw
+      : fileContentRaw?.link || '';
+  const fileName =
+    typeof fileContentRaw === 'string'
+      ? fileContentRaw
+      : fileContentRaw?.name || '';
 
   return {
     id: raw.id,
@@ -76,35 +75,25 @@ export function mapItem(raw, depth = 0) {
     authorId: raw.author_id,
     canDelete: raw.author_id === GLOBAL_AUTHOR_ID,
     depth,
-    authorName: raw.Author?.display_name || "Anonymous",
+    authorName: raw.Author?.display_name || 'Anonymous',
     authorImage: raw.Author?.profile_image || DEFAULT_AVATAR,
     createdAt,
-    timeAgo: createdAt ? timeAgo(createdAt) : "",
-    content: raw.post_copy ?? raw.comment ?? "",
-    upvotes: postUpvotes.length + commentUpvotes.length,
-    hasUpvoted: Boolean(userUpvote),
-    voteRecordId: userUpvote?.id || null,
-    hasBookmarked,
-    bookmarkRecordId,
+    timeAgo: createdAt ? timeAgo(createdAt) : '',
+    content: raw.copy || '',
+    upvotes: reactors.length,
+    hasUpvoted: Boolean(userReaction),
+    voteRecordId: userReaction?.id || null,
+    hasBookmarked: Boolean(userBookmark),
+    bookmarkRecordId: userBookmark?.id || null,
     children: [],
     isCollapsed: true,
-    forumPostId: depth === 0 ? raw.id : raw.forum_post_id,
-    reply_to_comment_id: raw.reply_to_comment_id || null,
-    isFeatured: raw.featured_post === true,
-    fileType: raw.file_type || "None",
-    fileContent:
-      typeof raw.file_content === "string"
-        ? raw.file_content
-        : raw.file_content?.link || "",
-    fileContentName:
-      typeof raw.file_content === "string"
-        ? raw.file_content
-        : raw.file_content?.name || "",
-
-    fileContentComment:
-      typeof raw.file === "string" ? raw.file : raw.file?.link || null,
-    fileContentCommentName:
-      typeof raw.file === "string" ? raw.file : raw.file?.name || "",
+    parentId: raw.parent_forum_id,
+    isFeatured: raw.featured_forum === true,
+    fileType: raw.file_type || 'None',
+    fileContent: depth === 0 ? fileContent : '',
+    fileContentName: depth === 0 ? fileName : '',
+    fileContentComment: depth > 0 ? fileContent : null,
+    fileContentCommentName: depth > 0 ? fileName : '',
   };
 }
 
@@ -117,4 +106,4 @@ export function findNode(arr, uid) {
   return null;
 }
 
-export const tmpl = $.templates("#tmpl-item");
+export const tmpl = $.templates('#tmpl-item');
