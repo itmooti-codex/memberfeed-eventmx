@@ -7,6 +7,7 @@ import {
   CREATE_BOOKMARK_MUTATION,
   DELETE_BOOKMARK_MUTATION,
   FETCH_CONTACTS_QUERY,
+  UPDATE_FORUM_POST_MUTATION,
 } from "../../api/queries.js";
 import {
   state,
@@ -533,5 +534,47 @@ export function initPostHandlers() {
     const $item = $(`[data-uid="${uid}"]`);
     $item.find(".btn-bookmark").toggleClass("bookmarked", node.hasBookmarked);
     if (toastMsg) showToast(toastMsg);
+  });
+
+  // MARK POST FEATURED
+  $(document).on("click", ".btn-feature", async function () {
+    const uid = $(this).data("uid");
+    const node = findNode(state.postsStore, uid);
+    if (!node) return;
+    $(this).addClass("state-disabled");
+    try {
+      await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
+        id: node.id,
+        payload: { featured_forum: true },
+      });
+      node.isFeatured = true;
+      const rawItem = findRawById(state.rawItems, node.id);
+      if (rawItem) rawItem.featured_forum = true;
+      applyFilterAndRender();
+    } catch (err) {
+      console.error("Failed to mark featured", err);
+    } finally {
+      $(this).removeClass("state-disabled");
+    }
+  });
+
+  // DISABLE COMMENTS
+  $(document).on("click", ".btn-disable-comments", async function () {
+    const uid = $(this).data("uid");
+    const node = findNode(state.postsStore, uid);
+    if (!node) return;
+    $(this).addClass("state-disabled");
+    try {
+      await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
+        id: node.id,
+        payload: { disable_new_comments: true },
+      });
+      const rawItem = findRawById(state.rawItems, node.id);
+      if (rawItem) rawItem.disable_new_comments = true;
+    } catch (err) {
+      console.error("Failed to disable comments", err);
+    } finally {
+      $(this).removeClass("state-disabled");
+    }
   });
 }

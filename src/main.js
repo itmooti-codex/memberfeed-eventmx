@@ -16,7 +16,8 @@ import {
   SUBSCRIBE_FORUM_POSTS,
   FETCH_CONTACTS_QUERY,
   GET_CONTACTS_BY_TAGS,
-  GET_CONTACTS_FOR_MODAL,
+  GET_SUBSCRIBER_CONTACTS_FOR_MODAL,
+  GET_ADMIN_CONTACTS_FOR_MODAL,
 } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
 import { mergeLists } from "./utils/merge.js";
@@ -152,9 +153,12 @@ function startApp(tagName, contactId) {
   let contactTagForQuery = "";
 
   const contactTag = tagName;
-  if (contactTag.startsWith(pageTag)) {
-    contactTagForQuery = tagName;
-    console.log("Extra Text:", contactTag.slice(pageTag.length));
+  if (
+    contactTag === `${pageTag} Subscriber` ||
+    contactTag === `${pageTag} Admin`
+  ) {
+    contactTagForQuery = contactTag;
+    state.userRole = contactTag.endsWith("Admin") ? "admin" : "subscriber";
   } else {
     console.log("No Match");
   }
@@ -228,33 +232,40 @@ function startApp(tagName, contactId) {
     });
   }
 }
-function loadModalContacts() {
-  fetchGraphQL(GET_CONTACTS_FOR_MODAL).then((res) => {
-    const contacts = res?.data?.calcContacts || [];
-    const container = document.getElementById("cotactsToDisplay");
-    if (!container) return;
-    container.classList = "";
-    container.classList.add("grid", "grid-cols-2", "gap-4", "p-4");
-
-    container.innerHTML = contacts
-      .map(
-        (c) => `
-      <div @click="loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${
-          c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"
-        }','${
-          c.Profile_Image || DEFAULT_AVATAR
-        }'); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
-        <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
-          <img
-            src="${c.Profile_Image || DEFAULT_AVATAR}"
-            alt="${c.Display_Name || "Anonymous"}"
-            class="h-full w-full rounded-full object-cover" />
-        </div>
-        <div>${c.Display_Name || "Anonymous"}</div>
+function renderContacts(list, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.classList = "";
+  container.classList.add("grid", "grid-cols-2", "gap-4", "p-4");
+  container.innerHTML = list
+    .map(
+      (c) => `
+    <div @click="loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${
+        c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"
+      }','${
+        c.Profile_Image || DEFAULT_AVATAR
+      }'); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
+      <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
+        <img
+          src="${c.Profile_Image || DEFAULT_AVATAR}"
+          alt="${c.Display_Name || "Anonymous"}"
+          class="h-full w-full rounded-full object-cover" />
       </div>
-    `
-      )
-      .join("");
+      <div>${c.Display_Name || "Anonymous"}</div>
+    </div>
+  `
+    )
+    .join("");
+}
+
+function loadModalContacts() {
+  fetchGraphQL(GET_SUBSCRIBER_CONTACTS_FOR_MODAL).then((res) => {
+    const contacts = res?.data?.calcContacts || [];
+    renderContacts(contacts, "subscriberContacts");
+  });
+  fetchGraphQL(GET_ADMIN_CONTACTS_FOR_MODAL).then((res) => {
+    const contacts = res?.data?.calcContacts || [];
+    renderContacts(contacts, "adminContacts");
   });
 }
 

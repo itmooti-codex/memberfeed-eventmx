@@ -82,7 +82,8 @@ export function mapItem(raw, depth = 0) {
     id: raw.id,
     uid: raw.unique_id,
     authorId: raw.author_id,
-    canDelete: raw.author_id === GLOBAL_AUTHOR_ID,
+    canDelete: raw.author_id === GLOBAL_AUTHOR_ID || state.userRole === "admin",
+    isAdmin: state.userRole === "admin",
     depth,
     forumType:
       raw.forum_type ||

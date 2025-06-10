@@ -55,8 +55,10 @@ export const state = {
   initialPostsLoaded: false,
   isConnecting: false,
   ignoreNextSocketUpdate: false,
+  userRole: "subscriber",
 };
 export const searchInput = document.getElementById("searchPost");
 export const clearIcon = document.querySelector(".clearIcon");
 export const searchIcon = document.querySelector(".searchIcon");
-export const contactForLoginModal = [40, 62, 73, 47];
+export const subscriberContactsForModal = [40, 62];
+export const adminContactsForModal = [73, 47];
