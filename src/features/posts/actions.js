@@ -551,6 +551,7 @@ export function initPostHandlers() {
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.featured_forum = true;
       applyFilterAndRender();
+      showToast("Marked as featured");
     } catch (err) {
       console.error("Failed to mark featured", err);
     } finally {
@@ -573,6 +574,7 @@ export function initPostHandlers() {
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.featured_forum = false;
       applyFilterAndRender();
+      showToast("Removed featured mark");
     } catch (err) {
       console.error("Failed to unmark featured", err);
     } finally {
@@ -595,8 +597,32 @@ export function initPostHandlers() {
       if (rawItem) rawItem.disable_new_comments = true;
       node.commentsDisabled = true;
       applyFilterAndRender();
+      showToast("Comments disabled");
     } catch (err) {
       console.error("Failed to disable comments", err);
+    } finally {
+      $(this).removeClass("state-disabled");
+    }
+  });
+
+  // ENABLE COMMENTS
+  $(document).on("click", ".btn-enable-comments", async function () {
+    const uid = $(this).data("uid");
+    const node = findNode(state.postsStore, uid);
+    if (!node) return;
+    $(this).addClass("state-disabled");
+    try {
+      await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
+        id: node.id,
+        payload: { disable_new_comments: false },
+      });
+      const rawItem = findRawById(state.rawItems, node.id);
+      if (rawItem) rawItem.disable_new_comments = false;
+      node.commentsDisabled = false;
+      applyFilterAndRender();
+      showToast("Comments enabled");
+    } catch (err) {
+      console.error("Failed to enable comments", err);
     } finally {
       $(this).removeClass("state-disabled");
     }
