@@ -102,6 +102,7 @@ export function mapItem(raw, depth = 0) {
     isCollapsed: true,
     parentId: raw.parent_forum_id,
     isFeatured: raw.featured_forum === true,
+    commentsDisabled: raw.disable_new_comments === true,
     fileType: raw.file_type || "None",
     fileContent: depth === 0 ? fileContent : "",
     fileContentName: depth === 0 ? fileName : "",
