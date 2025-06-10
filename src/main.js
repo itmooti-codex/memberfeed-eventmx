@@ -225,6 +225,8 @@ function loadModalContacts() {
     const contacts = res?.data?.calcContacts || [];
     const container = document.getElementById("cotactsToDisplay");
     if (!container) return;
+    container.classList='';
+    container.classList.add("grid", "grid-cols-2", "gap-4", "p-4");
 
     container.innerHTML = contacts.map((c) => `
       <div @click="loadSelectedUserForum(); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
