@@ -13,19 +13,17 @@ import {
 import { setGlobals } from "./config.js";
 
 import {
-  GQL_QUERY,
+  SUBSCRIBE_FORUM_POSTS,
   FETCH_CONTACTS_QUERY,
   GET_CONTACTS_BY_TAGS,
   GET_CONTACTS_FOR_MODAL,
 } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
-import { flattenComments } from "./utils/posts.js";
 import { mergeLists } from "./utils/merge.js";
 import { initPosts, applyFilterAndRender } from "./features/posts/index.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { tribute } from "./utils/tribute.js";
 import { initFilePond, resumeAudioContext } from "./utils/filePond.js";
-import { initNotifications } from "./features/notifications/index.js";
 import "./features/uploads/handlers.js";
 import { initEmojiHandlers } from "./ui/emoji.js";
 import { initRichText } from "./utils/richText.js";
@@ -71,7 +69,7 @@ export function connect() {
           id: SUB_ID,
           type: "GQL_START",
           payload: {
-            query: GQL_QUERY,
+            query: SUBSCRIBE_FORUM_POSTS,
             variables: { forum_tag: GLOBAL_PAGE_TAG },
           },
         })
@@ -82,12 +80,10 @@ export function connect() {
       msg.payload?.data
     ) {
       const incoming = msg.payload.data.subscribeToForumPosts ?? [];
-      state.rawPosts = mergeLists(state.rawPosts, incoming);
-      state.rawComments = flattenComments(state.rawPosts);
+      state.rawItems = mergeLists(state.rawItems, incoming);
       state.postsStore = buildTree(
         state.postsStore,
-        state.rawPosts,
-        state.rawComments
+        state.rawItems
       );
       state.initialPostsLoaded = true;
       if (state.ignoreNextSocketUpdate) {
@@ -175,7 +171,6 @@ function startApp(tagName, contactId) {
 
   initPosts();
   initFilePond();
-  initNotifications();
   initEmojiHandlers();
   initRichText();
 

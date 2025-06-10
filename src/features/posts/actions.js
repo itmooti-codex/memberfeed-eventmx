@@ -1,15 +1,11 @@
 import { fetchGraphQL } from '../../api/fetch.js';
 import {
-  CREATE_POST_MUTATION,
-  CREATE_COMMENT_MUTATION,
+  CREATE_FORUM_POST_MUTATION,
   DELETE_FORUM_POST_MUTATION,
-  DELETE_FORUM_COMMENT_MUTATION,
-  CREATE_POST_VOTE_MUTATION,
-  DELETE_POST_VOTE_MUTATION,
-  CREATE_COMMENT_VOTE_MUTATION,
-  DELETE_COMMENT_VOTE_MUTATION,
-  CREATE_POST_BOOKMARK_MUTATION,
-  DELETE_POST_BOOKMARK_MUTATION
+  CREATE_REACTION_MUTATION,
+  DELETE_REACTION_MUTATION,
+  CREATE_BOOKMARK_MUTATION,
+  DELETE_BOOKMARK_MUTATION
 } from '../../api/queries.js';
 import {
   state,
@@ -31,7 +27,7 @@ import { initFilePond } from '../../utils/filePond.js';
 import { processFileFields } from '../../utils/handleFile.js';
 import { applyFilterAndRender } from "./filters.js";
 import { showToast } from '../../ui/toast.js';
-import { removeRawById, flattenComments, findRawById } from '../../utils/posts.js';
+import { removeRawById, findRawById } from '../../utils/posts.js';
 import { safeArray } from '../../utils/formatter.js';
 import { setupPlyr } from '../../utils/plyr.js';
 
@@ -141,7 +137,8 @@ $(document).on("click", ".btn-comment", function (e) {
         <div class="flex items-center gap-2">
         ${emojiPickerHtml}
         <button id="recordBtn" class="recordBtn"><i class="fa-solid fa-microphone"></i> Start Recording</button>
-        <button class="btn-submit-comment" data-uid="${uid}">Post</button>
+
+        <button onclick="createForumToSubmit('1','Comment','comment-form');">Submit Comment new</button>
         </div>
         <input type="file" id="file-input" class="file-input" style="display: none;"
           accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
@@ -149,6 +146,7 @@ $(document).on("click", ".btn-comment", function (e) {
       </div>
     </div>
   `);
+  // <button class="btn-submit-comment" data-uid="${uid}">Post</button>
   container.append($form);
   const inserted = container.find(".comment-form");
   if (inserted.length) {
@@ -217,17 +215,13 @@ $(document).on("click", "#delete-confirm", function () {
     }
   })(state.postsStore);
 
-  const mutation =
-    node.depth === 0
-      ? DELETE_FORUM_POST_MUTATION
-      : DELETE_FORUM_COMMENT_MUTATION;
+  const mutation = DELETE_FORUM_POST_MUTATION;
   const variables = { id: node.id };
 
   fetchGraphQL(mutation, variables)
     .then(() => {
       removeNode(state.postsStore, uid);
-      removeRawById(state.rawPosts, node.id);
-      state.rawComments = flattenComments(state.rawPosts);
+      removeRawById(state.rawItems, node.id);
       $(`[data-uid="${uid}"]`).closest('.item').remove();
       showToast("Deleted");
       state.ignoreNextSocketUpdate = true;
@@ -241,31 +235,48 @@ $(document).on("click", "#delete-confirm", function () {
       pendingDelete = null;
     });
 });
-
-$(document).on("click", "#submit-post", async function () {
-  requestAnimationFrame(setupPlyr);
+async function createForumToSubmit(depthOfForum,forumType,formElementId){
+  console.log("Creating forum with depth:", depthOfForum, "and type:", forumType);
+  //requestAnimationFrame(setupPlyr);
   const $btn = $(this);
-  const formWrapper = document.querySelector(".post-form ");
-  const editor = $("#post-editor");
+  const formWrapper = document.querySelector(`.${formElementId}`);
+  console.log("Form wrapper:", formWrapper);
+  const editor = $(`.${formElementId} .editor`);
+  console.log("Editor found:", editor);
   const htmlContent = editor.html().trim();
-  if (!htmlContent && !pendingFile) return;
+  console.log("HTML content:", htmlContent);
+  if (!htmlContent && !pendingFile){
+    console.warn("No content to submit");
+    return;
+  } else{
+    console.log("Content to submit:", htmlContent);
+  }
 
   $btn.prop("disabled", true);
   $("#upload-options").prop("disabled", true);
   formWrapper.classList.add("state-disabled");
 
+  let parentForumId;
+if(forumType !='Post'){
+  const node = findNode(state.postsStore, uid);
+  parentForumId = node.depth === 0 ? node.id : null;
+}
+
   const payload = {
     author_id: GLOBAL_AUTHOR_ID,
-    post_copy: processContent(htmlContent),
-    post_status: "Published - Not flagged",
+    copy: processContent(htmlContent),
+    parent_forum_id: parentForumId || null,
+    forum_status: "Published - Not flagged",
     forum_tag: GLOBAL_PAGE_TAG,
-    post_published_date: Date.now(),
-    Mentioned_Users_Data: [],
+    published_date: Date.now(),
+    depth: depthOfForum,
+    Mentioned_Contacts_Data: [],
+    forum_type: `${forumType}`
   };
 
   editor.find("span.mention").each(function () {
-    payload.Mentioned_Users_Data.push({
-      mentioned_user_id: $(this).data("mention-id"),
+    payload.Mentioned_Contacts_Data.push({
+      mentioned_contact_id: $(this).data("mention-id"),
     });
   });
 
@@ -287,7 +298,7 @@ $(document).on("click", "#submit-post", async function () {
   }
 
   try {
-    const res = await fetchGraphQL(CREATE_POST_MUTATION, { payload: finalPayload });
+    const res = await fetchGraphQL(CREATE_FORUM_POST_MUTATION, { payload: finalPayload });
     const raw = res.data?.createForumPost;
     if (raw) {
       if (!raw.Author) {
@@ -300,8 +311,7 @@ $(document).on("click", "#submit-post", async function () {
       newNode.isCollapsed = false;
       state.postsStore.unshift(newNode);
       raw.ForumComments = [];
-      state.rawPosts.unshift(raw);
-      state.rawComments = flattenComments(state.rawPosts);
+      state.rawItems.unshift(raw);
       applyFilterAndRender();
       state.ignoreNextSocketUpdate = true;
       showToast("Post created");
@@ -325,92 +335,9 @@ $(document).on("click", "#submit-post", async function () {
     $("#upload-options").prop("disabled", false);
     formWrapper.classList.remove("state-disabled");
   }
-});
 
-$(document).on("click", ".btn-submit-comment", async function () {
-  const $btn = $(this);
-  const $form = $btn.closest(".comment-form");
-  const editor = $form.find(".editor");
-  const htmlContent = editor.html().trim();
-  if (!htmlContent && !pendingFile) return;
-
-  $btn.prop("disabled", true);
-  $form.addClass("state-disabled");
-  const uid = $btn.data("uid");
-  const node = findNode(state.postsStore, uid);
-
-  const payload = {
-    forum_post_id: node.depth === 0 ? node.id : null,
-    reply_to_comment_id: node.depth > 0 ? node.id : null,
-    author_id: GLOBAL_AUTHOR_ID,
-    comment: processContent(htmlContent),
-    Comment_or_Reply_Mentions_Data: [],
-  };
-
-  editor.find("span.mention").each(function () {
-    payload.Comment_or_Reply_Mentions_Data.push({
-      comment_or_reply_mention_id: $(this).data("mention-id"),
-    });
-  });
-
-  let finalPayload = { ...payload };
-
-  if (pendingFile) {
-    const fileFields = [{ fieldName: "file", file: pendingFile }];
-    const toSubmitFields = {};
-    await processFileFields(toSubmitFields, fileFields, awsParam, awsParamUrl);
-    let fileData =
-      typeof toSubmitFields.file === "string"
-        ? JSON.parse(toSubmitFields.file)
-        : toSubmitFields.file;
-    fileData.name = fileData.name || pendingFile.name;
-    fileData.size = fileData.size || pendingFile.size;
-    fileData.type = fileData.type || pendingFile.type;
-    finalPayload.file = JSON.stringify(fileData);
-    // finalPayload.file_type =
-    //   fileTypeCheck.charAt(0).toUpperCase() +
-    //   fileTypeCheck.slice(1).toLowerCase();
-    finalPayload.file_type = fileTypeCheck;
-  }
-
-  try {
-    const res = await fetchGraphQL(CREATE_COMMENT_MUTATION, { payload: finalPayload });
-    const raw = res.data?.createForumComment;
-    if (raw) {
-      if (!raw.Author) {
-        raw.Author = {
-          display_name: state.currentUser?.display_name || 'Anonymous',
-          profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
-        };
-      }
-      const newComment = mapItem(raw, node.depth + 1);
-      newComment.isCollapsed = false;
-      node.children.push(newComment);
-      node.isCollapsed = false;
-      const parentRaw = findRawById(state.rawPosts, node.id);
-      if (parentRaw) {
-        parentRaw.ForumComments = parentRaw.ForumComments || [];
-        raw.ForumComments = [];
-      parentRaw.ForumComments.push(raw);
-      state.rawComments = flattenComments(state.rawPosts);
-      }
-      applyFilterAndRender();
-      state.ignoreNextSocketUpdate = true;
-      showToast("Comment posted");
-    }
-    setPendingFile(null);
-    setFileTypeCheck("");
-    $form.remove();
-    node.isCollapsed = false;
-    state.collapsedState[node.uid] = node.isCollapsed;
-    $(`[data-uid="${uid}"]`).find(".children").addClass("visible");
-  } catch (err) {
-    console.error("Comment failed", err);
-  } finally {
-    $btn.prop("disabled", false);
-    $form.remove("state-disabled");
-  }
-});
+}
+  window.createForumToSubmit = createForumToSubmit;
 
 function removeNode(arr, uid) {
   for (let i = 0; i < arr.length; i++) {
@@ -427,22 +354,15 @@ function removeNode(arr, uid) {
 $(document).on("click", ".btn-like", async function () {
   const uid = $(this).data("uid");
   const node = findNode(state.postsStore, uid);
-  const isPost = node.depth === 0;
   $(this).addClass("state-disabled");
   let toastMsg = "";
 
   try {
     if (node.hasUpvoted) {
-      await fetchGraphQL(
-        isPost ? DELETE_POST_VOTE_MUTATION : DELETE_COMMENT_VOTE_MUTATION,
-        { id: node.voteRecordId }
-      );
-      const rawItem = findRawById(state.rawPosts, node.id);
+      await fetchGraphQL(DELETE_REACTION_MUTATION);
+      const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) {
-        const key = isPost
-          ? 'Member_Post_Upvotes_Data'
-          : 'Member_Comment_Upvotes_Data';
-        rawItem[key] = safeArray(rawItem[key]).filter(
+        rawItem.Forum_Reactors_Data = safeArray(rawItem.Forum_Reactors_Data).filter(
           (u) => u.id !== node.voteRecordId
         );
       }
@@ -451,37 +371,21 @@ $(document).on("click", ".btn-like", async function () {
       node.voteRecordId = null;
       toastMsg = "Vote removed";
     } else {
-      const payload = isPost
-        ? { post_upvote_id: node.id, member_post_upvote_id: GLOBAL_AUTHOR_ID }
-        : {
-            forum_comment_upvote_id: node.id,
-            member_comment_upvote_id: GLOBAL_AUTHOR_ID,
-          };
-      const mutation = isPost
-        ? CREATE_POST_VOTE_MUTATION
-        : CREATE_COMMENT_VOTE_MUTATION;
-      const res = await fetchGraphQL(mutation, { payload });
-      const newId =
-        res.data.createMemberPostUpvotesPostUpvotes?.id ||
-        res.data.createMemberCommentUpvotesForumCommentUpvotes?.id;
-      const rawItem = findRawById(state.rawPosts, node.id);
+      const payload = {
+        forum_reactor_id: GLOBAL_AUTHOR_ID,
+        reacted_to_forum_id: node.id,
+      };
+      const res = await fetchGraphQL(CREATE_REACTION_MUTATION, { payload });
+      const newId = res.data.createOForumReactorReactedtoForum?.id;
+      const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) {
-        const key = isPost
-          ? 'Member_Post_Upvotes_Data'
-          : 'Member_Comment_Upvotes_Data';
-        rawItem[key] = [
-          ...safeArray(rawItem[key]),
-          isPost
-            ? {
-                id: newId,
-                post_upvote_id: node.id,
-                member_post_upvote_id: GLOBAL_AUTHOR_ID,
-              }
-            : {
-                id: newId,
-                forum_comment_upvote_id: node.id,
-                member_comment_upvote_id: GLOBAL_AUTHOR_ID,
-              },
+        rawItem.Forum_Reactors_Data = [
+          ...safeArray(rawItem.Forum_Reactors_Data),
+          {
+            id: newId,
+            reacted_to_forum_id: node.id,
+            Forum_Reactor: { id: GLOBAL_AUTHOR_ID },
+          },
         ];
       }
       node.upvotes++;
@@ -509,36 +413,35 @@ $(document).on("click", ".btn-bookmark", async function () {
 
   try {
     if (node.hasBookmarked) {
-      await fetchGraphQL(DELETE_POST_BOOKMARK_MUTATION, {
-        id: node.bookmarkRecordId,
-      });
-      const rawItem = findRawById(state.rawPosts, node.id);
+      await fetchGraphQL(DELETE_BOOKMARK_MUTATION);
+      const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) {
-        rawItem.Contacts_Data = safeArray(rawItem.Contacts_Data).filter(
-          (c) => c.id !== node.bookmarkRecordId
-        );
+        rawItem.Bookmarking_Contacts_Data = safeArray(
+          rawItem.Bookmarking_Contacts_Data
+        ).filter((c) => c.id !== node.bookmarkRecordId);
       }
       node.hasBookmarked = false;
       node.bookmarkRecordId = null;
       toastMsg = "Bookmark removed";
     } else {
-      const payload = { contact_id: GLOBAL_AUTHOR_ID, saved_post_id: node.id };
-      const res = await fetchGraphQL(CREATE_POST_BOOKMARK_MUTATION, {
-        payload,
-      });
-      const rawItem = findRawById(state.rawPosts, node.id);
+      const payload = {
+        bookmarking_contact_id: GLOBAL_AUTHOR_ID,
+        bookmarked_forum_id: node.id,
+      };
+      const res = await fetchGraphQL(CREATE_BOOKMARK_MUTATION, { payload });
+      const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) {
-        rawItem.Contacts_Data = [
-          ...safeArray(rawItem.Contacts_Data),
+        rawItem.Bookmarking_Contacts_Data = [
+          ...safeArray(rawItem.Bookmarking_Contacts_Data),
           {
-            id: res.data.createOSavedPostContact.id,
-            saved_post_id: node.id,
-            contact_id: GLOBAL_AUTHOR_ID,
+            id: res.data.createOBookmarkingContactBookmarkedForum.id,
+            bookmarked_forum_id: node.id,
+            Bookmarking_Contact: { id: GLOBAL_AUTHOR_ID },
           },
         ];
       }
       node.hasBookmarked = true;
-      node.bookmarkRecordId = res.data.createOSavedPostContact.id;
+      node.bookmarkRecordId = res.data.createOBookmarkingContactBookmarkedForum.id;
       toastMsg = "Bookmarked";
     }
   } catch (err) {
