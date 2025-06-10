@@ -141,7 +141,8 @@ $(document).on("click", ".btn-comment", function (e) {
         <div class="flex items-center gap-2">
         ${emojiPickerHtml}
         <button id="recordBtn" class="recordBtn"><i class="fa-solid fa-microphone"></i> Start Recording</button>
-        <button class="btn-submit-comment" data-uid="${uid}">Post</button>
+
+        <button onclick="createForumToSubmit('1','Comment','comment-form');">Submit Comment new</button>
         </div>
         <input type="file" id="file-input" class="file-input" style="display: none;"
           accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
@@ -149,6 +150,7 @@ $(document).on("click", ".btn-comment", function (e) {
       </div>
     </div>
   `);
+  // <button class="btn-submit-comment" data-uid="${uid}">Post</button>
   container.append($form);
   const inserted = container.find(".comment-form");
   if (inserted.length) {
@@ -241,31 +243,48 @@ $(document).on("click", "#delete-confirm", function () {
       pendingDelete = null;
     });
 });
-
-$(document).on("click", "#submit-post", async function () {
-  requestAnimationFrame(setupPlyr);
+async function createForumToSubmit(depthOfForum,forumType,formElementId){
+  console.log("Creating forum with depth:", depthOfForum, "and type:", forumType);
+  //requestAnimationFrame(setupPlyr);
   const $btn = $(this);
-  const formWrapper = document.querySelector(".post-form ");
-  const editor = $("#post-editor");
+  const formWrapper = document.querySelector(`.${formElementId}`);
+  console.log("Form wrapper:", formWrapper);
+  const editor = $(`.${formElementId} .editor`);
+  console.log("Editor found:", editor);
   const htmlContent = editor.html().trim();
-  if (!htmlContent && !pendingFile) return;
+  console.log("HTML content:", htmlContent);
+  if (!htmlContent && !pendingFile){
+    console.warn("No content to submit");
+    return;
+  } else{
+    console.log("Content to submit:", htmlContent);
+  }
 
   $btn.prop("disabled", true);
   $("#upload-options").prop("disabled", true);
   formWrapper.classList.add("state-disabled");
 
+  let parentForumId;
+if(forumType !='Post'){
+  const node = findNode(state.postsStore, uid);
+  parentForumId = node.depth === 0 ? node.id : null;
+}
+
   const payload = {
     author_id: GLOBAL_AUTHOR_ID,
-    post_copy: processContent(htmlContent),
-    post_status: "Published - Not flagged",
+    copy: processContent(htmlContent),
+    parent_forum_id: parentForumId || null,
+    forum_status: "Published - Not flagged",
     forum_tag: GLOBAL_PAGE_TAG,
-    post_published_date: Date.now(),
-    Mentioned_Users_Data: [],
+    published_date: Date.now(),
+    depth: depthOfForum,
+    Mentioned_Contacts_Data: [],
+    forum_type: `${forumType}`
   };
 
   editor.find("span.mention").each(function () {
-    payload.Mentioned_Users_Data.push({
-      mentioned_user_id: $(this).data("mention-id"),
+    payload.Mentioned_Contacts_Data.push({
+      mentioned_contact_id: $(this).data("mention-id"),
     });
   });
 
@@ -325,92 +344,180 @@ $(document).on("click", "#submit-post", async function () {
     $("#upload-options").prop("disabled", false);
     formWrapper.classList.remove("state-disabled");
   }
-});
 
-$(document).on("click", ".btn-submit-comment", async function () {
-  const $btn = $(this);
-  const $form = $btn.closest(".comment-form");
-  const editor = $form.find(".editor");
-  const htmlContent = editor.html().trim();
-  if (!htmlContent && !pendingFile) return;
+}
+  window.createForumToSubmit = createForumToSubmit;
+// $(document).on("click", "#submit-post", async function () {
+//   requestAnimationFrame(setupPlyr);
+//   const $btn = $(this);
+//   const formWrapper = document.querySelector(".post-form ");
+//   const editor = $("#post-editor");
+//   const htmlContent = editor.html().trim();
+//   if (!htmlContent && !pendingFile) return;
 
-  $btn.prop("disabled", true);
-  $form.addClass("state-disabled");
-  const uid = $btn.data("uid");
-  const node = findNode(state.postsStore, uid);
+//   $btn.prop("disabled", true);
+//   $("#upload-options").prop("disabled", true);
+//   formWrapper.classList.add("state-disabled");
 
-  const payload = {
-    forum_post_id: node.depth === 0 ? node.id : null,
-    reply_to_comment_id: node.depth > 0 ? node.id : null,
-    author_id: GLOBAL_AUTHOR_ID,
-    comment: processContent(htmlContent),
-    Comment_or_Reply_Mentions_Data: [],
-  };
+//   const payload = {
+//     author_id: GLOBAL_AUTHOR_ID,
+//     copy: processContent(htmlContent),
+//     forum_status: "Published - Not flagged",
+//     forum_tag: GLOBAL_PAGE_TAG,
+//     published_date: Date.now(),
+//     depth: 0,
+//     Mentioned_Contacts_Data: [],
+//     forum_type: "Post"
+//   };
 
-  editor.find("span.mention").each(function () {
-    payload.Comment_or_Reply_Mentions_Data.push({
-      comment_or_reply_mention_id: $(this).data("mention-id"),
-    });
-  });
+//   editor.find("span.mention").each(function () {
+//     payload.Mentioned_Users_Data.push({
+//       mentioned_user_id: $(this).data("mention-id"),
+//     });
+//   });
 
-  let finalPayload = { ...payload };
+//   let finalPayload = { ...payload };
 
-  if (pendingFile) {
-    const fileFields = [{ fieldName: "file", file: pendingFile }];
-    const toSubmitFields = {};
-    await processFileFields(toSubmitFields, fileFields, awsParam, awsParamUrl);
-    let fileData =
-      typeof toSubmitFields.file === "string"
-        ? JSON.parse(toSubmitFields.file)
-        : toSubmitFields.file;
-    fileData.name = fileData.name || pendingFile.name;
-    fileData.size = fileData.size || pendingFile.size;
-    fileData.type = fileData.type || pendingFile.type;
-    finalPayload.file = JSON.stringify(fileData);
-    // finalPayload.file_type =
-    //   fileTypeCheck.charAt(0).toUpperCase() +
-    //   fileTypeCheck.slice(1).toLowerCase();
-    finalPayload.file_type = fileTypeCheck;
-  }
+//   if (pendingFile) {
+//     const fileFields = [{ fieldName: "file_content", file: pendingFile }];
+//     const toSubmitFields = {};
+//     await processFileFields(toSubmitFields, fileFields, awsParam, awsParamUrl);
+//     let fileData =
+//       typeof toSubmitFields.file_content === "string"
+//         ? JSON.parse(toSubmitFields.file_content)
+//         : toSubmitFields.file_content;
+//     fileData.name = fileData.name || pendingFile.name;
+//     fileData.size = fileData.size || pendingFile.size;
+//     fileData.type = fileData.type || pendingFile.type;
+//     finalPayload.file_content = JSON.stringify(fileData);
+//     finalPayload.file_type = fileTypeCheck;
+//   }
 
-  try {
-    const res = await fetchGraphQL(CREATE_COMMENT_MUTATION, { payload: finalPayload });
-    const raw = res.data?.createForumComment;
-    if (raw) {
-      if (!raw.Author) {
-        raw.Author = {
-          display_name: state.currentUser?.display_name || 'Anonymous',
-          profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
-        };
-      }
-      const newComment = mapItem(raw, node.depth + 1);
-      newComment.isCollapsed = false;
-      node.children.push(newComment);
-      node.isCollapsed = false;
-      const parentRaw = findRawById(state.rawPosts, node.id);
-      if (parentRaw) {
-        parentRaw.ForumComments = parentRaw.ForumComments || [];
-        raw.ForumComments = [];
-      parentRaw.ForumComments.push(raw);
-      state.rawComments = flattenComments(state.rawPosts);
-      }
-      applyFilterAndRender();
-      state.ignoreNextSocketUpdate = true;
-      showToast("Comment posted");
-    }
-    setPendingFile(null);
-    setFileTypeCheck("");
-    $form.remove();
-    node.isCollapsed = false;
-    state.collapsedState[node.uid] = node.isCollapsed;
-    $(`[data-uid="${uid}"]`).find(".children").addClass("visible");
-  } catch (err) {
-    console.error("Comment failed", err);
-  } finally {
-    $btn.prop("disabled", false);
-    $form.remove("state-disabled");
-  }
-});
+//   try {
+//     const res = await fetchGraphQL(CREATE_POST_MUTATION, { payload: finalPayload });
+//     const raw = res.data?.createForumPost;
+//     if (raw) {
+//       if (!raw.Author) {
+//         raw.Author = {
+//           display_name: state.currentUser?.display_name || 'Anonymous',
+//           profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
+//         };
+//       }
+//       const newNode = mapItem(raw, 0);
+//       newNode.isCollapsed = false;
+//       state.postsStore.unshift(newNode);
+//       raw.ForumComments = [];
+//       state.rawPosts.unshift(raw);
+//       state.rawComments = flattenComments(state.rawPosts);
+//       applyFilterAndRender();
+//       state.ignoreNextSocketUpdate = true;
+//       showToast("Post created");
+//       $("#create-post-modal").addClass("hidden").removeClass("show");
+//     }
+//     editor.html("");
+//     setPendingFile(null);
+//     setFileTypeCheck("");
+//     $("#file-input").val("");
+//   } catch (err) {
+//     console.error("Post failed", err);
+//   } finally {
+//     $btn.prop("disabled", false);
+//     const filepondCloseButton = document.querySelector(
+//       ".filepond--action-remove-item"
+//     );
+//     if (filepondCloseButton) {
+//       filepondCloseButton.click();
+//     }
+
+//     $("#upload-options").prop("disabled", false);
+//     formWrapper.classList.remove("state-disabled");
+//   }
+// });
+
+// $(document).on("click", ".btn-submit-comment", async function () {
+//   const $btn = $(this);
+//   const $form = $btn.closest(".comment-form");
+//   const editor = $form.find(".editor");
+//   const htmlContent = editor.html().trim();
+//   if (!htmlContent && !pendingFile) return;
+
+//   $btn.prop("disabled", true);
+//   $form.addClass("state-disabled");
+//   const uid = $btn.data("uid");
+//   const node = findNode(state.postsStore, uid);
+
+//   const payload = {
+//     forum_post_id: node.depth === 0 ? node.id : null,
+//     reply_to_comment_id: node.depth > 0 ? node.id : null,
+//     author_id: GLOBAL_AUTHOR_ID,
+//     comment: processContent(htmlContent),
+//     Comment_or_Reply_Mentions_Data: [],
+//   };
+
+//   editor.find("span.mention").each(function () {
+//     payload.Comment_or_Reply_Mentions_Data.push({
+//       comment_or_reply_mention_id: $(this).data("mention-id"),
+//     });
+//   });
+
+//   let finalPayload = { ...payload };
+
+//   if (pendingFile) {
+//     const fileFields = [{ fieldName: "file", file: pendingFile }];
+//     const toSubmitFields = {};
+//     await processFileFields(toSubmitFields, fileFields, awsParam, awsParamUrl);
+//     let fileData =
+//       typeof toSubmitFields.file === "string"
+//         ? JSON.parse(toSubmitFields.file)
+//         : toSubmitFields.file;
+//     fileData.name = fileData.name || pendingFile.name;
+//     fileData.size = fileData.size || pendingFile.size;
+//     fileData.type = fileData.type || pendingFile.type;
+//     finalPayload.file = JSON.stringify(fileData);
+//     // finalPayload.file_type =
+//     //   fileTypeCheck.charAt(0).toUpperCase() +
+//     //   fileTypeCheck.slice(1).toLowerCase();
+//     finalPayload.file_type = fileTypeCheck;
+//   }
+
+//   try {
+//     const res = await fetchGraphQL(CREATE_COMMENT_MUTATION, { payload: finalPayload });
+//     const raw = res.data?.createForumComment;
+//     if (raw) {
+//       if (!raw.Author) {
+//         raw.Author = {
+//           display_name: state.currentUser?.display_name || 'Anonymous',
+//           profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
+//         };
+//       }
+//       const newComment = mapItem(raw, node.depth + 1);
+//       newComment.isCollapsed = false;
+//       node.children.push(newComment);
+//       node.isCollapsed = false;
+//       const parentRaw = findRawById(state.rawPosts, node.id);
+//       if (parentRaw) {
+//         parentRaw.ForumComments = parentRaw.ForumComments || [];
+//         raw.ForumComments = [];
+//       parentRaw.ForumComments.push(raw);
+//       state.rawComments = flattenComments(state.rawPosts);
+//       }
+//       applyFilterAndRender();
+//       state.ignoreNextSocketUpdate = true;
+//       showToast("Comment posted");
+//     }
+//     setPendingFile(null);
+//     setFileTypeCheck("");
+//     $form.remove();
+//     node.isCollapsed = false;
+//     state.collapsedState[node.uid] = node.isCollapsed;
+//     $(`[data-uid="${uid}"]`).find(".children").addClass("visible");
+//   } catch (err) {
+//     console.error("Comment failed", err);
+//   } finally {
+//     $btn.prop("disabled", false);
+//     $form.remove("state-disabled");
+//   }
+// });
 
 function removeNode(arr, uid) {
   for (let i = 0; i < arr.length; i++) {

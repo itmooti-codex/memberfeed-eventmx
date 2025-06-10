@@ -10,37 +10,28 @@ export const FETCH_CONTACTS_QUERY = `
 `;
 
 export const CREATE_POST_MUTATION = `
-  mutation createForumPost($payload: ForumPostCreateInput = null) {
-    createForumPost(payload: $payload) {
-      id
-      unique_id
-      author_id 
-      forum_tag 
-      Author {
-        display_name
-        profile_image
-      }
-      file_type
-      file_content
-      post_copy
-      post_status
-      post_published_date
-      featured_post
-      Contacts_Data {
-        id
-        contact_id
-        saved_post_id
-      }
-      Member_Post_Upvotes_Data {
-        id
-        post_upvote_id
-        member_post_upvote_id
-      }
-      Mentioned_Users_Data {
-        mentioned_user_id
-      }
+mutation createForumPost(
+  $payload: ForumPostCreateInput = null
+) {
+  createForumPost(payload: $payload) {
+    author_id
+    published_date
+    disable_new_comments
+    featured_forum
+    file_content
+    file_type
+    copy
+    forum_status
+    depth
+    forum_type
+    parent_forum_id
+    forum_tag
+    Mentioned_Contacts_Data{
+      mentioned_contact_id
     }
   }
+}
+
 `;
 
 export const CREATE_COMMENT_MUTATION = `
@@ -92,8 +83,9 @@ export const GQL_QUERY = `
   ) {
     subscribeToForumPosts(
       query: [
-      { where: { post_status: "Published - Not flagged" } } 
+      { where: { forum_status: "Published - Not flagged" } } 
        { andWhere: { forum_tag: $forum_tag } }
+         { andWhereIn: { forum_type: ["Post", "Comment", "Replies"] } }
       ]
       orderBy: [{ path: ["post_published_date"], type: desc }]
     ) {
@@ -103,81 +95,24 @@ export const GQL_QUERY = `
         profile_image
       }
       created_at
-      post_published_date
+      post_published_date:published_date
       disable_new_comments
-      featured_post
+      featured_post:featured_forum
       file_content
       file_type
       id
-      post_copy
-      post_status
+      post_copy:copy
+      post_status:forum_status
       unique_id
-      Contacts_Data {
+      Contacts_Data:Bookmarking_Contacts_Data {
         id
-        contact_id
-        saved_post_id
+        contact_id:bookmarking_contact_id
+        saved_post_id:bookmarked_forum_id
       }
-      Member_Post_Upvotes_Data {
+      Member_Post_Upvotes_Data:Forum_Reactors_Data {
         id
-        post_upvote_id
-        member_post_upvote_id
-      }
-      ForumComments {
-        id
-        unique_id
-        author_id
-        Author {
-          display_name
-          profile_image
-        }
-        comment
-        file_type
-        file
-        forum_post_id
-        reply_to_comment_id
-        Member_Comment_Upvotes_Data {
-          id
-          forum_comment_upvote_id
-          member_comment_upvote_id
-        }
-        ForumComments {
-          id
-          unique_id
-          author_id
-          Author {
-            display_name
-            profile_image
-          }
-          comment
-          file_type
-          file
-          forum_post_id
-          reply_to_comment_id
-        Member_Comment_Upvotes_Data {
-          id
-          forum_comment_upvote_id
-          member_comment_upvote_id
-        }
-        ForumComments {
-          id
-          unique_id
-          author_id
-          Author {
-            display_name
-            profile_image
-          }
-          comment
-          file_type
-          file
-          forum_post_id
-          reply_to_comment_id
-          Member_Comment_Upvotes_Data {
-            id
-            forum_comment_upvote_id
-            member_comment_upvote_id
-          }
-        }
-      }
+        post_upvote_id:reacted_to_forum_id
+        member_post_upvote_id:forum_reactor_id
       }
     }
   }
