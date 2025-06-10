@@ -1,44 +1,46 @@
-import { fetchGraphQL } from '../../api/fetch.js';
+import { fetchGraphQL } from "../../api/fetch.js";
 import {
   CREATE_FORUM_POST_MUTATION,
   DELETE_FORUM_POST_MUTATION,
   CREATE_REACTION_MUTATION,
   DELETE_REACTION_MUTATION,
   CREATE_BOOKMARK_MUTATION,
-  DELETE_BOOKMARK_MUTATION
-} from '../../api/queries.js';
+  DELETE_BOOKMARK_MUTATION,
+} from "../../api/queries.js";
 import {
   state,
   GLOBAL_PAGE_TAG,
   GLOBAL_AUTHOR_ID,
   DEFAULT_AVATAR,
-} from '../../config.js';
-import { findNode, tmpl, buildTree } from '../../ui/render.js';
+} from "../../config.js";
+import { findNode, tmpl, buildTree, mapItem } from "../../ui/render.js";
 import {
   pendingFile,
   fileTypeCheck,
   setPendingFile,
   setFileTypeCheck,
-} from '../uploads/handlers.js';
-import { emojiPickerHtml } from '../../ui/emoji.js';
-import { moveCursorToEnd } from '../../utils/caret.js';
-import { tribute } from '../../utils/tribute.js';
-import { initFilePond } from '../../utils/filePond.js';
-import { processFileFields } from '../../utils/handleFile.js';
+} from "../uploads/handlers.js";
+import { emojiPickerHtml } from "../../ui/emoji.js";
+import { moveCursorToEnd } from "../../utils/caret.js";
+import { tribute } from "../../utils/tribute.js";
+import { initFilePond } from "../../utils/filePond.js";
+import { processFileFields } from "../../utils/handleFile.js";
 import { applyFilterAndRender } from "./filters.js";
-import { showToast } from '../../ui/toast.js';
-import { removeRawById, findRawById } from '../../utils/posts.js';
-import { safeArray } from '../../utils/formatter.js';
-import { setupPlyr } from '../../utils/plyr.js';
+import { showToast } from "../../ui/toast.js";
+import { removeRawById, findRawById } from "../../utils/posts.js";
+import { safeArray } from "../../utils/formatter.js";
+import { setupPlyr } from "../../utils/plyr.js";
 
-const deleteModal = document.getElementById('delete-modal');
-const deleteModalTitle = document.getElementById('delete-modal-title');
+const deleteModal = document.getElementById("delete-modal");
+const deleteModalTitle = document.getElementById("delete-modal-title");
 let pendingDelete = null;
 function processContent(rawHtml) {
   const isOnlyUrl = rawHtml.trim().match(/^(https?:\/\/[^\s]+)$/);
   const link = isOnlyUrl ? rawHtml.trim() : null;
 
-  const yt = link && /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/.exec(link);
+  const yt =
+    link &&
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/.exec(link);
   const vi = link && /vimeo\.com\/(\d+)/.exec(link);
   const loom = link && /loom\.com\/share\/([a-zA-Z0-9]+)/.exec(link);
 
@@ -61,10 +63,11 @@ function processContent(rawHtml) {
   const container = document.createElement("div");
   container.innerHTML = rawHtml;
 
-  container.querySelectorAll("a").forEach(a => {
+  container.querySelectorAll("a").forEach((a) => {
     const href = a.href;
 
-    const ytMatch = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/.exec(href);
+    const ytMatch =
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/.exec(href);
     const viMatch = /vimeo\.com\/(\d+)/.exec(href);
     const loomMatch = /loom\.com\/share\/([a-zA-Z0-9]+)/.exec(href);
 
@@ -109,25 +112,25 @@ function processContent(rawHtml) {
 }
 
 export function initPostHandlers() {
-$(document).on("click", ".btn-comment", function (e) {
-  e.stopPropagation();
-  const uid = $(this).data("uid");
-  const container = $(this).closest(".item");
-  const existing = container.find(".comment-form");
+  $(document).on("click", ".btn-comment", function (e) {
+    e.stopPropagation();
+    const uid = $(this).data("uid");
+    const container = $(this).closest(".item");
+    const existing = container.find(".comment-form");
 
-  if (existing.length) {
-    existing.remove();
-    return;
-  }
+    if (existing.length) {
+      existing.remove();
+      return;
+    }
 
-  $(".comment-form").remove();
-  const node = findNode(state.postsStore, uid);
-  const mentionHtml = `<span contenteditable="false" class="mention" data-mention-id="${node.authorId}">@${node.authorName}</span>&nbsp;`;
+    $(".comment-form").remove();
+    const node = findNode(state.postsStore, uid);
+    const mentionHtml = `<span contenteditable="false" class="mention" data-mention-id="${node.authorId}">@${node.authorName}</span>&nbsp;`;
 
-  const nextDepth = (node.depth || 0) + 1;
-  const nextType = nextDepth === 1 ? 'Comment' : 'Reply';
+    const nextDepth = (node.depth || 0) + 1;
+    const nextType = nextDepth === 1 ? "Comment" : "Reply";
 
-  const $form = $(`
+    const $form = $(`
     <div class="comment-form my-2">
       <div class="toolbar mb-2">
         <button data-cmd="bold"><b>B</b></button>
@@ -149,336 +152,357 @@ $(document).on("click", ".btn-comment", function (e) {
       </div>
     </div>
   `);
-  // <button class="btn-submit-comment" data-uid="${uid}">Post</button>
-  container.append($form);
-  const inserted = container.find(".comment-form");
-  if (inserted.length) {
-    const editorEl = inserted.find(".editor")[0];
-    if (editorEl) {
-      tribute.attach(editorEl);
-    }
-    container.find(".children").addClass("visible");
-    initFilePond();
-    // scroll to the newly inserted textarea so it's in view
-    requestAnimationFrame(() => {
-      inserted[0].scrollIntoView({ behavior: "smooth", block: "center" });
+    // <button class="btn-submit-comment" data-uid="${uid}">Post</button>
+    container.append($form);
+    const inserted = container.find(".comment-form");
+    if (inserted.length) {
+      const editorEl = inserted.find(".editor")[0];
       if (editorEl) {
-        moveCursorToEnd(editorEl);
+        tribute.attach(editorEl);
       }
-    });
-  }
-});
-
-$(document).on("click", function (e) {
-  if (!$(e.target).closest(".comment-form, #post-creation-form").length) {
-    $("#upload-menu").hide();
-  }
-});
-
-$(document).on("click", ".ribbon", function () {
-  const uid = $(this).data("uid");
-  let node = findNode(state.postsStore, uid);
-  if (node) {
-    node.isCollapsed = !node.isCollapsed;
-    state.collapsedState[node.uid] = node.isCollapsed;
-    applyFilterAndRender();
-  }
-});
-
-$(document).on("click", ".btn-delete", function () {
-  const uid = $(this).data("uid");
-  pendingDelete = { uid };
-  const node = findNode(state.postsStore, uid);
-  const label = node.depth === 0 ? "post" : node.depth === 1 ? "comment" : "reply";
-  deleteModalTitle.textContent = `Do you want to delete this ${label}?`;
-  deleteModal.classList.remove("hidden");
-});
-
-$(document).on("click", "#delete-cancel", function () {
-  deleteModal.classList.add("hidden");
-  pendingDelete = null;
-});
-
-$(document).on("click", "#delete-confirm", function () {
-  if (!pendingDelete) return;
-  const uid = pendingDelete.uid;
-  deleteModal.classList.add("hidden");
-  const $item = $(`[data-uid="${uid}"]`).closest(".item");
-  $item.addClass("state-disabled");
-
-  let node;
-  (function find(arr) {
-    for (const x of arr) {
-      if (x.uid === uid) {
-        node = x;
-        return;
-      }
-      find(x.children);
-      if (node) return;
+      container.find(".children").addClass("visible");
+      initFilePond();
+      // scroll to the newly inserted textarea so it's in view
+      requestAnimationFrame(() => {
+        inserted[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        if (editorEl) {
+          moveCursorToEnd(editorEl);
+        }
+      });
     }
-  })(state.postsStore);
-
-  const mutation = DELETE_FORUM_POST_MUTATION;
-  const variables = { id: node.id };
-
-  fetchGraphQL(mutation, variables)
-    .then(() => {
-      removeNode(state.postsStore, uid);
-      removeRawById(state.rawItems, node.id);
-      $(`[data-uid="${uid}"]`).closest('.item').remove();
-      showToast("Deleted");
-      state.ignoreNextSocketUpdate = true;
-    })
-    .catch((err) => {
-      console.error("Delete failed", err);
-      $item.removeClass("state-disabled");
-      showToast("Delete failed");
-    })
-    .finally(() => {
-      pendingDelete = null;
-    });
-});
-async function createForumToSubmit(depthOfForum, forumType, formElementId, uidParam){
-  const computedType = depthOfForum === 0 ? 'Post' : depthOfForum === 1 ? 'Comment' : 'Reply';
-  forumType = forumType || computedType;
-  console.log("Creating forum with depth:", depthOfForum, "and type:", forumType);
-  //requestAnimationFrame(setupPlyr);
-  const $btn = $(this);
-  const formWrapper = document.querySelector(`.${formElementId}`);
-  console.log("Form wrapper:", formWrapper);
-  const editor = $(`.${formElementId} .editor`);
-  console.log("Editor found:", editor);
-  const htmlContent = editor.html().trim();
-  console.log("HTML content:", htmlContent);
-  if (!htmlContent && !pendingFile){
-    console.warn("No content to submit");
-    return;
-  } else{
-    console.log("Content to submit:", htmlContent);
-  }
-
-  $btn.prop("disabled", true);
-  $("#upload-options").prop("disabled", true);
-  formWrapper.classList.add("state-disabled");
-
-  let parentForumId;
-  if (forumType !== 'Post' && uidParam) {
-    const node = findNode(state.postsStore, uidParam);
-    parentForumId = node ? node.id : null;
-  }
-
-  const payload = {
-    author_id: GLOBAL_AUTHOR_ID,
-    copy: processContent(htmlContent),
-    published_date: Date.now(),
-    depth: depthOfForum,
-    Mentioned_Contacts_Data: [],
-    forum_type: forumType,
-  };
-
-  if (forumType === 'Post') {
-    payload.forum_status = 'Published - Not flagged';
-    payload.forum_tag = GLOBAL_PAGE_TAG;
-  } else {
-    payload.parent_forum_id = parentForumId || null;
-  }
-
-  editor.find("span.mention").each(function () {
-    payload.Mentioned_Contacts_Data.push({
-      mentioned_contact_id: $(this).data("mention-id"),
-    });
   });
 
-  let finalPayload = { ...payload };
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".comment-form, #post-creation-form").length) {
+      $("#upload-menu").hide();
+    }
+  });
 
-  if (pendingFile) {
-    const fileFields = [{ fieldName: "file_content", file: pendingFile }];
-    const toSubmitFields = {};
-    await processFileFields(toSubmitFields, fileFields, awsParam, awsParamUrl);
-    let fileData =
-      typeof toSubmitFields.file_content === "string"
-        ? JSON.parse(toSubmitFields.file_content)
-        : toSubmitFields.file_content;
-    fileData.name = fileData.name || pendingFile.name;
-    fileData.size = fileData.size || pendingFile.size;
-    fileData.type = fileData.type || pendingFile.type;
-    finalPayload.file_content = JSON.stringify(fileData);
-    finalPayload.file_type = fileTypeCheck;
-  }
+  $(document).on("click", ".ribbon", function () {
+    const uid = $(this).data("uid");
+    let node = findNode(state.postsStore, uid);
+    if (node) {
+      node.isCollapsed = !node.isCollapsed;
+      state.collapsedState[node.uid] = node.isCollapsed;
+      applyFilterAndRender();
+    }
+  });
 
-  try {
-    const res = await fetchGraphQL(CREATE_FORUM_POST_MUTATION, { payload: finalPayload });
-    const raw = res.data?.createForumPost;
-    if (raw) {
-      if (!raw.Author) {
-        raw.Author = {
-          display_name: state.currentUser?.display_name || 'Anonymous',
-          profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
-        };
+  $(document).on("click", ".btn-delete", function () {
+    const uid = $(this).data("uid");
+    pendingDelete = { uid };
+    const node = findNode(state.postsStore, uid);
+    const label =
+      node.depth === 0 ? "post" : node.depth === 1 ? "comment" : "reply";
+    deleteModalTitle.textContent = `Do you want to delete this ${label}?`;
+    deleteModal.classList.remove("hidden");
+  });
+
+  $(document).on("click", "#delete-cancel", function () {
+    deleteModal.classList.add("hidden");
+    pendingDelete = null;
+  });
+
+  $(document).on("click", "#delete-confirm", function () {
+    if (!pendingDelete) return;
+    const uid = pendingDelete.uid;
+    deleteModal.classList.add("hidden");
+    const $item = $(`[data-uid="${uid}"]`).closest(".item");
+    $item.addClass("state-disabled");
+
+    let node;
+    (function find(arr) {
+      for (const x of arr) {
+        if (x.uid === uid) {
+          node = x;
+          return;
+        }
+        find(x.children);
+        if (node) return;
       }
-      const nodeDepth = raw.depth ?? depthOfForum;
-      const newNode = mapItem(raw, nodeDepth);
-      newNode.isCollapsed = false;
+    })(state.postsStore);
 
-      if (forumType === 'Post') {
-        state.postsStore.unshift(newNode);
-        raw.ForumComments = [];
-      } else {
-        const parent = findNode(state.postsStore, uidParam);
-        if (parent) {
-          parent.children.unshift(newNode);
-          parent.isCollapsed = false;
-          state.collapsedState[parent.uid] = false;
-        } else {
+    const mutation = DELETE_FORUM_POST_MUTATION;
+    const variables = { id: node.id };
+
+    fetchGraphQL(mutation, variables)
+      .then(() => {
+        removeNode(state.postsStore, uid);
+        removeRawById(state.rawItems, node.id);
+        $(`[data-uid="${uid}"]`).closest(".item").remove();
+        showToast("Deleted");
+        state.ignoreNextSocketUpdate = true;
+      })
+      .catch((err) => {
+        console.error("Delete failed", err);
+        $item.removeClass("state-disabled");
+        showToast("Delete failed");
+      })
+      .finally(() => {
+        pendingDelete = null;
+      });
+  });
+  async function createForumToSubmit(
+    depthOfForum,
+    forumType,
+    formElementId,
+    uidParam
+  ) {
+    depthOfForum = Number(depthOfForum);
+    const computedType =
+      depthOfForum === 0 ? "Post" : depthOfForum === 1 ? "Comment" : "Reply";
+    forumType = forumType || computedType;
+    console.log(
+      "Creating forum with depth:",
+      depthOfForum,
+      "and type:",
+      forumType
+    );
+    //requestAnimationFrame(setupPlyr);
+    const $btn = $(this);
+    const formWrapper = document.querySelector(`.${formElementId}`);
+    console.log("Form wrapper:", formWrapper);
+    const editor = $(`.${formElementId} .editor`);
+    console.log("Editor found:", editor);
+    const htmlContent = editor.html().trim();
+    console.log("HTML content:", htmlContent);
+    if (!htmlContent && !pendingFile) {
+      console.warn("No content to submit");
+      return;
+    } else {
+      console.log("Content to submit:", htmlContent);
+    }
+
+    $btn.prop("disabled", true);
+    $("#upload-options").prop("disabled", true);
+    formWrapper.classList.add("state-disabled");
+
+    let parentForumId;
+    if (forumType !== "Post" && uidParam) {
+      const node = findNode(state.postsStore, uidParam);
+      parentForumId = node ? node.id : null;
+    }
+
+    const payload = {
+      author_id: GLOBAL_AUTHOR_ID,
+      copy: processContent(htmlContent),
+      published_date: Date.now(),
+      depth: depthOfForum,
+      Mentioned_Contacts_Data: [],
+      forum_type: forumType,
+      forum_status: "Published - Not flagged",
+    };
+
+    if (forumType === "Post") {
+      payload.forum_tag = GLOBAL_PAGE_TAG;
+    } else {
+      payload.parent_forum_id = parentForumId || null;
+      payload.forum_tag = GLOBAL_PAGE_TAG;
+    }
+
+    editor.find("span.mention").each(function () {
+      payload.Mentioned_Contacts_Data.push({
+        mentioned_contact_id: $(this).data("mention-id"),
+      });
+    });
+
+    let finalPayload = { ...payload };
+
+    if (pendingFile) {
+      const fileFields = [{ fieldName: "file_content", file: pendingFile }];
+      const toSubmitFields = {};
+      await processFileFields(
+        toSubmitFields,
+        fileFields,
+        awsParam,
+        awsParamUrl
+      );
+      let fileData =
+        typeof toSubmitFields.file_content === "string"
+          ? JSON.parse(toSubmitFields.file_content)
+          : toSubmitFields.file_content;
+      fileData.name = fileData.name || pendingFile.name;
+      fileData.size = fileData.size || pendingFile.size;
+      fileData.type = fileData.type || pendingFile.type;
+      finalPayload.file_content = JSON.stringify(fileData);
+      finalPayload.file_type = fileTypeCheck;
+    }
+
+    try {
+      const res = await fetchGraphQL(CREATE_FORUM_POST_MUTATION, {
+        payload: finalPayload,
+      });
+      const raw = res.data?.createForumPost;
+      if (raw) {
+        if (!raw.Author) {
+          raw.Author = {
+            display_name: state.currentUser?.display_name || "Anonymous",
+            profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
+          };
+        }
+        const nodeDepth = Number(raw.depth ?? depthOfForum);
+        const newNode = mapItem(raw, nodeDepth);
+        newNode.isCollapsed = false;
+
+        if (forumType === "Post") {
           state.postsStore.unshift(newNode);
+          raw.ForumComments = [];
+        } else {
+          const parent = findNode(state.postsStore, uidParam);
+          if (parent) {
+            parent.children.unshift(newNode);
+            parent.isCollapsed = false;
+            state.collapsedState[parent.uid] = false;
+          } else {
+            state.postsStore.unshift(newNode);
+          }
+        }
+
+        state.rawItems.unshift(raw);
+        state.postsStore = buildTree(state.postsStore, state.rawItems);
+        applyFilterAndRender();
+        state.ignoreNextSocketUpdate = true;
+        showToast(forumType === "Post" ? "Post created" : "Comment added");
+        if (forumType === "Post") {
+          $("#create-post-modal").addClass("hidden").removeClass("show");
+        } else {
+          $(`.${formElementId}`).remove();
         }
       }
-
-      state.rawItems.unshift(raw);
-      state.postsStore = buildTree(state.postsStore, state.rawItems);
-      applyFilterAndRender();
-      state.ignoreNextSocketUpdate = true;
-      showToast(forumType === 'Post' ? 'Post created' : 'Comment added');
-      if (forumType === 'Post') {
-        $("#create-post-modal").addClass("hidden").removeClass("show");
-      } else {
-        $(`.${formElementId}`).remove();
+      editor.html("");
+      setPendingFile(null);
+      setFileTypeCheck("");
+      $("#file-input").val("");
+    } catch (err) {
+      console.error("Post failed", err);
+    } finally {
+      $btn.prop("disabled", false);
+      const filepondCloseButton = document.querySelector(
+        ".filepond--action-remove-item"
+      );
+      if (filepondCloseButton) {
+        filepondCloseButton.click();
       }
-    }
-    editor.html("");
-    setPendingFile(null);
-    setFileTypeCheck("");
-    $("#file-input").val("");
-  } catch (err) {
-    console.error("Post failed", err);
-  } finally {
-    $btn.prop("disabled", false);
-    const filepondCloseButton = document.querySelector(
-      ".filepond--action-remove-item"
-    );
-    if (filepondCloseButton) {
-      filepondCloseButton.click();
-    }
 
-    $("#upload-options").prop("disabled", false);
-    formWrapper.classList.remove("state-disabled");
+      $("#upload-options").prop("disabled", false);
+      formWrapper.classList.remove("state-disabled");
+    }
   }
-
-}
   window.createForumToSubmit = createForumToSubmit;
 
-function removeNode(arr, uid) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].uid === uid) {
-      arr.splice(i, 1);
-      return true;
+  function removeNode(arr, uid) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].uid === uid) {
+        arr.splice(i, 1);
+        return true;
+      }
+      if (removeNode(arr[i].children, uid)) return true;
     }
-    if (removeNode(arr[i].children, uid)) return true;
+    return false;
   }
-  return false;
-}
 
-// HANDLE LIKE / UNLIKE
-$(document).on("click", ".btn-like", async function () {
-  const uid = $(this).data("uid");
-  const node = findNode(state.postsStore, uid);
-  $(this).addClass("state-disabled");
-  let toastMsg = "";
+  // HANDLE LIKE / UNLIKE
+  $(document).on("click", ".btn-like", async function () {
+    const uid = $(this).data("uid");
+    const node = findNode(state.postsStore, uid);
+    $(this).addClass("state-disabled");
+    let toastMsg = "";
 
-  try {
-    if (node.hasUpvoted) {
-      await fetchGraphQL(DELETE_REACTION_MUTATION);
-      const rawItem = findRawById(state.rawItems, node.id);
-      if (rawItem) {
-        rawItem.Forum_Reactors_Data = safeArray(rawItem.Forum_Reactors_Data).filter(
-          (u) => u.id !== node.voteRecordId
-        );
+    try {
+      if (node.hasUpvoted) {
+        await fetchGraphQL(DELETE_REACTION_MUTATION);
+        const rawItem = findRawById(state.rawItems, node.id);
+        if (rawItem) {
+          rawItem.Forum_Reactors_Data = safeArray(
+            rawItem.Forum_Reactors_Data
+          ).filter((u) => u.id !== node.voteRecordId);
+        }
+        node.upvotes--;
+        node.hasUpvoted = false;
+        node.voteRecordId = null;
+        toastMsg = "Vote removed";
+      } else {
+        const payload = {
+          forum_reactor_id: GLOBAL_AUTHOR_ID,
+          reacted_to_forum_id: node.id,
+        };
+        const res = await fetchGraphQL(CREATE_REACTION_MUTATION, { payload });
+        const newId = res.data.createOForumReactorReactedtoForum?.id;
+        const rawItem = findRawById(state.rawItems, node.id);
+        if (rawItem) {
+          rawItem.Forum_Reactors_Data = [
+            ...safeArray(rawItem.Forum_Reactors_Data),
+            {
+              id: newId,
+              reacted_to_forum_id: node.id,
+              Forum_Reactor: { id: GLOBAL_AUTHOR_ID },
+            },
+          ];
+        }
+        node.upvotes++;
+        node.hasUpvoted = true;
+        node.voteRecordId = newId;
+        toastMsg = "Voted";
       }
-      node.upvotes--;
-      node.hasUpvoted = false;
-      node.voteRecordId = null;
-      toastMsg = "Vote removed";
-    } else {
-      const payload = {
-        forum_reactor_id: GLOBAL_AUTHOR_ID,
-        reacted_to_forum_id: node.id,
-      };
-      const res = await fetchGraphQL(CREATE_REACTION_MUTATION, { payload });
-      const newId = res.data.createOForumReactorReactedtoForum?.id;
-      const rawItem = findRawById(state.rawItems, node.id);
-      if (rawItem) {
-        rawItem.Forum_Reactors_Data = [
-          ...safeArray(rawItem.Forum_Reactors_Data),
-          {
-            id: newId,
-            reacted_to_forum_id: node.id,
-            Forum_Reactor: { id: GLOBAL_AUTHOR_ID },
-          },
-        ];
-      }
-      node.upvotes++;
-      node.hasUpvoted = true;
-      node.voteRecordId = newId;
-      toastMsg = "Voted";
+    } catch (err) {
+      console.log("error is", err);
+    } finally {
+      $(this).removeClass("state-disabled");
     }
-  } catch (err) {
-    console.log("error is", err);
-  } finally {
-    $(this).removeClass("state-disabled");
-  }
-  const $item = $(`[data-uid="${uid}"]`);
-  $item.find('.btn-like span').text(node.upvotes);
-  $item.find('.btn-like').toggleClass('liked', node.hasUpvoted);
-  if (toastMsg) showToast(toastMsg);
-});
+    const $item = $(`[data-uid="${uid}"]`);
+    $item.find(".btn-like span").text(node.upvotes);
+    $item.find(".btn-like").toggleClass("liked", node.hasUpvoted);
+    if (toastMsg) showToast(toastMsg);
+  });
 
-// HANDLE BOOKMARK / UNBOOKMARK (posts only)
-$(document).on("click", ".btn-bookmark", async function () {
-  const uid = $(this).data("uid");
-  const node = findNode(state.postsStore, uid);
-  $(this).addClass("state-disabled");
-  let toastMsg = "";
+  // HANDLE BOOKMARK / UNBOOKMARK (posts only)
+  $(document).on("click", ".btn-bookmark", async function () {
+    const uid = $(this).data("uid");
+    const node = findNode(state.postsStore, uid);
+    $(this).addClass("state-disabled");
+    let toastMsg = "";
 
-  try {
-    if (node.hasBookmarked) {
-      await fetchGraphQL(DELETE_BOOKMARK_MUTATION);
-      const rawItem = findRawById(state.rawItems, node.id);
-      if (rawItem) {
-        rawItem.Bookmarking_Contacts_Data = safeArray(
-          rawItem.Bookmarking_Contacts_Data
-        ).filter((c) => c.id !== node.bookmarkRecordId);
+    try {
+      if (node.hasBookmarked) {
+        await fetchGraphQL(DELETE_BOOKMARK_MUTATION);
+        const rawItem = findRawById(state.rawItems, node.id);
+        if (rawItem) {
+          rawItem.Bookmarking_Contacts_Data = safeArray(
+            rawItem.Bookmarking_Contacts_Data
+          ).filter((c) => c.id !== node.bookmarkRecordId);
+        }
+        node.hasBookmarked = false;
+        node.bookmarkRecordId = null;
+        toastMsg = "Bookmark removed";
+      } else {
+        const payload = {
+          bookmarking_contact_id: GLOBAL_AUTHOR_ID,
+          bookmarked_forum_id: node.id,
+        };
+        const res = await fetchGraphQL(CREATE_BOOKMARK_MUTATION, { payload });
+        const rawItem = findRawById(state.rawItems, node.id);
+        if (rawItem) {
+          rawItem.Bookmarking_Contacts_Data = [
+            ...safeArray(rawItem.Bookmarking_Contacts_Data),
+            {
+              id: res.data.createOBookmarkingContactBookmarkedForum.id,
+              bookmarked_forum_id: node.id,
+              Bookmarking_Contact: { id: GLOBAL_AUTHOR_ID },
+            },
+          ];
+        }
+        node.hasBookmarked = true;
+        node.bookmarkRecordId =
+          res.data.createOBookmarkingContactBookmarkedForum.id;
+        toastMsg = "Bookmarked";
       }
-      node.hasBookmarked = false;
-      node.bookmarkRecordId = null;
-      toastMsg = "Bookmark removed";
-    } else {
-      const payload = {
-        bookmarking_contact_id: GLOBAL_AUTHOR_ID,
-        bookmarked_forum_id: node.id,
-      };
-      const res = await fetchGraphQL(CREATE_BOOKMARK_MUTATION, { payload });
-      const rawItem = findRawById(state.rawItems, node.id);
-      if (rawItem) {
-        rawItem.Bookmarking_Contacts_Data = [
-          ...safeArray(rawItem.Bookmarking_Contacts_Data),
-          {
-            id: res.data.createOBookmarkingContactBookmarkedForum.id,
-            bookmarked_forum_id: node.id,
-            Bookmarking_Contact: { id: GLOBAL_AUTHOR_ID },
-          },
-        ];
-      }
-      node.hasBookmarked = true;
-      node.bookmarkRecordId = res.data.createOBookmarkingContactBookmarkedForum.id;
-      toastMsg = "Bookmarked";
+    } catch (err) {
+      console.log("error is", err);
+    } finally {
+      $(this).removeClass("state-disabled");
     }
-  } catch (err) {
-    console.log("error is", err);
-  } finally {
-    $(this).removeClass("state-disabled");
-  }
-  const $item = $(`[data-uid="${uid}"]`);
-  $item.find('.btn-bookmark').toggleClass('bookmarked', node.hasBookmarked);
-  if (toastMsg) showToast(toastMsg);
-});
+    const $item = $(`[data-uid="${uid}"]`);
+    $item.find(".btn-bookmark").toggleClass("bookmarked", node.hasBookmarked);
+    if (toastMsg) showToast(toastMsg);
+  });
 }

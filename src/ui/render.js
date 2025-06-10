@@ -1,16 +1,29 @@
-import { safeArray, timeAgo, parseDate } from '../utils/formatter.js';
-import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from '../config.js';
+import { safeArray, timeAgo, parseDate } from "../utils/formatter.js";
+import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from "../config.js";
 
 export function buildTree(existingPosts, rawItems) {
-  const byId = new Map();
-
-  const collapsedMap = new Map();
   (function gather(arr) {
     for (const item of arr) {
-      collapsedMap.set(item.uid, item.isCollapsed);
+      if (!state.collapsedState.hasOwnProperty(item.uid)) {
+        state.collapsedState[item.uid] = item.isCollapsed;
+      }
       gather(item.children || []);
     }
   })(existingPosts);
+
+  const rawById = new Map();
+  rawItems.forEach((raw) => {
+    rawById.set(raw.id, { ...raw, _children: [] });
+  });
+
+  const rawRoots = [];
+  rawById.forEach((raw) => {
+    if (raw.parent_forum_id && rawById.has(raw.parent_forum_id)) {
+      rawById.get(raw.parent_forum_id)._children.push(raw);
+    } else {
+      rawRoots.push(raw);
+    }
+  });
 
   function cloneState(uid) {
     if (state.collapsedState.hasOwnProperty(uid)) {
@@ -20,30 +33,16 @@ export function buildTree(existingPosts, rawItems) {
     return { isCollapsed: true };
   }
 
-  const nodes = rawItems.map((raw) => {
-    const node = mapItem(raw, raw.depth || 0);
-    Object.assign(node, cloneState(node.uid));
-    state.collapsedState[node.uid] = node.isCollapsed;
-    byId.set(node.id, node);
-    return node;
-  });
+  function convert(rawArr, depth = 0) {
+    return rawArr.map((raw) => {
+      const node = mapItem(raw, depth);
+      Object.assign(node, cloneState(node.uid));
+      node.children = convert(raw._children, depth + 1);
+      return node;
+    });
+  }
 
-  const roots = [];
-
-  nodes.forEach((node) => {
-    if (node.depth === 0 || !node.parentId) {
-      roots.push(node);
-    } else {
-      const parent = byId.get(node.parentId);
-      if (parent) {
-        parent.children.push(node);
-      } else {
-        roots.push(node);
-      }
-    }
-  });
-
-  return roots;
+  return convert(rawRoots);
 }
 
 export function mapItem(raw, depth = 0) {
@@ -61,13 +60,13 @@ export function mapItem(raw, depth = 0) {
 
   const fileContentRaw = raw.file_content;
   const fileContent =
-    typeof fileContentRaw === 'string'
+    typeof fileContentRaw === "string"
       ? fileContentRaw
-      : fileContentRaw?.link || '';
+      : fileContentRaw?.link || "";
   const fileName =
-    typeof fileContentRaw === 'string'
+    typeof fileContentRaw === "string"
       ? fileContentRaw
-      : fileContentRaw?.name || '';
+      : fileContentRaw?.name || "";
 
   return {
     id: raw.id,
@@ -75,11 +74,11 @@ export function mapItem(raw, depth = 0) {
     authorId: raw.author_id,
     canDelete: raw.author_id === GLOBAL_AUTHOR_ID,
     depth,
-    authorName: raw.Author?.display_name || 'Anonymous',
+    authorName: raw.Author?.display_name || "Anonymous",
     authorImage: raw.Author?.profile_image || DEFAULT_AVATAR,
     createdAt,
-    timeAgo: createdAt ? timeAgo(createdAt) : '',
-    content: raw.copy || '',
+    timeAgo: createdAt ? timeAgo(createdAt) : "",
+    content: raw.copy || "",
     upvotes: reactors.length,
     hasUpvoted: Boolean(userReaction),
     voteRecordId: userReaction?.id || null,
@@ -89,11 +88,11 @@ export function mapItem(raw, depth = 0) {
     isCollapsed: true,
     parentId: raw.parent_forum_id,
     isFeatured: raw.featured_forum === true,
-    fileType: raw.file_type || 'None',
-    fileContent: depth === 0 ? fileContent : '',
-    fileContentName: depth === 0 ? fileName : '',
+    fileType: raw.file_type || "None",
+    fileContent: depth === 0 ? fileContent : "",
+    fileContentName: depth === 0 ? fileName : "",
     fileContentComment: depth > 0 ? fileContent : null,
-    fileContentCommentName: depth > 0 ? fileName : '',
+    fileContentCommentName: depth > 0 ? fileName : "",
   };
 }
 
@@ -106,4 +105,4 @@ export function findNode(arr, uid) {
   return null;
 }
 
-export const tmpl = $.templates('#tmpl-item');
+export const tmpl = $.templates("#tmpl-item");
