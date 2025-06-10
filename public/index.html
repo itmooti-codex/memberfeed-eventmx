@@ -235,6 +235,9 @@
           <div class="info">
             <span class="name font-bold">{{:authorName}}</span>
             <span class="timestamp text-sm text-[#65676b] ml-2">{{:timeAgo}}</span>
+            {{if isFeatured}}
+            <i class="fa-solid fa-star text-yellow-500 ml-2" title="Featured"></i>
+            {{/if}}
           </div>
         </div>
            <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit" x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
@@ -250,7 +253,11 @@
 
     <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Hide this post</div>
     <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
+    {{if !isFeatured}}
     <div data-uid="{{:uid}}" class="btn-feature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Mark this post as featured</div>
+    {{else}}
+    <div data-uid="{{:uid}}" class="btn-unfeature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Remove featured mark</div>
+    {{/if}}
     <div data-uid="{{:uid}}" class="btn-disable-comments cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Disable comments on this post</div>
     {{else}}
     <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
@@ -310,7 +317,9 @@
           <div class = "flex items-center justify-between">
             <div class = "flex items-center gap-4">
               <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-thumbs-up"></i> <span class="ml-1">{{:upvotes}}</span></button>
+              {{if !commentsDisabled}}
               <button class="btn-comment flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-comment"></i></button>
+              {{/if}}
             </div>
             {{if depth === 0}}
               <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-bookmark"></i></button>
