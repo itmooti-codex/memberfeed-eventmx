@@ -14,8 +14,8 @@ import {
   GQL_QUERY,
   FETCH_CONTACTS_QUERY,
   GET_CONTACTS_BY_TAGS,
+  GET_CONTACTS_FOR_MODAL,
 } from "./api/queries.js";
-import { safeArray } from "./utils/formatter.js";
 import { buildTree } from "./ui/render.js";
 import { flattenComments } from "./utils/posts.js";
 import { mergeLists } from "./utils/merge.js";
@@ -220,6 +220,34 @@ function startApp() {
     });
   }
 }
-window.addEventListener("DOMContentLoaded", () => {
+function loadModalContacts() {
+  fetchGraphQL(GET_CONTACTS_FOR_MODAL).then((res) => {
+    const contacts = res?.data?.calcContacts || [];
+    const container = document.getElementById("cotactsToDisplay");
+    if (!container) return;
+
+    container.innerHTML = contacts.map((c) => `
+      <div @click="loadSelectedUserForum(); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
+        <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
+          <img
+            src="${c.Profile_Image || DEFAULT_AVATAR}"
+            alt="${c.Display_Name || 'Anonymous'}"
+            class="h-full w-full rounded-full object-cover" />
+        </div>
+        <div>${c.Display_Name || 'Anonymous'}</div>
+      </div>
+    `).join('');
+  });
+}
+
+
+
+function loadSelectedUserForum(){
+  console.log("Loading selected user forum");
   startApp();
+}
+window.loadSelectedUserForum = loadSelectedUserForum;
+window.addEventListener("DOMContentLoaded", () => {
+  loadModalContacts();
+
 });

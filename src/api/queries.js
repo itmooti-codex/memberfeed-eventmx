@@ -1,3 +1,4 @@
+import { contactForLoginModal } from "../config.js";
 export const FETCH_CONTACTS_QUERY = `
   query calcContacts {
     calcContacts(
@@ -346,3 +347,15 @@ query calcContacts(
   }
 }
 `;
+export const GET_CONTACTS_FOR_MODAL = `
+query calcContacts {
+  calcContacts(
+    query: [
+      { whereIn: { id: [${contactForLoginModal}], _OPERATOR_: in } }
+    ]
+  ) {
+    Display_Name: field(arg: ["display_name"])
+    Profile_Image: field(arg: ["profile_image"])
+    TagName: field(arg: ["TagsData", "Tag", "name"])
+  }
+}`;
