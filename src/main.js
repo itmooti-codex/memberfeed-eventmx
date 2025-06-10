@@ -151,7 +151,6 @@ function startApp(tagName, contactId) {
   const pageTag = GLOBAL_PAGE_TAG;
   let contactTagForQuery = "";
 
-  
   const contactTag = tagName;
   if (contactTag.startsWith(pageTag)) {
     contactTagForQuery = tagName;
@@ -174,7 +173,7 @@ function startApp(tagName, contactId) {
         display_name: current.Display_Name || "Anonymous",
         profile_image: current.Profile_Image || DEFAULT_AVATAR,
       };
-         updateCurrentUserUI(state);
+      updateCurrentUserUI(state);
     }
   });
 
@@ -240,8 +239,10 @@ function loadModalContacts() {
     container.innerHTML = contacts
       .map(
         (c) => `
-      <div @click="loadSelectedUserForum('${c.TagName}','${
-          c.Contact_ID
+      <div @click="loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${
+          c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"
+        }','${
+          c.Profile_Image || DEFAULT_AVATAR
         }'); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
         <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
           <img
@@ -257,8 +258,15 @@ function loadModalContacts() {
   });
 }
 
-function loadSelectedUserForum(tagName, contactId) {
+function loadSelectedUserForum(tagName, contactId, displayName, profileImage) {
   console.log("Loading selected user forum");
+  if (displayName || profileImage) {
+    state.currentUser = {
+      display_name: displayName || "Anonymous",
+      profile_image: profileImage || DEFAULT_AVATAR,
+    };
+    updateCurrentUserUI(state);
+  }
   startApp(tagName, contactId);
 }
 window.loadSelectedUserForum = loadSelectedUserForum;
