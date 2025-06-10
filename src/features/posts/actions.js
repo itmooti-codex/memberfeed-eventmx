@@ -6,6 +6,7 @@ import {
   DELETE_REACTION_MUTATION,
   CREATE_BOOKMARK_MUTATION,
   DELETE_BOOKMARK_MUTATION,
+  FETCH_CONTACTS_QUERY,
 } from "../../api/queries.js";
 import {
   state,
@@ -34,6 +35,23 @@ import { setupPlyr } from "../../utils/plyr.js";
 const deleteModal = document.getElementById("delete-modal");
 const deleteModalTitle = document.getElementById("delete-modal-title");
 let pendingDelete = null;
+
+async function ensureCurrentUser() {
+  if (state.currentUser) return;
+  try {
+    const res = await fetchGraphQL(FETCH_CONTACTS_QUERY);
+    const contacts = res?.data?.calcContacts || [];
+    const current = contacts.find((c) => c.Contact_ID === GLOBAL_AUTHOR_ID);
+    if (current) {
+      state.currentUser = {
+        display_name: current.Display_Name || "Anonymous",
+        profile_image: current.Profile_Image || DEFAULT_AVATAR,
+      };
+    }
+  } catch (err) {
+    console.error("Failed to fetch current user", err);
+  }
+}
 function processContent(rawHtml) {
   const isOnlyUrl = rawHtml.trim().match(/^(https?:\/\/[^\s]+)$/);
   const link = isOnlyUrl ? rawHtml.trim() : null;
@@ -252,6 +270,8 @@ export function initPostHandlers() {
     const computedType =
       depthOfForum === 0 ? "Post" : depthOfForum === 1 ? "Comment" : "Reply";
     forumType = forumType || computedType;
+
+    await ensureCurrentUser();
     console.log(
       "Creating forum with depth:",
       depthOfForum,
@@ -347,20 +367,25 @@ export function initPostHandlers() {
         if (forumType === "Post") {
           state.postsStore.unshift(newNode);
           raw.ForumComments = [];
+          state.rawItems.unshift(raw);
         } else {
           const parent = findNode(state.postsStore, uidParam);
           if (parent) {
-            parent.children.unshift(newNode);
+            parent.children.push(newNode);
             parent.isCollapsed = false;
             state.collapsedState[parent.uid] = false;
           } else {
             state.postsStore.unshift(newNode);
           }
+          state.rawItems.push(raw);
         }
-
-        state.rawItems.unshift(raw);
         state.postsStore = buildTree(state.postsStore, state.rawItems);
         applyFilterAndRender();
+        requestAnimationFrame(() => {
+          document
+            .querySelector(`[data-uid="${newNode.uid}"]`)
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
         state.ignoreNextSocketUpdate = true;
         showToast(forumType === "Post" ? "Post created" : "Comment added");
         if (forumType === "Post") {
