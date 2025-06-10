@@ -33,6 +33,7 @@
 
 <body class="max-w-[700px] bg-[#f1f1f1] flex flex-col items-center justify-center m-auto p-6 max-[768px]:p-2">
   <div x-data="{modalToSelectUser: true}">
+    <button @click="modalToSelectUser=true" class = "mb-2 block">Switch User</button>
     <div x-cloak x-show="modalToSelectUser" x-transition.opacity.duration.200ms
       x-trap.inert.noscroll="modalToSelectUser"
       class="fixed inset-0 z-30 flex items-end justify-center bg-black/20 p-4 pb-8 backdrop-blur-md sm:items-center lg:p-8"
