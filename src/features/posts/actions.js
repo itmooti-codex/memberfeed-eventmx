@@ -13,7 +13,7 @@ import {
   GLOBAL_AUTHOR_ID,
   DEFAULT_AVATAR,
 } from '../../config.js';
-import { findNode, tmpl, mapItem } from '../../ui/render.js';
+import { findNode, tmpl, buildTree } from '../../ui/render.js';
 import {
   pendingFile,
   fileTypeCheck,
@@ -124,6 +124,9 @@ $(document).on("click", ".btn-comment", function (e) {
   const node = findNode(state.postsStore, uid);
   const mentionHtml = `<span contenteditable="false" class="mention" data-mention-id="${node.authorId}">@${node.authorName}</span>&nbsp;`;
 
+  const nextDepth = (node.depth || 0) + 1;
+  const nextType = nextDepth === 1 ? 'Comment' : 'Reply';
+
   const $form = $(`
     <div class="comment-form my-2">
       <div class="toolbar mb-2">
@@ -138,7 +141,7 @@ $(document).on("click", ".btn-comment", function (e) {
         ${emojiPickerHtml}
         <button id="recordBtn" class="recordBtn"><i class="fa-solid fa-microphone"></i> Start Recording</button>
 
-        <button onclick="createForumToSubmit('1','Comment','comment-form','${uid}');">Submit Comment new</button>
+        <button onclick="createForumToSubmit('${nextDepth}','${nextType}','comment-form','${uid}');">Submit Comment new</button>
         </div>
         <input type="file" id="file-input" class="file-input" style="display: none;"
           accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
@@ -236,6 +239,8 @@ $(document).on("click", "#delete-confirm", function () {
     });
 });
 async function createForumToSubmit(depthOfForum, forumType, formElementId, uidParam){
+  const computedType = depthOfForum === 0 ? 'Post' : depthOfForum === 1 ? 'Comment' : 'Reply';
+  forumType = forumType || computedType;
   console.log("Creating forum with depth:", depthOfForum, "and type:", forumType);
   //requestAnimationFrame(setupPlyr);
   const $btn = $(this);
@@ -268,14 +273,14 @@ async function createForumToSubmit(depthOfForum, forumType, formElementId, uidPa
     published_date: Date.now(),
     depth: depthOfForum,
     Mentioned_Contacts_Data: [],
+    forum_type: forumType,
   };
 
-  if (forumType !== 'Post') {
-    payload.parent_forum_id = parentForumId || null;
-  } else {
+  if (forumType === 'Post') {
     payload.forum_status = 'Published - Not flagged';
     payload.forum_tag = GLOBAL_PAGE_TAG;
-    payload.forum_type = `${forumType}`;
+  } else {
+    payload.parent_forum_id = parentForumId || null;
   }
 
   editor.find("span.mention").each(function () {
@@ -311,11 +316,9 @@ async function createForumToSubmit(depthOfForum, forumType, formElementId, uidPa
           profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
         };
       }
-      const newNode = mapItem(raw, 0);
-      newNode.isCollapsed = false;
-      state.postsStore.unshift(newNode);
       raw.ForumComments = [];
       state.rawItems.unshift(raw);
+      state.postsStore = buildTree(state.postsStore, state.rawItems);
       applyFilterAndRender();
       state.ignoreNextSocketUpdate = true;
       showToast("Post created");
