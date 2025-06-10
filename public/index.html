@@ -249,18 +249,27 @@
       </div>
   <!-- Dropdown Menu -->
   <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false" x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 left-0 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]" role="menu">
-    {{if isAdmin}}
-
-    <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Hide this post</div>
-    <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
-    {{if !isFeatured}}
-    <div data-uid="{{:uid}}" class="btn-feature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Mark this post as featured</div>
+    {{if depth === 0}}
+      {{if isAdmin}}
+      <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Hide this post</div>
+      <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
+      {{if !isFeatured}}
+      <div data-uid="{{:uid}}" class="btn-feature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Mark this post as featured</div>
+      {{else}}
+      <div data-uid="{{:uid}}" class="btn-unfeature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Remove featured mark</div>
+      {{/if}}
+      {{if commentsDisabled}}
+      <div data-uid="{{:uid}}" class="btn-enable-comments cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Enable comments on this post</div>
+      {{else}}
+      <div data-uid="{{:uid}}" class="btn-disable-comments cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Disable comments on this post</div>
+      {{/if}}
+      {{else}}
+      <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
+      {{/if}}
     {{else}}
-    <div data-uid="{{:uid}}" class="btn-unfeature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Remove featured mark</div>
-    {{/if}}
-    <div data-uid="{{:uid}}" class="btn-disable-comments cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Disable comments on this post</div>
-    {{else}}
-    <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
+      <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">
+        {{if depth === 1}}Delete this comment{{else}}Delete this reply{{/if}}
+      </div>
     {{/if}}
   </div>
 </div>
