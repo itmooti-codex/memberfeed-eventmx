@@ -150,9 +150,10 @@ function startApp(tagName, contactId) {
   setGlobals(contactId, tagName);
   const pageTag = GLOBAL_PAGE_TAG;
   let contactTagForQuery = "";
+  
 
   const contactTag = tagName;
-  if (contactTag.startsWith(pageTag)) {
+  if (contactTag === pageTag+ "_Subscriber" || contactTag === pageTag + "_Admin") {
     contactTagForQuery = tagName;
     console.log("Extra Text:", contactTag.slice(pageTag.length));
   } else {
