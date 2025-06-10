@@ -34,12 +34,22 @@ export function buildTree(existingPosts, rawItems) {
   }
 
   function convert(rawArr, depth = 0) {
-    return rawArr.map((raw) => {
+    const list = [];
+    for (const raw of rawArr) {
       const node = mapItem(raw, depth);
       Object.assign(node, cloneState(node.uid));
-      node.children = convert(raw._children, depth + 1);
-      return node;
-    });
+      node.children = [];
+      list.push(node);
+      const nextDepth = depth === 0 ? 1 : 2;
+      if (raw._children && raw._children.length) {
+        if (depth === 0) {
+          node.children = convert(raw._children, nextDepth);
+        } else {
+          list.push(...convert(raw._children, 2));
+        }
+      }
+    }
+    return list;
   }
 
   return convert(rawRoots);
@@ -74,6 +84,9 @@ export function mapItem(raw, depth = 0) {
     authorId: raw.author_id,
     canDelete: raw.author_id === GLOBAL_AUTHOR_ID,
     depth,
+    forumType:
+      raw.forum_type ||
+      (depth === 0 ? "Post" : depth === 1 ? "Comment" : "Reply"),
     authorName: raw.Author?.display_name || "Anonymous",
     authorImage: raw.Author?.profile_image || DEFAULT_AVATAR,
     createdAt,
