@@ -366,7 +366,16 @@ export function initPostHandlers() {
           };
         }
         const nodeDepth = Number(raw.depth ?? depthOfForum);
-        const newNode = mapItem(raw, nodeDepth);
+        let parentDisable = false;
+        if (forumType !== "Post" && uidParam) {
+          const parentNode = findNode(state.postsStore, uidParam);
+          parentDisable = parentNode ? parentNode.commentsDisabled : false;
+        }
+        const newNode = mapItem(
+          raw,
+          nodeDepth,
+          parentDisable || raw.disable_new_comments === true
+        );
         newNode.isCollapsed = false;
 
         if (forumType === "Post") {
@@ -588,6 +597,12 @@ export function initPostHandlers() {
     const node = findNode(state.postsStore, uid);
     if (!node) return;
     $(this).addClass("state-disabled");
+    const updateTree = (n, val) => {
+      n.commentsDisabled = val;
+      if (Array.isArray(n.children)) {
+        n.children.forEach((c) => updateTree(c, val));
+      }
+    };
     try {
       await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
         id: node.id,
@@ -595,7 +610,7 @@ export function initPostHandlers() {
       });
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.disable_new_comments = true;
-      node.commentsDisabled = true;
+      updateTree(node, true);
       applyFilterAndRender();
       showToast("Comments disabled");
     } catch (err) {
@@ -611,6 +626,12 @@ export function initPostHandlers() {
     const node = findNode(state.postsStore, uid);
     if (!node) return;
     $(this).addClass("state-disabled");
+    const updateTree = (n, val) => {
+      n.commentsDisabled = val;
+      if (Array.isArray(n.children)) {
+        n.children.forEach((c) => updateTree(c, val));
+      }
+    };
     try {
       await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
         id: node.id,
@@ -618,7 +639,7 @@ export function initPostHandlers() {
       });
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.disable_new_comments = false;
-      node.commentsDisabled = false;
+      updateTree(node, false);
       applyFilterAndRender();
       showToast("Comments enabled");
     } catch (err) {

@@ -33,19 +33,20 @@ export function buildTree(existingPosts, rawItems) {
     return { isCollapsed: true };
   }
 
-  function convert(rawArr, depth = 0) {
+  function convert(rawArr, depth = 0, inheritedDisable = false) {
     const list = [];
     for (const raw of rawArr) {
-      const node = mapItem(raw, depth);
+      const nodeDisable = inheritedDisable || raw.disable_new_comments === true;
+      const node = mapItem(raw, depth, nodeDisable);
       Object.assign(node, cloneState(node.uid));
       node.children = [];
       list.push(node);
       const nextDepth = depth === 0 ? 1 : 2;
       if (raw._children && raw._children.length) {
         if (depth <=1 ) {
-          node.children = convert(raw._children, nextDepth);
+          node.children = convert(raw._children, nextDepth, nodeDisable);
         } else {
-          list.push(...convert(raw._children, 2));
+          list.push(...convert(raw._children, 2, nodeDisable));
         }
       }
     }
@@ -55,7 +56,7 @@ export function buildTree(existingPosts, rawItems) {
   return convert(rawRoots);
 }
 
-export function mapItem(raw, depth = 0) {
+export function mapItem(raw, depth = 0, isDisabled = false) {
   const createdAt = parseDate(raw.published_date || raw.created_at);
 
   const reactors = safeArray(raw.Forum_Reactors_Data);
@@ -102,7 +103,7 @@ export function mapItem(raw, depth = 0) {
     isCollapsed: true,
     parentId: raw.parent_forum_id,
     isFeatured: raw.featured_forum === true,
-    commentsDisabled: raw.disable_new_comments === true,
+    commentsDisabled: isDisabled,
     fileType: raw.file_type || "None",
     fileContent: depth === 0 ? fileContent : "",
     fileContentName: depth === 0 ? fileName : "",
