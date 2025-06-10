@@ -28,6 +28,7 @@ import "./features/uploads/handlers.js";
 import { initEmojiHandlers } from "./ui/emoji.js";
 import { initRichText } from "./utils/richText.js";
 import { setupPlyr } from "./utils/plyr.js";
+import { updateCurrentUserUI } from "./ui/user.js";
 let contactIncludedInTag = false;
 function terminateAndClose() {
   if (state.socket && state.socket.readyState === WebSocket.OPEN) {
@@ -173,6 +174,7 @@ function startApp(tagName, contactId) {
         display_name: current.Display_Name || "Anonymous",
         profile_image: current.Profile_Image || DEFAULT_AVATAR,
       };
+         updateCurrentUserUI(state);
     }
   });
 

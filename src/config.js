@@ -34,7 +34,7 @@ export const INACTIVITY_MS = 10 * 60 * 1000; // 10 minutes
 export let GLOBAL_AUTHOR_ID = 62;
 export let GLOBAL_PAGE_TAG ="Demo_Forum";
 export function setGlobals(authorId, pageTag) {
-  GLOBAL_AUTHOR_ID = authorId;
+  GLOBAL_AUTHOR_ID = Number(authorId);
   //GLOBAL_PAGE_TAG = pageTag;
 }
 export const DEFAULT_AVATAR =

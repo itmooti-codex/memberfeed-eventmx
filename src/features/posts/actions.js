@@ -31,13 +31,16 @@ import { showToast } from "../../ui/toast.js";
 import { removeRawById, findRawById } from "../../utils/posts.js";
 import { safeArray } from "../../utils/formatter.js";
 import { setupPlyr } from "../../utils/plyr.js";
-
+import { updateCurrentUserUI } from "../../ui/user.js";
 const deleteModal = document.getElementById("delete-modal");
 const deleteModalTitle = document.getElementById("delete-modal-title");
 let pendingDelete = null;
 
 async function ensureCurrentUser() {
-  if (state.currentUser) return;
+  if (state.currentUser) {
+    updateCurrentUserUI(state);
+    return;
+  }
   try {
     const res = await fetchGraphQL(FETCH_CONTACTS_QUERY);
     const contacts = res?.data?.calcContacts || [];
@@ -47,6 +50,7 @@ async function ensureCurrentUser() {
         display_name: current.Display_Name || "Anonymous",
         profile_image: current.Profile_Image || DEFAULT_AVATAR,
       };
+      updateCurrentUserUI(state);
     }
   } catch (err) {
     console.error("Failed to fetch current user", err);
