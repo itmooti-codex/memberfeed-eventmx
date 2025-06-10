@@ -28,7 +28,6 @@ if (typeof window !== "undefined") {
 }
 export const PROTOCOL = "vitalstats";
 export const SUB_ID = "forum-subscription";
-export const ANN_ID = "annoucnement-subscription";
 export const KEEPALIVE_MS = 80000;
 export const MAX_BACKOFF = 30000;
 export const INACTIVITY_MS = 10 * 60 * 1000; // 10 minutes
@@ -44,8 +43,7 @@ export const state = {
   socket: null,
   backoff: 1000,
   keepAliveTimer: null,
-  rawPosts: [],
-  rawComments: [],
+  rawItems: [],
   postsStore: [],
   collapsedState: {},
   currentFilter: "Recent",
@@ -61,5 +59,4 @@ export const state = {
 export const searchInput = document.getElementById("searchPost");
 export const clearIcon = document.querySelector(".clearIcon");
 export const searchIcon = document.querySelector(".searchIcon");
-export const renderedNotificationIds = new Set();
 export const contactForLoginModal = [40, 62, 73, 47];
