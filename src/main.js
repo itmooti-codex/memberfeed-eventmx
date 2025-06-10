@@ -154,8 +154,10 @@ function startApp(tagName, contactId) {
   
 
   const contactTag = tagName;
-  if (contactTag === pageTag+ "_Subscriber" || contactTag === pageTag + "_Admin") {
+  if (contactTag === pageTag + "_Subscriber" || contactTag === pageTag + "_Admin") {
     contactTagForQuery = tagName;
+    const role = contactTag.slice(pageTag.length + 1); // removes preceding '_'
+    state.userRole = role.toLowerCase();
     console.log("Extra Text:", contactTag.slice(pageTag.length));
   } else {
     console.log("No Match");
