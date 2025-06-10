@@ -49,8 +49,22 @@
           </h3>
         </div>
         <!-- Dialog Body -->
-        <div class="px-4 pb-4">
-          <div id="cotactsToDisplay" class="flex h-[100px] items-center justify-center">
+        <div class="px-4 pb-4" x-data="{activeUserTab: 'subscribers'}">
+          <div class="flex gap-4 mb-4">
+            <button :class="{'font-bold': activeUserTab==='subscribers'}" @click="activeUserTab='subscribers'">Subscribers</button>
+            <button :class="{'font-bold': activeUserTab==='admins'}" @click="activeUserTab='admins'">Admins</button>
+          </div>
+          <div id="subscriberContacts" x-show="activeUserTab==='subscribers'" class="flex h-[100px] items-center justify-center">
+            <div class="flex w-12">
+              <div class="relative">
+                <div class="w-12 h-12 rounded-full absolute  border border-solid border-gray-200"></div>
+                <div
+                  class="w-12 h-12 rounded-full animate-spin absolute border border-solid border-yellow-500 border-t-transparent">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="adminContacts" x-show="activeUserTab==='admins'" class="flex h-[100px] items-center justify-center">
             <div class="flex w-12">
               <div class="relative">
                 <div class="w-12 h-12 rounded-full absolute  border border-solid border-gray-200"></div>
@@ -233,10 +247,14 @@
   </div>
   <!-- Dropdown Menu -->
   <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false" x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 left-0 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]" role="menu">
+    {{if isAdmin}}
     <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Hide this post</div>
     <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
-    <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Mark this post as featured</div>
-    <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Disable comments on this post</div>
+    <div data-uid="{{:uid}}" class="btn-feature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Mark this post as featured</div>
+    <div data-uid="{{:uid}}" class="btn-disable-comments cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Disable comments on this post</div>
+    {{else}}
+    <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
+    {{/if}}
   </div>
 </div>
 

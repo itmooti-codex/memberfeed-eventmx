@@ -1,4 +1,7 @@
-import { contactForLoginModal } from "../config.js";
+import {
+  subscriberContactsForModal,
+  adminContactsForModal,
+} from "../config.js";
 
 export const FETCH_CONTACTS_QUERY = `
   query calcContacts {
@@ -52,6 +55,14 @@ export const DELETE_FORUM_POST_MUTATION = `
     }
   }
 `;
+
+export const UPDATE_FORUM_POST_MUTATION = `
+mutation updateForumPost($id: EduflowproForumPostID, $payload: ForumPostUpdateInput = null) {
+  updateForumPost(query: [{ where: { id: $id } }], payload: $payload) {
+    featured_forum
+    disable_new_comments
+  }
+}`;
 
 export const SUBSCRIBE_FORUM_POSTS = `
   subscription subscribeToForumPosts($forum_tag: TextScalar) {
@@ -157,11 +168,25 @@ query calcContacts($id: EduflowproContactID, $name: TextScalar) {
 }
 `;
 
-export const GET_CONTACTS_FOR_MODAL = `
+export const GET_SUBSCRIBER_CONTACTS_FOR_MODAL = `
 query calcContacts {
   calcContacts(
     query: [
-      { whereIn: { id: [${contactForLoginModal}], _OPERATOR_: in } }
+      { whereIn: { id: [${subscriberContactsForModal}], _OPERATOR_: in } }
+    ]
+  ) {
+    Display_Name: field(arg: ["display_name"])
+    Profile_Image: field(arg: ["profile_image"])
+    TagName: field(arg: ["TagsData", "Tag", "name"])
+    Contact_ID: field(arg: ["id"])
+  }
+}`;
+
+export const GET_ADMIN_CONTACTS_FOR_MODAL = `
+query calcContacts {
+  calcContacts(
+    query: [
+      { whereIn: { id: [${adminContactsForModal}], _OPERATOR_: in } }
     ]
   ) {
     Display_Name: field(arg: ["display_name"])
