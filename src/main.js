@@ -81,10 +81,7 @@ export function connect() {
     ) {
       const incoming = msg.payload.data.subscribeToForumPosts ?? [];
       state.rawItems = mergeLists(state.rawItems, incoming);
-      state.postsStore = buildTree(
-        state.postsStore,
-        state.rawItems
-      );
+      state.postsStore = buildTree(state.postsStore, state.rawItems);
       state.initialPostsLoaded = true;
       if (state.ignoreNextSocketUpdate) {
         state.ignoreNextSocketUpdate = false;
@@ -135,7 +132,7 @@ document.addEventListener("visibilitychange", () => {
     if (!state.socket || state.socket.readyState === WebSocket.CLOSED) {
       if (contactIncludedInTag) {
         connect();
-      }else{
+      } else {
         console.log("Contact not included in tag, skipping connection.");
       }
     } else if (!state.keepAliveTimer) {
@@ -149,9 +146,19 @@ document.addEventListener("visibilitychange", () => {
 });
 
 function startApp(tagName, contactId) {
-    setGlobals(contactId, tagName);
-  console.log('Global author ID:', GLOBAL_AUTHOR_ID);
-  console.log('Global page tag:', GLOBAL_PAGE_TAG);
+  setGlobals(contactId, tagName);
+  const pageTag = GLOBAL_PAGE_TAG;
+  let contactTagForQuery = "";
+
+  
+  const contactTag = tagName;
+  if (contactTag.startsWith(pageTag)) {
+    contactTagForQuery = tagName;
+    console.log("Extra Text:", contactTag.slice(pageTag.length));
+  } else {
+    console.log("No Match");
+  }
+
   tribute.attach(document.getElementById("post-editor"));
   fetchGraphQL(FETCH_CONTACTS_QUERY).then((res) => {
     const contacts = res.data.calcContacts;
@@ -176,7 +183,7 @@ function startApp(tagName, contactId) {
 
   fetchGraphQL(GET_CONTACTS_BY_TAGS, {
     id: GLOBAL_AUTHOR_ID,
-    name: GLOBAL_PAGE_TAG,
+    name: contactTagForQuery,
   }).then((res) => {
     const result = res?.data?.calcContacts;
     if (Array.isArray(result) && result.length > 0) {
@@ -225,31 +232,34 @@ function loadModalContacts() {
     const contacts = res?.data?.calcContacts || [];
     const container = document.getElementById("cotactsToDisplay");
     if (!container) return;
-    container.classList='';
+    container.classList = "";
     container.classList.add("grid", "grid-cols-2", "gap-4", "p-4");
 
-    container.innerHTML = contacts.map((c) => `
-      <div @click="loadSelectedUserForum('${c.TagName}','${c.Contact_ID}'); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
+    container.innerHTML = contacts
+      .map(
+        (c) => `
+      <div @click="loadSelectedUserForum('${c.TagName}','${
+          c.Contact_ID
+        }'); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
         <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
           <img
             src="${c.Profile_Image || DEFAULT_AVATAR}"
-            alt="${c.Display_Name || 'Anonymous'}"
+            alt="${c.Display_Name || "Anonymous"}"
             class="h-full w-full rounded-full object-cover" />
         </div>
-        <div>${c.Display_Name || 'Anonymous'}</div>
+        <div>${c.Display_Name || "Anonymous"}</div>
       </div>
-    `).join('');
+    `
+      )
+      .join("");
   });
 }
 
-
-
-function loadSelectedUserForum(tagName,contactId){
+function loadSelectedUserForum(tagName, contactId) {
   console.log("Loading selected user forum");
   startApp(tagName, contactId);
 }
 window.loadSelectedUserForum = loadSelectedUserForum;
 window.addEventListener("DOMContentLoaded", () => {
   loadModalContacts();
-
 });

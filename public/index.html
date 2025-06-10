@@ -287,6 +287,10 @@
         <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
             {{:children.length}} {{:children.length === 1 ? 'Comment' : 'Comments'}}
         </div>
+        {{else depth === 1}}
+        <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
+            {{:children.length}} {{:children.length === 1 ? 'Reply' : 'Replies'}}
+        </div>
         {{/if}}
         {{if children.length && !isCollapsed}}
           <div class="children visible my-4 {{:depth < 2 ? 'pl-8 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">

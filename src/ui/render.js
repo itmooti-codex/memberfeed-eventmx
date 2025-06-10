@@ -42,7 +42,7 @@ export function buildTree(existingPosts, rawItems) {
       list.push(node);
       const nextDepth = depth === 0 ? 1 : 2;
       if (raw._children && raw._children.length) {
-        if (depth === 0) {
+        if (depth <=1 ) {
           node.children = convert(raw._children, nextDepth);
         } else {
           list.push(...convert(raw._children, 2));
