@@ -138,7 +138,7 @@ $(document).on("click", ".btn-comment", function (e) {
         ${emojiPickerHtml}
         <button id="recordBtn" class="recordBtn"><i class="fa-solid fa-microphone"></i> Start Recording</button>
 
-        <button onclick="createForumToSubmit('1','Comment','comment-form');">Submit Comment new</button>
+        <button onclick="createForumToSubmit('1','Comment','comment-form','${uid}');">Submit Comment new</button>
         </div>
         <input type="file" id="file-input" class="file-input" style="display: none;"
           accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
@@ -235,7 +235,7 @@ $(document).on("click", "#delete-confirm", function () {
       pendingDelete = null;
     });
 });
-async function createForumToSubmit(depthOfForum,forumType,formElementId){
+async function createForumToSubmit(depthOfForum, forumType, formElementId, uidParam){
   console.log("Creating forum with depth:", depthOfForum, "and type:", forumType);
   //requestAnimationFrame(setupPlyr);
   const $btn = $(this);
@@ -257,22 +257,26 @@ async function createForumToSubmit(depthOfForum,forumType,formElementId){
   formWrapper.classList.add("state-disabled");
 
   let parentForumId;
-if(forumType !='Post'){
-  const node = findNode(state.postsStore, uid);
-  parentForumId = node.depth === 0 ? node.id : null;
-}
+  if (forumType !== 'Post' && uidParam) {
+    const node = findNode(state.postsStore, uidParam);
+    parentForumId = node ? node.id : null;
+  }
 
   const payload = {
     author_id: GLOBAL_AUTHOR_ID,
     copy: processContent(htmlContent),
-    parent_forum_id: parentForumId || null,
-    forum_status: "Published - Not flagged",
-    forum_tag: GLOBAL_PAGE_TAG,
     published_date: Date.now(),
     depth: depthOfForum,
     Mentioned_Contacts_Data: [],
-    forum_type: `${forumType}`
   };
+
+  if (forumType !== 'Post') {
+    payload.parent_forum_id = parentForumId || null;
+  } else {
+    payload.forum_status = 'Published - Not flagged';
+    payload.forum_tag = GLOBAL_PAGE_TAG;
+    payload.forum_type = `${forumType}`;
+  }
 
   editor.find("span.mention").each(function () {
     payload.Mentioned_Contacts_Data.push({
