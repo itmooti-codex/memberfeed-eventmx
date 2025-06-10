@@ -10,6 +10,8 @@ import {
   DEFAULT_AVATAR,
   GLOBAL_PAGE_TAG,
 } from "./config.js";
+import { setGlobals } from "./config.js";
+
 import {
   GQL_QUERY,
   FETCH_CONTACTS_QUERY,
@@ -150,7 +152,10 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
-function startApp() {
+function startApp(tagName, contactId) {
+    setGlobals(contactId, tagName);
+  console.log('Global author ID:', GLOBAL_AUTHOR_ID);
+  console.log('Global page tag:', GLOBAL_PAGE_TAG);
   tribute.attach(document.getElementById("post-editor"));
   fetchGraphQL(FETCH_CONTACTS_QUERY).then((res) => {
     const contacts = res.data.calcContacts;
@@ -229,7 +234,7 @@ function loadModalContacts() {
     container.classList.add("grid", "grid-cols-2", "gap-4", "p-4");
 
     container.innerHTML = contacts.map((c) => `
-      <div @click="loadSelectedUserForum(); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
+      <div @click="loadSelectedUserForum('${c.TagName}','${c.Contact_ID}'); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
         <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
           <img
             src="${c.Profile_Image || DEFAULT_AVATAR}"
@@ -244,9 +249,9 @@ function loadModalContacts() {
 
 
 
-function loadSelectedUserForum(){
+function loadSelectedUserForum(tagName,contactId){
   console.log("Loading selected user forum");
-  startApp();
+  startApp(tagName, contactId);
 }
 window.loadSelectedUserForum = loadSelectedUserForum;
 window.addEventListener("DOMContentLoaded", () => {

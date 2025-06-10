@@ -343,6 +343,7 @@ query calcContacts {
   ) {
     Display_Name: field(arg: ["display_name"])
     Profile_Image: field(arg: ["profile_image"])
-    TagName: field(arg: ["TagsData", "Tag", "name"])
+    TagName: field(arg: ["TagsData", "Tag", "name"]) 
+    Contact_ID: field(arg: ["id"])
   }
 }`;
