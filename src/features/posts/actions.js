@@ -150,7 +150,7 @@ export function initPostHandlers() {
     const node = findNode(state.postsStore, uid);
     const mentionHtml = `<span contenteditable="false" class="mention" data-mention-id="${node.authorId}">@${node.authorName}</span>&nbsp;`;
 
-    const nextDepth = (node.depth || 0) + 1;
+    const nextDepth = Math.min((node.depth || 0) + 1, 2);
     const nextType = nextDepth === 1 ? "Comment" : "Reply";
 
     const $form = $(`
@@ -167,7 +167,7 @@ export function initPostHandlers() {
         ${emojiPickerHtml}
         <button id="recordBtn" class="recordBtn"><i class="fa-solid fa-microphone"></i> Start Recording</button>
 
-        <button onclick="createForumToSubmit('${nextDepth}','${nextType}','comment-form','${uid}');">Submit Comment new</button>
+        <button onclick="createForumToSubmit('${nextDepth}','${nextType}','comment-form','${uid}');">Post</button>
         </div>
         <input type="file" id="file-input" class="file-input" style="display: none;"
           accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
