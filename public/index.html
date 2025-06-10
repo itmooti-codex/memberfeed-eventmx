@@ -244,7 +244,9 @@
     {{if depth === 0}}
       {{if isAdmin}}
       <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Hide this post</div>
+      {{if canDelete}}
       <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
+      {{/if}}
       {{if !isFeatured}}
       <div data-uid="{{:uid}}" class="btn-feature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Mark this post as featured</div>
       {{else}}
@@ -256,12 +258,16 @@
       <div data-uid="{{:uid}}" class="btn-disable-comments cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Disable comments on this post</div>
       {{/if}}
       {{else}}
+      {{if canDelete}}
       <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
       {{/if}}
+      {{/if}}
     {{else}}
+    {{if canDelete}}
       <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">
         {{if depth === 1}}Delete this comment{{else}}Delete this reply{{/if}}
       </div>
+    {{/if}}
     {{/if}}
   </div>
 </div>
