@@ -232,6 +232,7 @@
             {{/if}}
           </div>
         </div>
+        {{if canDelete}}
            <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit" x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
       <!-- Toggle Button -->
       <div x-on:click="threeDotsForAdmin = ! threeDotsForAdmin" aria-haspopup="true" x-on:keydown.space.prevent="openedWithKeyboard = true" x-on:keydown.enter.prevent="openedWithKeyboard = true" class="cursor-pointer" x-on:keydown.down.prevent="openedWithKeyboard = true">
@@ -243,7 +244,7 @@
   <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false" x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 left-0 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]" role="menu">
     {{if depth === 0}}
       {{if isAdmin}}
-      <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Hide this post</div>
+      <!-- <div class="cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Hide this post</div> -->
       {{if canDelete}}
       <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--primary)]" role="menuitem">Delete this post</div>
       {{/if}}
@@ -271,6 +272,7 @@
     {{/if}}
   </div>
 </div>
+{{/if}}
 
       </div>
      <div class="content my-2">{{:content}}</div>
