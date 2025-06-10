@@ -33,12 +33,8 @@
 
 <body class="max-w-[700px] bg-[#f1f1f1] flex flex-col items-center justify-center m-auto p-6 max-[768px]:p-2">
   <div x-data="{modalToSelectUser: true}">
-    <button x-on:click="modalToSelectUser = true" type="button"
-      class="whitespace-nowrap rounded-radius border border-primary dark:border-primary-dark bg-primary px-4 py-2 text-center text-sm font-medium tracking-wide text-on-primary transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 dark:bg-primary-dark dark:text-on-primary-dark dark:focus-visible:outline-primary-dark">Open
-      Modal</button>
     <div x-cloak x-show="modalToSelectUser" x-transition.opacity.duration.200ms
-      x-trap.inert.noscroll="modalToSelectUser" x-on:keydown.esc.window="modalToSelectUser = false"
-      x-on:click.self="modalToSelectUser = false"
+      x-trap.inert.noscroll="modalToSelectUser"
       class="fixed inset-0 z-30 flex items-end justify-center bg-black/20 p-4 pb-8 backdrop-blur-md sm:items-center lg:p-8"
       role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
       <!-- Modal Dialog -->
@@ -58,7 +54,8 @@
             <div class="flex">
               <div class="relative">
                 <div class="w-12 h-12 rounded-full absolute  border border-solid border-gray-200"></div>
-                <div class="w-12 h-12 rounded-full animate-spin absolute border border-solid border-yellow-500 border-t-transparent">
+                <div
+                  class="w-12 h-12 rounded-full animate-spin absolute border border-solid border-yellow-500 border-t-transparent">
                 </div>
               </div>
             </div>
@@ -341,3 +338,4 @@
 </body>
 
 </html>
+
