@@ -311,15 +311,33 @@ async function createForumToSubmit(depthOfForum, forumType, formElementId, uidPa
           profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
         };
       }
-      const newNode = mapItem(raw, 0);
+      const nodeDepth = raw.depth ?? depthOfForum;
+      const newNode = mapItem(raw, nodeDepth);
       newNode.isCollapsed = false;
-      state.postsStore.unshift(newNode);
-      raw.ForumComments = [];
+
+      if (forumType === 'Post') {
+        state.postsStore.unshift(newNode);
+        raw.ForumComments = [];
+      } else {
+        const parent = findNode(state.postsStore, uidParam);
+        if (parent) {
+          parent.children.unshift(newNode);
+          parent.isCollapsed = false;
+          state.collapsedState[parent.uid] = false;
+        } else {
+          state.postsStore.unshift(newNode);
+        }
+      }
+
       state.rawItems.unshift(raw);
       applyFilterAndRender();
       state.ignoreNextSocketUpdate = true;
-      showToast("Post created");
-      $("#create-post-modal").addClass("hidden").removeClass("show");
+      showToast(forumType === 'Post' ? 'Post created' : 'Comment added');
+      if (forumType === 'Post') {
+        $("#create-post-modal").addClass("hidden").removeClass("show");
+      } else {
+        $(`.${formElementId}`).remove();
+      }
     }
     editor.html("");
     setPendingFile(null);
