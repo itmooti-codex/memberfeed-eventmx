@@ -51,18 +51,6 @@ button {
   }
 }
 
-
-.btn-delete {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  border: none;
-  background: transparent;
-  color: #e53935;
-  cursor: pointer;
-  font-size: 0.8rem;
-}
-
 .btn-bookmark {
   margin-left: auto;
 }
