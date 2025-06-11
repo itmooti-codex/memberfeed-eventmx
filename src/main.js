@@ -98,11 +98,11 @@ export function connect() {
           iconColor: 'text-indigo-500',
           read: false,
           time: 'Just now',
+          forumCopy: item.copy || '',
         }));
 
-      state.notificationStore.push(...notifications);
+      state.notificationStore = notifications;
 
-      // Render notifications
       const notificationContainer = document.getElementById("notification-container");
       if (notificationContainer) {
         notificationContainer.innerHTML = $.templates("#tmpl-notification-item").render(state.notificationStore);
