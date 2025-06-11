@@ -287,3 +287,11 @@ window.loadSelectedUserForum = loadSelectedUserForum;
 window.addEventListener("DOMContentLoaded", () => {
   loadModalContacts();
 });
+$.views.helpers({
+  totalComments: function (comments) {
+    return comments.reduce((total, comment) => {
+      return total + 1 + (comment.children?.length || 0);
+    }, 0);
+  }
+});
+

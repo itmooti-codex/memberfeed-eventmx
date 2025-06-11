@@ -340,8 +340,9 @@
 
         {{if depth === 0}}
         <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
-            {{:children.length}} {{:children.length === 1 ? 'Comment' : 'Comments'}}
-        </div>
+  {{:~totalComments(children)}} {{:~totalComments(children) === 1 ? 'Comment' : 'Comments'}}
+</div>
+
         {{else depth === 1}}
         <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
             {{:children.length}} {{:children.length === 1 ? 'Reply' : 'Replies'}}
