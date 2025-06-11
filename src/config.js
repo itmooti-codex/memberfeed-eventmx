@@ -45,6 +45,7 @@ export const state = {
   keepAliveTimer: null,
   rawItems: [],
   postsStore: [],
+  notificationStore: [],
   collapsedState: {},
   currentFilter: "Recent",
   currentFileFilter: "All",

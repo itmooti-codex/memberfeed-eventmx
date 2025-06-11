@@ -361,19 +361,18 @@ button {
   white-space: nowrap;
 }
 
-.settings-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  transition: background-color 0.2s ease;
+.tabs button {
+  padding: 8px 16px;
+  margin-right: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  color: black;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
-.settings-option:hover {
-  background-color: #f9fafb;
-}
-.settings-option input[type="checkbox"],
-.settings-option input[type="radio"] {
-  transform: scale(1.1);
+
+.tabs button.active {
+  background-color: var(--primary);
+  color: white;
 }

@@ -2,27 +2,41 @@ import {
   subscriberContactsForModal,
   adminContactsForModal,
 } from "../config.js";
+import { GLOBAL_PAGE_TAG } from "../config.js";
 
 export const FETCH_CONTACTS_QUERY = `
-  query calcContacts {
-    calcContacts(
-      query: [
-        {
-          where: {
-            TagsData: [
-              {
-                where: { Tag: [{ where: { name: "2025" } }] }
+query calcContacts {
+  calcContacts(
+    query: [
+      {
+        where: {
+          TagsData: [
+            {
+              where: {
+                Tag: [{ where: { name: "${GLOBAL_PAGE_TAG}_Admin" } }]
               }
-            ]
-          }
+            }
+          ]
         }
-      ]
-    ) {
-      Contact_ID: field(arg: ["id"])
-      Display_Name: field(arg: ["display_name"])
-      Profile_Image: field(arg: ["profile_image"])
-    }
+      }
+      {orWhere: {
+          TagsData: [
+            {
+              where: {
+                Tag: [{ where: { name: "${GLOBAL_PAGE_TAG}_Subscriber" } }]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  ) {
+    Contact_ID: field(arg: ["id"])
+    Display_Name: field(arg: ["display_name"])
+    Profile_Image: field(arg: ["profile_image"])
   }
+}
+
 `;
 
 export const CREATE_FORUM_POST_MUTATION = `
@@ -38,7 +52,8 @@ mutation createForumPost($payload: ForumPostCreateInput = null) {
     copy
     forum_status
     depth
-    forum_type
+    forum_type 
+    formatted_json 
     parent_forum_id
     forum_tag
     Mentioned_Contacts_Data{
@@ -68,7 +83,16 @@ export const SUBSCRIBE_FORUM_POSTS = `
   subscription subscribeToForumPosts($forum_tag: TextScalar) {
     subscribeToForumPosts(
       query: [
-        { where: { forum_status: "Published - Not flagged" } }
+             {
+        whereGroup: [
+          {
+            where: {
+              forum_status: "Published - Not flagged"
+            }
+          }
+          { orWhere: { forum_status: "Scheduled" } }
+        ]
+      }
         { andWhere: { forum_tag: $forum_tag } }
       ]
       orderBy: [{ path: ["published_date"], type: desc }]
@@ -78,6 +102,7 @@ export const SUBSCRIBE_FORUM_POSTS = `
         display_name
         profile_image
       }
+      formatted_json
       created_at
       published_date
       disable_new_comments
@@ -195,3 +220,16 @@ query calcContacts {
     Contact_ID: field(arg: ["id"])
   }
 }`;
+export const UPDATE_SCHEDULED_TO_POST=`
+mutation updateForumPost(
+  $unique_id: StringScalar_0_8
+  $payload: ForumPostUpdateInput = null
+) {
+  updateForumPost(
+    query: [{ where: { unique_id: $unique_id } }]
+    payload: $payload
+  ) {
+    forum_status
+  }
+}
+`

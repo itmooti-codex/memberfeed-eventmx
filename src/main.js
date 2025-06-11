@@ -10,14 +10,16 @@ import {
   DEFAULT_AVATAR,
   GLOBAL_PAGE_TAG,
 } from "./config.js";
+window.state = state;
 import { setGlobals } from "./config.js";
-
+import { showToast } from "./ui/toast.js";
 import {
   SUBSCRIBE_FORUM_POSTS,
   FETCH_CONTACTS_QUERY,
   GET_CONTACTS_BY_TAGS,
   GET_SUBSCRIBER_CONTACTS_FOR_MODAL,
   GET_ADMIN_CONTACTS_FOR_MODAL,
+  UPDATE_SCHEDULED_TO_POST
 } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
 import { mergeLists } from "./utils/merge.js";
@@ -86,6 +88,26 @@ export function connect() {
       state.rawItems = mergeLists(state.rawItems, incoming);
       state.postsStore = buildTree(state.postsStore, state.rawItems);
       state.initialPostsLoaded = true;
+      // Push new notification to the store
+      const notifications = incoming
+        .filter(item => item.formatted_json && item.formatted_json !== '')
+        .map(item => ({
+          id: item.id,
+          text: `${item.formatted_json}`,
+          icon: 'fa-file-alt',
+          iconColor: 'text-indigo-500',
+          read: false,
+          time: item.published_date || item.created_at,
+          forumCopy: item.copy || '',
+        }));
+
+      state.notificationStore = notifications;
+
+      const notificationContainer = document.getElementById("notification-container");
+      if (notificationContainer) {
+        notificationContainer.innerHTML = $.templates("#tmpl-notification-item").render(state.notificationStore);
+      }
+
       if (state.ignoreNextSocketUpdate) {
         state.ignoreNextSocketUpdate = false;
       } else {
@@ -240,13 +262,24 @@ function renderContacts(list, containerId) {
   container.classList = "";
   container.classList.add("grid", "grid-cols-2", "gap-4", "p-4");
   container.innerHTML = list
-    .map(
-      (c) => `
-    <div @click="loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${
-        c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"
-      }','${
-        c.Profile_Image || DEFAULT_AVATAR
-      }'); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
+    .map((c) => {
+      const isAdmin = containerId === "adminContacts";
+      return `
+    <div 
+      @click="${isAdmin
+          ? `
+            document.getElementById('adminSchedulePostButton').classList.remove('hidden');
+            document.getElementById('tabsForAdmin').classList.remove('hidden');
+          `
+          : `
+            document.getElementById('adminSchedulePostButton').classList.add('hidden');
+            document.getElementById('tabsForAdmin').classList.add('hidden');
+          `
+        }
+      loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}');
+      modalToSelectUser=false;" 
+      class="cursor-pointer flex items-center flex-col "
+    >
       <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
         <img
           src="${c.Profile_Image || DEFAULT_AVATAR}"
@@ -255,8 +288,9 @@ function renderContacts(list, containerId) {
       </div>
       <div>${c.Display_Name || "Anonymous"}</div>
     </div>
-  `
-    )
+  `;
+    })
+
     .join("");
 }
 
@@ -287,11 +321,83 @@ window.loadSelectedUserForum = loadSelectedUserForum;
 window.addEventListener("DOMContentLoaded", () => {
   loadModalContacts();
 });
+
 $.views.helpers({
   totalComments: function (comments) {
     return comments.reduce((total, comment) => {
       return total + 1 + (comment.children?.length || 0);
     }, 0);
+  },
+  formatDate: function (unix) {
+    if (!unix) return "";
+    const date = new Date(Number(unix) * 1000);
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    return `${day} ${month}, ${year}`;
   }
 });
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".postNowFromScheduled");
+  if (!btn) return;
+  btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
+  const uid = btn.getAttribute("data-uid");
+  if (!uid) return;
+
+  const mutation = `
+    mutation updateForumPost($unique_id: StringScalar_0_8, $payload: ForumPostUpdateInput = null) {
+      updateForumPost(
+        query: [{ where: { unique_id: $unique_id } }]
+        payload: $payload
+      ) {
+        forum_status
+      }
+    }
+  `;
+
+  const variables = {
+    unique_id: uid,
+    payload: {
+      forum_status: "Published - Not flagged"
+    }
+  };
+
+  try {
+    const response = await fetchGraphQL(UPDATE_SCHEDULED_TO_POST, variables, mutation);
+   showToast("Post updated successfully!");
+    btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
+  } catch (error) {
+    console.error("Error updating post:", error);
+  }
+});
+
+// tab functionality for Published and Scheduled Post
+
+const publishedTab = document.getElementById("publishedTab");
+const scheduledTab = document.getElementById("scheduledTab");
+
+function showPublished() {
+  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.style.display = '');
+  document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = 'none');
+
+  publishedTab.classList.add("active");
+  scheduledTab.classList.remove("active");
+}
+
+function showScheduled() {
+  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = '');
+
+  scheduledTab.classList.add("active");
+  publishedTab.classList.remove("active");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  publishedTab.addEventListener("click", showPublished);
+  scheduledTab.addEventListener("click", showScheduled);
+  showPublished(); // Default state
+});
+
+
 
