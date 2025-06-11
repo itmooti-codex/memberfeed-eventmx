@@ -68,7 +68,16 @@ export const SUBSCRIBE_FORUM_POSTS = `
   subscription subscribeToForumPosts($forum_tag: TextScalar) {
     subscribeToForumPosts(
       query: [
-        { where: { forum_status: "Published - Not flagged" } }
+             {
+        whereGroup: [
+          {
+            where: {
+              forum_status: "Published - Not flagged"
+            }
+          }
+          { orWhere: { forum_status: "Scheduled" } }
+        ]
+      }
         { andWhere: { forum_tag: $forum_tag } }
       ]
       orderBy: [{ path: ["published_date"], type: desc }]
