@@ -11,7 +11,7 @@ import {
   GLOBAL_PAGE_TAG,
 } from "./config.js";
 import { setGlobals } from "./config.js";
-
+import { showToast } from "./ui/toast.js";
 import {
   SUBSCRIBE_FORUM_POSTS,
   FETCH_CONTACTS_QUERY,
@@ -309,7 +309,7 @@ $.views.helpers({
 document.addEventListener("click", async (e) => {
   const btn = e.target.closest(".postNowFromScheduled");
   if (!btn) return;
-
+  btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
   const uid = btn.getAttribute("data-uid");
   if (!uid) return;
 
@@ -333,7 +333,8 @@ document.addEventListener("click", async (e) => {
 
   try {
     const response = await fetchGraphQL(UPDATE_SCHEDULED_TO_POST, variables, mutation);
-    console.log("Post updated:", response);
+   showToast("Post updated successfully!");
+    btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
   } catch (error) {
     console.error("Error updating post:", error);
   }
