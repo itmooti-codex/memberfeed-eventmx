@@ -315,6 +315,7 @@
       </div>
     </div>
   </div>
+  <div id="notification-container" class="notifications flex flex-col gap-2"></div>
   <div id="forum-root" class="w-full"></div>
 
   <!-- Delete confirmation modal -->
@@ -327,6 +328,16 @@
       </div>
     </div>
   </div>
+  <!-- notification template -->
+  <script id="tmpl-notification-item" type="text/x-jsrender">
+    <div class="notification-item flex items-start gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100">
+      <i class="fa-solid fa-bell text-gray-600"></i>
+      <div class="flex-1">
+        <p class="text-sm text-gray-900 font-medium">{{:text}}</p>
+        <span class="text-xs text-gray-500">{{:timeAgo}}</span>
+      </div>
+    </div>
+  </script>
   <script id="tmpl-item" type="text/x-jsrender">
     {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
       <div 

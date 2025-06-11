@@ -10,6 +10,7 @@ import {
   DEFAULT_AVATAR,
   GLOBAL_PAGE_TAG,
 } from "./config.js";
+window.state = state;
 import { setGlobals } from "./config.js";
 import { showToast } from "./ui/toast.js";
 import {
@@ -87,6 +88,26 @@ export function connect() {
       state.rawItems = mergeLists(state.rawItems, incoming);
       state.postsStore = buildTree(state.postsStore, state.rawItems);
       state.initialPostsLoaded = true;
+      // Push new notification to the store
+      const notifications = incoming
+        .filter(item => item.formatted_json && item.formatted_json !== '')
+        .map(item => ({
+          id: item.id,
+          text: `${item.formatted_json}`,
+          icon: 'fa-file-alt',
+          color: 'text-indigo-500',
+          read: false,
+          time: 'Just now',
+        }));
+
+      state.notificationStore.push(...notifications);
+
+      // Render notifications
+      const notificationContainer = document.getElementById("notification-container");
+      if (notificationContainer) {
+        notificationContainer.innerHTML = $.templates("#tmpl-notification-item").render(state.notificationStore);
+      }
+
       if (state.ignoreNextSocketUpdate) {
         state.ignoreNextSocketUpdate = false;
       } else {

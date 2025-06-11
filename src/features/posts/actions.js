@@ -317,11 +317,28 @@ export function initPostHandlers() {
         forumStatusForPayload = "Scheduled";
       }
     }
+    // Creating Notification content
+    let contentForNotification = '';
+    const matches = [...htmlContent.matchAll(/data-mention-id=["'](\d+)["']/g)];
+    if (matches.length > 0) {
+      console.log("Has attribute data-mention-id");
+      const ids = matches.map(m => m[1]);
+      console.log("IDs:", ids);
+
+    } else {
+      console.log("Does not have attribute data-mention-id");
+      if (forumType === "Post") {
+        contentForNotification = 'A new post has been created';
+      }
+    }
+
+
     const payload = {
       author_id: GLOBAL_AUTHOR_ID,
       copy: processContent(htmlContent),
       published_date: publishedDatePayload,
       depth: depthOfForum,
+      formatted_json: contentForNotification,
       Mentioned_Contacts_Data: [],
       forum_type: forumType,
       forum_status: forumStatusForPayload,
