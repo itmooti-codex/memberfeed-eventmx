@@ -214,6 +214,7 @@ function startApp(tagName, contactId) {
     trigger.addEventListener("click", () => {
       modal.classList.remove("hidden");
       modal.classList.add("show");
+      document.getElementById("post-editor").focus();
     });
   }
 
