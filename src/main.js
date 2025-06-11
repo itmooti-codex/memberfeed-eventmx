@@ -18,6 +18,7 @@ import {
   GET_CONTACTS_BY_TAGS,
   GET_SUBSCRIBER_CONTACTS_FOR_MODAL,
   GET_ADMIN_CONTACTS_FOR_MODAL,
+  UPDATE_SCHEDULED_TO_POST
 } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
 import { mergeLists } from "./utils/merge.js";
@@ -294,6 +295,49 @@ $.views.helpers({
     return comments.reduce((total, comment) => {
       return total + 1 + (comment.children?.length || 0);
     }, 0);
+  },
+  formatDate: function (unix) {
+    if (!unix) return "";
+    const date = new Date(Number(unix) * 1000);
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    return `${day} ${month}, ${year}`;
   }
 });
+
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".postNowFromScheduled");
+  if (!btn) return;
+
+  const uid = btn.getAttribute("data-uid");
+  if (!uid) return;
+
+  const mutation = `
+    mutation updateForumPost($unique_id: StringScalar_0_8, $payload: ForumPostUpdateInput = null) {
+      updateForumPost(
+        query: [{ where: { unique_id: $unique_id } }]
+        payload: $payload
+      ) {
+        forum_status
+      }
+    }
+  `;
+
+  const variables = {
+    unique_id: uid,
+    payload: {
+      forum_status: "Published - Not flagged"
+    }
+  };
+
+  try {
+    const response = await fetchGraphQL(UPDATE_SCHEDULED_TO_POST, variables, mutation);
+    console.log("Post updated:", response);
+  } catch (error) {
+    console.error("Error updating post:", error);
+  }
+});
+
+
 

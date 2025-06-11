@@ -204,3 +204,16 @@ query calcContacts {
     Contact_ID: field(arg: ["id"])
   }
 }`;
+export const UPDATE_SCHEDULED_TO_POST=`
+mutation updateForumPost(
+  $unique_id: StringScalar_0_8
+  $payload: ForumPostUpdateInput = null
+) {
+  updateForumPost(
+    query: [{ where: { unique_id: $unique_id } }]
+    payload: $payload
+  ) {
+    forum_status
+  }
+}
+`

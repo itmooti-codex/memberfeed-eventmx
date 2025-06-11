@@ -269,8 +269,10 @@ export function initPostHandlers() {
     depthOfForum,
     forumType,
     formElementId,
-    uidParam
+    uidParam,
+
   ) {
+   console.log(rest)
     depthOfForum = Number(depthOfForum);
     const computedType =
       depthOfForum === 0 ? "Post" : depthOfForum === 1 ? "Comment" : "Reply";
