@@ -240,23 +240,24 @@ function renderContacts(list, containerId) {
   container.classList = "";
   container.classList.add("grid", "grid-cols-2", "gap-4", "p-4");
   container.innerHTML = list
-    .map(
-      (c) => `
-    <div @click="loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${
-        c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"
-      }','${
-        c.Profile_Image || DEFAULT_AVATAR
-      }'); modalToSelectUser=false;" class="cursor-pointer flex items-center flex-col">
-      <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
-        <img
-          src="${c.Profile_Image || DEFAULT_AVATAR}"
-          alt="${c.Display_Name || "Anonymous"}"
-          class="h-full w-full rounded-full object-cover" />
+    .map((c) => {
+      const isAdmin = containerId === "adminContacts";
+      return `
+      <div 
+       
+        @click="${isAdmin ? `document.getElementById('adminSchedulePostButton').classList.remove('hidden');` : `document.getElementById('adminSchedulePostButton').classList.add('hidden');`} loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}'); modalToSelectUser=false;" 
+        class="cursor-pointer flex items-center flex-col "
+      >
+        <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
+          <img
+            src="${c.Profile_Image || DEFAULT_AVATAR}"
+            alt="${c.Display_Name || "Anonymous"}"
+            class="h-full w-full rounded-full object-cover" />
+        </div>
+        <div>${c.Display_Name || "Anonymous"}</div>
       </div>
-      <div>${c.Display_Name || "Anonymous"}</div>
-    </div>
-  `
-    )
+    `;
+    })
     .join("");
 }
 
@@ -287,6 +288,7 @@ window.loadSelectedUserForum = loadSelectedUserForum;
 window.addEventListener("DOMContentLoaded", () => {
   loadModalContacts();
 });
+
 $.views.helpers({
   totalComments: function (comments) {
     return comments.reduce((total, comment) => {

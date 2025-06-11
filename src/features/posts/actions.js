@@ -295,7 +295,7 @@ export function initPostHandlers() {
     $btn.prop("disabled", true);
     $("#upload-options").prop("disabled", true);
     formWrapper.classList.add("state-disabled");
-    if(forumType === "Post") {
+    if (forumType === "Post") {
       document.querySelector(".createPostMainModal").classList.add("state-disabled");
     }
 
@@ -304,15 +304,26 @@ export function initPostHandlers() {
       const node = findNode(state.postsStore, uidParam);
       parentForumId = node ? node.id : null;
     }
-
+    let publishedDatePayload = Date.now();
+    let forumStatusForPayload = "Published - Not flagged";
+    let scheduledDateUnix = document.getElementById('scheduledDateContainer');
+    if (forumType === "Post" && scheduledDateUnix) {
+      if (scheduledDateUnix.innerText.trim() == '') {
+        publishedDatePayload = Date.now();
+        forumStatusForPayload = "Published - Not flagged";
+      } else {
+        publishedDatePayload = scheduledDateUnix.innerText.trim();
+        forumStatusForPayload = "Scheduled";
+      }
+    }
     const payload = {
       author_id: GLOBAL_AUTHOR_ID,
       copy: processContent(htmlContent),
-      published_date: Date.now(),
+      published_date: publishedDatePayload,
       depth: depthOfForum,
       Mentioned_Contacts_Data: [],
       forum_type: forumType,
-      forum_status: "Published - Not flagged",
+      forum_status: forumStatusForPayload,
     };
 
     if (forumType === "Post") {
@@ -405,6 +416,7 @@ export function initPostHandlers() {
           $(`.${formElementId}`).remove();
         }
       }
+      scheduledDateUnix.textContent = '';
       editor.html("");
       setPendingFile(null);
       setFileTypeCheck("");
