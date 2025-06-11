@@ -360,3 +360,19 @@ button {
   border-radius: 4px;
   white-space: nowrap;
 }
+
+.tabs button {
+  padding: 8px 16px;
+  margin-right: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  color: black;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.tabs button.active {
+  background-color: var(--primary);
+  color: white;
+}

@@ -244,21 +244,32 @@ function renderContacts(list, containerId) {
     .map((c) => {
       const isAdmin = containerId === "adminContacts";
       return `
-      <div 
-       
-        @click="${isAdmin ? `document.getElementById('adminSchedulePostButton').classList.remove('hidden');` : `document.getElementById('adminSchedulePostButton').classList.add('hidden');`} loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}'); modalToSelectUser=false;" 
-        class="cursor-pointer flex items-center flex-col "
-      >
-        <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
-          <img
-            src="${c.Profile_Image || DEFAULT_AVATAR}"
-            alt="${c.Display_Name || "Anonymous"}"
-            class="h-full w-full rounded-full object-cover" />
-        </div>
-        <div>${c.Display_Name || "Anonymous"}</div>
+    <div 
+      @click="${isAdmin
+          ? `
+            document.getElementById('adminSchedulePostButton').classList.remove('hidden');
+            document.getElementById('tabsForAdmin').classList.remove('hidden');
+          `
+          : `
+            document.getElementById('adminSchedulePostButton').classList.add('hidden');
+            document.getElementById('tabsForAdmin').classList.add('hidden');
+          `
+        }
+      loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}');
+      modalToSelectUser=false;" 
+      class="cursor-pointer flex items-center flex-col "
+    >
+      <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
+        <img
+          src="${c.Profile_Image || DEFAULT_AVATAR}"
+          alt="${c.Display_Name || "Anonymous"}"
+          class="h-full w-full rounded-full object-cover" />
       </div>
-    `;
+      <div>${c.Display_Name || "Anonymous"}</div>
+    </div>
+  `;
     })
+
     .join("");
 }
 
@@ -338,6 +349,33 @@ document.addEventListener("click", async (e) => {
   } catch (error) {
     console.error("Error updating post:", error);
   }
+});
+
+// tab functionality for Published and Scheduled Post
+
+const publishedTab = document.getElementById("publishedTab");
+const scheduledTab = document.getElementById("scheduledTab");
+
+function showPublished() {
+  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.style.display = '');
+  document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = 'none');
+
+  publishedTab.classList.add("active");
+  scheduledTab.classList.remove("active");
+}
+
+function showScheduled() {
+  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = '');
+
+  scheduledTab.classList.add("active");
+  publishedTab.classList.remove("active");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  publishedTab.addEventListener("click", showPublished);
+  scheduledTab.addEventListener("click", showScheduled);
+  showPublished(); // Default state
 });
 
 

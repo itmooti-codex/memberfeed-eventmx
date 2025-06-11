@@ -312,7 +312,10 @@
       </div>
     </div>
   </div>
-
+    <div class="tabs mb-4 hidden" id="tabsForAdmin">
+      <button id="publishedTab" class="px-4 py-2 bg-blue-500 text-white mr-2">Published</button>
+      <button id="scheduledTab" class="px-4 py-2 bg-gray-300 text-black">Scheduled</button>
+    </div>
   <div id="forum-root" class="w-full"></div>
 
   <!-- Delete confirmation modal -->
@@ -325,13 +328,15 @@
       </div>
     </div>
   </div>
-
   <script id="tmpl-item" type="text/x-jsrender">
     {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
       <div 
-        class="item rounded bg-white shadow-xl flex flex-col gap-2 my-4 p-4 relative border-2 border-[#e9ebee]" 
+        class="item rounded bg-white shadow-xl flex flex-col gap-2 my-4 p-4 relative border-2 border-[#e9ebee] " 
         data-uid="{{:uid}}" 
-        data-depth="{{:depth}}">
+        data-depth="{{:depth}}"
+        data-forumStatus="{{:forumStatus}}"
+        style="{{if isAdmin && forumStatus === 'Scheduled'}}display:none;{{/if}}"
+        >
         <div class="flex items-start justify-between">
         <div class="author flex items-center mb-2">
           <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]"
