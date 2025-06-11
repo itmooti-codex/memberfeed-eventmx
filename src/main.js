@@ -97,7 +97,7 @@ export function connect() {
           icon: 'fa-file-alt',
           iconColor: 'text-indigo-500',
           read: false,
-          time: 'Just now',
+          time: item.published_date || item.created_at,
           forumCopy: item.copy || '',
         }));
 
