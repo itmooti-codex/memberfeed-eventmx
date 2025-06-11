@@ -277,12 +277,6 @@ export function initPostHandlers() {
     forumType = forumType || computedType;
 
     await ensureCurrentUser();
-    console.log(
-      "Creating forum with depth:",
-      depthOfForum,
-      "and type:",
-      forumType
-    );
     //requestAnimationFrame(setupPlyr);
     const $btn = $(this);
     const formWrapper = document.querySelector(`.${formElementId}`);
@@ -301,6 +295,9 @@ export function initPostHandlers() {
     $btn.prop("disabled", true);
     $("#upload-options").prop("disabled", true);
     formWrapper.classList.add("state-disabled");
+    if(forumType === "Post") {
+      document.querySelector(".createPostMainModal").classList.add("state-disabled");
+    }
 
     let parentForumId;
     if (forumType !== "Post" && uidParam) {
@@ -425,6 +422,9 @@ export function initPostHandlers() {
 
       $("#upload-options").prop("disabled", false);
       formWrapper.classList.remove("state-disabled");
+      if (forumType === "Post") {
+        document.querySelector(".createPostMainModal").classList.remove("state-disabled");
+      }
     }
   }
   window.createForumToSubmit = createForumToSubmit;
