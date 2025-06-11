@@ -95,7 +95,7 @@ export function connect() {
           id: item.id,
           text: `${item.formatted_json}`,
           icon: 'fa-file-alt',
-          color: 'text-indigo-500',
+          iconColor: 'text-indigo-500',
           read: false,
           time: 'Just now',
         }));
