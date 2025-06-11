@@ -31,9 +31,81 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body class="max-w-[700px] bg-[#f1f1f1] flex flex-col items-center justify-center m-auto p-6 max-[768px]:p-2">
+<body x-data="{
+    showNotifications: false,
+    showUnreadOnly: false,
+    notifications: [
+  { id: 1, text: 'A new post has been created', icon: 'fa-file-alt', color: 'text-indigo-500', read: false, time: 'Just now' },
+  { id: 2, text: 'A new comment has been added to your post', icon: 'fa-comment-dots', color: 'text-blue-500', read: false, time: '5 mins ago' },
+  { id: 3, text: 'Someone liked your post or comment', icon: 'fa-thumbs-up', color: 'text-pink-500', read: true, time: '30 mins ago' },
+  { id: 4, text: 'You have been mentioned in a post or comment', icon: 'fa-at', color: 'text-teal-500', read: false, time: '1 hour ago' }
+]
+,
+    markAllAsRead() {
+      this.notifications.forEach(n => n.read = true);
+    }
+}" class="max-w-[700px] bg-[#f1f1f1] flex flex-col items-center justify-center m-auto p-6 max-[768px]:p-2">
+
+  <div class="relative">
+
+    <button @click="showNotifications = !showNotifications"
+      class="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 focus:outline-none">
+      <i class="fa-solid fa-bell text-gray-600"></i>
+    </button>
+
+    <div x-show="showNotifications" x-transition
+      class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-50 p-4">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-semibold text-lg">Notifications</h3>
+        <div class="flex items-center gap-3 text-gray-500">
+          <button x-tooltip="'Settings'" class="hover:text-blue-600"><i class="fa-solid fa-gear"></i></button>
+          <button @click="showNotifications = false" x-tooltip="'Close'" class="hover:text-red-500"><i
+              class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <!-- Action Bar -->
+      <div class="flex items-center justify-between mb-3">
+        <button @click="markAllAsRead()" x-tooltip="'Mark all as read'" class="text-blue-600 hover:text-blue-800">
+          <i class="fa-solid fa-envelope-open"></i>
+        </button>
+        <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+          <input type="checkbox" x-model="showUnreadOnly" class="form-checkbox text-blue-600">
+          Show unread only
+        </label>
+      </div>
+
+      <!-- Notification List -->
+      <ul class="space-y-2 max-h-80 overflow-y-auto">
+        <template x-for="n in notifications.filter(n => !showUnreadOnly || !n.read)" :key="n.id">
+          <li :class="n.read ? 'read' : 'unread'"
+            class="notification flex items-start gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100">
+            <i :class="'fa-solid ' + n.icon + ' mt-1 text-lg ' + n.color"></i>
+            <div class="flex-1">
+              <p :class="n.read ? 'text-sm text-gray-600' : 'text-sm text-gray-900 font-medium'" x-text="n.text"></p>
+              <span :class="n.read ? 'text-xs text-gray-400' : 'text-xs text-gray-500'" x-text="n.time"></span>
+            </div>
+          </li>
+        </template>
+      </ul>
+
+      <!-- Footer -->
+      <div class="mt-4 flex justify-end">
+        <button x-tooltip="'View all'" class="text-blue-600 hover:text-blue-800">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script id="tmpl-item-announcement" type="text/x-jsrender">
+
+  </script>
+
   <div x-data="{modalToSelectUser: true}">
-    <button @click="switchUser=true; modalToSelectUser=true" class = "mb-2 block">Switch User</button>
+    <button @click="switchUser=true; modalToSelectUser=true" class="my-8 block">Switch User</button>
     <div x-cloak x-show="modalToSelectUser" x-transition.opacity.duration.200ms
       x-trap.inert.noscroll="modalToSelectUser"
       class="fixed inset-0 z-30 flex items-end justify-center bg-black/20 p-4 pb-8 backdrop-blur-md sm:items-center lg:p-8"
@@ -52,10 +124,12 @@
         <!-- Dialog Body -->
         <div class="px-4 pb-4" x-data="{activeUserTab: 'subscribers'}">
           <div class="flex gap-4 mb-4">
-            <button :class="{'font-bold': activeUserTab==='subscribers'}" @click="activeUserTab='subscribers'">Subscribers</button>
+            <button :class="{'font-bold': activeUserTab==='subscribers'}"
+              @click="activeUserTab='subscribers'">Subscribers</button>
             <button :class="{'font-bold': activeUserTab==='admins'}" @click="activeUserTab='admins'">Admins</button>
           </div>
-          <div id="subscriberContacts" x-show="activeUserTab==='subscribers'" class="flex h-[100px] items-center justify-center">
+          <div id="subscriberContacts" x-show="activeUserTab==='subscribers'"
+            class="flex h-[100px] items-center justify-center">
             <div class="flex w-12">
               <div class="relative">
                 <div class="w-12 h-12 rounded-full absolute  border border-solid border-gray-200"></div>
@@ -78,6 +152,7 @@
     class="p-3 bg-[var(--primary)] flex items-center justify-center cursor-pointer fixed bottom-[1rem] right-[1rem] max-[768px]:hidden z-[99]">
     <i class="fa-solid fa-arrow-up text-white"></i>
   </div>
+
   <div id="create-post-trigger" class="bg-white shadow-lg rounded w-full p-4 flex items-center cursor-pointer mb-4">
     <span class="text-gray-500">What's on your mind?</span>
     <span id="current-user-name" class="ml-2 text-gray-700"></span>
