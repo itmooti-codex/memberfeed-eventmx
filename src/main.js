@@ -31,6 +31,7 @@ import { initRichText } from "./utils/richText.js";
 import { setupPlyr } from "./utils/plyr.js";
 import { updateCurrentUserUI } from "./ui/user.js";
 let contactIncludedInTag = false;
+
 function terminateAndClose() {
   if (state.socket && state.socket.readyState === WebSocket.OPEN) {
     state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
@@ -148,15 +149,14 @@ document.addEventListener("visibilitychange", () => {
 });
 
 function startApp(tagName, contactId) {
+  terminateAndClose();
   setGlobals(contactId, tagName);
   const pageTag = GLOBAL_PAGE_TAG;
   let contactTagForQuery = "";
-  
-
   const contactTag = tagName;
   if (contactTag === pageTag + "_Subscriber" || contactTag === pageTag + "_Admin") {
     contactTagForQuery = tagName;
-    const role = contactTag.slice(pageTag.length + 1); // removes preceding '_'
+    const role = contactTag.slice(pageTag.length + 1);
     state.userRole = role.toLowerCase();
     console.log("Extra Text:", contactTag.slice(pageTag.length));
   } else {
@@ -232,6 +232,7 @@ function startApp(tagName, contactId) {
     });
   }
 }
+
 function renderContacts(list, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -280,6 +281,7 @@ function loadSelectedUserForum(tagName, contactId, displayName, profileImage) {
   }
   startApp(tagName, contactId);
 }
+
 window.loadSelectedUserForum = loadSelectedUserForum;
 window.addEventListener("DOMContentLoaded", () => {
   loadModalContacts();
