@@ -61,25 +61,52 @@
       </div>
 
       <div class="flex items-center justify-between mb-3">
-        <button @click="markAllAsRead()" x-tooltip="'Mark all as read'" class="text-blue-600 hover:text-blue-800">
+        <button id="markAllAsRead" x-tooltip="'Mark all as read'" class="text-blue-600 hover:text-blue-800">
           <i class="fa-solid fa-envelope-open"></i>
         </button>
-        <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-          <input type="checkbox"  class="form-checkbox text-blue-600">
-          Show unread only
-        </label>
+        <div x-data="{ toggle: false }" x-init="$watch('toggle', value => {
+                const hideEls = document.querySelectorAll('.read');
+                const unreadEls = document.querySelectorAll('.unread');
+                const noNotif = document.getElementById('noNotification');
+
+                hideEls.forEach(el => el.classList.toggle('hidden', value));
+
+                if (value && unreadEls.length === 0 && noNotif) {
+                  noNotif.classList.remove('hidden');
+                } else if (noNotif) {
+                  noNotif.classList.add('hidden');
+                }
+            })">
+          <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <div class="relative h-4 w-8 rounded-full transition duration-200 ease-linear"
+              :class="toggle ? 'bg-[var(--primary)]' : 'bg-gray-400'">
+              <div
+                class="absolute left-0 h-4 w-4 transform rounded-full border-2 bg-white transition duration-100 ease-linear"
+                :class="toggle ? 'translate-x-full border-[var(--primary)]' : 'translate-x-0 border-gray-400'">
+              </div>
+              <input type="checkbox" class="absolute h-full w-full opacity-0 cursor-pointer" @click="toggle = !toggle">
+            </div>
+            Show unread only
+          </label>
+        </div>
+
       </div>
-<div id="notificationContainerSocket" class="flex flex-col gap-2"></div>
-<script id="notificationTemplate" type="text/x-jsrender">
-  <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex cursor-pointer items-start gap-3 rounded-lg p-3 hover:bg-gray-100">
-  <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
-  <div class="flex-1">
-    <div class="text-md font-medium text-gray-900">{{:Title}}</div>
-    <div class="text-sm line-clamp-1 font-medium text-gray-900"> {{:Parent_Forum?.copy}}</div>
-    <div class="text-xs text-gray-500">{{:~formatDate(published_date)}}</div>
+      <div>
+        <div id="notificationContainerSocket" class="flex flex-col gap-2"></div>
+        <div class="text-gray-500 text-sm p-4 hidden" id="noNotification">No notifications</div>
+      </div>
+
+      <script id="notificationTemplate" type="text/x-jsrender">
+  <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}">
+    <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
+    <div class="flex-1">
+      <div class="text-md font-medium text-gray-900">{{:Title}}</div>
+      <div class="text-sm line-clamp-1 font-medium text-gray-900">{{:Parent_Forum?.copy}}</div>
+      <div class="text-xs text-gray-500">{{:~formatDate(published_date)}}</div>
+    </div>
   </div>
-</div>
 </script>
+
 
 
       <div class="mt-4 flex justify-end">
@@ -312,10 +339,10 @@
           class="fa-solid fa-search"></i></span>
     </div>
   </div>
-    <div class="tabs mb-4 hidden" id="tabsForAdmin">
-      <button id="publishedTab" class="px-4 py-2 bg-blue-500 text-white mr-2">Published</button>
-      <button id="scheduledTab" class="px-4 py-2 bg-gray-300 text-black">Scheduled</button>
-    </div>
+  <div class="tabs mb-4 hidden" id="tabsForAdmin">
+    <button id="publishedTab" class="px-4 py-2 bg-blue-500 text-white mr-2">Published</button>
+    <button id="scheduledTab" class="px-4 py-2 bg-gray-300 text-black">Scheduled</button>
+  </div>
   <div id="skeleton-loader" class="w-full">
     <div class="skeleton-item flex gap-4 p-4 mb-4 bg-white rounded shadow">
       <div class="skeleton-avatar"></div>
@@ -539,4 +566,3 @@
 </body>
 
 </html>
-

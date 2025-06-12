@@ -299,3 +299,13 @@ subscription subscribeToAnnouncements(
   }
 }
 `;
+export const UPDATE_ANNOUNCEMENT=`
+ mutation updateAnnouncement($id: EduflowproAnnouncementID, $payload: AnnouncementUpdateInput = null) {
+      updateAnnouncement(
+        query: [{ where: { id: $id } }]
+        payload: $payload
+      ) {
+        is_read
+      }
+    }
+`;

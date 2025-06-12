@@ -21,7 +21,8 @@ import {
   GET_SUBSCRIBER_CONTACTS_FOR_MODAL,
   GET_ADMIN_CONTACTS_FOR_MODAL,
   UPDATE_SCHEDULED_TO_POST,
-  GET_NOTIFICATIONS
+  GET_NOTIFICATIONS,
+  UPDATE_ANNOUNCEMENT
 } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
 import { mergeLists } from "./utils/merge.js";
@@ -102,7 +103,12 @@ export function connectNotification() {
       const notifContainer = document.getElementById("notificationContainerSocket");
 
       if (notifContainer) {
-        notifContainer.innerHTML = ""; 
+        notifContainer.innerHTML = "";
+
+        if (!notifications || (Array.isArray(notifications) && notifications.length === 0)) {
+          notifContainer.innerHTML = `<div class="text-gray-500 text-sm p-4">No notifications</div>`;
+          return;
+        }
 
         if (Array.isArray(notifications)) {
           notifications.forEach((notif) => {
@@ -425,18 +431,6 @@ document.addEventListener("click", async (e) => {
   btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
   const uid = btn.getAttribute("data-uid");
   if (!uid) return;
-
-  const mutation = `
-    mutation updateForumPost($unique_id: StringScalar_0_8, $payload: ForumPostUpdateInput = null) {
-      updateForumPost(
-        query: [{ where: { unique_id: $unique_id } }]
-        payload: $payload
-      ) {
-        forum_status
-      }
-    }
-  `;
-
   const variables = {
     unique_id: uid,
     payload: {
@@ -445,7 +439,7 @@ document.addEventListener("click", async (e) => {
   };
 
   try {
-    const response = await fetchGraphQL(UPDATE_SCHEDULED_TO_POST, variables, mutation);
+    const response = await fetchGraphQL(UPDATE_SCHEDULED_TO_POST, variables, UPDATE_SCHEDULED_TO_POST);
    showToast("Post updated successfully!");
     btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
   } catch (error) {
@@ -479,6 +473,34 @@ document.addEventListener("DOMContentLoaded", function () {
   scheduledTab.addEventListener("click", showScheduled);
   showPublished(); // Default state
 });
+
+// Update Announcement to read
+document.addEventListener("click", async (e) => {
+  const unreadElements = document.querySelectorAll(".unread");
+  for (const el of unreadElements) {
+    if (el.contains(e.target)) {
+      const announcementId = el.getAttribute("data-announcement");
+      if (!announcementId) return;
+      const variables = {
+        id: announcementId,
+        payload: {
+          is_read: true
+        }
+      };
+
+      try {
+        await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
+        el.classList.remove("unread");
+        el.classList.add("read");
+      } catch (error) {
+        console.error("Error marking announcement as read:", error);
+      }
+
+      break;
+    }
+  }
+});
+
 
 
 
