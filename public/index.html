@@ -68,12 +68,15 @@
                 const hideEls = document.querySelectorAll('.read');
                 const unreadEls = document.querySelectorAll('.unread');
                 const noNotif = document.getElementById('noNotification');
+                const mainNotificationContainer = document.getElementById('notificationContainerSocket');
 
                 hideEls.forEach(el => el.classList.toggle('hidden', value));
 
                 if (value && unreadEls.length === 0 && noNotif) {
                   noNotif.classList.remove('hidden');
+                  mainNotificationContainer.classList.add('hidden');
                 } else if (noNotif) {
+                  mainNotificationContainer.classList.remove('hidden');
                   noNotif.classList.add('hidden');
                 }
             })">
