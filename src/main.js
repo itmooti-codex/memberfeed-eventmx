@@ -491,7 +491,7 @@ document.addEventListener("click", async (e) => {
 
   if (markAll) {
     const container = document.getElementById("notificationContainerSocket");
-    const elements = container.querySelectorAll("[data-announcement]");
+    const elements = container.querySelectorAll("[data-announcement].unread");
     ids = Array.from(elements).map(el => el.getAttribute("data-announcement"));
   } else {
     const unreadElements = document.querySelectorAll(".unread");
@@ -524,7 +524,7 @@ document.addEventListener("click", async (e) => {
 
     if (markAll) {
       const container = document.getElementById("notificationContainerSocket");
-      const elements = container.querySelectorAll("[data-announcement]");
+      const elements = container.querySelectorAll("[data-announcement].unread");
       elements.forEach(el => {
         el.classList.remove("unread");
         el.classList.add("read");
