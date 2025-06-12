@@ -8,6 +8,7 @@ import {
   DELETE_BOOKMARK_MUTATION,
   FETCH_CONTACTS_QUERY,
   UPDATE_FORUM_POST_MUTATION,
+  CREATE_NOTIFICATION
 } from "../../api/queries.js";
 import {
   state,
@@ -265,6 +266,36 @@ export function initPostHandlers() {
         pendingDelete = null;
       });
   });
+  // Create notification
+    async function sendNotificationsAfterPost(forumData) {
+      if (!forumData || !forumData.id || !Array.isArray(state.allContacts)) return;
+
+      const { id, parent_forum_id, forum_type, copy } = forumData;
+
+      const postType = forum_type || "Post";
+      const isPost = postType === "Post";
+
+      // Extract mentioned IDs from HTML copy
+      const mentionedIds = Array.from(copy.matchAll(/data-mention-id=["'](\d+)["']/g)).map(m => Number(m[1]));
+
+      const payload = state.allContacts.map(contactId => {
+        const isMentioned = mentionedIds.includes(contactId);
+
+        return {
+          notified_contact_id: contactId,
+          parent_forum_id: id,
+          ...(isPost ? {} : { parent_forum_if_not_a_post: parent_forum_id }),
+          notification_type: isMentioned ? `${postType} Mention` : postType
+        };
+      });
+
+      try {
+        await fetchGraphQL(CREATE_NOTIFICATION, { payload });
+        console.log("Notifications sent successfully");
+      } catch (err) {
+        console.error("Failed to send notifications", err);
+      }
+    }
   async function createForumToSubmit(
     depthOfForum,
     forumType,
@@ -272,6 +303,7 @@ export function initPostHandlers() {
     uidParam,
 
   ) {
+    console.log("all contacts are",state.allContacts);
     depthOfForum = Number(depthOfForum);
     const computedType =
       depthOfForum === 0 ? "Post" : depthOfForum === 1 ? "Comment" : "Reply";
@@ -317,8 +349,6 @@ export function initPostHandlers() {
         forumStatusForPayload = "Scheduled";
       }
     }
-    // Creating Notification content
-    let contentForNotification = '';
     const matches = [...htmlContent.matchAll(/data-mention-id=["'](\d+)["']/g)];
     if (matches.length > 0) {
       console.log("Has attribute data-mention-id");
@@ -327,9 +357,6 @@ export function initPostHandlers() {
 
     } else {
       console.log("Does not have attribute data-mention-id");
-      if (forumType === "Post") {
-        contentForNotification = 'A new post has been created';
-      }
     }
 
 
@@ -338,7 +365,6 @@ export function initPostHandlers() {
       copy: processContent(htmlContent),
       published_date: publishedDatePayload,
       depth: depthOfForum,
-      formatted_json: contentForNotification,
       Mentioned_Contacts_Data: [],
       forum_type: forumType,
       forum_status: forumStatusForPayload,
@@ -384,6 +410,10 @@ export function initPostHandlers() {
         payload: finalPayload,
       });
       const raw = res.data?.createForumPost;
+      if (raw && raw.id) {
+        console.log("Post created with ID:", raw.id);
+        await sendNotificationsAfterPost(raw);
+      }
       if (raw) {
         if (!raw.Author) {
           raw.Author = {

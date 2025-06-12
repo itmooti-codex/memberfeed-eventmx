@@ -42,7 +42,8 @@ query calcContacts {
 export const CREATE_FORUM_POST_MUTATION = `
 mutation createForumPost($payload: ForumPostCreateInput = null) {
   createForumPost(payload: $payload) {
-    author_id
+    id 
+    author_id 
     published_date
     created_at
     disable_new_comments
@@ -232,4 +233,16 @@ mutation updateForumPost(
     forum_status
   }
 }
-`
+`;
+export const CREATE_NOTIFICATION=`
+mutation createAnnouncements(
+  $payload: [AnnouncementCreateInput] = null
+) {
+  createAnnouncements(payload: $payload) {
+    parent_forum_id
+    notified_contact_id
+    parent_forum_if_not_a_post
+    notification_type 
+  }
+}
+`; 

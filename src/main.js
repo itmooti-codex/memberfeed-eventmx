@@ -88,26 +88,6 @@ export function connect() {
       state.rawItems = mergeLists(state.rawItems, incoming);
       state.postsStore = buildTree(state.postsStore, state.rawItems);
       state.initialPostsLoaded = true;
-      // Push new notification to the store
-      const notifications = incoming
-        .filter(item => item.formatted_json && item.formatted_json !== '')
-        .map(item => ({
-          id: item.id,
-          text: `${item.formatted_json}`,
-          icon: 'fa-file-alt',
-          iconColor: 'text-indigo-500',
-          read: false,
-          time: item.published_date || item.created_at,
-          forumCopy: item.copy || '',
-        }));
-
-      state.notificationStore = notifications;
-
-      const notificationContainer = document.getElementById("notification-container");
-      if (notificationContainer) {
-        notificationContainer.innerHTML = $.templates("#tmpl-notification-item").render(state.notificationStore);
-      }
-
       if (state.ignoreNextSocketUpdate) {
         state.ignoreNextSocketUpdate = false;
       } else {
@@ -188,6 +168,7 @@ function startApp(tagName, contactId) {
   tribute.attach(document.getElementById("post-editor"));
   fetchGraphQL(FETCH_CONTACTS_QUERY).then((res) => {
     const contacts = res.data.calcContacts;
+    state.allContacts = contacts.map(c => c.Contact_ID);
     tribute.collection[0].values = contacts.map((c) => ({
       key: c.Display_Name || "Anonymous",
       value: c.Contact_ID,

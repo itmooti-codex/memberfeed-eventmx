@@ -154,9 +154,6 @@
     </div>
   </div>
 
-  <script id="tmpl-item-announcement" type="text/x-jsrender">
-
-  </script>
 
   <div x-data="{modalToSelectUser: true}">
     <button @click="switchUser=true; modalToSelectUser=true" class="my-8 block">Switch User</button>
@@ -369,7 +366,6 @@
       </div>
     </div>
   </div>
-  <div id="notification-container" class="notifications flex flex-col w-full gap-2"></div>
   <div id="forum-root" class="w-full"></div>
 
   <!-- Delete confirmation modal -->
@@ -382,19 +378,8 @@
       </div>
     </div>
   </div>
-  <!-- notification template -->
-  <script id="tmpl-notification-item" type="text/x-jsrender">
-    <div class="notification notification-item flex items-start gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 w-full {{if read}}read{{else}}unread{{/if}}" >
-      <i class="fa-solid {{:icon}} {{:iconColor}}"></i>
-      <div class="flex flex-col gap-3">
-      <div class="flex-1 flex items-center gap-2">
-        <p class="text-sm text-gray-900 font-medium">{{:text}}</p>
-        <span class="text-xs text-gray-500">{{:~formatDate(time)}}</span>
-      </div>
-      <div>{{:forumCopy}}</div>
-    </div>
-    </div>
-  </script>
+
+
   <script id="tmpl-item" type="text/x-jsrender">
     {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
       <div 
