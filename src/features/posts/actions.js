@@ -14,6 +14,7 @@ import {
   state,
   GLOBAL_PAGE_TAG,
   GLOBAL_AUTHOR_ID,
+  GLOBAL_AUTHOR_DISPLAY_NAME,
   DEFAULT_AVATAR,
 } from "../../config.js";
 import { findNode, tmpl, buildTree, mapItem } from "../../ui/render.js";
@@ -266,26 +267,61 @@ export function initPostHandlers() {
         pendingDelete = null;
       });
   });
+
   // Create notification
     async function sendNotificationsAfterPost(forumData) {
-      if (!forumData || !forumData.id || !Array.isArray(state.allContacts)) return;
+      if (
+        !forumData ||
+        !forumData.id ||
+        !Array.isArray(state.allContacts)
+      ) return;
 
-      const { id, parent_forum_id, forum_type, copy } = forumData;
+      const {
+        id,
+        parent_forum_id,
+        forum_type,
+        copy,
+        Author,
+        Parent_Forum
+      } = forumData;
 
-      const postType = forum_type || "Post";
-      const isPost = postType === "Post";
-
-      // Extract mentioned IDs from HTML copy
+      const type = forum_type || "Post";
+      const isPost = type === "Post";
       const mentionedIds = Array.from(copy.matchAll(/data-mention-id=["'](\d+)["']/g)).map(m => Number(m[1]));
+      const postAuthorName = Author?.display_name || "Someone";
+      const parentForumAuthorId = Parent_Forum?.author_id || null;
 
       const payload = state.allContacts.map(contactId => {
         const isMentioned = mentionedIds.includes(contactId);
+        const isParentOwner = contactId === parentForumAuthorId;
+        const isSelfMention = isMentioned && isParentOwner;
+
+        let title = `${postAuthorName} created a ${type.toLowerCase()}.`;
+        let notification_type = type;
+
+        if (isMentioned) {
+          if (isPost) {
+            title = `${postAuthorName} mentioned you in a post.`;
+          } else if (isSelfMention) {
+            title = `${postAuthorName} mentioned you in a ${type.toLowerCase()} in your post.`;
+          } else if (isParentOwner) {
+            title = `${postAuthorName} mentioned you in a ${type.toLowerCase()} in your comment.`;
+          } else {
+            title = `${postAuthorName} mentioned you in a ${type.toLowerCase()}.`;
+          }
+          notification_type = `${type} Mention`;
+        } else if (!isPost && isParentOwner) {
+          title = type === "Comment"
+            ? `${postAuthorName} commented on your post.`
+            : `${postAuthorName} replied to your comment.`;
+        }
 
         return {
           notified_contact_id: contactId,
           parent_forum_id: id,
           ...(isPost ? {} : { parent_forum_if_not_a_post: parent_forum_id }),
-          notification_type: isMentioned ? `${postType} Mention` : postType
+          notification_type,
+          title
         };
       });
 
@@ -296,6 +332,8 @@ export function initPostHandlers() {
         console.error("Failed to send notifications", err);
       }
     }
+
+    // Create forum 
   async function createForumToSubmit(
     depthOfForum,
     forumType,
@@ -362,6 +400,9 @@ export function initPostHandlers() {
 
     const payload = {
       author_id: GLOBAL_AUTHOR_ID,
+      Author:{
+      display_name: GLOBAL_AUTHOR_DISPLAY_NAME
+      },
       copy: processContent(htmlContent),
       published_date: publishedDatePayload,
       depth: depthOfForum,

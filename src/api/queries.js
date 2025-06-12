@@ -44,6 +44,9 @@ mutation createForumPost($payload: ForumPostCreateInput = null) {
   createForumPost(payload: $payload) {
     id 
     author_id 
+     Author{
+      display_name
+    }
     published_date
     created_at
     disable_new_comments
@@ -55,7 +58,10 @@ mutation createForumPost($payload: ForumPostCreateInput = null) {
     depth
     forum_type 
     formatted_json 
-    parent_forum_id
+    parent_forum_id 
+    Parent_Forum{
+      author_id
+    }
     forum_tag
     Mentioned_Contacts_Data{
       mentioned_contact_id
@@ -243,6 +249,53 @@ mutation createAnnouncements(
     notified_contact_id
     parent_forum_if_not_a_post
     notification_type 
+    title 
   }
 }
 `; 
+export const GET_NOTIFICATIONS=`
+subscription subscribeToAnnouncements(
+  $author_id: EduflowproContactID 
+  $notified_contact_id: EduflowproContactID 
+) {
+  subscribeToAnnouncements(
+    query: [
+      {
+        where: {
+          Parent_Forum: [
+            {
+              where: {
+                author_id: $author_id
+                _OPERATOR_: neq
+              }
+            }
+          ]
+        }
+      }
+     {
+        andWhere: {
+          notified_contact_id: $notified_contact_id
+        }
+      }
+    ]
+    orderBy: [
+      {
+        path: ["Parent_Forum", "published_date"]
+        type: desc
+      }
+    ]
+  ) {
+    ID: id
+    Is_Read: is_read
+    Title: title
+    Parent_Forum_If_Not_A_Post: parent_forum_if_not_a_post
+    Notification_Type: notification_type
+    Parent_Forum_ID: parent_forum_id
+    Notified_Contact_ID: notified_contact_id
+    Parent_Forum {
+      copy 
+      published_date
+    }
+  }
+}
+`;

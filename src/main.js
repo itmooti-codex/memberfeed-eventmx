@@ -8,6 +8,7 @@ import {
   INACTIVITY_MS,
   GLOBAL_AUTHOR_ID,
   DEFAULT_AVATAR,
+  NOTIF_SUB_ID,
   GLOBAL_PAGE_TAG,
 } from "./config.js";
 window.state = state;
@@ -19,14 +20,15 @@ import {
   GET_CONTACTS_BY_TAGS,
   GET_SUBSCRIBER_CONTACTS_FOR_MODAL,
   GET_ADMIN_CONTACTS_FOR_MODAL,
-  UPDATE_SCHEDULED_TO_POST
+  UPDATE_SCHEDULED_TO_POST,
+  GET_NOTIFICATIONS
 } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
 import { mergeLists } from "./utils/merge.js";
 import { initPosts, applyFilterAndRender } from "./features/posts/index.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { tribute } from "./utils/tribute.js";
-import { initFilePond, resumeAudioContext } from "./utils/filePond.js";
+import { initFilePond } from "./utils/filePond.js";
 import "./features/uploads/handlers.js";
 import { initEmojiHandlers } from "./ui/emoji.js";
 import { initRichText } from "./utils/richText.js";
@@ -39,6 +41,108 @@ function terminateAndClose() {
     state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
     state.socket.close();
   }
+  if (state.notificationSocket && state.notificationSocket.readyState === WebSocket.OPEN) {
+    state.notificationSocket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
+    state.notificationSocket.close();
+  }
+}
+const notificationTemplate = $.templates("#notificationTemplate");
+
+// Connect notification
+export function connectNotification() {
+  if (
+    state.notifIsConnecting ||
+    (state.notificationSocket &&
+      (state.notificationSocket.readyState === WebSocket.OPEN ||
+        state.notificationSocket.readyState === WebSocket.CONNECTING))
+  ) {
+    return;
+  }
+
+  state.notifIsConnecting = true;
+  state.notificationSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
+
+  state.notificationSocket.addEventListener("open", () => {
+    state.notifBackoff = 1000;
+    state.notificationSocket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
+
+    state.notifKeepAliveTimer = setInterval(() => {
+      state.notificationSocket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
+    }, KEEPALIVE_MS);
+
+    state.notifIsConnecting = false;
+  });
+
+  state.notificationSocket.addEventListener("message", ({ data }) => {
+    let msg;
+    try {
+      msg = JSON.parse(data);
+    } catch {
+      console.error("Invalid JSON", data);
+      return;
+    }
+
+    if (msg.type === "CONNECTION_ACK") {
+      state.notificationSocket.send(
+        JSON.stringify({
+          id: NOTIF_SUB_ID,
+          type: "GQL_START",
+          payload: {
+            query: GET_NOTIFICATIONS,
+            variables: { author_id: GLOBAL_AUTHOR_ID, notified_contact_id: GLOBAL_AUTHOR_ID},
+          },
+        })
+      );
+    } else if (
+      msg.type === "GQL_DATA" &&
+      msg.id === NOTIF_SUB_ID &&
+      msg.payload?.data
+    ) {
+      const notifications = msg.payload.data.subscribeToAnnouncements;
+      const notifContainer = document.getElementById("notificationContainerSocket");
+
+      if (notifContainer) {
+        notifContainer.innerHTML = ""; 
+
+        if (Array.isArray(notifications)) {
+          notifications.forEach((notif) => {
+            if (notif?.Title) {
+              const html = notificationTemplate.render(notif);
+              notifContainer.insertAdjacentHTML("beforeend", html);
+            }
+          });
+        } else if (notifications?.Title) {
+          const html = notificationTemplate.render(notifications);
+          notifContainer.insertAdjacentHTML("beforeend", html);
+        }
+      }
+    }
+else if (msg.type === "GQL_ERROR") {
+      console.error("Notification subscription error", msg.payload);
+    } else if (msg.type === "GQL_COMPLETE") {
+      if (
+        state.notificationSocket &&
+        state.notificationSocket.readyState === WebSocket.OPEN
+      ) {
+        state.notificationSocket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
+        state.notificationSocket.close();
+      }
+    }
+  });
+
+  state.notificationSocket.addEventListener("error", (e) => {
+    console.error("Notification WebSocket error", e);
+    state.notifIsConnecting = false;
+  });
+
+  state.notificationSocket.addEventListener("close", () => {
+    clearInterval(state.notifKeepAliveTimer);
+    state.notifKeepAliveTimer = null;
+    state.notificationSocket = null;
+    state.notifIsConnecting = false;
+    setTimeout(connectNotification, state.notifBackoff);
+    state.notifBackoff = Math.min(state.notifBackoff * 2, MAX_BACKOFF);
+  });
 }
 
 export function connect() {
@@ -98,11 +202,6 @@ export function connect() {
       console.error("Subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
       console.warn("Subscription complete");
-      // Modern servers keep the connection open after sending GQL_COMPLETE.
-      // Avoid sending an extra GQL_START which previously caused the server
-      // to close the socket and trigger a reconnect.
-      // Close the connection gracefully so the reconnect logic can
-      // establish a fresh subscription if needed.
       if (state.socket && state.socket.readyState === WebSocket.OPEN) {
         state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
         state.socket.close();
@@ -150,9 +249,9 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
-function startApp(tagName, contactId) {
+function startApp(tagName, contactId, displayName) {
   terminateAndClose();
-  setGlobals(contactId, tagName);
+  setGlobals(contactId, tagName, displayName);
   const pageTag = GLOBAL_PAGE_TAG;
   let contactTagForQuery = "";
   const contactTag = tagName;
@@ -197,6 +296,7 @@ function startApp(tagName, contactId) {
     if (Array.isArray(result) && result.length > 0) {
       contactIncludedInTag = true;
       connect();
+      connectNotification();
     } else {
       const el = document.getElementById("forum-root");
       document.getElementById("skeleton-loader")?.remove();
@@ -295,7 +395,7 @@ function loadSelectedUserForum(tagName, contactId, displayName, profileImage) {
     };
     updateCurrentUserUI(state);
   }
-  startApp(tagName, contactId);
+  startApp(tagName, contactId,displayName);
 }
 
 window.loadSelectedUserForum = loadSelectedUserForum;

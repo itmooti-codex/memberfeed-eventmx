@@ -34,34 +34,11 @@
 <body x-data="{
     showNotifications: false,
     showSettings: false,
-    showUnreadOnly: false,
-    notifications: [
-      { id: 1, text: 'A new post has been created', icon: 'fa-file-alt', color: 'text-indigo-500', read: false, time: 'Just now' },
-      { id: 2, text: 'A new comment has been added to your post', icon: 'fa-comment-dots', color: 'text-blue-500', read: false, time: '5 mins ago' },
-      { id: 3, text: 'Someone liked your post or comment', icon: 'fa-thumbs-up', color: 'text-pink-500', read: true, time: '30 mins ago' },
-      { id: 4, text: 'You have been mentioned in a post or comment', icon: 'fa-at', color: 'text-teal-500', read: false, time: '1 hour ago' }
-    ],
     prefs: {
       off: false,
       option: 'all'
-    },
-    markAllAsRead() {
-      this.notifications.forEach(n => n.read = true);
-    },
-    openSettings() {
-      this.showNotifications = false;
-      this.showSettings = true;
-    },
-    closeSettings() {
-      this.showSettings = false;
-    },
-    toggleOff() {
-      if (this.prefs.off) {
-        this.prefs.option = null;
-      } else {
-        this.prefs.option = 'all';
-      }
     }
+   
 }" class="max-w-[700px] bg-[#f1f1f1] flex flex-col items-center justify-center m-auto p-6 max-[768px]:p-2">
 
   <div class="relative">
@@ -88,23 +65,22 @@
           <i class="fa-solid fa-envelope-open"></i>
         </button>
         <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-          <input type="checkbox" x-model="showUnreadOnly" class="form-checkbox text-blue-600">
+          <input type="checkbox"  class="form-checkbox text-blue-600">
           Show unread only
         </label>
       </div>
+<div id="notificationContainerSocket" class="flex flex-col gap-2"></div>
+<script id="notificationTemplate" type="text/x-jsrender">
+  <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex cursor-pointer items-start gap-3 rounded-lg p-3 hover:bg-gray-100">
+  <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
+  <div class="flex-1">
+    <div class="text-md font-medium text-gray-900">{{:Title}}</div>
+    <div class="text-sm line-clamp-1 font-medium text-gray-900"> {{:Parent_Forum?.copy}}</div>
+    <div class="text-xs text-gray-500">{{:~formatDate(published_date)}}</div>
+  </div>
+</div>
+</script>
 
-      <ul class="space-y-2 max-h-80 overflow-y-auto">
-        <template x-for="n in notifications.filter(n => !showUnreadOnly || !n.read)" :key="n.id">
-          <li :class="n.read ? 'read' : 'unread'"
-            class="notification flex items-start gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100">
-            <i :class="'fa-solid ' + n.icon + ' mt-1 text-lg ' + n.color"></i>
-            <div class="flex-1">
-              <p :class="n.read ? 'text-sm text-gray-600' : 'text-sm text-gray-900 font-medium'" x-text="n.text"></p>
-              <span :class="n.read ? 'text-xs text-gray-400' : 'text-xs text-gray-500'" x-text="n.time"></span>
-            </div>
-          </li>
-        </template>
-      </ul>
 
       <div class="mt-4 flex justify-end">
         <button x-tooltip="'View all'" class="text-blue-600 hover:text-blue-800">
