@@ -61,7 +61,7 @@
       </div>
 
       <div class="flex items-center justify-between mb-3">
-        <button id="markAllAsRead" x-tooltip="'Mark all as read'" class="text-blue-600 hover:text-blue-800">
+        <button id="markAllNotificationAsRead" x-tooltip="'Mark all as read'" class="text-blue-600 hover:text-blue-800">
           <i class="fa-solid fa-envelope-open"></i>
         </button>
         <div x-data="{ toggle: false }" x-init="$watch('toggle', value => {
@@ -92,7 +92,9 @@
 
       </div>
       <div>
-        <div id="notificationContainerSocket" class="flex flex-col gap-2"></div>
+        <div id="notificationContainerSocket" class="flex flex-col gap-2 max-h-[350px] min-h-[150px] overflow-y-auto">
+
+        </div>
         <div class="text-gray-500 text-sm p-4 hidden" id="noNotification">No notifications</div>
       </div>
 

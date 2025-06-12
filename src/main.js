@@ -21,8 +21,7 @@ import {
   GET_SUBSCRIBER_CONTACTS_FOR_MODAL,
   GET_ADMIN_CONTACTS_FOR_MODAL,
   UPDATE_SCHEDULED_TO_POST,
-  GET_NOTIFICATIONS,
-  UPDATE_ANNOUNCEMENT
+  GET_NOTIFICATIONS
 } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
 import { mergeLists } from "./utils/merge.js";
@@ -63,6 +62,17 @@ export function connectNotification() {
   state.notifIsConnecting = true;
   state.notificationSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
 
+  const notifContainer = document.getElementById("notificationContainerSocket");
+  if (notifContainer) {
+    notifContainer.innerHTML = `
+      <div class="flex w-12 mx-auto my-6">
+        <div class="relative">
+          <div class="w-12 h-12 rounded-full absolute border border-solid border-gray-200"></div>
+          <div class="w-12 h-12 rounded-full animate-spin absolute border border-solid border-yellow-500 border-t-transparent"></div>
+        </div>
+      </div>`;
+  }
+
   state.notificationSocket.addEventListener("open", () => {
     state.notifBackoff = 1000;
     state.notificationSocket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
@@ -90,7 +100,7 @@ export function connectNotification() {
           type: "GQL_START",
           payload: {
             query: GET_NOTIFICATIONS,
-            variables: { author_id: GLOBAL_AUTHOR_ID, notified_contact_id: GLOBAL_AUTHOR_ID},
+            variables: { author_id: GLOBAL_AUTHOR_ID, notified_contact_id: GLOBAL_AUTHOR_ID },
           },
         })
       );
@@ -122,8 +132,7 @@ export function connectNotification() {
           notifContainer.insertAdjacentHTML("beforeend", html);
         }
       }
-    }
-else if (msg.type === "GQL_ERROR") {
+    } else if (msg.type === "GQL_ERROR") {
       console.error("Notification subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
       if (
@@ -476,31 +485,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Update Announcement to read
 document.addEventListener("click", async (e) => {
-  const unreadElements = document.querySelectorAll(".unread");
-  for (const el of unreadElements) {
-    if (el.contains(e.target)) {
-      const announcementId = el.getAttribute("data-announcement");
-      if (!announcementId) return;
-      const variables = {
-        id: announcementId,
-        payload: {
-          is_read: true
-        }
-      };
+  const markAll = e.target.id === "markAllNotificationAsRead";
 
-      try {
-        await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
-        el.classList.remove("unread");
-        el.classList.add("read");
-      } catch (error) {
-        console.error("Error marking announcement as read:", error);
+  let ids = [];
+
+  if (markAll) {
+    const container = document.getElementById("notificationContainerSocket");
+    const elements = container.querySelectorAll("[data-announcement]");
+    ids = Array.from(elements).map(el => el.getAttribute("data-announcement"));
+  } else {
+    const unreadElements = document.querySelectorAll(".unread");
+    for (const el of unreadElements) {
+      if (el.contains(e.target)) {
+        const announcementId = el.getAttribute("data-announcement");
+        if (!announcementId) return;
+        ids = [announcementId];
+        break;
       }
-
-      break;
     }
   }
+
+  if (!ids.length) return;
+
+  const variables = {
+    payload: { is_read: true }
+  };
+
+  const UPDATE_ANNOUNCEMENT = `
+    mutation updateAnnouncements($payload: AnnouncementUpdateInput = null) {
+      updateAnnouncements(query: [{ whereIn: { id: [${ids.join(",")}] } }], payload: $payload) {
+        is_read
+      }
+    }
+  `;
+
+  try {
+    await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
+
+    if (markAll) {
+      const container = document.getElementById("notificationContainerSocket");
+      const elements = container.querySelectorAll("[data-announcement]");
+      elements.forEach(el => {
+        el.classList.remove("unread");
+        el.classList.add("read");
+      });
+    } else {
+      document.querySelectorAll(".unread").forEach(el => {
+        if (ids.includes(el.getAttribute("data-announcement"))) {
+          el.classList.remove("unread");
+          el.classList.add("read");
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Error marking announcement(s) as read:", error);
+  }
 });
-
-
-
-
