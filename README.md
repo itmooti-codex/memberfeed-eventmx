@@ -43,3 +43,11 @@ Create a `src/config.js` file or provide the values as environment variables whe
 - **WS_ENDPOINT** – GraphQL WebSocket endpoint for real-time updates. Typically the same host as `HTTP_ENDPOINT` using `wss://` and appending `?apiKey=YOUR_API_KEY`.
 
 When running in the browser without a bundler, copy `src/config.example.js` to `src/config.js` and fill in your actual values. The repository's `.gitignore` already excludes `src/config.js` so your secrets stay out of version control.
+
+## Tests
+
+Run the unit tests with:
+
+```bash
+npm test
+```
