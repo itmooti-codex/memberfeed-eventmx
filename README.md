@@ -56,6 +56,21 @@ from various CDNs in `public/index.html`:
 - `https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js` – Alpine.js framework.
 - `https://unpkg.com/mic-recorder-to-mp3@2.2.1/dist/index.min.js` – Audio recording utility.
 
+### Regenerating SRI hashes
+
+When upgrading any of the CDN links above, update the corresponding
+`integrity` attributes in `public/index.html`.
+
+Use `curl` and `openssl` to generate a new SHA-384 hash for each URL:
+
+```bash
+curl -L <url> | openssl dgst -sha384 -binary | openssl base64 -A
+```
+
+Copy the resulting string and set it as the value of the `integrity`
+attribute. Each tag should also include `crossorigin="anonymous"` so
+the browser can verify the SRI hash correctly.
+
 ## Configuration
 
 Create a `src/config.js` file or provide the values as environment variables when bundling. A template is available at `src/config.example.js`.
