@@ -11,7 +11,16 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Running locally
 
-1. Start a local web server in the project directory. Examples:
+1. Install the Node.js dependencies and build the bundled JavaScript:
+
+   ```bash
+   npm install
+   npm run build
+   ```
+
+   The build step creates `public/bundle.js` which `index.html` expects.
+
+2. Start a local web server in the project directory. Examples:
 
    ```bash
    # Using Node.js (http-server)
@@ -23,12 +32,10 @@ This project is licensed under the [MIT License](LICENSE).
    ```
 
    By default the server runs on port 8080. Adjust the command if you want a different port.
-Static files such as `index.html` and styles are now located in the `public/` folder. Application source code resides in `src/`.
-The UI uses [Font Awesome Free](https://fontawesome.com/) icons via a CDN link included in `public/index.html`.
+   Static files such as `index.html` and styles are located in the `public/` folder. Application source code resides in `src/`.
+   The UI uses [Font Awesome Free](https://fontawesome.com/) icons via a CDN link included in `public/index.html`.
 
-2. Open your browser at `http://localhost:8080/public/index.html` (or the port you chose) to use the application.
-
-Run `npm run build` to bundle the application with your environment variables. The generated `public/bundle.js` is then served along with the other static files.
+3. Open your browser at `http://localhost:8080/public/index.html` (or the port you chose) to use the application.
 
 ## External dependencies loaded via CDN
 
