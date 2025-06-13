@@ -29,23 +29,27 @@ function startApp(tagName, contactId, displayName) {
   }
 
   tribute.attach(document.getElementById("post-editor"));
-  fetchGraphQL(FETCH_CONTACTS_QUERY).then((res) => {
-    const contacts = res.data.calcContacts;
-    state.allContacts = contacts.map(c => c.Contact_ID);
-    tribute.collection[0].values = contacts.map((c) => ({
-      key: c.Display_Name || "Anonymous",
-      value: c.Contact_ID,
-      image: c.Profile_Image,
-    }));
-    const current = contacts.find((c) => c.Contact_ID === GLOBAL_AUTHOR_ID);
-    if (current) {
-      state.currentUser = {
-        display_name: current.Display_Name || "Anonymous",
-        profile_image: current.Profile_Image || DEFAULT_AVATAR,
-      };
-      updateCurrentUserUI(state);
-    }
-  });
+  fetchGraphQL(FETCH_CONTACTS_QUERY)
+    .then((res) => {
+      const contacts = res.data.calcContacts;
+      state.allContacts = contacts.map((c) => c.Contact_ID);
+      tribute.collection[0].values = contacts.map((c) => ({
+        key: c.Display_Name || "Anonymous",
+        value: c.Contact_ID,
+        image: c.Profile_Image,
+      }));
+      const current = contacts.find((c) => c.Contact_ID === GLOBAL_AUTHOR_ID);
+      if (current) {
+        state.currentUser = {
+          display_name: current.Display_Name || "Anonymous",
+          profile_image: current.Profile_Image || DEFAULT_AVATAR,
+        };
+        updateCurrentUserUI(state);
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to fetch contacts", err);
+    });
 
   initPosts();
   initFilePond();
@@ -56,23 +60,27 @@ function startApp(tagName, contactId, displayName) {
   fetchGraphQL(GET_CONTACTS_BY_TAGS, {
     id: GLOBAL_AUTHOR_ID,
     name: contactTagForQuery,
-  }).then((res) => {
-    const result = res?.data?.calcContacts;
-    if (Array.isArray(result) && result.length > 0) {
-      setContactIncludedInTag(true);
-      connect();
-      connectNotification();
-    } else {
-      const el = document.getElementById("forum-root");
-      document.getElementById("skeleton-loader")?.remove();
-      el.replaceChildren(
-        Object.assign(document.createElement("h2"), {
-          className: "text-center text-gray-500",
-          textContent: "No posts found.",
-        })
-      );
-    }
-  });
+  })
+    .then((res) => {
+      const result = res?.data?.calcContacts;
+      if (Array.isArray(result) && result.length > 0) {
+        setContactIncludedInTag(true);
+        connect();
+        connectNotification();
+      } else {
+        const el = document.getElementById("forum-root");
+        document.getElementById("skeleton-loader")?.remove();
+        el.replaceChildren(
+          Object.assign(document.createElement("h2"), {
+            className: "text-center text-gray-500",
+            textContent: "No posts found.",
+          })
+        );
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to check contact tags", err);
+    });
 }
 
 function loadSelectedUserForum(tagName, contactId, displayName, profileImage) {

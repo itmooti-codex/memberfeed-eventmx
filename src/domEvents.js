@@ -45,14 +45,22 @@ function renderContacts(list, containerId) {
 }
 
 export function loadModalContacts() {
-  fetchGraphQL(GET_SUBSCRIBER_CONTACTS_FOR_MODAL).then((res) => {
-    const contacts = res?.data?.calcContacts || [];
-    renderContacts(contacts, "subscriberContacts");
-  });
-  fetchGraphQL(GET_ADMIN_CONTACTS_FOR_MODAL).then((res) => {
-    const contacts = res?.data?.calcContacts || [];
-    renderContacts(contacts, "adminContacts");
-  });
+  fetchGraphQL(GET_SUBSCRIBER_CONTACTS_FOR_MODAL)
+    .then((res) => {
+      const contacts = res?.data?.calcContacts || [];
+      renderContacts(contacts, "subscriberContacts");
+    })
+    .catch((err) => {
+      console.error("Failed to load subscriber contacts", err);
+    });
+  fetchGraphQL(GET_ADMIN_CONTACTS_FOR_MODAL)
+    .then((res) => {
+      const contacts = res?.data?.calcContacts || [];
+      renderContacts(contacts, "adminContacts");
+    })
+    .catch((err) => {
+      console.error("Failed to load admin contacts", err);
+    });
 }
 
 export function setupCreatePostModal() {
