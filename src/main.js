@@ -62,6 +62,17 @@ export function connectNotification() {
   state.notifIsConnecting = true;
   state.notificationSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
 
+  const notifContainer = document.getElementById("notificationContainerSocket");
+  if (notifContainer) {
+    notifContainer.innerHTML = `
+      <div class="flex w-12 mx-auto my-6">
+        <div class="relative">
+          <div class="w-12 h-12 rounded-full absolute border border-solid border-gray-200"></div>
+          <div class="w-12 h-12 rounded-full animate-spin absolute border border-solid border-yellow-500 border-t-transparent"></div>
+        </div>
+      </div>`;
+  }
+
   state.notificationSocket.addEventListener("open", () => {
     state.notifBackoff = 1000;
     state.notificationSocket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
@@ -89,7 +100,7 @@ export function connectNotification() {
           type: "GQL_START",
           payload: {
             query: GET_NOTIFICATIONS,
-            variables: { author_id: GLOBAL_AUTHOR_ID, notified_contact_id: GLOBAL_AUTHOR_ID},
+            variables: { author_id: GLOBAL_AUTHOR_ID, notified_contact_id: GLOBAL_AUTHOR_ID },
           },
         })
       );
@@ -102,7 +113,12 @@ export function connectNotification() {
       const notifContainer = document.getElementById("notificationContainerSocket");
 
       if (notifContainer) {
-        notifContainer.innerHTML = ""; 
+        notifContainer.innerHTML = "";
+
+        if (!notifications || (Array.isArray(notifications) && notifications.length === 0)) {
+          notifContainer.innerHTML = `<div class="text-gray-500 text-sm p-4">No notifications</div>`;
+          return;
+        }
 
         if (Array.isArray(notifications)) {
           notifications.forEach((notif) => {
@@ -116,8 +132,7 @@ export function connectNotification() {
           notifContainer.insertAdjacentHTML("beforeend", html);
         }
       }
-    }
-else if (msg.type === "GQL_ERROR") {
+    } else if (msg.type === "GQL_ERROR") {
       console.error("Notification subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
       if (
@@ -425,18 +440,6 @@ document.addEventListener("click", async (e) => {
   btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
   const uid = btn.getAttribute("data-uid");
   if (!uid) return;
-
-  const mutation = `
-    mutation updateForumPost($unique_id: StringScalar_0_8, $payload: ForumPostUpdateInput = null) {
-      updateForumPost(
-        query: [{ where: { unique_id: $unique_id } }]
-        payload: $payload
-      ) {
-        forum_status
-      }
-    }
-  `;
-
   const variables = {
     unique_id: uid,
     payload: {
@@ -445,7 +448,7 @@ document.addEventListener("click", async (e) => {
   };
 
   try {
-    const response = await fetchGraphQL(UPDATE_SCHEDULED_TO_POST, variables, mutation);
+    const response = await fetchGraphQL(UPDATE_SCHEDULED_TO_POST, variables, UPDATE_SCHEDULED_TO_POST);
    showToast("Post updated successfully!");
     btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
   } catch (error) {
@@ -480,5 +483,61 @@ document.addEventListener("DOMContentLoaded", function () {
   showPublished(); // Default state
 });
 
+// Update Announcement to read
+document.addEventListener("click", async (e) => {
+  const markAll = e.target.id === "markAllNotificationAsRead";
 
+  let ids = [];
 
+  if (markAll) {
+    const container = document.getElementById("notificationContainerSocket");
+    const elements = container.querySelectorAll("[data-announcement].unread");
+    ids = Array.from(elements).map(el => el.getAttribute("data-announcement"));
+  } else {
+    const unreadElements = document.querySelectorAll(".unread");
+    for (const el of unreadElements) {
+      if (el.contains(e.target)) {
+        const announcementId = el.getAttribute("data-announcement");
+        if (!announcementId) return;
+        ids = [announcementId];
+        break;
+      }
+    }
+  }
+
+  if (!ids.length) return;
+
+  const variables = {
+    payload: { is_read: true }
+  };
+
+  const UPDATE_ANNOUNCEMENT = `
+    mutation updateAnnouncements($payload: AnnouncementUpdateInput = null) {
+      updateAnnouncements(query: [{ whereIn: { id: [${ids.join(",")}] } }], payload: $payload) {
+        is_read
+      }
+    }
+  `;
+
+  try {
+    await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
+
+    if (markAll) {
+      const container = document.getElementById("notificationContainerSocket");
+      const elements = container.querySelectorAll("[data-announcement].unread");
+      elements.forEach(el => {
+        el.classList.remove("unread");
+        el.classList.add("read");
+      });
+    } else {
+      document.querySelectorAll(".unread").forEach(el => {
+        if (ids.includes(el.getAttribute("data-announcement"))) {
+          el.classList.remove("unread");
+          el.classList.add("read");
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Error marking announcement(s) as read:", error);
+  }
+});
