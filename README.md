@@ -28,7 +28,7 @@ The UI uses [Font Awesome Free](https://fontawesome.com/) icons via a CDN link i
 
 2. Open your browser at `http://localhost:8080/public/index.html` (or the port you chose) to use the application.
 
-No build step is needed—serving the static files is enough to run the forum locally.
+Run `npm run build` to bundle the application with your environment variables. The generated `public/bundle.js` is then served along with the other static files.
 
 ## External dependencies loaded via CDN
 
@@ -73,7 +73,7 @@ the browser can verify the SRI hash correctly.
 
 ## Configuration
 
-Create a `src/config.js` file or provide the values as environment variables when bundling. A template is available at `src/config.example.js`.
+Configuration values are read in `src/config.js` from environment variables at build time or from `window.APP_CONFIG` at runtime. Create a `.env` file at the project root and run `npm run build` to inject the values using the bundler. An example is provided in `.env.example`.
 
 ### Fields
 
@@ -83,7 +83,7 @@ Create a `src/config.js` file or provide the values as environment variables whe
 - **HTTP_ENDPOINT** – URL of the GraphQL HTTP endpoint.
 - **WS_ENDPOINT** – GraphQL WebSocket endpoint for real-time updates. Typically the same host as `HTTP_ENDPOINT` using `wss://` and appending `?apiKey=YOUR_API_KEY`.
 
-When running in the browser without a bundler, copy `src/config.example.js` to `src/config.js` and fill in your actual values. The repository's `.gitignore` already excludes `src/config.js` so your secrets stay out of version control.
+When running in the browser without a bundler, copy `.env.example` to `.env` and fill in your actual values, then run `npm run build` to generate the bundled files. The repository's `.gitignore` already excludes this file so your secrets stay out of version control.
 
 ## Tests
 

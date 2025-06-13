@@ -1,13 +1,12 @@
-window.APP_CONFIG = {
-  API_KEY: "uXVeRpnkFYHhT8SQK6JXo",
-  AWS_PARAM: "5d26643c9bf758f00272ffed8558a0d9",
-  AWS_PARAM_URL: "https://learn.eduflowpro.com/s/aws",
-  HTTP_ENDPOINT: "https://eduflowpro.vitalstats.app/api/v1/graphql",
-  WS_ENDPOINT:
-    "wss://eduflowpro.vitalstats.app/api/v1/graphql?apiKey=uXVeRpnkFYHhT8SQK6JXo",
-};
+// Runtime configuration can be provided by populating `window.APP_CONFIG`
+// or via environment variables when bundling. `window.APP_CONFIG` is left
+// empty by default so secrets are not committed to the repository.
+window.APP_CONFIG = {};
 
-export const env = (typeof process !== "undefined" && process.env) || {};
+export const env =
+  (typeof import.meta !== "undefined" && import.meta.env) ||
+  (typeof process !== "undefined" && process.env) ||
+  {};
 export const cfg = (typeof window !== "undefined" && window.APP_CONFIG) || {};
 
 export const API_KEY = cfg.API_KEY || env.API_KEY || "";
@@ -16,11 +15,11 @@ export const awsParamUrl = cfg.AWS_PARAM_URL || env.AWS_PARAM_URL || "";
 export const HTTP_ENDPOINT =
   cfg.HTTP_ENDPOINT ||
   env.HTTP_ENDPOINT ||
-  "https://eduflowpro.vitalstats.app/api/v1/graphql";
+  "";
 export const WS_ENDPOINT =
   cfg.WS_ENDPOINT ||
   env.WS_ENDPOINT ||
-  `wss://eduflowpro.vitalstats.app/api/v1/graphql?apiKey=${API_KEY}`;
+  "";
 
 if (typeof window !== "undefined") {
   window.awsParam = awsParam;
