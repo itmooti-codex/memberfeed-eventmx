@@ -28,7 +28,7 @@ The UI uses [Font Awesome Free](https://fontawesome.com/) icons via a CDN link i
 
 2. Open your browser at `http://localhost:8080/public/index.html` (or the port you chose) to use the application.
 
-No build step is needed—serving the static files is enough to run the forum locally.
+Run `npm run build` to bundle the application with your environment variables. The generated `public/bundle.js` is then served along with the other static files.
 
 ## External dependencies loaded via CDN
 

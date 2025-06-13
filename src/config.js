@@ -3,7 +3,10 @@
 // empty by default so secrets are not committed to the repository.
 window.APP_CONFIG = {};
 
-export const env = (typeof process !== "undefined" && process.env) || {};
+export const env =
+  (typeof import.meta !== "undefined" && import.meta.env) ||
+  (typeof process !== "undefined" && process.env) ||
+  {};
 export const cfg = (typeof window !== "undefined" && window.APP_CONFIG) || {};
 
 export const API_KEY = cfg.API_KEY || env.API_KEY || "";
