@@ -3,7 +3,10 @@
 // empty by default so secrets are not committed to the repository.
 window.APP_CONFIG = {};
 
+import credentials from "./credentials.js";
+
 export const env =
+  credentials ||
   (typeof import.meta !== "undefined" && import.meta.env) ||
   (typeof process !== "undefined" && process.env) ||
   {};

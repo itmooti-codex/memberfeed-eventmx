@@ -11,14 +11,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Running locally
 
-1. Install the Node.js dependencies and build the bundled JavaScript:
-
-   ```bash
-   npm install
-   npm run build
-   ```
-
-   The build step creates `public/bundle.js` which `index.html` expects.
+1. Copy `src/credentials.example.js` to `src/credentials.js` and add your actual credentials.
 
 2. Start a local web server in the project directory. Examples:
 
@@ -80,7 +73,7 @@ the browser can verify the SRI hash correctly.
 
 ## Configuration
 
-Configuration values are read in `src/config.js` from environment variables at build time or from `window.APP_CONFIG` at runtime. Create a `.env` file at the project root or provide the values through your bundler's environment. An example is provided in `.env.example`.
+Configuration values are read in `src/config.js` from `src/credentials.js` or from `window.APP_CONFIG` at runtime. Copy `src/credentials.example.js` to `src/credentials.js` and add your own values.
 
 ### Fields
 
@@ -90,7 +83,7 @@ Configuration values are read in `src/config.js` from environment variables at b
 - **HTTP_ENDPOINT** – URL of the GraphQL HTTP endpoint.
 - **WS_ENDPOINT** – GraphQL WebSocket endpoint for real-time updates. Typically the same host as `HTTP_ENDPOINT` using `wss://` and appending `?apiKey=YOUR_API_KEY`.
 
-When running in the browser without a bundler, copy `.env.example` to `.env` and fill in your actual values. The repository's `.gitignore` already excludes this file so your secrets stay out of version control.
+Copy `src/credentials.example.js` to `src/credentials.js` and fill in your actual values. The repository's `.gitignore` already excludes this file so your secrets stay out of version control.
 
 ## Tests
 

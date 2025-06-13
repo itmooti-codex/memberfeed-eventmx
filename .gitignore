@@ -53,4 +53,5 @@ Desktop.ini
 *.tmp
 *.temp
 src/config.js
+src/credentials.js
 .env
