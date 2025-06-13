@@ -77,3 +77,11 @@ Run the unit tests with:
 ```bash
 npm test
 ```
+
+## Linting
+
+Run ESLint across the project with:
+
+```bash
+npm run lint
+```
