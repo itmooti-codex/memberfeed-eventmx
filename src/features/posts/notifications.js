@@ -55,7 +55,6 @@ export async function sendNotificationsAfterPost(forumData) {
 
   try {
     await fetchGraphQL(CREATE_NOTIFICATION, { payload });
-    console.log("Notifications sent successfully");
   } catch (err) {
     console.error("Failed to send notifications", err);
   }

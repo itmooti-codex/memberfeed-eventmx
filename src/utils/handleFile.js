@@ -327,7 +327,6 @@ export function getS3UploadParams(awsParam, url) {
     .then((res) => res.json())
     .then((object) => {
       if (object.code === 0 && object.data) {
-        console.log("object data is", object.data);
         return object.data;
       }
       /*
@@ -385,7 +384,6 @@ export function getS3UploadParams(awsParam, url) {
  * provided `filesToUpload` Array.
  */
 export function uploadFiles(filesToUpload, s3Params, toSubmit) {
-  console.log(s3Params, "s3Params");
   const paramsInputs = s3Params.inputs;
   const method = s3Params.attributes.method;
   const action = s3Params.attributes.action;
