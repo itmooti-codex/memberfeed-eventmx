@@ -91,12 +91,11 @@ export function connect() {
       requestAnimationFrame(setupPlyr);
     } else if (msg.type === "GQL_ERROR") {
       console.error("Subscription error", msg.payload);
-    } else if (msg.type === "GQL_COMPLETE") {
-      console.warn("Subscription complete");
-      if (state.socket && state.socket.readyState === WebSocket.OPEN) {
-        state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
-        state.socket.close();
-      }
+      } else if (msg.type === "GQL_COMPLETE") {
+        if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+          state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
+          state.socket.close();
+        }
     }
   });
   state.socket.addEventListener("error", e => {
@@ -128,7 +127,7 @@ function handleVisibilityChange() {
       if (contactIncludedInTag) {
         connect();
       } else {
-        console.log("Contact not included in tag, skipping connection.");
+        // Contact not included in tag, skipping connection.
       }
     } else if (!state.keepAliveTimer) {
       state.keepAliveTimer = setInterval(() => {

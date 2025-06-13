@@ -27,7 +27,6 @@ export async function createForumToSubmit(
   formElementId,
   uidParam,
 ) {
-  console.log("all contacts are", state.allContacts);
   depthOfForum = Number(depthOfForum);
   const computedType =
     depthOfForum === 0 ? "Post" : depthOfForum === 1 ? "Comment" : "Reply";
@@ -39,7 +38,6 @@ export async function createForumToSubmit(
   const editor = $(`.${formElementId} .editor`);
   const htmlContent = editor.html().trim();
   if (!htmlContent && !pendingFile) {
-    console.warn("No content to submit");
     return;
   }
 
@@ -122,7 +120,6 @@ export async function createForumToSubmit(
     });
     const raw = res.data?.createForumPost;
     if (raw && raw.id) {
-      console.log("Post created with ID:", raw.id);
       await sendNotificationsAfterPost(raw);
     }
     if (raw) {

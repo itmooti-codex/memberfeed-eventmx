@@ -54,7 +54,7 @@ export function initReactionHandlers() {
         toastMsg = "Voted";
       }
     } catch (err) {
-      console.log("error is", err);
+      console.error("error is", err);
     } finally {
       $(this).removeClass("state-disabled");
     }
@@ -102,8 +102,8 @@ export function initReactionHandlers() {
         node.bookmarkRecordId = res.data.createOBookmarkingContactBookmarkedForum.id;
         toastMsg = "Bookmarked";
       }
-    } catch (err) {
-      console.log("error is", err);
+      } catch (err) {
+        console.error("error is", err);
     } finally {
       $(this).removeClass("state-disabled");
     }
