@@ -53,3 +53,4 @@ Desktop.ini
 *.tmp
 *.temp
 src/config.js
+.env
