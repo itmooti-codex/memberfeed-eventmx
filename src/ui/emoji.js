@@ -46,6 +46,13 @@ export function initEmojiHandlers() {
 function insertEmoji(editor, emoji) {
   editor.focus();
   restoreSelection(editor);
-  document.execCommand('insertText', false, emoji);
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return;
+  const range = sel.getRangeAt(0);
+  range.deleteContents();
+  range.insertNode(document.createTextNode(emoji));
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
   saveSelection();
 }
