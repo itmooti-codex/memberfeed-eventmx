@@ -60,6 +60,33 @@ async function ensureCurrentUser() {
   }
 }
 function processContent(rawHtml) {
+  const allowedTags = [
+    'b',
+    'i',
+    'u',
+    'a',
+    'br',
+    'p',
+    'span',
+    'div',
+    'ul',
+    'ol',
+    'li',
+    'strong',
+    'em'
+  ];
+  const allowedAttrs = [
+    'href',
+    'target',
+    'class',
+    'style',
+    'data-mention-id'
+  ];
+  rawHtml = DOMPurify.sanitize(rawHtml, {
+    ALLOWED_TAGS: allowedTags,
+    ALLOWED_ATTR: allowedAttrs
+  });
+
   const isOnlyUrl = rawHtml.trim().match(/^(https?:\/\/[^\s]+)$/);
   const link = isOnlyUrl ? rawHtml.trim() : null;
 
@@ -133,7 +160,17 @@ function processContent(rawHtml) {
     }
   });
 
-  return container.innerHTML;
+  return DOMPurify.sanitize(container.innerHTML, {
+    ALLOWED_TAGS: [...allowedTags, 'iframe'],
+    ALLOWED_ATTR: [
+      ...allowedAttrs,
+      'width',
+      'height',
+      'allow',
+      'allowfullscreen',
+      'frameborder'
+    ]
+  });
 }
 
 export function initPostHandlers() {
