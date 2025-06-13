@@ -70,22 +70,10 @@ Create a `src/config.js` file or provide the values as environment variables whe
 
 When running in the browser without a bundler, copy `src/config.example.js` to `src/config.js` and fill in your actual values. The repository's `.gitignore` already excludes `src/config.js` so your secrets stay out of version control.
 
-## Testing and linting
+## Tests
 
-1. Ensure Node.js is installed.
-2. Run the test suite:
+Run the unit tests with:
 
-   ```bash
-   npm test
-   ```
-
-   The provided tests are minimal and simply execute the test file under `test/`.
-3. Run lint checks (requires [ESLint](https://eslint.org/)):
-
-   ```bash
-   npx eslint .
-   ```
-
-   If you add an npm script such as `"lint": "eslint ."` you can run `npm run lint` instead.
-
-No build step is defined. If you introduce a bundler, document the build command (for example `npm run build`) and run it before serving the `public` directory.
+```bash
+npm test
+```
