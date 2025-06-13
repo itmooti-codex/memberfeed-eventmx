@@ -73,7 +73,7 @@ the browser can verify the SRI hash correctly.
 
 ## Configuration
 
-Configuration values are read in `src/config.js` from environment variables at build time or from `window.APP_CONFIG` at runtime. Create a `.env` file at the project root and run `npm run build` to inject the values using the bundler. An example is provided in `.env.example`.
+Configuration values are read in `src/config.js` from environment variables at build time or from `window.APP_CONFIG` at runtime. Create a `.env` file at the project root or provide the values through your bundler's environment. An example is provided in `.env.example`.
 
 ### Fields
 
@@ -83,7 +83,7 @@ Configuration values are read in `src/config.js` from environment variables at b
 - **HTTP_ENDPOINT** – URL of the GraphQL HTTP endpoint.
 - **WS_ENDPOINT** – GraphQL WebSocket endpoint for real-time updates. Typically the same host as `HTTP_ENDPOINT` using `wss://` and appending `?apiKey=YOUR_API_KEY`.
 
-When running in the browser without a bundler, copy `.env.example` to `.env` and fill in your actual values, then run `npm run build` to generate the bundled files. The repository's `.gitignore` already excludes this file so your secrets stay out of version control.
+When running in the browser without a bundler, copy `.env.example` to `.env` and fill in your actual values. The repository's `.gitignore` already excludes this file so your secrets stay out of version control.
 
 ## Tests
 

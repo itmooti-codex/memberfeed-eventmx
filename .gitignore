@@ -52,4 +52,5 @@ Desktop.ini
 *.swo
 *.tmp
 *.temp
+src/config.js
 .env
