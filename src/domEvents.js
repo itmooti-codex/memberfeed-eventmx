@@ -1,0 +1,135 @@
+import { DEFAULT_AVATAR } from "./config.js";
+import {
+  GET_SUBSCRIBER_CONTACTS_FOR_MODAL,
+  GET_ADMIN_CONTACTS_FOR_MODAL,
+  UPDATE_SCHEDULED_TO_POST
+} from "./api/queries.js";
+import { fetchGraphQL } from "./api/fetch.js";
+import { showToast } from "./ui/toast.js";
+
+function renderContacts(list, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.classList = "";
+  container.classList.add("grid", "grid-cols-2", "gap-4", "p-4");
+  container.innerHTML = list
+    .map((c) => {
+      const isAdmin = containerId === "adminContacts";
+      return `
+    <div
+      @click="${isAdmin
+          ? `
+            document.getElementById('adminSchedulePostButton').classList.remove('hidden');
+            document.getElementById('tabsForAdmin').classList.remove('hidden');
+          `
+          : `
+            document.getElementById('adminSchedulePostButton').classList.add('hidden');
+            document.getElementById('tabsForAdmin').classList.add('hidden');
+          `
+        }
+      loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}');
+      modalToSelectUser=false;"
+      class="cursor-pointer flex items-center flex-col "
+    >
+      <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
+        <img
+          src="${c.Profile_Image || DEFAULT_AVATAR}"
+          alt="${c.Display_Name || "Anonymous"}"
+          class="h-full w-full rounded-full object-cover" />
+      </div>
+      <div>${c.Display_Name || "Anonymous"}</div>
+    </div>
+  `;
+    })
+    .join("");
+}
+
+export function loadModalContacts() {
+  fetchGraphQL(GET_SUBSCRIBER_CONTACTS_FOR_MODAL).then((res) => {
+    const contacts = res?.data?.calcContacts || [];
+    renderContacts(contacts, "subscriberContacts");
+  });
+  fetchGraphQL(GET_ADMIN_CONTACTS_FOR_MODAL).then((res) => {
+    const contacts = res?.data?.calcContacts || [];
+    renderContacts(contacts, "adminContacts");
+  });
+}
+
+export function setupCreatePostModal() {
+  const trigger = document.getElementById("create-post-trigger");
+  const modal = document.getElementById("create-post-modal");
+  const closeBtn = document.getElementById("close-post-modal");
+
+  if (trigger && modal) {
+    trigger.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      modal.classList.add("show");
+      document.getElementById("post-editor").focus();
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      modal.classList.remove("show");
+    });
+  }
+
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeBtn?.click();
+      }
+    });
+  }
+}
+
+export function initScheduledPostHandler() {
+  document.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".postNowFromScheduled");
+    if (!btn) return;
+    btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
+    const uid = btn.getAttribute("data-uid");
+    if (!uid) return;
+    const variables = {
+      unique_id: uid,
+      payload: {
+        forum_status: "Published - Not flagged"
+      }
+    };
+
+    try {
+      await fetchGraphQL(UPDATE_SCHEDULED_TO_POST, variables, UPDATE_SCHEDULED_TO_POST);
+      showToast("Post updated successfully!");
+      btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
+  });
+}
+
+function showPublished() {
+  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.style.display = '');
+  document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = 'none');
+
+  document.getElementById("publishedTab").classList.add("active");
+  document.getElementById("scheduledTab").classList.remove("active");
+}
+
+function showScheduled() {
+  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = '');
+
+  document.getElementById("scheduledTab").classList.add("active");
+  document.getElementById("publishedTab").classList.remove("active");
+}
+
+export function initTabEvents() {
+  const publishedTab = document.getElementById("publishedTab");
+  const scheduledTab = document.getElementById("scheduledTab");
+  document.addEventListener("DOMContentLoaded", function () {
+    publishedTab.addEventListener("click", showPublished);
+    scheduledTab.addEventListener("click", showScheduled);
+    showPublished();
+  });
+}
