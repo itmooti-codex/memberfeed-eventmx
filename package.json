@@ -1,11 +1,6 @@
 {
   "type": "module",
   "scripts": {
-    "test": "node test/formatter.test.js",
-    "lint": "eslint src public"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.0.0",
-    "eslint": "^9.0.0"
+    "test": "node --test"
   }
 }
