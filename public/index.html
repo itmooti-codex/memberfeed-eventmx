@@ -329,17 +329,16 @@
   class="inline-flex flex-col items-start justify-center gap-3 self-stretch overflow-hidden rounded bg-white p-4 cursor-pointer"
   id="create-post-trigger">
   <div class="inline-flex items-center justify-start gap-2 self-stretch">
-    <div
-      class="flex items-center justify-start gap-2 rounded-[29px] bg-zinc-100 p-1 outline-1 outline-offset-[-1px] outline-zinc-300">
-      <div class="relative h-8 w-8 overflow-hidden rounded-full">
+   
+      <div class="relative h-8 w-8 overflow-hidden rounded-full border-[2px] border-solid border-[var(--neutral)]">
         <img id="current-user-avatar"
           src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
           alt="avatar" class="w-8 h-8 rounded-full ml-auto" />
       </div>
-    </div>
+
     <div class="flex flex-1 items-center justify-start gap-2 rounded-xl bg-zinc-100 px-3 py-2">
       <div class="justify-start text-center p2 text-black">What’s on
-        your mind ? <span id="current-user-name"></span></div>
+        your mind <span id="current-user-name"></span> ?</div>
     </div>
   </div>
   <div class="h-0 self-stretch outline-1 outline-offset-[-0.50px] outline-zinc-300"></div>
@@ -429,6 +428,20 @@
       </svg>
       Saved Posts
     </div>
+    <div x-on:click="selectedFilterTab = 'scheduledPost'" data-filter="scheduled" id="scheduledTab"
+      x-bind:aria-selected="selectedFilterTab === 'scheduledPost'"
+      x-bind:tabindex="selectedFilterTab === 'scheduledPost' ? '0' : '-1'"
+      x-bind:class="selectedFilterTab === 'scheduledPost' ?  'text-[var(--primary)] border-b-2 border-[var(--primary)]' : 'hover:border-b-2 hover:border-b-[var(--primary)] hover:text-[var(--primary)]'"
+      class="group tabsForAdmin flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
+      aria-controls="tabpanelscheduledPost">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path :class="selectedFilterTab === 'scheduledPost' ? 'fill-[var(--primary)]' : 'fill-[#737373]'" class="group-hover:fill-[var(--primary)]"
+          d="M8 3C6.81331 3 5.65328 3.35189 4.66658 4.01118C3.67989 4.67047 2.91085 5.60754 2.45673 6.7039C2.0026 7.80026 1.88378 9.00666 2.11529 10.1705C2.3468 11.3344 2.91825 12.4035 3.75736 13.2426C4.59648 14.0818 5.66558 14.6532 6.82946 14.8847C7.99335 15.1162 9.19975 14.9974 10.2961 14.5433C11.3925 14.0892 12.3295 13.3201 12.9888 12.3334C13.6481 11.3467 14 10.1867 14 9C13.9982 7.40926 13.3655 5.88419 12.2406 4.75937C11.1158 3.63454 9.59074 3.00182 8 3ZM10.8538 6.85375L8.35375 9.35375C8.3073 9.40021 8.25215 9.43705 8.19145 9.4622C8.13075 9.48734 8.0657 9.50028 8 9.50028C7.93431 9.50028 7.86925 9.48734 7.80855 9.4622C7.74786 9.43705 7.69271 9.40021 7.64625 9.35375C7.5998 9.30729 7.56295 9.25214 7.53781 9.19145C7.51266 9.13075 7.49972 9.0657 7.49972 9C7.49972 8.9343 7.51266 8.86925 7.53781 8.80855C7.56295 8.74786 7.5998 8.6927 7.64625 8.64625L10.1463 6.14625C10.1927 6.09979 10.2479 6.06294 10.3086 6.0378C10.3693 6.01266 10.4343 5.99972 10.5 5.99972C10.5657 5.99972 10.6308 6.01266 10.6915 6.0378C10.7521 6.06294 10.8073 6.09979 10.8538 6.14625C10.9002 6.1927 10.9371 6.24786 10.9622 6.30855C10.9873 6.36925 11.0003 6.4343 11.0003 6.5C11.0003 6.5657 10.9873 6.63075 10.9622 6.69145C10.9371 6.75214 10.9002 6.8073 10.8538 6.85375ZM6 1.5C6 1.36739 6.05268 1.24021 6.14645 1.14645C6.24022 1.05268 6.36739 1 6.5 1H9.5C9.63261 1 9.75979 1.05268 9.85356 1.14645C9.94732 1.24021 10 1.36739 10 1.5C10 1.63261 9.94732 1.75979 9.85356 1.85355C9.75979 1.94732 9.63261 2 9.5 2H6.5C6.36739 2 6.24022 1.94732 6.14645 1.85355C6.05268 1.75979 6 1.63261 6 1.5Z"
+          fill="#737373" />
+      </svg>
+      Scheduled
+    </div>
+
   </div>
 </div>
     <div
@@ -659,7 +672,7 @@
       <button id="publishedTab" class="px-4 py-2 bg-[var(--primary)] text-white mr-2">
         Published
       </button>
-      <button id="scheduledTab" class="px-4 py-2 bg-gray-300 text-black">
+      <button class="px-4 py-2 bg-gray-300 text-black">
         Scheduled
       </button>
     </div>

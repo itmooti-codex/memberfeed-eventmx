@@ -20,11 +20,11 @@ function renderContacts(list, containerId) {
       @click="${isAdmin
           ? `
             document.getElementById('adminSchedulePostButton').classList.remove('hidden');
-            document.getElementById('tabsForAdmin').classList.remove('hidden');
+            document.querySelector('.tabsForAdmin').classList.remove('hidden');
           `
           : `
             document.getElementById('adminSchedulePostButton').classList.add('hidden');
-            document.getElementById('tabsForAdmin').classList.add('hidden');
+            document.querySelector('.tabsForAdmin').classList.add('hidden');
           `
         }
       loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}');
@@ -125,7 +125,8 @@ function showPublished() {
 }
 
 function showScheduled() {
-  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.style.display = 'none');
+  console.log("Showing scheduled posts");
+  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.classList.add('hidden'));
   document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = '');
 
   document.getElementById("scheduledTab").classList.add("active");
