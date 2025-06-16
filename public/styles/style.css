@@ -1,5 +1,5 @@
 :root {
-  --primary: #007bff;
+  --primary: #0963D8;
   --secondary: #6c757d;
   --accent: #e83e8c;
   --success: #28a745;
@@ -10,6 +10,41 @@
   --dark: #343a40;
   --neutral: #adb5bd;
   --plyr-color-main: var(--primary);
+}
+.h1 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 38px;
+}
+
+.h2 {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.h3 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.p1 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.p2 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.p3 {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
 }
 
 body {
@@ -57,15 +92,15 @@ button {
 
 .btn-like.liked,
 .btn-bookmark.bookmarked {
-  background: #007bff;
+  background: var(--primary);
   color: #fff;
-  border-color: #007bff;
+  border-color: var(--primary);
 }
 
 .filter-btn.active {
-  background: #007bff;
+  background: var(--primary);
   color: #fff;
-  border-color: #007bff;
+  border-color: var(--primary);
 }
 
 .file-filter-menu {
@@ -74,7 +109,7 @@ button {
 
 .file-filter-menu li:hover,
 .file-filter-menu li.active {
-  background-color: #007bff;
+  background-color: var(--primary);
   color: #fff;
 }
 
@@ -88,7 +123,7 @@ button {
 
 .sort-filter-menu li:hover,
 .sort-filter-menu li.active {
-  background-color: #007bff;
+  background-color: var(--primary);
   color: #fff;
 }
 

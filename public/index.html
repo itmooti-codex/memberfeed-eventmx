@@ -325,19 +325,51 @@
       <i class="fa-solid fa-arrow-up text-white"></i>
     </div>
 
+<div
+  class="inline-flex flex-col items-start justify-center gap-3 self-stretch overflow-hidden rounded bg-white p-4 cursor-pointer"
+  id="create-post-trigger">
+  <div class="inline-flex items-center justify-start gap-2 self-stretch">
     <div
-      id="create-post-trigger"
-      class="bg-white shadow-lg rounded w-full p-4 flex items-center cursor-pointer mb-4"
-    >
-      <span class="text-gray-500">What's on your mind?</span>
-      <span id="current-user-name" class="ml-2 text-gray-700"></span>
-      <img
-        id="current-user-avatar"
-        src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
-        alt="avatar"
-        class="w-8 h-8 rounded-full ml-auto"
-      />
+      class="flex items-center justify-start gap-2 rounded-[29px] bg-zinc-100 p-2 outline-1 outline-offset-[-1px] outline-zinc-300">
+      <div class="relative h-8 w-8 overflow-hidden rounded-full">
+        <img id="current-user-avatar"
+          src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
+          alt="avatar" class="w-8 h-8 rounded-full ml-auto" />
+      </div>
     </div>
+    <div class="flex flex-1 items-center justify-start gap-2 rounded-xl bg-zinc-100 px-3 py-2">
+      <div class="justify-start text-center p2 text-black">What’s on
+        your mind ? <span id="current-user-name"></span></div>
+    </div>
+  </div>
+  <div class="h-0 self-stretch outline-1 outline-offset-[-0.50px] outline-zinc-300"></div>
+  <div class="inline-flex items-center justify-start gap-4 self-stretch">
+    <div class="flex items-center justify-center gap-2 rounded bg-zinc-100 px-3 py-2 cursor-pointer">
+      <div data-property-1="filled" class="relative h-4 w-4 overflow-hidden">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M8.24406 9.66666C9.64138 9.66666 10.7738 8.54761 10.7738 7.16666V3.83333C10.7738 2.45238 9.64138 1.33333 8.24406 1.33333C6.84674 1.33333 5.7143 2.45238 5.7143 3.83333V7.16666C5.7143 8.54761 6.84674 9.66666 8.24406 9.66666ZM13.1548 7.1369C13.1548 7.07142 13.1012 7.01785 13.0357 7.01785H12.1429C12.0774 7.01785 12.0238 7.07142 12.0238 7.1369C12.0238 9.2247 10.3319 10.9167 8.24406 10.9167C6.15626 10.9167 4.4643 9.2247 4.4643 7.1369C4.4643 7.07142 4.41072 7.01785 4.34525 7.01785H3.45239C3.38691 7.01785 3.33334 7.07142 3.33334 7.1369C3.33334 9.64732 5.21727 11.7187 7.64882 12.0119V13.5357H5.48662C5.28275 13.5357 5.11906 13.7485 5.11906 14.0119V14.5476C5.11906 14.6131 5.16072 14.6667 5.21132 14.6667H11.2768C11.3274 14.6667 11.3691 14.6131 11.3691 14.5476V14.0119C11.3691 13.7485 11.2054 13.5357 11.0015 13.5357H8.77977V12.0193C11.2396 11.7515 13.1548 9.66815 13.1548 7.1369Z"
+            fill="#0E0E0E" />
+        </svg>
+
+      </div>
+      <div class="justify-start text-center p3">Start
+        Recording</div>
+    </div>
+    <div class="flex items-center justify-center gap-2 rounded bg-zinc-100 px-3 py-2 cursor-pointer">
+      <div class="relative h-4 w-4 overflow-hidden">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M14.6665 9.66683V14.1111C14.6665 14.2585 14.6079 14.3998 14.5037 14.5039C14.3996 14.6081 14.2583 14.6667 14.1109 14.6667H1.88909C1.74176 14.6667 1.60045 14.6081 1.49627 14.5039C1.39209 14.3998 1.33356 14.2585 1.33356 14.1111V9.66683C1.33356 9.51949 1.39209 9.37818 1.49627 9.274C1.60045 9.16982 1.74176 9.11129 1.88909 9.11129C2.03643 9.11129 2.17774 9.16982 2.28192 9.274C2.3861 9.37818 2.44463 9.51949 2.44463 9.66683V13.5556H13.5554V9.66683C13.5554 9.51949 13.6139 9.37818 13.7181 9.274C13.8223 9.16982 13.9636 9.11129 14.1109 9.11129C14.2583 9.11129 14.3996 9.16982 14.5037 9.274C14.6079 9.37818 14.6665 9.51949 14.6665 9.66683ZM5.61536 5.06003L7.44447 3.23023V9.66683C7.44447 9.81416 7.503 9.95547 7.60718 10.0597C7.71136 10.1638 7.85267 10.2224 8.00001 10.2224C8.14734 10.2224 8.28865 10.1638 8.39283 10.0597C8.49701 9.95547 8.55554 9.81416 8.55554 9.66683V3.23023L10.3846 5.06003C10.4889 5.16427 10.6303 5.22284 10.7777 5.22284C10.9251 5.22284 11.0665 5.16427 11.1707 5.06003C11.275 4.95579 11.3335 4.81441 11.3335 4.66699C11.3335 4.51957 11.275 4.37819 11.1707 4.27395L8.39305 1.49626C8.34145 1.44461 8.28018 1.40363 8.21274 1.37568C8.1453 1.34772 8.07301 1.33333 8.00001 1.33333C7.927 1.33333 7.85471 1.34772 7.78727 1.37568C7.71983 1.40363 7.65856 1.44461 7.60696 1.49626L4.82928 4.27395C4.72503 4.37819 4.66647 4.51957 4.66647 4.66699C4.66647 4.81441 4.72503 4.95579 4.82928 5.06003C4.93352 5.16427 5.0749 5.22284 5.22232 5.22284C5.36974 5.22284 5.51112 5.16427 5.61536 5.06003Z"
+            fill="#0E0E0E" />
+        </svg>
+
+      </div>
+      <div class="justify-start text-center p3">Upload File
+      </div>
+    </div>
+  </div>
+</div>
 
     <div
       id="create-post-modal"

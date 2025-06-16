@@ -97,7 +97,7 @@ export function initFilePond() {
       ctx.fillStyle = "#f0f0f0";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "#007bff";
+      ctx.strokeStyle = "#0963D8";
       ctx.beginPath();
 
       const sliceWidth = canvas.width / analyser.frequencyBinCount;
