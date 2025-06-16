@@ -209,7 +209,6 @@
 
       <!-- Settings Panel -->
       <div
-      x-data="{  prefs: { off: false, option: 'all' } }"
        id="notification-Settings" 
         x-show="openSettings"
         x-transition
@@ -228,6 +227,12 @@
 
         <div class="space-y-3 text-sm text-gray-800">
           <div class="space-y-3 text-sm text-gray-800" id="notificationOptionsContainer">
+            </div>
+            <div class="pt-4 text-right" id="updatePreferenceButton">
+              <button onclick="updateNotificationPreferences()"
+                class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:opacity-90 transition">
+                Save Preferences
+              </button>
             </div>
         </div>
       </div>

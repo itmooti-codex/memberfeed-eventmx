@@ -10,6 +10,6 @@ export function showToast(message, duration = 3000) {
   });
   setTimeout(() => {
     toast.classList.remove('visible');
-    setTimeout(() => toast.remove(), 300);
+    setTimeout(() => toast.remove(), 1500);
   }, duration);
 }

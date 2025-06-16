@@ -55,14 +55,14 @@ export function connectNotification() {
       console.error("Invalid JSON", data);
       return;
     }
-
+    const query = GET_NOTIFICATIONS();
     if (msg.type === "CONNECTION_ACK") {
       state.notificationSocket.send(
         JSON.stringify({
           id: NOTIF_SUB_ID,
           type: "GQL_START",
           payload: {
-            query: GET_NOTIFICATIONS,
+            query: query,
             variables: { author_id: GLOBAL_AUTHOR_ID, notified_contact_id: GLOBAL_AUTHOR_ID },
           },
         })

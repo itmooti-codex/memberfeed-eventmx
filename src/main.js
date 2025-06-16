@@ -1,6 +1,6 @@
 import { state,notificationStore, GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, GLOBAL_PAGE_TAG } from "./config.js";
 import { setGlobals } from "./config.js";
-import { FETCH_CONTACTS_QUERY, GET_CONTACTS_BY_TAGS,GET__CONTACTS_NOTIFICATION_PREFERENCEE } from "./api/queries.js";
+import { FETCH_CONTACTS_QUERY, GET_CONTACTS_BY_TAGS, GET__CONTACTS_NOTIFICATION_PREFERENCEE, UPDATE_CONTACT_NOTIFICATION_PREFERENCE } from "./api/queries.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { tribute } from "./utils/tribute.js";
 import { initFilePond } from "./utils/filePond.js";
@@ -14,7 +14,8 @@ import { connectNotification, initNotificationEvents } from "./notifications.js"
 import { setupCreatePostModal, loadModalContacts, initScheduledPostHandler, initTabEvents } from "./domEvents.js";
 import { createForumToSubmit } from "./features/posts/actions.js";
 import { renderNotificationToggles } from "./ui/notificationPreference.js";
-import { toggleAllOff , toggleOption } from "./ui/notificationPreference.js";
+import { toggleAllOff, toggleOption } from "./ui/notificationPreference.js";
+import { showToast } from "./ui/toast.js";
 
 export let notificationPreferences = null;
 
@@ -142,3 +143,26 @@ $.views.helpers({
     return `${day} ${month}, ${year}`;
   }
 });
+export function updateNotificationPreferences() {
+  const updatePreferenceButton = document.getElementById("updatePreferenceButton");
+  updatePreferenceButton.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+  const prefs = notificationStore.preferences;
+  const payload = {
+    turn_off_all_notifications: prefs.Turn_Off_All_Notifications || false,
+    notify_me_of_all_posts: prefs.Notify_me_of_all_Posts || false,
+    notify_me_of_comments_replies_on_my_posts_only: prefs.Notify_me_of_comments_replies_on_my_posts_only || false,
+    notify_me_when_i_am_mentioned: prefs.Notify_me_when_I_am_Mentioned || false
+  };
+
+  return fetchGraphQL(UPDATE_CONTACT_NOTIFICATION_PREFERENCE, {
+    id: GLOBAL_AUTHOR_ID,
+    payload
+  }).then((res) => {
+    if (res?.data?.updateContact) {
+      console.log("updated");
+      showToast("Notification preferences updated successfully", "success");
+      updatePreferenceButton.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+    }
+  });
+}
+window.updateNotificationPreferences = updateNotificationPreferences;

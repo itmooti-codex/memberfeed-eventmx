@@ -1,6 +1,7 @@
 import { notificationStore } from "../config.js";
 
 export function renderNotificationToggles(data) {
+    console.log("Rendering notification toggles with data:", notificationStore);
     const container = document.getElementById('notificationOptionsContainer');
     const prefs = data;
 
@@ -13,7 +14,7 @@ export function renderNotificationToggles(data) {
         },
         {
             label: "Comment / Replies on my post only",
-            key: "Notify_me_of_all_Comments_Replies_on_Posts"
+            key: "Notify_me_of_comments_replies_on_my_posts_only"
         },
         {
             label: "Mentions only",
@@ -67,15 +68,17 @@ export function toggleAllOff(state) {
     if (!prefs) return;
 
     prefs.Turn_Off_All_Notifications = state;
+
     if (state) {
-        for (const key in prefs) {
-            if (key !== 'Turn_Off_All_Notifications') {
-                prefs[key] = false;
-            }
-        }
+        prefs.Notify_me_of_all_Posts = false;
+        prefs.Notify_me_of_comments_replies_on_my_posts_only = false;
+        prefs.Notify_me_when_I_am_Mentioned = false;
+        prefs.Notify_me_when_I_get_Likes = false;
     }
+
     renderNotificationToggles(prefs);
 }
+
 
 export function toggleOption(key, value) {
     const prefs = notificationStore.preferences;
@@ -94,4 +97,3 @@ export function toggleOption(key, value) {
 
     renderNotificationToggles(prefs);
 }
-
