@@ -11,7 +11,7 @@ import { initPosts } from "./features/posts/index.js";
 import { updateCurrentUserUI } from "./ui/user.js";
 import { connect, terminateAndClose, initWebSocketHandlers, setContactIncludedInTag } from "./ws.js";
 import { connectNotification, initNotificationEvents } from "./notifications.js";
-import { setupCreatePostModal, loadModalContacts, initScheduledPostHandler, initTabEvents } from "./domEvents.js";
+import { setupCreatePostModal, loadModalContacts, initScheduledPostHandler } from "./domEvents.js";
 import { createForumToSubmit } from "./features/posts/actions.js";
 import { renderNotificationToggles } from "./ui/notificationPreference.js";
 import { toggleAllOff, toggleOption } from "./ui/notificationPreference.js";
@@ -122,7 +122,6 @@ window.loadSelectedUserForum = loadSelectedUserForum;
 initWebSocketHandlers();
 initNotificationEvents();
 initScheduledPostHandler();
-initTabEvents();
 
 window.addEventListener("DOMContentLoaded", () => {
   loadModalContacts();

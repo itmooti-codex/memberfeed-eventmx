@@ -115,30 +115,3 @@ export function initScheduledPostHandler() {
     }
   });
 }
-
-function showPublished() {
-  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.style.display = '');
-  document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = 'none');
-
-  document.getElementById("publishedTab").classList.add("active");
-  document.getElementById("scheduledTab").classList.remove("active");
-}
-
-function showScheduled() {
-  console.log("Showing scheduled posts");
-  document.querySelectorAll('[data-forumstatus="Published - Not flagged"]').forEach(el => el.classList.add('hidden'));
-  document.querySelectorAll('[data-forumstatus="Scheduled"]').forEach(el => el.style.display = '');
-
-  document.getElementById("scheduledTab").classList.add("active");
-  document.getElementById("publishedTab").classList.remove("active");
-}
-
-export function initTabEvents() {
-  const publishedTab = document.getElementById("publishedTab");
-  const scheduledTab = document.getElementById("scheduledTab");
-  document.addEventListener("DOMContentLoaded", function () {
-    publishedTab.addEventListener("click", showPublished);
-    scheduledTab.addEventListener("click", showScheduled);
-    showPublished();
-  });
-}

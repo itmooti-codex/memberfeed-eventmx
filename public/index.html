@@ -428,11 +428,11 @@
       </svg>
       Saved Posts
     </div>
-    <div x-on:click="selectedFilterTab = 'scheduledPost'" data-filter="scheduled" id="scheduledTab"
+    <div x-on:click="selectedFilterTab = 'scheduledPost'" data-filter="scheduledPost"
       x-bind:aria-selected="selectedFilterTab === 'scheduledPost'"
       x-bind:tabindex="selectedFilterTab === 'scheduledPost' ? '0' : '-1'"
       x-bind:class="selectedFilterTab === 'scheduledPost' ?  'text-[var(--primary)] border-b-2 border-[var(--primary)]' : 'hover:border-b-2 hover:border-b-[var(--primary)] hover:text-[var(--primary)]'"
-      class="group tabsForAdmin flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
+      class="group tabsForAdmin filter-btn flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
       aria-controls="tabpanelscheduledPost">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path :class="selectedFilterTab === 'scheduledPost' ? 'fill-[var(--primary)]' : 'fill-[#737373]'" class="group-hover:fill-[var(--primary)]"
@@ -734,7 +734,7 @@
                data-uid="{{:uid}}"
                data-depth="{{:depth}}"
                data-forumStatus="{{:forumStatus}}"
-               style="{{if isAdmin && forumStatus === 'Scheduled'}}display:none;{{/if}}"
+              
                >
                <div class="flex items-start justify-between">
                <div class="author flex items-center mb-2">
