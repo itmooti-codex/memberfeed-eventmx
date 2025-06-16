@@ -353,7 +353,34 @@ export function GET_NOTIFICATIONS() {
         {
         andWhere: {
           Notified_Contact: [
-            { where: { turn_off_all_notifications: false } }
+            {
+              whereGroup: [
+                {
+                  where: {
+                    turn_off_all_notifications: false
+                  }
+                }
+                {
+                  andWhereGroup: [
+                    {
+                      where: {
+                        notify_me_of_all_posts: true
+                      }
+                    }
+                    {
+                      orWhere: {
+                        notify_me_of_all_comments_replies_on_posts: true
+                      }
+                    }
+                    {
+                      orWhere: {
+                        notify_me_when_i_am_mentioned: true
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         }
       }
@@ -407,32 +434,3 @@ mutation updateContact(
   }
 }
 `;
-// If Comment / Replies on my post only is true than
-
-
-
-
-// When Notify me when I am Mentioned is true
-
-// {
-//   where: {
-//     Notified_Contact: [
-//       {
-//         where: { notify_me_when_i_am_mentioned: true }
-//       }
-//     ]
-//   }
-// }
-// {
-//   andWhere: {
-//     Parent_Forum: [
-//       {
-//         where: {
-//           Mentioned_Contacts_Data: [
-//             { where: { id: $id } }
-//           ]
-//         }
-//       }
-//     ]
-//   }
-// }

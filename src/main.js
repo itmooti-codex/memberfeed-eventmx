@@ -16,7 +16,7 @@ import { createForumToSubmit } from "./features/posts/actions.js";
 import { renderNotificationToggles } from "./ui/notificationPreference.js";
 import { toggleAllOff, toggleOption } from "./ui/notificationPreference.js";
 import { showToast } from "./ui/toast.js";
-
+import { refreshNotificationSubscription } from "./notifications.js";
 export let notificationPreferences = null;
 
 window.createForumToSubmit = createForumToSubmit;
@@ -143,7 +143,7 @@ $.views.helpers({
     return `${day} ${month}, ${year}`;
   }
 });
-export function updateNotificationPreferences() {
+export async function updateNotificationPreferences() {
   const updatePreferenceButton = document.getElementById("updatePreferenceButton");
   updatePreferenceButton.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
   const prefs = notificationStore.preferences;
@@ -154,15 +154,15 @@ export function updateNotificationPreferences() {
     notify_me_when_i_am_mentioned: prefs.Notify_me_when_I_am_Mentioned || false
   };
 
-  return fetchGraphQL(UPDATE_CONTACT_NOTIFICATION_PREFERENCE, {
+  const res = await fetchGraphQL(UPDATE_CONTACT_NOTIFICATION_PREFERENCE, {
     id: GLOBAL_AUTHOR_ID,
     payload
-  }).then((res) => {
-    if (res?.data?.updateContact) {
-      console.log("updated");
-      showToast("Notification preferences updated successfully", "success");
-      updatePreferenceButton.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
-    }
   });
+  if (res?.data?.updateContact) {
+    console.log("updated");
+    showToast("Notification preferences updated successfully", "success");
+    updatePreferenceButton.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+    refreshNotificationSubscription();
+  }
 }
 window.updateNotificationPreferences = updateNotificationPreferences;

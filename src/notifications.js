@@ -12,6 +12,36 @@ import { fetchGraphQL } from "./api/fetch.js";
 
 const notificationTemplate = $.templates("#notificationTemplate");
 
+export function refreshNotificationSubscription() {
+  if (
+    !state.notificationSocket ||
+    state.notificationSocket.readyState !== WebSocket.OPEN
+  ) return;
+
+  state.notificationSocket.send(
+    JSON.stringify({
+      id: NOTIF_SUB_ID,
+      type: "GQL_STOP"
+    })
+  );
+
+  const updatedQuery = GET_NOTIFICATIONS();
+
+  state.notificationSocket.send(
+    JSON.stringify({
+      id: NOTIF_SUB_ID,
+      type: "GQL_START",
+      payload: {
+        query: updatedQuery,
+        variables: {
+          author_id: GLOBAL_AUTHOR_ID,
+          notified_contact_id: GLOBAL_AUTHOR_ID
+        }
+      }
+    })
+  );
+}
+
 export function connectNotification() {
   if (
     state.notifIsConnecting ||
