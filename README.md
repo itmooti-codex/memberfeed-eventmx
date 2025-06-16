@@ -6,14 +6,16 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Prerequisites
 
+- Node.js for running tests, linting, and optionally the `http-server` package.
 - A local web server. You can use `http-server` from Node.js or Python's built in `http.server` module.
-- Optionally, Node.js if you want to use `http-server`.
 
 ## Running locally
 
-1. Copy `src/credentials.example.js` to `src/credentials.js` and add your actual credentials.
+1. Run `npm install` to install development dependencies.
 
-2. Start a local web server in the project directory. Examples:
+2. Copy `src/credentials.example.js` to `src/credentials.js` and add your actual credentials.
+
+3. Start a local web server in the project directory. Examples:
 
    ```bash
    # Using Node.js (http-server)
@@ -28,7 +30,7 @@ This project is licensed under the [MIT License](LICENSE).
    Static files such as `index.html` and styles are located in the `public/` folder. Application source code resides in `src/`.
    The UI uses [Font Awesome Free](https://fontawesome.com/) icons via a CDN link included in `public/index.html`.
 
-3. Open your browser at `http://localhost:8080/public/index.html` (or the port you chose) to use the application.
+4. Open your browser at `http://localhost:8080/public/index.html` (or the port you chose) to use the application.
 
 ## External dependencies loaded via CDN
 
@@ -100,3 +102,10 @@ Run ESLint across the project with:
 ```bash
 npm run lint
 ```
+
+## Project structure
+
+- `public/` – Static assets and entry HTML.
+- `src/` – Application source code.
+- `test/` – Unit tests.
+
