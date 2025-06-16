@@ -159,7 +159,6 @@ export async function updateNotificationPreferences() {
     payload
   });
   if (res?.data?.updateContact) {
-    console.log("updated");
     showToast("Notification preferences updated successfully", "success");
     updatePreferenceButton.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
     refreshNotificationSubscription();
