@@ -230,7 +230,7 @@
             </div>
             <div class="pt-4 text-right" id="updatePreferenceButton">
               <button onclick="updateNotificationPreferences()"
-                class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:opacity-90 transition">
+                class="px-4 py-2 bg-[var(--primary)] text-[var(--primary)] rounded hover:opacity-90 transition">
                 Save Preferences
               </button>
             </div>
@@ -370,7 +370,68 @@
     </div>
   </div>
 </div>
+<div x-data="{ selectedFilterTab: 'allPosts' }" class="w-full mt-2">
+  <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()"
+    class="flex gap-2 overflow-x-auto" role="tablist" aria-label="tab options">
+    <div x-on:click="selectedFilterTab = 'allPosts'" data-filter="Recent"
+      x-bind:aria-selected="selectedFilterTab === 'allPosts'"
+      x-bind:tabindex="selectedFilterTab === 'allPosts' ? '0' : '-1'"
+      x-bind:class="selectedFilterTab === 'allPosts' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)] dark:border-[var(--primary)] dark:text-[var(--primary)]' : 'text-stone-800 font-medium dark:text-black dark:hover:border-b-blue-500 dark:hover:text-[var(--primary)] hover:border-b-2 hover:border-b-blue-600 hover:text-black'"
+      class="group filter-btn active flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div"
+      role="tab" aria-controls="tabpanelallPosts">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path :class="selectedFilterTab === 'allPosts' ? 'fill-[var(--primary)]' : 'fill-[#737373]'"
+          class="group-hover:fill-[var(--primary)]"
+          d="M14.1338 7.73308V14.1333C14.1338 14.2748 14.0776 14.4104 13.9776 14.5105C13.8776 14.6105 13.7419 14.6667 13.6005 14.6667H9.86699C9.72554 14.6667 9.58988 14.6105 9.48985 14.5105C9.38983 14.4104 9.33364 14.2748 9.33364 14.1333V10.6665C9.33364 10.5958 9.30554 10.528 9.25553 10.478C9.20552 10.4279 9.13769 10.3998 9.06696 10.3998H6.4002C6.32947 10.3998 6.26164 10.4279 6.21163 10.478C6.16162 10.528 6.13352 10.5958 6.13352 10.6665V14.1333C6.13352 14.2748 6.07733 14.4104 5.97731 14.5105C5.87728 14.6105 5.74162 14.6667 5.60017 14.6667H1.8667C1.72524 14.6667 1.58958 14.6105 1.48956 14.5105C1.38954 14.4104 1.33334 14.2748 1.33334 14.1333V7.73308C1.33347 7.45022 1.44595 7.179 1.64602 6.97905L6.97955 1.64552C7.17958 1.44562 7.45079 1.33334 7.73358 1.33334C8.01637 1.33334 8.28758 1.44562 8.48761 1.64552L13.8211 6.97905C14.0212 7.179 14.1337 7.45022 14.1338 7.73308Z"
+          fill="#737373" />
+      </svg>
 
+      All
+    </div>
+    <div x-on:click="selectedFilterTab = 'featuredPost'" data-filter="Featured"
+      x-bind:aria-selected="selectedFilterTab === 'featuredPost'"
+      x-bind:tabindex="selectedFilterTab === 'featuredPost' ? '0' : '-1'"
+      x-bind:class="selectedFilterTab === 'featuredPost' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)] dark:border-[var(--primary)] dark:text-[var(--primary)]' : 'text-stone-800 font-medium dark:text-black dark:hover:border-b-blue-500 dark:hover:text-[var(--primary)] hover:border-b-2 hover:border-b-blue-600 hover:text-black'"
+      class="group flex h-min filter-btn cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
+      aria-controls="tabpanelfeaturedPost">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
+        <path :class="selectedFilterTab === 'featuredPost' ? 'fill-[var(--primary)]' : 'fill-[#737373]'"
+          class="group-hover:fill-[var(--primary)]"
+          d="m9.653 16.915-.005-.003-.019-.01a20.759 20.759 0 0 1-1.162-.682 22.045 22.045 0 0 1-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 0 1 8-2.828A4.5 4.5 0 0 1 18 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 0 1-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 0 1-.69.001l-.002-.001Z" />
+      </svg>
+      Featured
+    </div>
+    <div x-on:click="selectedFilterTab = 'MyPosts'" data-filter="My Posts"
+      x-bind:aria-selected="selectedFilterTab === 'MyPosts'"
+      x-bind:tabindex="selectedFilterTab === 'MyPosts' ? '0' : '-1'"
+      x-bind:class="selectedFilterTab === 'MyPosts' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)] dark:border-[var(--primary)] dark:text-[var(--primary)]' : 'text-stone-800 font-medium dark:text-black dark:hover:border-b-blue-500 dark:hover:text-[var(--primary)] hover:border-b-2 hover:border-b-blue-600 hover:text-black'"
+      class="group flex h-min filter-btn cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
+      aria-controls="tabpanelMyPosts">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path :class="selectedFilterTab === 'MyPosts' ? 'fill-[var(--primary)]' : 'fill-[#737373]'"
+          class="group-hover:fill-[var(--primary)]"
+          d="M14.5983 13.8999C14.5533 13.9779 14.4885 14.0426 14.4106 14.0876C14.3326 14.1326 14.2441 14.1563 14.1541 14.1563H1.8457C1.75572 14.1562 1.66735 14.1324 1.58946 14.0874C1.51157 14.0423 1.4469 13.9776 1.40195 13.8997C1.357 13.8217 1.33335 13.7333 1.33337 13.6433C1.3334 13.5533 1.35709 13.465 1.40208 13.387C2.37842 11.6991 3.88299 10.4888 5.63885 9.91504C4.77032 9.398 4.09553 8.61015 3.7181 7.67248C3.34067 6.73481 3.28147 5.69917 3.5496 4.7246C3.81772 3.75004 4.39835 2.89042 5.20231 2.27778C6.00626 1.66514 6.9891 1.33334 7.99988 1.33334C9.01066 1.33334 9.9935 1.66514 10.7975 2.27778C11.6014 2.89042 12.182 3.75004 12.4502 4.7246C12.7183 5.69917 12.6591 6.73481 12.2817 7.67248C11.9042 8.61015 11.2294 9.398 10.3609 9.91504C12.1168 10.4888 13.6213 11.6991 14.5977 13.387C14.6428 13.4649 14.6666 13.5533 14.6667 13.6434C14.6668 13.7334 14.6432 13.8219 14.5983 13.8999Z"
+          fill="#737373" />
+      </svg>
+      My Posts
+    </div>
+    <div x-on:click="selectedFilterTab = 'savedPosts'" data-filter="Saved Posts"
+      x-bind:aria-selected="selectedFilterTab === 'savedPosts'"
+      x-bind:tabindex="selectedFilterTab === 'savedPosts' ? '0' : '-1'"
+      x-bind:class="selectedFilterTab === 'savedPosts' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)] dark:border-[var(--primary)] dark:text-[var(--primary)]' : 'text-stone-800 font-medium dark:text-black dark:hover:border-b-blue-500 dark:hover:text-[var(--primary)] hover:border-b-2 hover:border-b-blue-600 hover:text-black'"
+      class="group flex h-min filter-btn cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
+      aria-controls="tabpanelsavedPosts">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path :class="selectedFilterTab === 'savedPosts' ? 'fill-[var(--primary)]' : 'fill-[#737373]'"
+          class="group-hover:fill-[var(--primary)]"
+          d="M11.8668 1.33334H4.4C4.1171 1.33334 3.84578 1.44572 3.64574 1.64576C3.4457 1.8458 3.33331 2.11712 3.33331 2.40002V14.1336C3.33336 14.2288 3.35888 14.3222 3.40722 14.4042C3.45556 14.4862 3.52496 14.5538 3.60822 14.5999C3.69149 14.646 3.78557 14.669 3.88072 14.6665C3.97587 14.664 4.06862 14.636 4.14933 14.5856L8.13341 12.0955L12.1182 14.5856C12.1989 14.6359 12.2915 14.6637 12.3866 14.6661C12.4816 14.6685 12.5756 14.6455 12.6588 14.5994C12.7419 14.5533 12.8112 14.4858 12.8595 14.4039C12.9078 14.322 12.9334 14.2287 12.9335 14.1336V2.40002C12.9335 2.11712 12.8211 1.8458 12.6211 1.64576C12.421 1.44572 12.1497 1.33334 11.8668 1.33334Z"
+          fill="#737373" />
+      </svg>
+
+      savedPosts
+    </div>
+  </div>
+</div>
     <div
       id="create-post-modal"
       class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50"
@@ -532,20 +593,7 @@
       <div
         class="flex items-center justify-between w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4"
       >
-        <div class="flex items-center gap-4">
-          <button class="filter-btn active" data-filter="Recent">
-            <i class="fa-solid fa-clock"></i>
-          </button>
-          <button class="filter-btn" data-filter="Featured">
-            <i class="fa-solid fa-star"></i>
-          </button>
-          <button class="filter-btn" data-filter="My Posts">
-            <i class="fa-solid fa-user"></i>
-          </button>
-          <button class="filter-btn" data-filter="Saved Posts">
-            <i class="fa-solid fa-bookmark"></i>
-          </button>
-        </div>
+
 
         <div class="flex items-center gap-4">
           <div class="sort-filter relative">
@@ -652,7 +700,7 @@
       class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50"
     >
       <div class="bg-white p-4 rounded shadow-lg w-[90%] max-w-sm">
-        <h2 id="delete-modal-title" class="text-lg font-bold mb-4"></h2>
+        <h2 id="delete-modal-title" class="text-lg mb-4"></h2>
         <div class="flex justify-end gap-2">
           <button
             id="delete-confirm"

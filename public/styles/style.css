@@ -98,9 +98,9 @@ button {
 }
 
 .filter-btn.active {
-  background: var(--primary);
+  /* background: var(--primary);
   color: #fff;
-  border-color: var(--primary);
+  border-color: var(--primary); */
 }
 
 .file-filter-menu {
