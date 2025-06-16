@@ -2,7 +2,7 @@ import {
   subscriberContactsForModal,
   adminContactsForModal,
 } from "../config.js";
-import { GLOBAL_PAGE_TAG } from "../config.js";
+import { GLOBAL_PAGE_TAG, GLOBAL_AUTHOR_ID  } from "../config.js";
 
 export const FETCH_CONTACTS_QUERY = `
 query calcContacts {
@@ -296,6 +296,16 @@ subscription subscribeToAnnouncements(
       copy 
       published_date
     }
+  }
+}
+`;
+export const GET__CONTACTS_NOTIFICATION_PREFERENCEE=`
+query getContact($id: EduflowproContactID) {
+  getContact(query: [{ where: { id: $id } }]) {
+    Turn_Off_All_Notifications: turn_off_all_notifications
+    Notify_me_of_all_Posts: notify_me_of_all_posts
+    Notify_me_of_all_Comments_Replies_on_Posts: notify_me_of_all_comments_replies_on_posts
+    Notify_me_when_I_am_Mentioned: notify_me_when_i_am_mentioned
   }
 }
 `;

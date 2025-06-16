@@ -1,6 +1,6 @@
-import { state, GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, GLOBAL_PAGE_TAG } from "./config.js";
+import { state,notificationStore, GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, GLOBAL_PAGE_TAG } from "./config.js";
 import { setGlobals } from "./config.js";
-import { FETCH_CONTACTS_QUERY, GET_CONTACTS_BY_TAGS } from "./api/queries.js";
+import { FETCH_CONTACTS_QUERY, GET_CONTACTS_BY_TAGS,GET__CONTACTS_NOTIFICATION_PREFERENCEE } from "./api/queries.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { tribute } from "./utils/tribute.js";
 import { initFilePond } from "./utils/filePond.js";
@@ -13,10 +13,29 @@ import { connect, terminateAndClose, initWebSocketHandlers, setContactIncludedIn
 import { connectNotification, initNotificationEvents } from "./notifications.js";
 import { setupCreatePostModal, loadModalContacts, initScheduledPostHandler, initTabEvents } from "./domEvents.js";
 import { createForumToSubmit } from "./features/posts/actions.js";
+import { renderNotificationToggles } from "./ui/notificationPreference.js";
+import { toggleAllOff , toggleOption } from "./ui/notificationPreference.js";
+
+export let notificationPreferences = null;
 
 window.createForumToSubmit = createForumToSubmit;
+window.toggleAllOff = toggleAllOff;
+window.toggleOption = toggleOption;
 window.state = state;
 
+export function getNotificationPreferences(contactId) {
+  return fetchGraphQL(GET__CONTACTS_NOTIFICATION_PREFERENCEE, { id: contactId })
+    .then((res) => {
+      const data = res?.data?.getContact;
+      if (data) {
+        notificationStore.preferences = data;
+        renderNotificationToggles(data);
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to fetch notification preferences", err);
+    });
+}
 function startApp(tagName, contactId, displayName) {
   terminateAndClose();
   setContactIncludedInTag(false);
@@ -52,7 +71,7 @@ function startApp(tagName, contactId, displayName) {
     .catch((err) => {
       console.error("Failed to fetch contacts", err);
     });
-
+  getNotificationPreferences(contactId);
   initPosts();
   initFilePond();
   initEmojiHandlers();
@@ -85,7 +104,8 @@ function startApp(tagName, contactId, displayName) {
     });
 }
 
-function loadSelectedUserForum(tagName, contactId, displayName, profileImage) {
+
+async function loadSelectedUserForum(tagName, contactId, displayName, profileImage) {
   if (displayName || profileImage) {
     state.currentUser = {
       display_name: displayName || "Anonymous",
@@ -93,7 +113,7 @@ function loadSelectedUserForum(tagName, contactId, displayName, profileImage) {
     };
     updateCurrentUserUI(state);
   }
-  startApp(tagName, contactId, displayName);
+    startApp(tagName, contactId, displayName);
 }
 
 window.loadSelectedUserForum = loadSelectedUserForum;
