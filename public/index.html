@@ -230,7 +230,7 @@
             </div>
             <div class="pt-4 text-right" id="updatePreferenceButton">
               <button onclick="updateNotificationPreferences()"
-                class="px-4 py-2 bg-[var(--primary)] text-[var(--primary)] rounded hover:opacity-90 transition">
+                class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:opacity-90 transition">
                 Save Preferences
               </button>
             </div>
@@ -330,7 +330,7 @@
   id="create-post-trigger">
   <div class="inline-flex items-center justify-start gap-2 self-stretch">
     <div
-      class="flex items-center justify-start gap-2 rounded-[29px] bg-zinc-100 p-2 outline-1 outline-offset-[-1px] outline-zinc-300">
+      class="flex items-center justify-start gap-2 rounded-[29px] bg-zinc-100 p-1 outline-1 outline-offset-[-1px] outline-zinc-300">
       <div class="relative h-8 w-8 overflow-hidden rounded-full">
         <img id="current-user-avatar"
           src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
@@ -376,7 +376,7 @@
     <div x-on:click="selectedFilterTab = 'allPosts'" data-filter="Recent"
       x-bind:aria-selected="selectedFilterTab === 'allPosts'"
       x-bind:tabindex="selectedFilterTab === 'allPosts' ? '0' : '-1'"
-      x-bind:class="selectedFilterTab === 'allPosts' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)] dark:border-[var(--primary)] dark:text-[var(--primary)]' : 'dark:text-black dark:hover:border-b-[var(--primary)] dark:hover:text-[var(--primary)] hover:border-b-2 hover:border-b-[var(--primary)] hover:text-black'"
+      x-bind:class="selectedFilterTab === 'allPosts' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)]' : 'hover:border-b-2 hover:border-b-[var(--primary)] hover:text-[var(--primary)]'"
       class="group filter-btn active flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div"
       role="tab" aria-controls="tabpanelallPosts">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -391,7 +391,7 @@
     <div x-on:click="selectedFilterTab = 'featuredPost'" data-filter="Featured"
       x-bind:aria-selected="selectedFilterTab === 'featuredPost'"
       x-bind:tabindex="selectedFilterTab === 'featuredPost' ? '0' : '-1'"
-      x-bind:class="selectedFilterTab === 'featuredPost' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)] dark:border-[var(--primary)] dark:text-[var(--primary)]' : 'dark:text-black dark:hover:border-b-[var(--primary)] dark:hover:text-[var(--primary)] hover:border-b-2 hover:border-b-[var(--primary)] hover:text-black'"
+      x-bind:class="selectedFilterTab === 'featuredPost' ?  'text-[var(--primary)] border-b-2 border-[var(--primary)]' : 'hover:border-b-2 hover:border-b-[var(--primary)] hover:text-[var(--primary)]'"
       class="group flex h-min filter-btn cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
       aria-controls="tabpanelfeaturedPost">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-4">
@@ -404,7 +404,7 @@
     <div x-on:click="selectedFilterTab = 'MyPosts'" data-filter="My Posts"
       x-bind:aria-selected="selectedFilterTab === 'MyPosts'"
       x-bind:tabindex="selectedFilterTab === 'MyPosts' ? '0' : '-1'"
-      x-bind:class="selectedFilterTab === 'MyPosts' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)] dark:border-[var(--primary)] dark:text-[var(--primary)]' : 'dark:text-black dark:hover:border-b-[var(--primary)] dark:hover:text-[var(--primary)] hover:border-b-2 hover:border-b-[var(--primary)] hover:text-black'"
+      x-bind:class="selectedFilterTab === 'MyPosts' ?  'text-[var(--primary)] border-b-2 border-[var(--primary)]' : 'hover:border-b-2 hover:border-b-[var(--primary)] hover:text-[var(--primary)]'"
       class="group flex h-min filter-btn cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
       aria-controls="tabpanelMyPosts">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -418,8 +418,8 @@
     <div x-on:click="selectedFilterTab = 'savedPosts'" data-filter="Saved Posts"
       x-bind:aria-selected="selectedFilterTab === 'savedPosts'"
       x-bind:tabindex="selectedFilterTab === 'savedPosts' ? '0' : '-1'"
-      x-bind:class="selectedFilterTab === 'savedPosts' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)] dark:border-[var(--primary)] dark:text-[var(--primary)]' : 'dark:text-black dark:hover:border-b-[var(--primary)] hover:border-b-2 hover:border-b-[var(--primary)] hover:text-black'"
-      class="group flex h-min filter-btn cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
+      x-bind:class="selectedFilterTab === 'savedPosts' ? 'text-[var(--primary)] border-b-2 border-[var(--primary)]' : 'hover:border-b-2 hover:border-b-[var(--primary)] hover:text-[var(--primary)]'"
+      class="group flex h-min filter-btn cursor-pointer hover:text-[var(--primary)] items-center gap-2 px-4 py-2 text-sm" type="div" role="tab"
       aria-controls="tabpanelsavedPosts">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path :class="selectedFilterTab === 'savedPosts' ? 'fill-[var(--primary)]' : 'fill-[#737373]'"
@@ -427,7 +427,6 @@
           d="M11.8668 1.33334H4.4C4.1171 1.33334 3.84578 1.44572 3.64574 1.64576C3.4457 1.8458 3.33331 2.11712 3.33331 2.40002V14.1336C3.33336 14.2288 3.35888 14.3222 3.40722 14.4042C3.45556 14.4862 3.52496 14.5538 3.60822 14.5999C3.69149 14.646 3.78557 14.669 3.88072 14.6665C3.97587 14.664 4.06862 14.636 4.14933 14.5856L8.13341 12.0955L12.1182 14.5856C12.1989 14.6359 12.2915 14.6637 12.3866 14.6661C12.4816 14.6685 12.5756 14.6455 12.6588 14.5994C12.7419 14.5533 12.8112 14.4858 12.8595 14.4039C12.9078 14.322 12.9334 14.2287 12.9335 14.1336V2.40002C12.9335 2.11712 12.8211 1.8458 12.6211 1.64576C12.421 1.44572 12.1497 1.33334 11.8668 1.33334Z"
           fill="#737373" />
       </svg>
-
       Saved Posts
     </div>
   </div>
