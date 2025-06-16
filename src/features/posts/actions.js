@@ -195,4 +195,4 @@ export async function createForumToSubmit(
   }
 }
 
-window.createForumToSubmit = createForumToSubmit;
+

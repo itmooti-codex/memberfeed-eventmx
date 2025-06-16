@@ -12,7 +12,9 @@ import { updateCurrentUserUI } from "./ui/user.js";
 import { connect, terminateAndClose, initWebSocketHandlers, setContactIncludedInTag } from "./ws.js";
 import { connectNotification, initNotificationEvents } from "./notifications.js";
 import { setupCreatePostModal, loadModalContacts, initScheduledPostHandler, initTabEvents } from "./domEvents.js";
+import { createForumToSubmit } from "./features/posts/actions.js";
 
+window.createForumToSubmit = createForumToSubmit;
 window.state = state;
 
 function startApp(tagName, contactId, displayName) {
