@@ -1,15 +1,36 @@
 :root {
-  --primary: #0963D8;
-  --secondary: #6c757d;
-  --accent: #e83e8c;
-  --success: #28a745;
-  --warning: #ffc107;
-  --danger: #dc3545;
-  --info: #17a2b8;
-  --light: #f8f9fa;
-  --dark: #343a40;
-  --neutral: #adb5bd;
-  --plyr-color-main: var(--primary);
+  --color-primary: #0963D8;
+  /* Basic Colors */
+    --color-primary-shade: #E7F1FE;
+    --color-grey: #737373;
+    --color-black: #0E0E0E;
+    --color-white: #FFFFFF;
+  
+    /* Grey Shades */
+    --grey-100: #737373;
+    --grey-200: #D9D9D9;
+    --grey-300: #F4F1F1;
+  
+    /* Danger Shades */
+    --danger-100: #AB0707;
+    --danger-200: #DC0A0A;
+    --danger-300: #FDD0D1;
+  
+    /* Success Shades */
+    --success-100: #035933;
+    --success-200: #059E5A;
+    --success-300: #A6FCD6;
+  
+    /* Warning Shades */
+    --warning-100: #594203;
+    --warning-200: #BB8B06;
+    --warning-300: #FCE5A6;
+  --plyr-color-main: var(--color-primary);
+}
+/* Hide default FilePond drop area visuals */
+.filepond--drop-label,
+.filepond--panel-root {
+  display: none !important;
 }
 .h1 {
   font-size: 20px;
@@ -81,7 +102,7 @@ button {
   padding: 8px 10px !important;
 
   &:hover {
-    background: var(--primary);
+    background: var(--color-primary);
     color: white;
   }
 }
@@ -92,15 +113,15 @@ button {
 
 .btn-like.liked,
 .btn-bookmark.bookmarked {
-  background: var(--primary);
+  background: var(--color-primary);
   color: #fff;
-  border-color: var(--primary);
+  border-color: var(--color-primary);
 }
 
 .filter-btn.active {
-  /* background: var(--primary);
+  /* background: var(--color-primary);
   color: #fff;
-  border-color: var(--primary); */
+  border-color: var(--color-primary); */
 }
 
 .file-filter-menu {
@@ -109,7 +130,7 @@ button {
 
 .file-filter-menu li:hover,
 .file-filter-menu li.active {
-  background-color: var(--primary);
+  background-color: var(--color-primary);
   color: #fff;
 }
 
@@ -123,7 +144,7 @@ button {
 
 .sort-filter-menu li:hover,
 .sort-filter-menu li.active {
-  background-color: var(--primary);
+  background-color: var(--color-primary);
   color: #fff;
 }
 
@@ -134,7 +155,6 @@ button {
 .toolbar {
   display: flex;
   gap: 0.25rem;
-  margin-bottom: 0.5rem;
 }
 
 .toolbar button {
@@ -152,8 +172,7 @@ button {
   display: none;
 }
 
-.search-wrapper,
-.editor {
+.search-wrapper {
   border-radius: 4px;
   transition: 0.2s ease-in-out;
   border: 2px solid #ccc;
@@ -161,7 +180,7 @@ button {
 
 .search-wrapper:hover,
 .search-wrapper:focus-within {
-  border: 2px solid var(--primary);
+  border: 2px solid var(--color-primary);
 }
 
 #searchPost {
@@ -169,14 +188,14 @@ button {
   outline: none;
 }
 
-.editor:focus-within,
+/* .editor:focus-within,
 .editor:focus-visible,
 .editor:focus,
 .editor:active,
 .editor:hover {
-  border: 1px solid var(--primary) !important;
-  outline: 1px solid var(--primary) !important;
-}
+  border: 1px solid var(--color-primary) !important;
+  outline: 1px solid var(--color-primary) !important;
+} */
 
 .filepond--root {
   cursor: pointer;
@@ -184,16 +203,16 @@ button {
 
 .filepond--file,
 .filepond--image-preview {
-  background-color: var(--primary) !important;
+  background-color: var(--color-primary) !important;
 }
 
 .filepond--drop-label:hover {
   cursor: pointer;
-  background: var(--primary);
+  background: var(--color-primary);
 }
 
 .filepond--file-action-button {
-  background-color: var(--accent) !important;
+  background-color: var(--danger-100) !important;
 }
 
 .filepond--credits {
@@ -216,13 +235,13 @@ button {
 .filepond--panel-top,
 .filepond--panel-bottom,
 .filepond--panel-center {
-  background-color: var(--warning) !important;
+  background-color: var(--warning-200) !important;
   cursor: pointer;
 }
 
 .plyr--audio {
-  background-color: var(--neutral) !important;
-  border: 1px solid var(--neutral) !important;
+  background-color: var(--grey-200) !important;
+  border: 1px solid var(--grey-200) !important;
 }
 
 .children {
@@ -333,7 +352,7 @@ button {
 /* Style links inside post content and editor */
 .content a,
 .editor a {
-  color: var(--primary);
+  color: var(--color-primary);
   text-decoration: underline;
 }
 
@@ -418,7 +437,7 @@ button {
 }
 
 .tabs button.active {
-  background-color: var(--primary);
+  background-color: var(--color-primary);
   color: white;
 }
 

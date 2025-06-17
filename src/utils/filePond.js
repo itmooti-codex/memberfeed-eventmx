@@ -10,17 +10,23 @@ FilePond.registerPlugin(
 export function initFilePond() {
   document.querySelectorAll(".upload-section").forEach((section) => {
     const inputElement = section.querySelector(".file-input");
+    const dropArea = section.querySelector("#dropArea");
+    const uploadTrigger = section.querySelector(".classUploadFiles");
     const recordBtn = section.querySelector(".recordBtn");
     const canvas = section.querySelector(".waveform");
     const ctx = canvas.getContext("2d");
-
+    
     const pond = FilePond.create(inputElement, {
+      allowReplace: true,
+      allowBrowse: true,
+      allowDrop: false,
+      allowPaste: false,
       allowImagePreview: true,
       allowAudioPreview: true,
       allowVideoPreview: true,
       allowFilePoster: true,
-      allowMultiple: false,
       allowMediaPreview: true,
+      server: null,
       acceptedFileTypes: [
         "image/*",
         "audio/*",
@@ -30,11 +36,31 @@ export function initFilePond() {
         "application/pdf",
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      ],
-      labelIdle: `<span class="custom-upload-label" style="background:transparent; color:white;">
-                <i class="fa-solid fa-folder-open"></i> <strong>Drag & drop your files</strong> or <span style="color:var(--accent)">Browse</span>
-            </span>`,
+      ]
     });
+
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+      dropArea.addEventListener(eventName, (e) => e.preventDefault());
+    });
+
+    ["dragenter", "dragover"].forEach((eventName) => {
+      dropArea.addEventListener(eventName, () => dropArea.classList.add("dragover"));
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+      dropArea.addEventListener(eventName, () => dropArea.classList.remove("dragover"));
+    });
+    pond.on('init', () => {
+      dropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropArea.classList.remove("dragover");
+        const files = e.dataTransfer.files;
+       
+          pond.addFile(files[0]);
+        
+      });
+    });
+
 
     pond.on("addfile", (error, fileItem) => {
       if (error) return;
@@ -70,7 +96,6 @@ export function initFilePond() {
         mediaEl.setAttribute("x5-playsinline", "");
       }
 
-      mediaEl.addEventListener("loadedmetadata", () => { });
       previewWrapper.appendChild(mediaEl);
     });
 
@@ -117,11 +142,7 @@ export function initFilePond() {
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
         if (!isRecording) {
-          pond.setOptions({
-            allowBrowse: false,
-            allowDrop: false,
-            allowPaste: false,
-          });
+          pond.setOptions({ allowBrowse: false, allowDrop: false, allowPaste: false });
           inputElement.disabled = true;
           canvas.style.display = "block";
 
@@ -143,7 +164,7 @@ export function initFilePond() {
                   recordBtn._safariRecorder.stop();
                   delete recordBtn._safariRecorder;
                 } else {
-                  recorder.stop(); // no .catch() – not a Promise
+                  recorder.stop();
                 }
               }
 
@@ -157,109 +178,39 @@ export function initFilePond() {
             });
           }
 
-          const audioConstraints = isSafari
-            ? { audio: {} }
-            : { audio: { sampleRate: 44100 } };
+          const audioConstraints = isSafari ? { audio: {} } : { audio: { sampleRate: 44100 } };
 
-          navigator.mediaDevices
-            .getUserMedia(audioConstraints)
-            .then((stream) => {
-              mediaStream = stream;
-              audioContext = new (window.AudioContext || window.webkitAudioContext)();
-              analyser = audioContext.createAnalyser();
-              source = audioContext.createMediaStreamSource(stream);
-              source.connect(analyser);
-              analyser.fftSize = 2048;
-              dataArray = new Uint8Array(analyser.frequencyBinCount);
+          navigator.mediaDevices.getUserMedia(audioConstraints).then((stream) => {
+            mediaStream = stream;
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            source = audioContext.createMediaStreamSource(stream);
+            source.connect(analyser);
+            analyser.fftSize = 2048;
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-              drawWaveform();
+            drawWaveform();
 
-              if (isSafari) {
-                const recordedChunks = [];
-                const safariRecorder = new MediaRecorder(stream);
-                safariRecorder.ondataavailable = (event) => {
-                  if (event.data.size > 0) recordedChunks.push(event.data);
-                };
-                safariRecorder.onstop = () => {
-                  const blob = new Blob(recordedChunks, { type: "audio/mp3" });
-                  const file = new File([blob], "recorded-audio.mp3", {
-                    type: "audio/mp3",
-                    lastModified: Date.now(),
-                  });
-
-                  canvas.style.display = "none";
-                  mediaStream?.getTracks().forEach((track) => track.stop());
-
-                  const cancelBtn = section.querySelector(".cancelRecordingBtn");
-                  if (cancelBtn) cancelBtn.remove();
-
-                  pond.setOptions({
-                    allowBrowse: true,
-                    allowDrop: true,
-                    allowPaste: true,
-                  });
-                  inputElement.disabled = false;
-
-                  pond.addFile(file).then(() => {
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    inputElement.files = dataTransfer.files;
-                    setPendingFile(file);
-                    setFileTypeCheck("Audio");
-
-                    const nativeEvent = new Event("change", { bubbles: true });
-                    inputElement.dispatchEvent(nativeEvent);
-                    $(inputElement).trigger("change");
-                  });
-                };
-
-                safariRecorder.start();
-                isRecording = true;
-                recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Recording';
-                recordBtn._safariRecorder = safariRecorder;
-              } else {
-                recorder.start().then(() => {
-                  isRecording = true;
-                  recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Recording';
-                });
-              }
-            })
-            .catch((e) => {
-              console.error("Mic access failed:", e.name, e.message);
-              recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
-              inputElement.disabled = false;
-              canvas.style.display = "none";
-            });
-        } else {
-          cancelAnimationFrame(animationId);
-          canvas.style.display = "none";
-          mediaStream?.getTracks().forEach((track) => track.stop());
-
-          if (isSafari && recordBtn._safariRecorder) {
-            recordBtn._safariRecorder.stop();
-            recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
-            isRecording = false;
-          } else {
-            recorder
-              .stop()
-              .getMp3()
-              .then(([buffer, blob]) => {
-                isRecording = false;
-                recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
-
-                const file = new File(buffer, "recorded-audio.mp3", {
-                  type: blob.type,
+            if (isSafari) {
+              const recordedChunks = [];
+              const safariRecorder = new MediaRecorder(stream);
+              safariRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) recordedChunks.push(event.data);
+              };
+              safariRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: "audio/mp3" });
+                const file = new File([blob], "recorded-audio.mp3", {
+                  type: "audio/mp3",
                   lastModified: Date.now(),
                 });
+
+                canvas.style.display = "none";
+                mediaStream?.getTracks().forEach((track) => track.stop());
 
                 const cancelBtn = section.querySelector(".cancelRecordingBtn");
                 if (cancelBtn) cancelBtn.remove();
 
-                pond.setOptions({
-                  allowBrowse: true,
-                  allowDrop: true,
-                  allowPaste: true,
-                });
+                pond.setOptions({ allowBrowse: true, allowDrop: false, allowPaste: false });
                 inputElement.disabled = false;
 
                 pond.addFile(file).then(() => {
@@ -273,8 +224,61 @@ export function initFilePond() {
                   inputElement.dispatchEvent(nativeEvent);
                   $(inputElement).trigger("change");
                 });
-              })
-              .catch((e) => console.error(e));
+              };
+
+              safariRecorder.start();
+              isRecording = true;
+              recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Recording';
+              recordBtn._safariRecorder = safariRecorder;
+            } else {
+              recorder.start().then(() => {
+                isRecording = true;
+                recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Recording';
+              });
+            }
+          }).catch((e) => {
+            console.error("Mic access failed:", e.name, e.message);
+            recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
+            inputElement.disabled = false;
+            canvas.style.display = "none";
+          });
+        } else {
+          cancelAnimationFrame(animationId);
+          canvas.style.display = "none";
+          mediaStream?.getTracks().forEach((track) => track.stop());
+
+          if (isSafari && recordBtn._safariRecorder) {
+            recordBtn._safariRecorder.stop();
+            recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
+            isRecording = false;
+          } else {
+            recorder.stop().getMp3().then(([buffer, blob]) => {
+              isRecording = false;
+              recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
+
+              const file = new File(buffer, "recorded-audio.mp3", {
+                type: blob.type,
+                lastModified: Date.now(),
+              });
+
+              const cancelBtn = section.querySelector(".cancelRecordingBtn");
+              if (cancelBtn) cancelBtn.remove();
+
+              pond.setOptions({ allowBrowse: true, allowDrop: false, allowPaste: false });
+              inputElement.disabled = false;
+
+              pond.addFile(file).then(() => {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                inputElement.files = dataTransfer.files;
+                setPendingFile(file);
+                setFileTypeCheck("Audio");
+
+                const nativeEvent = new Event("change", { bubbles: true });
+                inputElement.dispatchEvent(nativeEvent);
+                $(inputElement).trigger("change");
+              });
+            }).catch((e) => console.error(e));
           }
         }
       });

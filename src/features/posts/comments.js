@@ -1,6 +1,6 @@
 import { state } from "../../config.js";
 import { findNode } from "../../ui/render.js";
-import { emojiPickerHtml } from "../../ui/emoji.js";
+import { emojiPickerHtml,uploadDesign,recorederDesign } from "../../ui/emoji.js";
 import { moveCursorToEnd } from "../../utils/caret.js";
 import { tribute } from "../../utils/tribute.js";
 import { initFilePond } from "../../utils/filePond.js";
@@ -35,11 +35,14 @@ export function initCommentHandlers() {
       </div>
       <div class="editor min-h-[80px] resize-y p-2 rounded" contenteditable="true" data-placeholder="Write a reply...">${mentionHtml}</div>
       <div class="upload-section w-full mt-2 flex flex-col gap-2">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2" id="dropArea">
         ${emojiPickerHtml}
-        <button id="recordBtn" class="recordBtn"><i class="fa-solid fa-microphone"></i> Start Recording</button>
-
+        
         <button onclick="createForumToSubmit('${nextDepth}','${nextType}','comment-form','${uid}');">Post</button>
+        </div>
+        <div class= "flex items-center gap-2">
+        ${uploadDesign}
+        ${recorederDesign}
         </div>
         <input type="file" id="file-input" class="file-input" style="display: none;"
           accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />

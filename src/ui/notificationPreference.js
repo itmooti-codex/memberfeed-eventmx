@@ -30,8 +30,8 @@ export function renderNotificationToggles(data) {
         `
     <div class="flex items-center justify-between">
       <span>Turn notifications off</span>
-      <div class="relative h-4 w-8 rounded-full transition duration-200 ease-linear ${allOff ? 'bg-[var(--primary)]' : 'bg-gray-400'}">
-        <div class="absolute left-0 h-4 w-4 transform rounded-full border-2 bg-white transition duration-100 ease-linear ${allOff ? 'translate-x-full border-[var(--primary)]' : 'translate-x-0 border-gray-400'}"></div>
+      <div class="relative h-4 w-8 rounded-full transition duration-200 ease-linear ${allOff ? 'bg-[var(--color-primary)]' : 'bg-gray-400'}">
+        <div class="absolute left-0 h-4 w-4 transform rounded-full border-2 bg-white transition duration-100 ease-linear ${allOff ? 'translate-x-full border-[var(--color-primary)]' : 'translate-x-0 border-gray-400'}"></div>
         <input type="checkbox" class="absolute h-full w-full opacity-0 cursor-pointer" ${allOff ? 'checked' : ''} onclick="toggleAllOff(this.checked)">
       </div>
     </div>
@@ -41,8 +41,8 @@ export function renderNotificationToggles(data) {
     options.forEach(opt => {
         const value = prefs[opt.key] ?? false;
         const opacityClass = allOff ? 'opacity-40 cursor-not-allowed' : 'opacity-100';
-        const bgClass = value ? 'bg-[var(--primary)]' : 'bg-gray-400';
-        const toggleClass = value ? 'translate-x-full border-[var(--primary)]' : 'translate-x-0 border-gray-400';
+        const bgClass = value ? 'bg-[var(--color-primary)]' : 'bg-gray-400';
+        const toggleClass = value ? 'translate-x-full border-[var(--color-primary)]' : 'translate-x-0 border-gray-400';
         const disabledAttr = allOff ? 'disabled' : '';
 
         html.push(`
