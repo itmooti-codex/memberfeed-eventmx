@@ -661,7 +661,7 @@
   <script id="tmpl-item" type="text/x-jsrender">
            {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
              <div
-               class="item rounded bg-white flex flex-col gap-2 p-4 relative "
+               class="item rounded bg-white flex flex-col gap-[14px] p-4 relative "
                data-uid="{{:uid}}"
                data-depth="{{:depth}}"
                data-forumStatus="{{:forumStatus}}"
@@ -674,8 +674,10 @@
                      alt="{{:authorName}}"
                      onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';">
                  <div class="info flex items-center gap-2">
-                   <span class="name font-bold">{{:authorName}}</span>
-                   <span class="timestamp text-sm text-[#65676b] ml-2">{{:timeAgo}}</span>
+                  <div class="flex flex-col items-start">
+                     <span class="name font-bold">{{:authorName}}</span>
+                   <span class="timestamp text-sm text-[#65676b]">{{:timeAgo}}</span>
+                  </div>
                    {{if isFeatured}}
                    <i class="fa-solid fa-star text-yellow-500 ml-2" title="Featured"></i>
                    {{/if}}
@@ -735,27 +737,26 @@
        {{/if}}
 
        </div>
-      <div class="content my-2">{{:content}}</div>
+     {{if content !=''  }} <div class="content my-2">{{:content}}</div>{{/if}}
          <div class="file-preview">
+           {{if fileContent}}
 
-             {{if fileContent}}
-                 {{if fileContent}}
-                   {{if fileType === "Image"}}
-                     <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
-                   {{else fileType === "Audio"}}
-                     <audio class="js-player" controls>
-                       <source src="{{:fileContent}}" type="audio/mpeg" />
-                       Your browser does not support the audio tag.
-                     </audio>
-                   {{else fileType === "Video"}}
-                     <video class="js-player" controls style="width: 100%; height: auto;">
-                       <source src="{{:fileContent}}" type="video/mp4" />
-                       Your browser does not support video.
-                     </video>
-                   {{else}}
-                     <a href="{{:fileContent}}" target="_blank" class="line-clamp-1 cursor-pointer text-[var(--color-primary)] hover:underline">{{:fileContentName}}</a>
-                   {{/if}}
-                 {{/if}}
+                            {{if fileType === "Image"}}
+                              <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
+                            {{else fileType === "Audio"}}
+                              <audio class="js-player" controls>
+                                <source src="{{:fileContent}}" type="audio/mpeg" />
+                                Your browser does not support the audio tag.
+                              </audio>
+                            {{else fileType === "Video"}}
+                              <video class="js-player" controls style="width: 100%; height: auto;">
+                                <source src="{{:fileContent}}" type="video/mp4" />
+                                Your browser does not support video.
+                              </video>
+                            {{else}}
+                              <a href="{{:fileContent}}" target="_blank" class="line-clamp-1 cursor-pointer text-[var(--color-primary)] hover:underline">{{:fileContentName}}</a>
+                            {{/if}}
+               
            {{/if}}
            {{if depth > 0}}
            {{if fileContentComment}}
@@ -796,12 +797,12 @@
                </div>
        {{/if}}
                {{if depth === 0 && forumStatus !== 'Scheduled'}}
-               <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
+               <div class="ribbon w-full  py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
          {{:~totalComments(children)}} {{:~totalComments(children) === 1 ? 'Comment' : 'Comments'}}
        </div>
 
                {{else depth === 1}}
-               <div class="ribbon w-full my-4 py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
+               <div class="ribbon w-full  py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
                    {{:children.length}} {{:children.length === 1 ? 'Reply' : 'Replies'}}
                </div>
                {{/if}}
