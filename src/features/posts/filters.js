@@ -11,8 +11,6 @@ export function applyFilterAndRender() {
   }
   requestAnimationFrame(setupPlyr);
   let items = state.postsStore;
-  console.log("Applying filters to", items);
-  console.log(items.map(p => p.forumStatus));
   switch (state.currentFilter) {
     case "Featured":
       items = items.filter((p) => p.isFeatured);
@@ -24,7 +22,6 @@ export function applyFilterAndRender() {
       items = items.filter((p) => p.hasBookmarked);
       break;
     case "scheduledPost":
-      console.log("Filtering for scheduled posts");
       items = items.filter((p) => p.forumStatus ==="Scheduled");
       break;
   }

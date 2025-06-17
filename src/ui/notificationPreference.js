@@ -1,7 +1,6 @@
 import { notificationStore } from "../config.js";
 
 export function renderNotificationToggles(data) {
-    console.log("Rendering notification toggles with data:", notificationStore);
     const container = document.getElementById('notificationOptionsContainer');
     const prefs = data;
 
