@@ -1,4 +1,5 @@
 import { state, searchInput, clearIcon, searchIcon, GLOBAL_AUTHOR_ID } from "../../config.js";
+import { downCevron } from "../../ui/emoji.js";
 import { tmpl } from "../../ui/render.js";
 import { setupPlyr } from "../../utils/plyr.js";
 export function applyFilterAndRender() {
@@ -105,7 +106,6 @@ $(document).on("click", "#file-filter-menu li", function () {
   state.currentFileFilter = type;
 
   // update button label & active menu item
-  $("#file-filter-btn").text(type + " ▾");
   $("#file-filter-menu li").removeClass("active");
   $(this).addClass("active");
 
@@ -120,7 +120,6 @@ $(document).on("click", "#sort-filter-menu li", function () {
   state.currentSort = sort;
 
   // update button label & active menu item
-  $("#sort-filter-btn").text(sort + " ▾");
   $("#sort-filter-menu li").removeClass("active");
   $(this).addClass("active");
 

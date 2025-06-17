@@ -307,14 +307,14 @@
           alt="avatar" class="w-8 h-8 rounded-full ml-auto" />
       </div>
 
-      <div class="flex flex-1 items-center justify-start gap-2 rounded-xl bg-zinc-100 px-3 py-2">
+      <div class="flex flex-1 items-center justify-start gap-2 rounded-xl bg-[var(--grey-300)] px-3 py-2">
         <div class="justify-start text-center p2 text-black">What’s on
           your mind <span id="current-user-name"></span> ?</div>
       </div>
     </div>
     <div class="h-0 self-stretch outline-1 outline-offset-[-0.50px] outline-zinc-300"></div>
     <div class="inline-flex items-center justify-start gap-4 self-stretch">
-      <div class="flex items-center justify-center gap-2 rounded bg-zinc-100 px-3 py-2 cursor-pointer"
+      <div class="flex items-center justify-center gap-2 rounded bg-[var(--grey-300)] px-3 py-2 cursor-pointer"
         id="startRecordingOuterButton">
         <div data-property-1="filled" class="relative h-4 w-4 overflow-hidden">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -327,7 +327,7 @@
         <div class="justify-start text-center p3">Start
           Recording</div>
       </div>
-      <div class="flex items-center justify-center gap-2 rounded bg-zinc-100 px-3 py-2 cursor-pointer"
+      <div class="flex items-center justify-center gap-2 rounded bg-[var(--grey-300)] px-3 py-2 cursor-pointer"
         id="uploadFileOuterButton">
         <div class="relative h-4 w-4 overflow-hidden">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -433,7 +433,7 @@
         </div>
         <!-- Toolbar Ends -->
         <div
-          class="flex h-32 flex-col items-start justify-center gap-4 self-stretch rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
+          class="flex min-h-32 resize-y flex-col items-start justify-center gap-4 self-stretch rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
 
           <div contenteditable="true" id="post-editor"
             class="flex-1 justify-start self-stretch p2 outline-none editor resize-y">
@@ -445,7 +445,8 @@
           <div class="flex item-center gap-4">
 
             <div class="flex items-center gap-4 w-full" id="dropArea">
-              <div @click="($event) => $event.target.closest('.upload-section')?.querySelector('.filepond--drop-label')?.click()"
+              <div
+                @click="($event) => $event.target.closest('.upload-section')?.querySelector('.filepond--drop-label')?.click()"
                 class="dragover inline-flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-[2px] border-dashed border-[var(--grey-200)] bg-[var(--grey-300)] px-3 py-6 transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-shade)]">
                 <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -513,56 +514,94 @@
           <canvas class="canvasWaveform waveform w-full" id="waveform" width="450" height="100"></canvas>
         </div>
       </div>
-      <button id="submitForumPost" onclick="createForumToSubmit('0','Post','post-form');">
-        Post
-      </button>
-      <!-- <button class="ml-auto block" id="submit-post">Post</button> -->
-    </div>
-  </div>
-
-  <div id="post-filters" class="bg-white post-filters w-full shadow-lg p-4 flex items-center flex-col my-4 rounded">
-    <div
-      class="flex items-center justify-between w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
-
-
-      <div class="flex items-center gap-4">
-        <div class="sort-filter relative">
-          <button id="sort-filter-btn" class="filter-btn">Latest ▾</button>
-          <ul id="sort-filter-menu"
-            class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] w-fit z-[10]">
-            <li class="py-2 px-8 cursor-pointer active" data-sort="Latest">
-              Latest
-            </li>
-            <li class="py-2 px-8 cursor-pointer" data-sort="Oldest">
-              Oldest
-            </li>
-            <li class="py-2 px-8 cursor-pointer text-nowrap" data-sort="Most Popular">
-              Most Popular
-            </li>
-          </ul>
-        </div>
-        <div class="file-filter relative">
-          <button id="file-filter-btn" class="filter-btn">All ▾</button>
-          <ul id="file-filter-menu"
-            class="file-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[6em] z-[10]">
-            <li class="py-2 px-8 cursor-pointer" data-type="All" class="active">
-              All
-            </li>
-            <li class="py-2 px-8 cursor-pointer" data-type="Image">Image</li>
-            <li class="py-2 px-8 cursor-pointer" data-type="Video">Video</li>
-            <li class="py-2 px-8 cursor-pointer" data-type="Audio">Audio</li>
-            <li class="py-2 px-8 cursor-pointer" data-type="File">File</li>
-          </ul>
+      <div class="flex items-center justify-end gap-3 ml-auto cursor-pointer" id="submitForumPost"
+        onclick="createForumToSubmit('0','Post','post-form');">
+        <div
+          class="flex items-center justify-start gap-2 rounded bg-[var(--grey-100)] hover:bg-[var(--color-primary)] transition-all group px-3 py-2">
+          <div class="justify-start text-center p3 text-white">Post
+          </div>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="group-hover:fill-white"
+              d="M10.4282 5.99409C10.4285 6.12138 10.3948 6.24645 10.3306 6.35635C10.2664 6.46625 10.174 6.557 10.0629 6.61922L2.56502 10.9062C2.45742 10.9672 2.33595 10.9995 2.21227 11C2.09832 10.9994 1.98616 10.9715 1.88517 10.9187C1.78417 10.8659 1.69727 10.7898 1.63172 10.6965C1.56617 10.6033 1.52386 10.4958 1.50834 10.3829C1.49282 10.27 1.50453 10.155 1.54249 10.0476L2.74809 6.47767C2.75987 6.44277 2.78216 6.41236 2.8119 6.39062C2.84163 6.36888 2.87736 6.35686 2.9142 6.35622H6.14162C6.19059 6.35633 6.23906 6.34636 6.28402 6.32695C6.32898 6.30754 6.36946 6.27909 6.40296 6.24337C6.43646 6.20765 6.46226 6.16543 6.47875 6.11932C6.49525 6.07321 6.50208 6.0242 6.49884 5.97534C6.49074 5.88348 6.44824 5.79808 6.37985 5.73623C6.31145 5.67438 6.22222 5.64065 6.13002 5.64179H2.91509C2.87772 5.64179 2.84129 5.63008 2.81094 5.60829C2.78058 5.5865 2.75782 5.55574 2.74586 5.52034L1.54026 1.95088C1.49228 1.81406 1.48705 1.66588 1.52529 1.52603C1.56352 1.38617 1.6434 1.26126 1.75432 1.16789C1.86524 1.07451 2.00194 1.01709 2.14626 1.00326C2.29059 0.989426 2.43571 1.01983 2.56234 1.09044L10.0638 5.37209C10.1743 5.43416 10.2662 5.52447 10.3302 5.63377C10.3942 5.74307 10.4281 5.86742 10.4282 5.99409Z"
+              fill="white" />
+          </svg>
         </div>
       </div>
     </div>
-    <div class="search-wrapper w-full my-4 relative">
-      <input type="text" id="searchPost" class="py-2 px-4 rounded text-sm w-full"
+  </div>
+
+  <div id="post-filters" class=" post-filters w-full bg-transparent p-[24px_0_16px_0] flex items-center">
+    <div class="flex-1 search-wrapper w-full  relative">
+      <input type="text" id="searchPost" class="py-2 pl-8 rounded text-sm w-full"
         placeholder="Search by author or text…" autocomplete="off" />
-      <span class="clearIcon hidden absolute top-[50%] right-[8px] cursor-pointer text-sm translate-y-[-50%]"><i
+      <span class="clearIcon hidden absolute top-[50%] left-[8px] cursor-pointer text-sm translate-y-[-50%]"><i
           class="fa-solid fa-xmark"></i></span>
-      <span class="searchIcon absolute top-[50%] right-[8px] cursor-pointer text-sm translate-y-[-50%]"><i
+      <span class="searchIcon absolute top-[50%] left-[8px] cursor-pointer text-sm translate-y-[-50%]"><i
           class="fa-solid fa-search"></i></span>
+    </div>
+    <div
+      class="flex-1 ml-auto flex items-center justify-end w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
+      <div class="flex items-center gap-4">
+      <div x-data="{ open: false, selected: 'Latest' }" class="sort-filter relative cursor-pointer">
+        <div id="sort-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary)]' : 'bg-white'"
+          class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
+          <div class="text-center justify-start p2 text-black" x-text="selected"></div>
+          <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
+            viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M14.4891 5.70164L8.42881 11.7619C8.37252 11.8183 8.30568 11.863 8.23211 11.8935C8.15854 11.924 8.07968 11.9397 8.00004 11.9397C7.9204 11.9397 7.84154 11.924 7.76797 11.8935C7.6944 11.863 7.62756 11.8183 7.57127 11.7619L1.51097 5.70164C1.39726 5.58792 1.33337 5.43369 1.33337 5.27287C1.33337 5.11205 1.39726 4.95782 1.51097 4.8441C1.62469 4.73039 1.77892 4.6665 1.93974 4.6665C2.10056 4.6665 2.25479 4.73039 2.36851 4.8441L8.00004 10.4764L13.6316 4.8441C13.6879 4.7878 13.7547 4.74313 13.8283 4.71266C13.9019 4.68219 13.9807 4.6665 14.0603 4.6665C14.14 4.6665 14.2188 4.68219 14.2924 4.71266C14.366 4.74313 14.4328 4.7878 14.4891 4.8441C14.5454 4.90041 14.5901 4.96726 14.6205 5.04082C14.651 5.11439 14.6667 5.19324 14.6667 5.27287C14.6667 5.3525 14.651 5.43135 14.6205 5.50492C14.5901 5.57849 14.5454 5.64533 14.4891 5.70164Z"
+              fill="#0E0E0E" />
+          </svg>
+        </div>
+      
+        <ul id="sort-filter-menu" x-show="open" @click.away="open = false"
+          class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] w-fit z-[10]"
+          x-transition>
+          <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Latest' }" data-sort="Latest"
+            @click="selected = 'Latest'; open = false">
+            Latest
+          </li>
+          <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Oldest' }" data-sort="Oldest"
+            @click="selected = 'Oldest'; open = false">
+            Oldest
+          </li>
+          <li class="py-2 px-8 cursor-pointer text-nowrap" :class="{ 'active': selected === 'Most Popular' }"
+            data-sort="Most Popular" @click="selected = 'Most Popular'; open = false">
+            Most Popular
+          </li>
+        </ul>
+      </div>
+
+
+<div x-data="{ open: false, selected: 'All' }" class="file-filter relative cursor-pointer">
+  <div id="file-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary)]' : 'bg-white'"
+    class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
+    <span x-text="selected" class="p2  text-black"></span>
+    <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
+      viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M14.4891 5.70164L8.42881 11.7619C8.37252 11.8183 8.30568 11.863 8.23211 11.8935C8.15854 11.924 8.07968 11.9397 8.00004 11.9397C7.9204 11.9397 7.84154 11.924 7.76797 11.8935C7.6944 11.863 7.62756 11.8183 7.57127 11.7619L1.51097 5.70164C1.39726 5.58792 1.33337 5.43369 1.33337 5.27287C1.33337 5.11205 1.39726 4.95782 1.51097 4.8441C1.62469 4.73039 1.77892 4.6665 1.93974 4.6665C2.10056 4.6665 2.25479 4.73039 2.36851 4.8441L8.00004 10.4764L13.6316 4.8441C13.6879 4.7878 13.7547 4.74313 13.8283 4.71266C13.9019 4.68219 13.9807 4.6665 14.0603 4.6665C14.14 4.6665 14.2188 4.68219 14.2924 4.71266C14.366 4.74313 14.4328 4.7878 14.4891 4.8441C14.5454 4.90041 14.5901 4.96726 14.6205 5.04082C14.651 5.11439 14.6667 5.19324 14.6667 5.27287C14.6667 5.3525 14.651 5.43135 14.6205 5.50492C14.5901 5.57849 14.5454 5.64533 14.4891 5.70164Z"
+        fill="#0E0E0E" />
+    </svg>
+  </div>
+
+  <ul id="file-filter-menu" x-show="open" @click.away="open = false"
+    class="file-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[6em] z-[10]"
+    x-transition>
+    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'All' }" data-type="All"
+      @click="selected = 'All'; open = false">All</li>
+    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Image' }" data-type="Image"
+      @click="selected = 'Image'; open = false">Image</li>
+    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Video' }" data-type="Video"
+      @click="selected = 'Video'; open = false">Video</li>
+    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Audio' }" data-type="Audio"
+      @click="selected = 'Audio'; open = false">Audio</li>
+    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'File' }" data-type="File"
+      @click="selected = 'File'; open = false">File</li>
+  </ul>
+</div>
+
+      </div>
     </div>
   </div>
 
@@ -602,7 +641,7 @@
     </div>
   </div>
 
-  <div id="forum-root" class="w-full"></div>
+  <div id="forum-root" class="w-full flex flex-col gap-4"></div>
 
   <!-- Delete confirmation modal -->
   <div id="delete-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -622,7 +661,7 @@
   <script id="tmpl-item" type="text/x-jsrender">
            {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
              <div
-               class="item rounded bg-white shadow-xl flex flex-col gap-2 my-4 p-4 relative border-2 border-[#e9ebee] "
+               class="item rounded bg-white flex flex-col gap-2 p-4 relative "
                data-uid="{{:uid}}"
                data-depth="{{:depth}}"
                data-forumStatus="{{:forumStatus}}"

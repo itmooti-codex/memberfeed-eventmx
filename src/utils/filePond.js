@@ -1,5 +1,5 @@
 import { setPendingFile, setFileTypeCheck } from '../features/uploads/handlers.js';
-
+import { micIcon } from '../ui/emoji.js';
 FilePond.registerPlugin(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview,
@@ -11,7 +11,6 @@ export function initFilePond() {
   document.querySelectorAll(".upload-section").forEach((section) => {
     const inputElement = section.querySelector(".file-input");
     const dropArea = section.querySelector("#dropArea");
-    const uploadTrigger = section.querySelector(".classUploadFiles");
     const recordBtn = section.querySelector(".recordBtn");
     const canvas = section.querySelector(".waveform");
     const ctx = canvas.getContext("2d");
@@ -173,7 +172,7 @@ export function initFilePond() {
               setPendingFile(null);
               setFileTypeCheck("");
               isRecording = false;
-              recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
+              recordBtn.innerHTML = `${micIcon}<span class="p3">Record Audio</span>`; 
               cancelBtn.remove();
             });
           }
@@ -238,7 +237,7 @@ export function initFilePond() {
             }
           }).catch((e) => {
             console.error("Mic access failed:", e.name, e.message);
-            recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
+            recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
             inputElement.disabled = false;
             canvas.style.display = "none";
           });
@@ -249,12 +248,12 @@ export function initFilePond() {
 
           if (isSafari && recordBtn._safariRecorder) {
             recordBtn._safariRecorder.stop();
-            recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
+            recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
             isRecording = false;
           } else {
             recorder.stop().getMp3().then(([buffer, blob]) => {
               isRecording = false;
-              recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
+              recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
 
               const file = new File(buffer, "recorded-audio.mp3", {
                 type: blob.type,
