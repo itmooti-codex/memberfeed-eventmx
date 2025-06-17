@@ -28,7 +28,7 @@ export function initCommentHandlers() {
     const $form = $(`
     <div class="comment-form mt-2 flex w-full flex-col items-start justify-start gap-2">
   ${toolbarDesign}
-  <div class="flex min-h-32 resize-y flex-col items-start justify-center gap-4 self-stretch rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
+  <div class="flex min-h-32 transtion-all border-[1px] hover:border-[var(--color-primary)] resize-y flex-col items-start justify-center gap-4 self-stretch rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
     <div contenteditable="true" id="editor" data-placeholder="Write a reply..." class="p2 editor flex-1 resize-y justify-start self-stretch outline-none">${mentionHtml}</div>
   </div>
   <div class="upload-section mt-2 flex w-full flex-col gap-2">
