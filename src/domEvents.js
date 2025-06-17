@@ -67,6 +67,8 @@ export function setupCreatePostModal() {
   const trigger = document.getElementById("create-post-trigger");
   const modal = document.getElementById("create-post-modal");
   const closeBtn = document.getElementById("close-post-modal");
+  const uploadFileOuterButton = document.getElementById("uploadFileOuterButton");
+  const startRecordingOuterButton = document.getElementById("startRecordingOuterButton");
 
   if (trigger && modal) {
     trigger.addEventListener("click", () => {
@@ -90,7 +92,29 @@ export function setupCreatePostModal() {
       }
     });
   }
+
+  if (uploadFileOuterButton && trigger && modal) {
+    uploadFileOuterButton.addEventListener("click", () => {
+      trigger.click();
+      setTimeout(() => {
+        const dropLabel = document.querySelector(".filepond--drop-label");
+        dropLabel?.click();
+      }, 0);
+    });
+  }
+
+  if (startRecordingOuterButton && trigger && modal) {
+    startRecordingOuterButton.addEventListener("click", () => {
+      trigger.click();
+      setTimeout(() => {
+        const recordBtn = document.getElementById("recordBtn");
+        recordBtn?.click();
+      }, 0);
+    });
+  }
 }
+
+
 
 export function initScheduledPostHandler() {
   document.addEventListener("click", async (e) => {

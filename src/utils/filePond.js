@@ -31,7 +31,6 @@ export function initFilePond() {
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       ],
-
       labelIdle: `<span class="custom-upload-label" style="background:transparent; color:white;">
                 <i class="fa-solid fa-folder-open"></i> <strong>Drag & drop your files</strong> or <span style="color:var(--accent)">Browse</span>
             </span>`,
@@ -39,26 +38,26 @@ export function initFilePond() {
 
     pond.on("addfile", (error, fileItem) => {
       if (error) return;
-      const { file, container } = fileItem;
-      const { type, name } = file;
+      const file = fileItem.file;
+      const type = file.type;
+      const name = file.name;
       const isVideo = type.startsWith("video/");
       const isAudio = type.startsWith("audio/");
       if (!isVideo && !isAudio) return;
 
-      // 1. Check iOS support
       const testEl = document.createElement(isVideo ? "video" : "audio");
       if (!testEl.canPlayType(type)) {
         const msg = document.createElement("p");
         msg.textContent = `${name} isn’t supported for in-browser preview on iOS.`;
         msg.style.color = "#c00";
-        container.appendChild(msg);
+        const fallback = inputElement.closest(".upload-section");
+        fallback?.appendChild(msg);
         return;
       }
 
-      // 2. Make sure the FilePond wrapper can show overflow
-      container.style.overflow = "visible";
+      const previewWrapper = inputElement.closest(".upload-section")?.querySelector(".filepond--file-wrapper");
+      if (!previewWrapper) return;
 
-      // 3. Create media element
       const mediaEl = document.createElement(isVideo ? "video" : "audio");
       mediaEl.src = URL.createObjectURL(file);
       mediaEl.controls = true;
@@ -66,18 +65,13 @@ export function initFilePond() {
       mediaEl.classList.add("media-preview");
 
       if (isVideo) {
-        // Inline playback attributes for iOS
         mediaEl.setAttribute("playsinline", "");
         mediaEl.setAttribute("webkit-playsinline", "");
         mediaEl.setAttribute("x5-playsinline", "");
       }
 
-      // 4. Append and wait for metadata to load
-      mediaEl.addEventListener("loadedmetadata", () => {
-        // at this point duration is known, so the scrubber will render
-      });
-
-      container.appendChild(mediaEl);
+      mediaEl.addEventListener("loadedmetadata", () => { });
+      previewWrapper.appendChild(mediaEl);
     });
 
     pond.on("removefile", () => {
@@ -85,6 +79,8 @@ export function initFilePond() {
       setFileTypeCheck("");
       inputElement.value = "";
       canvas.style.display = "none";
+      const cancelBtn = section.querySelector(".cancelRecordingBtn");
+      if (cancelBtn) cancelBtn.remove();
     });
 
     const recorder = new MicRecorder({ bitRate: 128 });
@@ -118,9 +114,7 @@ export function initFilePond() {
 
     if (recordBtn) {
       recordBtn.addEventListener("click", () => {
-        const isSafari = /^((?!chrome|android).)*safari/i.test(
-          navigator.userAgent
-        );
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
         if (!isRecording) {
           pond.setOptions({
@@ -131,6 +125,38 @@ export function initFilePond() {
           inputElement.disabled = true;
           canvas.style.display = "block";
 
+          let cancelBtn = section.querySelector(".cancelRecordingBtn");
+          if (!cancelBtn) {
+            cancelBtn = document.createElement("button");
+            cancelBtn.type = "button";
+            cancelBtn.className = "cancelRecordingBtn";
+            cancelBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Cancel Recording';
+            recordBtn.insertAdjacentElement("afterend", cancelBtn);
+
+            cancelBtn.addEventListener("click", () => {
+              if (animationId) cancelAnimationFrame(animationId);
+              canvas.style.display = "none";
+              mediaStream?.getTracks().forEach((track) => track.stop());
+
+              if (isRecording) {
+                if (isSafari && recordBtn._safariRecorder) {
+                  recordBtn._safariRecorder.stop();
+                  delete recordBtn._safariRecorder;
+                } else {
+                  recorder.stop(); // no .catch() – not a Promise
+                }
+              }
+
+              inputElement.disabled = false;
+              pond.removeFile();
+              setPendingFile(null);
+              setFileTypeCheck("");
+              isRecording = false;
+              recordBtn.innerHTML = '<i class="fa-solid fa-microphone"></i> Start Recording';
+              cancelBtn.remove();
+            });
+          }
+
           const audioConstraints = isSafari
             ? { audio: {} }
             : { audio: { sampleRate: 44100 } };
@@ -139,8 +165,7 @@ export function initFilePond() {
             .getUserMedia(audioConstraints)
             .then((stream) => {
               mediaStream = stream;
-              audioContext = new (window.AudioContext ||
-                window.webkitAudioContext)();
+              audioContext = new (window.AudioContext || window.webkitAudioContext)();
               analyser = audioContext.createAnalyser();
               source = audioContext.createMediaStreamSource(stream);
               source.connect(analyser);
@@ -164,6 +189,10 @@ export function initFilePond() {
 
                   canvas.style.display = "none";
                   mediaStream?.getTracks().forEach((track) => track.stop());
+
+                  const cancelBtn = section.querySelector(".cancelRecordingBtn");
+                  if (cancelBtn) cancelBtn.remove();
+
                   pond.setOptions({
                     allowBrowse: true,
                     allowDrop: true,
@@ -223,6 +252,9 @@ export function initFilePond() {
                   lastModified: Date.now(),
                 });
 
+                const cancelBtn = section.querySelector(".cancelRecordingBtn");
+                if (cancelBtn) cancelBtn.remove();
+
                 pond.setOptions({
                   allowBrowse: true,
                   allowDrop: true,
@@ -256,4 +288,3 @@ export function resumeAudioContext() {
   const ctx = new AudioCtx();
   if (ctx.state === "suspended") ctx.resume();
 }
-
