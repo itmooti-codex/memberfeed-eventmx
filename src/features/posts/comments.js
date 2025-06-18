@@ -1,6 +1,6 @@
 import { state } from "../../config.js";
 import { findNode } from "../../ui/render.js";
-import {  uploadDesign, recorederDesign, toolbarDesign } from "../../ui/emoji.js";
+import { toolbarDesign } from "../../ui/emoji.js";
 import { moveCursorToEnd } from "../../utils/caret.js";
 import { tribute } from "../../utils/tribute.js";
 import { initFilePond } from "../../utils/filePond.js";
@@ -27,15 +27,12 @@ export function initCommentHandlers() {
     const nextType = nextDepth === 1 ? "Comment" : "Reply";
 
     const $form = $(`
-    <div class="comment-form mt-2 flex w-full flex-col items-start justify-start gap-2">
-  ${toolbarDesign}
-  <div class="flex min-h-32 transtion-all border-[1px] hover:border-[var(--color-primary)] resize-y flex-col items-start justify-center gap-4 self-stretch rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
+      <div class="upload-section">
+    <div class=" comment-form mt-2  w-full">
+  <div class="flex w-full min-h-32 transtion-all border-[1px] hover:border-[var(--color-primary)] resize-y flex-col items-end justify-end gap-4 rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
     <div contenteditable="true" id="editor" data-placeholder="Write a reply..." class="p2 editor flex-1 resize-y justify-start self-stretch outline-none">${mentionHtml}</div>
-  </div>
-  <div class="upload-section mt-2 flex w-full flex-col gap-2">
-    <div class="flex items-center gap-2" id="dropArea">${uploadDesign} ${recorederDesign}</div>
-    <input type="file" id="file-input" class="file-input" style="display: none;" accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
-    <canvas class="canvasWaveform waveform mt-2 w-full" id="waveform" width="450" height="100"></canvas>
+    <div class="flex w-full items-center justify-between">
+    ${toolbarDesign}
     <div class="flex items-center gap-2">
       <div class="ml-auto flex cursor-pointer items-center justify-end gap-3" id="submitForumPost" onclick="createForumToSubmit('${nextDepth}','${nextType}','comment-form','${uid}');">
         <div class="group flex items-center justify-start gap-2 rounded bg-[var(--grey-100)] px-3 py-2 transition-all hover:bg-[var(--color-primary)]">
@@ -48,6 +45,12 @@ export function initCommentHandlers() {
     </div>
   </div>
 </div>
+<div>
+    <input type="file" id="file-input" class="file-input" style="display: none;" accept="image/*,audio/*,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+    <canvas class="canvasWaveform waveform mt-2 w-full" id="waveform" width="450" height="100"></canvas>
+    </div>
+  </div>
+  </div>
 
   `);
     container.append($form);

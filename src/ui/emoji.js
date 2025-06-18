@@ -15,37 +15,11 @@ export const emojiPickerHtml = `
     </div>
   </div>
 `;
-export const recorederDesign = `
-              <div id="recordBtn"
-                class="recordBtn w-full flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-[2px] border-dashed border-[var(--grey-200)] bg-[var(--grey-300)] px-3 py-6 transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-shade)]">
-                <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M16.9881 19.3334C19.7828 19.3334 22.0476 17.0953 22.0476 14.3334V7.66675C22.0476 4.90484 19.7828 2.66675 16.9881 2.66675C14.1935 2.66675 11.9286 4.90484 11.9286 7.66675V14.3334C11.9286 17.0953 14.1935 19.3334 16.9881 19.3334ZM26.8095 14.2739C26.8095 14.1429 26.7024 14.0358 26.5714 14.0358H24.7857C24.6548 14.0358 24.5476 14.1429 24.5476 14.2739C24.5476 18.4495 21.1637 21.8334 16.9881 21.8334C12.8125 21.8334 9.42859 18.4495 9.42859 14.2739C9.42859 14.1429 9.32145 14.0358 9.1905 14.0358H7.40478C7.27383 14.0358 7.16669 14.1429 7.16669 14.2739C7.16669 19.2947 10.9345 23.4376 15.7976 24.0239V27.0715H11.4732C11.0655 27.0715 10.7381 27.4971 10.7381 28.0239V29.0953C10.7381 29.2263 10.8214 29.3334 10.9226 29.3334H23.0536C23.1548 29.3334 23.2381 29.2263 23.2381 29.0953V28.0239C23.2381 27.4971 22.9107 27.0715 22.503 27.0715H18.0595V24.0388C22.9792 23.5031 26.8095 19.3364 26.8095 14.2739Z"
-                    fill="#737373" />
-                </svg>
-                <div class="justify-start text-center p3 text-balck">Record
-                  Audio
-                </div>
-              </div>
-`;
-export const uploadDesign = `
-<div  @click="($event) => $event.target.closest('.upload-section')?.querySelector('.filepond--drop-label')?.click()"
-                class="classUploadFiles dragover inline-flex flex-1 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-[2px] border-dashed border-[var(--grey-200)] bg-[var(--grey-300)] px-3 py-6 transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-primary-shade)]">
-                <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M29.8329 19.3337V28.2223C29.8329 28.517 29.7158 28.7996 29.5075 29.008C29.2991 29.2164 29.0165 29.3334 28.7218 29.3334H4.27819C3.98351 29.3334 3.70091 29.2164 3.49254 29.008C3.28417 28.7996 3.16711 28.517 3.16711 28.2223V19.3337C3.16711 19.0391 3.28417 18.7565 3.49254 18.5481C3.70091 18.3397 3.98351 18.2227 4.27819 18.2227C4.57286 18.2227 4.85547 18.3397 5.06384 18.5481C5.2722 18.7565 5.38926 19.0391 5.38926 19.3337V27.1113H27.6108V19.3337C27.6108 19.0391 27.7278 18.7565 27.9362 18.5481C28.1446 18.3397 28.4272 18.2227 28.7218 18.2227C29.0165 18.2227 29.2991 18.3397 29.5075 18.5481C29.7158 18.7565 29.8329 19.0391 29.8329 19.3337ZM11.7307 10.1202L15.3889 6.46055V19.3337C15.3889 19.6284 15.506 19.911 15.7144 20.1194C15.9227 20.3278 16.2053 20.4448 16.5 20.4448C16.7947 20.4448 17.0773 20.3278 17.2857 20.1194C17.494 19.911 17.6111 19.6284 17.6111 19.3337V6.46055L21.2693 10.1202C21.4778 10.3286 21.7605 10.4458 22.0554 10.4458C22.3502 10.4458 22.633 10.3286 22.8415 10.1202C23.05 9.91167 23.1671 9.62891 23.1671 9.33407C23.1671 9.03923 23.05 8.75647 22.8415 8.54798L17.2861 2.99261C17.1829 2.88931 17.0604 2.80736 16.9255 2.75144C16.7906 2.69553 16.646 2.66675 16.5 2.66675C16.354 2.66675 16.2094 2.69553 16.0745 2.75144C15.9397 2.80736 15.8171 2.88931 15.7139 2.99261L10.1586 8.54798C9.95007 8.75647 9.83294 9.03923 9.83294 9.33407C9.83294 9.62891 9.95007 9.91167 10.1586 10.1202C10.367 10.3286 10.6498 10.4458 10.9446 10.4458C11.2395 10.4458 11.5222 10.3286 11.7307 10.1202Z"
-                    fill="#737373" />
-                </svg>
 
-                <div class="justify-start text-center p3 text-balck">Upload
-                  File
-                </div>
-              </div>
-`;
 export const toolbarDesign = `
-<div class="flex items-center justify-start gap-2 toolbar">
-          <button
-            class="flex items-center justify-start gap-2 rounded  bg-[var(--grey-300)] hover:bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+<div class="flex items-center justify-start toolbar">
+<button
+            class="flex items-center justify-start !border-none gap-2 rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
             data-cmd="bold">
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -54,7 +28,7 @@ export const toolbarDesign = `
             </svg>
           </button>
           <button
-            class="flex items-center justify-start gap-2 rounded bg-[var(--grey-300)] hover:bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
             data-cmd="italic">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -64,7 +38,7 @@ export const toolbarDesign = `
 
           </button>
           <button
-            class="flex items-center justify-start gap-2 rounded bg-[var(--grey-300)] hover:bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
             data-cmd="underline">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -74,7 +48,7 @@ export const toolbarDesign = `
 
           </button>
           <button
-            class="flex items-center justify-start gap-2 rounded bg-[var(--grey-300)] hover:bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
             data-cmd="link">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -82,10 +56,24 @@ export const toolbarDesign = `
                 fill="#737373" />
             </svg>
           </button>
-         
+          <div id="dropArea" @click="($event) => $event.target.closest('.upload-section')?.querySelector('.filepond--drop-label')?.click()"
+            class="classUploadFiles flex p-[8px_10px] !border-none items-center justify-start gap-2 rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            data-cmd="bold">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path  class="group-hover:fill-[var(--color-primary)]" d="M14.6664 9.66675V14.111C14.6664 14.2584 14.6079 14.3997 14.5037 14.5039C14.3995 14.6081 14.2582 14.6666 14.1109 14.6666H1.88903C1.7417 14.6666 1.60039 14.6081 1.49621 14.5039C1.39203 14.3997 1.3335 14.2584 1.3335 14.111V9.66675C1.3335 9.51941 1.39203 9.37811 1.49621 9.27392C1.60039 9.16974 1.7417 9.11121 1.88903 9.11121C2.03637 9.11121 2.17767 9.16974 2.28186 9.27392C2.38604 9.37811 2.44457 9.51941 2.44457 9.66675V13.5555H13.5553V9.66675C13.5553 9.51941 13.6138 9.37811 13.718 9.27392C13.8222 9.16974 13.9635 9.11121 14.1109 9.11121C14.2582 9.11121 14.3995 9.16974 14.5037 9.27392C14.6079 9.37811 14.6664 9.51941 14.6664 9.66675ZM5.6153 5.05996L7.44441 3.23015V9.66675C7.44441 9.81409 7.50294 9.95539 7.60712 10.0596C7.7113 10.1638 7.85261 10.2223 7.99994 10.2223C8.14728 10.2223 8.28859 10.1638 8.39277 10.0596C8.49695 9.95539 8.55548 9.81409 8.55548 9.66675V3.23015L10.3846 5.05996C10.4888 5.1642 10.6302 5.22276 10.7776 5.22276C10.9251 5.22276 11.0664 5.1642 11.1707 5.05996C11.2749 4.95571 11.3335 4.81433 11.3335 4.66691C11.3335 4.51949 11.2749 4.37811 11.1707 4.27387L8.39299 1.49618C8.34139 1.44453 8.28012 1.40356 8.21268 1.3756C8.14524 1.34764 8.07295 1.33325 7.99994 1.33325C7.92694 1.33325 7.85465 1.34764 7.78721 1.3756C7.71977 1.40356 7.6585 1.44453 7.6069 1.49618L4.82921 4.27387C4.72497 4.37811 4.66641 4.51949 4.66641 4.66691C4.66641 4.81433 4.72497 4.95571 4.82921 5.05996C4.93346 5.1642 5.07484 5.22276 5.22226 5.22276C5.36968 5.22276 5.51106 5.1642 5.6153 5.05996Z" fill="#737373"/>
+            </svg>
+          </div>
+
+           <div  id="recordBtn"
+            class="flex recordBtn p-[8px_10px] !border-none items-center justify-start gap-2 rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            data-cmd="bold">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="group-hover:fill-[var(--color-primary)]" d="M8.24421 9.66658C9.64153 9.66658 10.774 8.54754 10.774 7.16659V3.83325C10.774 2.4523 9.64153 1.33325 8.24421 1.33325C6.84689 1.33325 5.71445 2.4523 5.71445 3.83325V7.16659C5.71445 8.54754 6.84689 9.66658 8.24421 9.66658ZM13.1549 7.13682C13.1549 7.07135 13.1014 7.01778 13.0359 7.01778H12.143C12.0775 7.01778 12.024 7.07135 12.024 7.13682C12.024 9.22462 10.332 10.9166 8.24421 10.9166C6.15641 10.9166 4.46445 9.22462 4.46445 7.13682C4.46445 7.07135 4.41088 7.01778 4.3454 7.01778H3.45254C3.38707 7.01778 3.3335 7.07135 3.3335 7.13682C3.3335 9.64724 5.21742 11.7187 7.64897 12.0118V13.5356H5.48677C5.2829 13.5356 5.11921 13.7484 5.11921 14.0118V14.5475C5.11921 14.613 5.16088 14.6666 5.21147 14.6666H11.2769C11.3275 14.6666 11.3692 14.613 11.3692 14.5475V14.0118C11.3692 13.7484 11.2055 13.5356 11.0017 13.5356H8.77992V12.0193C11.2397 11.7514 13.1549 9.66807 13.1549 7.13682Z" fill="#737373"/>
+          </svg>
+          </div>
           <div class="emoji-wrapper relative">
             <button
-              class="flex emoji-toggle items-center justify-start gap-2 rounded bg-[var(--grey-300)] hover:bg-[var(--color-primary-shade)] cursor-pointer group p-1">
+              class="flex emoji-toggle items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path class="group-hover:fill-[var(--color-primary)]"
                   d="M10.9325 9.75005C10.2894 10.8619 9.22062 11.5 8 11.5C6.77938 11.5 5.71062 10.8625 5.06687 9.75005C5.03404 9.69317 5.01274 9.63038 5.00417 9.56527C4.99561 9.50015 4.99995 9.43399 5.01696 9.37056C5.03396 9.30713 5.06329 9.24766 5.10328 9.19556C5.14327 9.14347 5.19312 9.09975 5.25 9.06692C5.30688 9.03409 5.36967 9.01279 5.43478 9.00422C5.49989 8.99566 5.56605 9 5.62949 9.01701C5.69292 9.03401 5.75239 9.06334 5.80448 9.10333C5.85658 9.14331 5.90029 9.19317 5.93313 9.25005C6.39937 10.0569 7.13312 10.5 8 10.5C8.86688 10.5 9.60063 10.0563 10.0675 9.25005C10.0988 9.1903 10.1418 9.13748 10.194 9.09479C10.2462 9.05209 10.3065 9.0204 10.3712 9.00161C10.436 8.98282 10.5039 8.97733 10.5708 8.98546C10.6378 8.99359 10.7024 9.01518 10.7608 9.04893C10.8191 9.08267 10.8701 9.12788 10.9106 9.18183C10.951 9.23578 10.9801 9.29736 10.9962 9.36285C11.0122 9.42835 11.0149 9.49642 11.0039 9.56296C10.993 9.6295 10.9687 9.69314 10.9325 9.75005ZM14.5 8.00005C14.5003 8.64733 14.4042 9.29104 14.215 9.91005C14.1909 9.98819 14.148 10.0592 14.09 10.1169L10.1169 14.09C10.0595 14.1481 9.98865 14.1911 9.91063 14.215C8.60288 14.6172 7.20158 14.5965 5.90632 14.1558C4.61105 13.7151 3.48788 12.8769 2.69677 11.7606C1.90566 10.6443 1.48696 9.30689 1.50031 7.93877C1.51366 6.57065 1.95838 5.24163 2.77112 4.14101C3.58386 3.04038 4.72318 2.22428 6.0268 1.80894C7.33042 1.3936 8.73185 1.4002 10.0315 1.82781C11.3311 2.25542 12.4627 3.08223 13.265 4.19047C14.0674 5.29871 14.4995 6.63186 14.5 8.00005ZM13.5 8.00005C13.4986 6.84943 13.1359 5.7283 12.4631 4.79488C11.7903 3.86146 10.8413 3.16288 9.7502 2.79772C8.65906 2.43255 7.48079 2.41924 6.38168 2.75966C5.28257 3.10009 4.31811 3.77705 3.62439 4.69504C2.93068 5.61302 2.54274 6.72566 2.51531 7.87596C2.48789 9.02625 2.82238 10.1561 3.47156 11.1061C4.12075 12.0561 5.05186 12.7783 6.1335 13.1707C7.21514 13.5631 8.3927 13.6059 9.5 13.2932L13.2931 9.50005C13.4309 9.01198 13.5005 8.50719 13.5 8.00005ZM5.75 7.50005C5.89834 7.50005 6.04334 7.45606 6.16668 7.37365C6.29001 7.29124 6.38614 7.17411 6.44291 7.03706C6.49968 6.90002 6.51453 6.74922 6.48559 6.60373C6.45665 6.45824 6.38522 6.32461 6.28033 6.21972C6.17544 6.11483 6.0418 6.0434 5.89632 6.01446C5.75083 5.98552 5.60003 6.00037 5.46299 6.05714C5.32594 6.1139 5.20881 6.21003 5.1264 6.33337C5.04399 6.45671 5 6.60171 5 6.75005C5 6.94896 5.07902 7.13973 5.21967 7.28038C5.36032 7.42103 5.55109 7.50005 5.75 7.50005ZM10.25 6.00005C10.1017 6.00005 9.95666 6.04403 9.83332 6.12645C9.70999 6.20886 9.61386 6.32599 9.55709 6.46304C9.50033 6.60008 9.48547 6.75088 9.51441 6.89637C9.54335 7.04185 9.61478 7.17549 9.71967 7.28038C9.82456 7.38527 9.9582 7.4567 10.1037 7.48564C10.2492 7.51458 10.4 7.49972 10.537 7.44296C10.6741 7.38619 10.7912 7.29006 10.8736 7.16673C10.956 7.04339 11 6.89838 11 6.75005C11 6.55114 10.921 6.36037 10.7803 6.21972C10.6397 6.07907 10.4489 6.00005 10.25 6.00005Z"
