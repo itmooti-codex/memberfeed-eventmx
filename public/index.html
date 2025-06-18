@@ -790,13 +790,13 @@
                <div class="actions">
                  <div class = "flex items-center justify-between">
                    <div class = "flex items-center gap-4">
-                     <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:id}}"><i class="fa-solid fa-thumbs-up"></i> <span class="ml-1">{{:upvotes}}</span></button>
+                     <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-thumbs-up"></i> <span class="ml-1">{{:upvotes}}</span></button>
                      {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
-                     <button class="btn-comment flex items-center" data-uid="{{:id}}"><i class="fa-solid fa-comment"></i></button>
+                     <button class="btn-comment flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-comment"></i></button>
                      {{/if}}
                    </div>
                    {{if depth === 0}}
-                     <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:id}}"><i class="fa-solid fa-bookmark"></i></button>
+                     <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-bookmark"></i></button>
                    {{/if}}
                  </div>
                </div>
