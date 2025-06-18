@@ -119,11 +119,6 @@ button:not(.file-preview button):hover {
   border-color: var(--color-primary);
 }
 
-.filter-btn.active {
-  /* background: var(--color-primary);
-  color: #fff;
-  border-color: var(--color-primary); */
-}
 
 .file-filter-menu {
   display: none;
@@ -131,8 +126,8 @@ button:not(.file-preview button):hover {
 
 .file-filter-menu li:hover,
 .file-filter-menu li.active {
-  background-color: var(--color-primary);
-  color: #fff;
+  background-color: var(--color-primary-shade);
+  color: black;
 }
 
 .file-filter.open .file-filter-menu {
@@ -145,8 +140,8 @@ button:not(.file-preview button):hover {
 
 .sort-filter-menu li:hover,
 .sort-filter-menu li.active {
-  background-color: var(--color-primary);
-  color: #fff;
+  background-color: var(--color-primary-shade);
+  color: black;
 }
 
 .sort-filter.open .sort-filter-menu {
@@ -188,15 +183,6 @@ button:not(.file-preview button):hover {
   border: none;
   outline: none;
 }
-
-/* .editor:focus-within,
-.editor:focus-visible,
-.editor:focus,
-.editor:active,
-.editor:hover {
-  border: 1px solid var(--color-primary) !important;
-  outline: 1px solid var(--color-primary) !important;
-} */
 
 .filepond--root {
   cursor: pointer;
@@ -454,3 +440,4 @@ button:not(.file-preview button):hover {
   border-radius: 4px !important;
   padding: 8px !important;
 }
+/* Dropdown UI */

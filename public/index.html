@@ -542,8 +542,8 @@
     <div
       class="flex-1 ml-auto flex items-center justify-end w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
       <div class="flex items-center gap-4">
-        <div x-data="{ open: false, selected: 'Latest' }" class="sort-filter relative cursor-pointer">
-          <div id="sort-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary)]' : 'bg-white'"
+        <div x-data="{ open: false, selected: 'Latest' }" class="sort-filter relative cursor-pointer"@click.away="open = false">
+          <div id="sort-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
             class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
             <div class="text-center justify-start p2 text-black" x-text="selected"></div>
             <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
@@ -555,17 +555,17 @@
           </div>
 
           <ul id="sort-filter-menu" x-show="open" @click.away="open = false"
-            class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] w-fit z-[10]"
+            class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border rounded border-1-[#ccc] shadow-lg p-3 list-style-none p-0 mr-[4px] w-fit z-[10]"
             x-transition>
-            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Latest' }" data-sort="Latest"
+            <li class=" rounded p-2 cursor-pointer" :class="{ 'active': selected === 'Latest' }" data-sort="Latest"
               @click="selected = 'Latest'; open = false">
               Latest
             </li>
-            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Oldest' }" data-sort="Oldest"
+            <li class="p-2 rounded cursor-pointer" :class="{ 'active': selected === 'Oldest' }" data-sort="Oldest"
               @click="selected = 'Oldest'; open = false">
               Oldest
             </li>
-            <li class="py-2 px-8 cursor-pointer text-nowrap" :class="{ 'active': selected === 'Most Popular' }"
+            <li class="p-2 rounded cursor-pointer text-nowrap" :class="{ 'active': selected === 'Most Popular' }"
               data-sort="Most Popular" @click="selected = 'Most Popular'; open = false">
               Most Popular
             </li>
@@ -573,8 +573,8 @@
         </div>
 
 
-        <div x-data="{ open: false, selected: 'All' }" class="file-filter relative cursor-pointer">
-          <div id="file-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary)]' : 'bg-white'"
+        <div x-data="{ open: false, selected: 'All' }"@click.away="open = false" class="file-filter relative cursor-pointer">
+          <div id="file-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
             class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
             <span x-text="selected" class="p2  text-black"></span>
             <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
@@ -586,17 +586,17 @@
           </div>
 
           <ul id="file-filter-menu" x-show="open" @click.away="open = false"
-            class="file-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[6em] z-[10]"
+            class="file-filter-menu rounded absolute top-[100%] right-0 bg-[#ffffff] shadow-lg p-3 border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[6em] z-[10]"
             x-transition>
-            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'All' }" data-type="All"
+            <li class="p-2 rounded cursor-pointer" :class="{ 'active': selected === 'All' }" data-type="All"
               @click="selected = 'All'; open = false">All</li>
-            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Image' }" data-type="Image"
+            <li class="p-2 rounded cursor-pointer" :class="{ 'active': selected === 'Image' }" data-type="Image"
               @click="selected = 'Image'; open = false">Image</li>
-            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Video' }" data-type="Video"
+            <li class="p-2 rounded cursor-pointer" :class="{ 'active': selected === 'Video' }" data-type="Video"
               @click="selected = 'Video'; open = false">Video</li>
-            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Audio' }" data-type="Audio"
+            <li class="p-2 rounded cursor-pointer" :class="{ 'active': selected === 'Audio' }" data-type="Audio"
               @click="selected = 'Audio'; open = false">Audio</li>
-            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'File' }" data-type="File"
+            <li class="p-2 rounded cursor-pointer" :class="{ 'active': selected === 'File' }" data-type="File"
               @click="selected = 'File'; open = false">File</li>
           </ul>
         </div>
@@ -701,28 +701,28 @@
                </svg>
              </div>
          <!-- Dropdown Menu -->
-         <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false" x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 left-0 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]" role="menu">
+         <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false" x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 rounded left-0 bg-white p-2 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]" role="menu">
            {{if depth === 0}}
              {{if isAdmin}}
 
-             <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary)]" role="menuitem">Delete this post</div>
+             <div data-uid="{{:uid}}" class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Delete this post</div>
              {{if forumStatus === 'Published - Not flagged'}}
                  {{if !isFeatured}}
-                 <div data-uid="{{:uid}}" class="btn-feature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary)]" role="menuitem">Mark this post as featured</div>
+                 <div data-uid="{{:uid}}" class="btn-feature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Mark this post as featured</div>
                  {{else}}
-                 <div data-uid="{{:uid}}" class="btn-unfeature cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary)]" role="menuitem">Remove featured mark</div>
+                 <div data-uid="{{:uid}}" class="btn-unfeature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Remove featured mark</div>
                  {{/if}}
                  {{if commentsDisabled}}
-                 <div data-uid="{{:uid}}" class="btn-enable-comments cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary)]" role="menuitem">Enable comments on this post</div>
+                 <div data-uid="{{:uid}}" class="btn-enable-comments cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Enable comments on this post</div>
                  {{else}}
-                 <div data-uid="{{:uid}}" class="btn-disable-comments cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary)]" role="menuitem">Disable comments on this post</div>
+                 <div data-uid="{{:uid}}" class="btn-disable-comments cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Disable comments on this post</div>
                  {{/if}}
              {{else}}
-               <div data-uid="{{:uid}}" class="postNowFromScheduled cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary)]" role="menuitem">Post Now</div>
+               <div data-uid="{{:uid}}" class="postNowFromScheduled cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Post Now</div>
              {{/if}}
              {{else}}
              {{if canDelete}}
-             <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary)]" role="menuitem">Delete this post</div>
+             <div data-uid="{{:uid}}" class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Delete this post</div>
              {{/if}}
              {{/if}}
            {{else}}
