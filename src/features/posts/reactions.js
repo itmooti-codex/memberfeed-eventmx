@@ -14,7 +14,8 @@ import { showToast } from "../../ui/toast.js";
 export function initReactionHandlers() {
   // LIKE / UNLIKE
   $(document).on("click", ".btn-like", async function () {
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     const node = findNode(state.postsStore, uid);
     $(this).addClass("state-disabled");
     let toastMsg = "";
@@ -66,7 +67,8 @@ export function initReactionHandlers() {
 
   // BOOKMARK / UNBOOKMARK
   $(document).on("click", ".btn-bookmark", async function () {
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     const node = findNode(state.postsStore, uid);
     $(this).addClass("state-disabled");
     let toastMsg = "";

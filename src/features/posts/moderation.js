@@ -27,7 +27,8 @@ function removeNode(arr, uid) {
 export function initModerationHandlers() {
   // DELETE
   $(document).on("click", ".btn-delete", function () {
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     pendingDelete = { uid };
     const node = findNode(state.postsStore, uid);
     const label = node.depth === 0 ? "post" : node.depth === 1 ? "comment" : "reply";
@@ -79,7 +80,8 @@ export function initModerationHandlers() {
 
   // FEATURE
   $(document).on("click", ".btn-feature", async function () {
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     const node = findNode(state.postsStore, uid);
     if (!node) return;
     $(this).addClass("state-disabled");
@@ -102,7 +104,8 @@ export function initModerationHandlers() {
 
   // UNFEATURE
   $(document).on("click", ".btn-unfeature", async function () {
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     const node = findNode(state.postsStore, uid);
     if (!node) return;
     $(this).addClass("state-disabled");
@@ -125,7 +128,8 @@ export function initModerationHandlers() {
 
   // DISABLE COMMENTS
   $(document).on("click", ".btn-disable-comments", async function () {
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     const node = findNode(state.postsStore, uid);
     if (!node) return;
     $(this).addClass("state-disabled");
@@ -154,7 +158,8 @@ export function initModerationHandlers() {
 
   // ENABLE COMMENTS
   $(document).on("click", ".btn-enable-comments", async function () {
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     const node = findNode(state.postsStore, uid);
     if (!node) return;
     $(this).addClass("state-disabled");

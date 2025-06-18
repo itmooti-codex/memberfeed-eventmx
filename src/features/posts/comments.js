@@ -9,7 +9,8 @@ import { applyFilterAndRender } from "./filters.js";
 export function initCommentHandlers() {
   $(document).on("click", ".btn-comment", function (e) {
     e.stopPropagation();
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     const container = $(this).closest(".item");
     const existing = container.find(".comment-form");
 
@@ -74,7 +75,8 @@ export function initCommentHandlers() {
   });
 
   $(document).on("click", ".ribbon", function () {
-    const uid = $(this).data("uid");
+    // const uid = $(this).data("uid");
+    const uid = $(this).attr("data-uid");
     const node = findNode(state.postsStore, uid);
     if (node) {
       node.isCollapsed = !node.isCollapsed;
