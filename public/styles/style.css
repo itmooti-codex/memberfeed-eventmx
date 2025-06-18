@@ -1,77 +1,79 @@
 :root {
   --color-primary: #0963D8;
   /* Basic Colors */
-    --color-primary-shade: #E7F1FE;
-    --color-grey: #737373;
-    --color-black: #0E0E0E;
-    --color-white: #FFFFFF;
-  
-    /* Grey Shades */
-    --grey-100: #737373;
-    --grey-200: #D9D9D9;
-    --grey-300: #F4F1F1;
-  
-    /* Danger Shades */
-    --danger-100: #AB0707;
-    --danger-200: #DC0A0A;
-    --danger-300: #FDD0D1;
-  
-    /* Success Shades */
-    --success-100: #035933;
-    --success-200: #059E5A;
-    --success-300: #A6FCD6;
-  
-    /* Warning Shades */
-    --warning-100: #594203;
-    --warning-200: #BB8B06;
-    --warning-300: #FCE5A6;
+  --color-primary-shade: #E7F1FE;
+  --color-grey: #737373;
+  --color-black: #0E0E0E;
+  --color-white: #FFFFFF;
+
+  /* Grey Shades */
+  --grey-100: #737373;
+  --grey-200: #D9D9D9;
+  --grey-300: #F4F1F1;
+
+  /* Danger Shades */
+  --danger-100: #AB0707;
+  --danger-200: #DC0A0A;
+  --danger-300: #FDD0D1;
+
+  /* Success Shades */
+  --success-100: #035933;
+  --success-200: #059E5A;
+  --success-300: #A6FCD6;
+
+  /* Warning Shades */
+  --warning-100: #594203;
+  --warning-200: #BB8B06;
+  --warning-300: #FCE5A6;
   --plyr-color-main: var(--color-primary);
 }
+
 /* Hide default FilePond drop area visuals */
 .filepond--drop-label,
 .filepond--panel-root {
   display: none !important;
 }
+
 .h1 {
   font-size: 20px;
   font-weight: 600;
   line-height: 38px;
-   font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .h2 {
   font-size: 18px;
   font-weight: 500;
   line-height: 22px;
-   font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .h3 {
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-   font-family: 'Inter', sans-serif;
-} 
+  font-family: 'Inter', sans-serif;
+}
 
 .p1 {
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
-   font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .p2 {
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-   font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .p3 {
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
-   font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -118,13 +120,28 @@ button:not(.file-preview button):hover {
   margin-left: auto;
 }
 
-.btn-like.liked,
-.btn-bookmark.bookmarked {
-  background: var(--color-primary);
-  color: #fff;
-  border-color: var(--color-primary);
+.btn-comment:hover,
+.btn-like:hover,
+.btn-bookmark:hover {
+  color: var(--color-primary);
+  cursor: pointer;
 }
 
+.btn-comment:hover svg path,
+.btn-like:hover svg path,
+.btn-bookmark:hover svg path {
+  fill: var(--color-primary);
+}
+
+.btn-like.liked,
+.btn-bookmark.bookmarked {
+  color: var(--color-primary);
+}
+
+.btn-like.liked path,
+.btn-bookmark.bookmarked path {
+  fill: var(--color-primary);
+}
 
 .file-filter-menu {
   display: none;
@@ -437,13 +454,16 @@ button:not(.file-preview button):hover {
 .filepond--action-remove-item {
   padding: 0 !important;
 }
+
 /* plyr js  */
-.plyr--audio{
+.plyr--audio {
   border-radius: 4px !important;
 }
-.plyr--audio .plyr__controls{
+
+.plyr--audio .plyr__controls {
   background: white !important;
   border-radius: 4px !important;
   padding: 8px !important;
 }
+
 /* Dropdown UI */
