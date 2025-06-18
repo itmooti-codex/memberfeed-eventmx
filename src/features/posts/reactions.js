@@ -22,7 +22,9 @@ export function initReactionHandlers() {
 
     try {
       if (node.hasUpvoted) {
-        await fetchGraphQL(DELETE_REACTION_MUTATION);
+        if (node.voteRecordId) {
+          await fetchGraphQL(DELETE_REACTION_MUTATION, { id: node.voteRecordId });
+        }
         const rawItem = findRawById(state.rawItems, node.id);
         if (rawItem) {
           rawItem.Forum_Reactors_Data = safeArray(rawItem.Forum_Reactors_Data).filter((u) => u.id !== node.voteRecordId);
@@ -75,7 +77,9 @@ export function initReactionHandlers() {
 
     try {
       if (node.hasBookmarked) {
-        await fetchGraphQL(DELETE_BOOKMARK_MUTATION);
+        if (node.bookmarkRecordId) {
+          await fetchGraphQL(DELETE_BOOKMARK_MUTATION, { id: node.bookmarkRecordId });
+        }
         const rawItem = findRawById(state.rawItems, node.id);
         if (rawItem) {
           rawItem.Bookmarking_Contacts_Data = safeArray(rawItem.Bookmarking_Contacts_Data).filter((c) => c.id !== node.bookmarkRecordId);
@@ -104,8 +108,8 @@ export function initReactionHandlers() {
         node.bookmarkRecordId = res.data.createOBookmarkingContactBookmarkedForum.id;
         toastMsg = "Bookmarked";
       }
-      } catch (err) {
-        console.error("error is", err);
+    } catch (err) {
+      console.error("error is", err);
     } finally {
       $(this).removeClass("state-disabled");
     }

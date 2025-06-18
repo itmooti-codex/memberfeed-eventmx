@@ -158,11 +158,16 @@ mutation createOBookmarkingContactBookmarkedForum($payload: OBookmarkingContactB
 `;
 
 export const DELETE_BOOKMARK_MUTATION = `
-mutation deleteOBookmarkingContactBookmarkedForum {
-  deleteOBookmarkingContactBookmarkedForum {
+mutation deleteOBookmarkingContactBookmarkedForum(
+  $id: EduflowproOBookmarkingContactBookmarkedForumID
+) {
+  deleteOBookmarkingContactBookmarkedForum(
+    query: [{ where: { id: $id } }]
+  ) {
     id
   }
 }
+
 `;
 
 export const CREATE_REACTION_MUTATION = `
@@ -176,8 +181,10 @@ mutation createOForumReactorReactedtoForum($payload: OForumReactorReactedtoForum
 `;
 
 export const DELETE_REACTION_MUTATION = `
-mutation deleteOForumReactorReactedtoForum {
-  deleteOForumReactorReactedtoForum {
+mutation deleteOForumReactorReactedtoForum(
+  $id: EduflowproOForumReactorReactedtoForumID
+) {
+  deleteOForumReactorReactedtoForum(query: [{ where: { id: $id } }]) {
     id
   }
 }
