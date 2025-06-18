@@ -38,7 +38,8 @@ export async function createForumToSubmit(
   const editor = $(`.${formElementId} .editor`);
   const htmlContent = editor.html().trim();
   if (!htmlContent && !pendingFile) {
-    return;
+    alert("Please enter some content or upload a file.");
+    return null;
   }
 
   $btn.prop("disabled", true);

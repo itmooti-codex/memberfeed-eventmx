@@ -36,36 +36,42 @@
   font-size: 20px;
   font-weight: 600;
   line-height: 38px;
+   font-family: 'Inter', sans-serif;
 }
 
 .h2 {
   font-size: 18px;
   font-weight: 500;
   line-height: 22px;
+   font-family: 'Inter', sans-serif;
 }
 
 .h3 {
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-}
+   font-family: 'Inter', sans-serif;
+} 
 
 .p1 {
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
+   font-family: 'Inter', sans-serif;
 }
 
 .p2 {
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
+   font-family: 'Inter', sans-serif;
 }
 
 .p3 {
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
+   font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -171,12 +177,12 @@ button:not(.file-preview button):hover {
 .search-wrapper {
   border-radius: 4px;
   transition: 0.2s ease-in-out;
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .search-wrapper:hover,
 .search-wrapper:focus-within {
-  border: 2px solid var(--color-primary);
+  border: 1px solid var(--color-primary);
 }
 
 #searchPost {
