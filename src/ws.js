@@ -52,10 +52,12 @@ export function connect() {
     state.socket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
     state.keepAliveTimer = setInterval(() => {
       state.socket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
+      setupPlyr();
     }, KEEPALIVE_MS);
     state.isConnecting = false;
   });
   state.socket.addEventListener("message", ({ data }) => {
+    
     let msg;
     try {
       msg = JSON.parse(data);
@@ -88,7 +90,24 @@ export function connect() {
       } else {
         applyFilterAndRender();
       }
+      const frames = {};
+      document.querySelectorAll('.js-player').forEach((el) => {
+        const uid = el.closest('.item')?.dataset.uid;
+        if (uid) {
+          frames[uid] = el.plyr;
+        }else{
+          console.log("No UID found for player element", el);
+        }
+      });
       requestAnimationFrame(setupPlyr);
+      document.querySelectorAll('.js-player').forEach((el) => {
+        const uid = el.closest('.item')?.dataset.uid;
+        if (uid && frames[uid]) {
+          el.plyr = frames[uid];
+        } else {
+          setupPlyr();
+        }
+      });
     } else if (msg.type === "GQL_ERROR") {
       console.error("Subscription error", msg.payload);
       } else if (msg.type === "GQL_COMPLETE") {

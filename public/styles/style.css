@@ -445,3 +445,12 @@ button {
 .filepond--action-remove-item {
   padding: 0 !important;
 }
+/* plyr js  */
+.plyr--audio{
+  border-radius: 4px !important;
+}
+.plyr--audio .plyr__controls{
+  background: white !important;
+  border-radius: 4px !important;
+  padding: 8px !important;
+}

@@ -542,64 +542,64 @@
     <div
       class="flex-1 ml-auto flex items-center justify-end w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
       <div class="flex items-center gap-4">
-      <div x-data="{ open: false, selected: 'Latest' }" class="sort-filter relative cursor-pointer">
-        <div id="sort-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary)]' : 'bg-white'"
-          class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
-          <div class="text-center justify-start p2 text-black" x-text="selected"></div>
-          <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
-            viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M14.4891 5.70164L8.42881 11.7619C8.37252 11.8183 8.30568 11.863 8.23211 11.8935C8.15854 11.924 8.07968 11.9397 8.00004 11.9397C7.9204 11.9397 7.84154 11.924 7.76797 11.8935C7.6944 11.863 7.62756 11.8183 7.57127 11.7619L1.51097 5.70164C1.39726 5.58792 1.33337 5.43369 1.33337 5.27287C1.33337 5.11205 1.39726 4.95782 1.51097 4.8441C1.62469 4.73039 1.77892 4.6665 1.93974 4.6665C2.10056 4.6665 2.25479 4.73039 2.36851 4.8441L8.00004 10.4764L13.6316 4.8441C13.6879 4.7878 13.7547 4.74313 13.8283 4.71266C13.9019 4.68219 13.9807 4.6665 14.0603 4.6665C14.14 4.6665 14.2188 4.68219 14.2924 4.71266C14.366 4.74313 14.4328 4.7878 14.4891 4.8441C14.5454 4.90041 14.5901 4.96726 14.6205 5.04082C14.651 5.11439 14.6667 5.19324 14.6667 5.27287C14.6667 5.3525 14.651 5.43135 14.6205 5.50492C14.5901 5.57849 14.5454 5.64533 14.4891 5.70164Z"
-              fill="#0E0E0E" />
-          </svg>
+        <div x-data="{ open: false, selected: 'Latest' }" class="sort-filter relative cursor-pointer">
+          <div id="sort-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary)]' : 'bg-white'"
+            class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
+            <div class="text-center justify-start p2 text-black" x-text="selected"></div>
+            <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
+              viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M14.4891 5.70164L8.42881 11.7619C8.37252 11.8183 8.30568 11.863 8.23211 11.8935C8.15854 11.924 8.07968 11.9397 8.00004 11.9397C7.9204 11.9397 7.84154 11.924 7.76797 11.8935C7.6944 11.863 7.62756 11.8183 7.57127 11.7619L1.51097 5.70164C1.39726 5.58792 1.33337 5.43369 1.33337 5.27287C1.33337 5.11205 1.39726 4.95782 1.51097 4.8441C1.62469 4.73039 1.77892 4.6665 1.93974 4.6665C2.10056 4.6665 2.25479 4.73039 2.36851 4.8441L8.00004 10.4764L13.6316 4.8441C13.6879 4.7878 13.7547 4.74313 13.8283 4.71266C13.9019 4.68219 13.9807 4.6665 14.0603 4.6665C14.14 4.6665 14.2188 4.68219 14.2924 4.71266C14.366 4.74313 14.4328 4.7878 14.4891 4.8441C14.5454 4.90041 14.5901 4.96726 14.6205 5.04082C14.651 5.11439 14.6667 5.19324 14.6667 5.27287C14.6667 5.3525 14.651 5.43135 14.6205 5.50492C14.5901 5.57849 14.5454 5.64533 14.4891 5.70164Z"
+                fill="#0E0E0E" />
+            </svg>
+          </div>
+
+          <ul id="sort-filter-menu" x-show="open" @click.away="open = false"
+            class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] w-fit z-[10]"
+            x-transition>
+            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Latest' }" data-sort="Latest"
+              @click="selected = 'Latest'; open = false">
+              Latest
+            </li>
+            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Oldest' }" data-sort="Oldest"
+              @click="selected = 'Oldest'; open = false">
+              Oldest
+            </li>
+            <li class="py-2 px-8 cursor-pointer text-nowrap" :class="{ 'active': selected === 'Most Popular' }"
+              data-sort="Most Popular" @click="selected = 'Most Popular'; open = false">
+              Most Popular
+            </li>
+          </ul>
         </div>
-      
-        <ul id="sort-filter-menu" x-show="open" @click.away="open = false"
-          class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] w-fit z-[10]"
-          x-transition>
-          <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Latest' }" data-sort="Latest"
-            @click="selected = 'Latest'; open = false">
-            Latest
-          </li>
-          <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Oldest' }" data-sort="Oldest"
-            @click="selected = 'Oldest'; open = false">
-            Oldest
-          </li>
-          <li class="py-2 px-8 cursor-pointer text-nowrap" :class="{ 'active': selected === 'Most Popular' }"
-            data-sort="Most Popular" @click="selected = 'Most Popular'; open = false">
-            Most Popular
-          </li>
-        </ul>
-      </div>
 
 
-<div x-data="{ open: false, selected: 'All' }" class="file-filter relative cursor-pointer">
-  <div id="file-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary)]' : 'bg-white'"
-    class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
-    <span x-text="selected" class="p2  text-black"></span>
-    <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
-      viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M14.4891 5.70164L8.42881 11.7619C8.37252 11.8183 8.30568 11.863 8.23211 11.8935C8.15854 11.924 8.07968 11.9397 8.00004 11.9397C7.9204 11.9397 7.84154 11.924 7.76797 11.8935C7.6944 11.863 7.62756 11.8183 7.57127 11.7619L1.51097 5.70164C1.39726 5.58792 1.33337 5.43369 1.33337 5.27287C1.33337 5.11205 1.39726 4.95782 1.51097 4.8441C1.62469 4.73039 1.77892 4.6665 1.93974 4.6665C2.10056 4.6665 2.25479 4.73039 2.36851 4.8441L8.00004 10.4764L13.6316 4.8441C13.6879 4.7878 13.7547 4.74313 13.8283 4.71266C13.9019 4.68219 13.9807 4.6665 14.0603 4.6665C14.14 4.6665 14.2188 4.68219 14.2924 4.71266C14.366 4.74313 14.4328 4.7878 14.4891 4.8441C14.5454 4.90041 14.5901 4.96726 14.6205 5.04082C14.651 5.11439 14.6667 5.19324 14.6667 5.27287C14.6667 5.3525 14.651 5.43135 14.6205 5.50492C14.5901 5.57849 14.5454 5.64533 14.4891 5.70164Z"
-        fill="#0E0E0E" />
-    </svg>
-  </div>
+        <div x-data="{ open: false, selected: 'All' }" class="file-filter relative cursor-pointer">
+          <div id="file-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary)]' : 'bg-white'"
+            class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
+            <span x-text="selected" class="p2  text-black"></span>
+            <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
+              viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M14.4891 5.70164L8.42881 11.7619C8.37252 11.8183 8.30568 11.863 8.23211 11.8935C8.15854 11.924 8.07968 11.9397 8.00004 11.9397C7.9204 11.9397 7.84154 11.924 7.76797 11.8935C7.6944 11.863 7.62756 11.8183 7.57127 11.7619L1.51097 5.70164C1.39726 5.58792 1.33337 5.43369 1.33337 5.27287C1.33337 5.11205 1.39726 4.95782 1.51097 4.8441C1.62469 4.73039 1.77892 4.6665 1.93974 4.6665C2.10056 4.6665 2.25479 4.73039 2.36851 4.8441L8.00004 10.4764L13.6316 4.8441C13.6879 4.7878 13.7547 4.74313 13.8283 4.71266C13.9019 4.68219 13.9807 4.6665 14.0603 4.6665C14.14 4.6665 14.2188 4.68219 14.2924 4.71266C14.366 4.74313 14.4328 4.7878 14.4891 4.8441C14.5454 4.90041 14.5901 4.96726 14.6205 5.04082C14.651 5.11439 14.6667 5.19324 14.6667 5.27287C14.6667 5.3525 14.651 5.43135 14.6205 5.50492C14.5901 5.57849 14.5454 5.64533 14.4891 5.70164Z"
+                fill="#0E0E0E" />
+            </svg>
+          </div>
 
-  <ul id="file-filter-menu" x-show="open" @click.away="open = false"
-    class="file-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[6em] z-[10]"
-    x-transition>
-    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'All' }" data-type="All"
-      @click="selected = 'All'; open = false">All</li>
-    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Image' }" data-type="Image"
-      @click="selected = 'Image'; open = false">Image</li>
-    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Video' }" data-type="Video"
-      @click="selected = 'Video'; open = false">Video</li>
-    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Audio' }" data-type="Audio"
-      @click="selected = 'Audio'; open = false">Audio</li>
-    <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'File' }" data-type="File"
-      @click="selected = 'File'; open = false">File</li>
-  </ul>
-</div>
+          <ul id="file-filter-menu" x-show="open" @click.away="open = false"
+            class="file-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border border-1-[#ccc] list-style-none p-0 mr-[4px] min-w-[6em] z-[10]"
+            x-transition>
+            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'All' }" data-type="All"
+              @click="selected = 'All'; open = false">All</li>
+            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Image' }" data-type="Image"
+              @click="selected = 'Image'; open = false">Image</li>
+            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Video' }" data-type="Video"
+              @click="selected = 'Video'; open = false">Video</li>
+            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'Audio' }" data-type="Audio"
+              @click="selected = 'Audio'; open = false">Audio</li>
+            <li class="py-2 px-8 cursor-pointer" :class="{ 'active': selected === 'File' }" data-type="File"
+              @click="selected = 'File'; open = false">File</li>
+          </ul>
+        </div>
 
       </div>
     </div>
@@ -650,7 +650,7 @@
       <div class="flex justify-end gap-2">
         <button id="delete-confirm" class="bg-red-500 text-white px-4 py-1 rounded">
           Delete
-        </button> 
+        </button>
         <button id="delete-cancel" class="bg-gray-300 px-4 py-1 rounded">
           Cancel
         </button>
@@ -738,7 +738,10 @@
 
        </div>
      {{if content !=''  }} <div class="content my-2">{{:content}}</div>{{/if}}
-         <div class="file-preview">
+         <div class="file-preview {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
+          {{if fileType === "Audio" }}
+             <div class="h2 text-black mb-4">{{:fileContentName}}</div>
+           {{/if}}
            {{if fileContent}}
 
                             {{if fileType === "Image"}}
@@ -764,10 +767,12 @@
                    {{if fileType === "Image"}}
                      <img src="{{:fileContentComment || fileContentComment}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
                    {{else fileType === "Audio"}}
+                   <label for="audio-player">Recording1.mp3</label>
                      <audio class="js-player" controls>
                        <source src="{{:fileContentComment}}" type="audio/mpeg" />
                        Your browser does not support the audio tag.
                      </audio>
+                    
                    {{else fileType === "Video"}}
                      <video class="js-player" controls style="width: 100%; height: auto;">
                        <source src="{{:fileContentComment}}" type="video/mp4" />
@@ -785,13 +790,13 @@
                <div class="actions">
                  <div class = "flex items-center justify-between">
                    <div class = "flex items-center gap-4">
-                     <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-thumbs-up"></i> <span class="ml-1">{{:upvotes}}</span></button>
+                     <button class="btn-like{{:hasUpvoted ? ' liked' : ''}} flex items-center" data-uid="{{:id}}"><i class="fa-solid fa-thumbs-up"></i> <span class="ml-1">{{:upvotes}}</span></button>
                      {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
-                     <button class="btn-comment flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-comment"></i></button>
+                     <button class="btn-comment flex items-center" data-uid="{{:id}}"><i class="fa-solid fa-comment"></i></button>
                      {{/if}}
                    </div>
                    {{if depth === 0}}
-                     <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:uid}}"><i class="fa-solid fa-bookmark"></i></button>
+                     <button class="btn-bookmark{{:hasBookmarked ? ' bookmarked' : ''}} flex items-center" data-uid="{{:id}}"><i class="fa-solid fa-bookmark"></i></button>
                    {{/if}}
                  </div>
                </div>
