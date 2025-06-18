@@ -91,7 +91,7 @@ body {
   pointer-events: none;
 }
 
-button {
+button:not(.file-preview button) {
   background: #fff;
   border: 1px solid #ccc;
   cursor: pointer;
@@ -101,11 +101,11 @@ button {
   cursor: pointer;
   width: max-content;
   padding: 8px 10px !important;
+}
 
-  &:hover {
-    background: var(--color-primary);
-    color: white;
-  }
+button:not(.file-preview button):hover {
+  background: var(--color-primary);
+  color: white;
 }
 
 .btn-bookmark {
