@@ -13,6 +13,7 @@ export function initFilePond() {
     const dropArea = section.querySelector("#dropArea");
     const recordBtn = section.querySelector(".recordBtn");
     const canvas = section.querySelector(".waveform");
+    if (!inputElement || !dropArea || !canvas) return;
     const ctx = canvas.getContext("2d");
     
     const pond = FilePond.create(inputElement, {

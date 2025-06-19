@@ -35,6 +35,7 @@
 <body x-data="{
     showNotifications: false,
     showSettings: false,
+    modalForPostOpen:false,
     openSettings:false,
     openScheduleDatePicker: false, 
     modalForCustomDateTime: false,
@@ -52,18 +53,44 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-2">
-      <div class="relative">
-        <button @click="showNotifications = !showNotifications"
-          class="p-2 bg-white rounded-full hover:bg-gray-100 focus:outline-none">
-          <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M13.0758 19.2308C13.0758 19.4348 12.9948 19.6304 12.8505 19.7747C12.7062 19.919 12.5106 20 12.3066 20H6.15273C5.94872 20 5.75306 19.919 5.6088 19.7747C5.46455 19.6304 5.3835 19.4348 5.3835 19.2308C5.3835 19.0268 5.46455 18.8311 5.6088 18.6868C5.75306 18.5426 5.94872 18.4615 6.15273 18.4615H12.3066C12.5106 18.4615 12.7062 18.5426 12.8505 18.6868C12.9948 18.8311 13.0758 19.0268 13.0758 19.2308ZM18.2498 14.6096C17.7152 13.6904 16.922 11.0894 16.922 7.69231C16.922 5.65218 16.1115 3.69561 14.6689 2.25302C13.2263 0.810437 11.2698 0 9.22966 0C7.18953 0 5.23296 0.810437 3.79037 2.25302C2.34778 3.69561 1.53735 5.65218 1.53735 7.69231C1.53735 11.0904 0.743116 13.6904 0.209462 14.6096C0.0731841 14.8433 0.000937784 15.1088 9.06823e-06 15.3793C-0.000919647 15.6499 0.0695022 15.9158 0.204173 16.1505C0.338843 16.3851 0.533 16.5801 0.767064 16.7157C1.00113 16.8514 1.26682 16.9229 1.53735 16.9231H16.922C17.1924 16.9227 17.458 16.8511 17.6919 16.7153C17.9258 16.5796 18.1199 16.3847 18.2544 16.1501C18.389 15.9155 18.4593 15.6495 18.4583 15.3791C18.4574 15.1087 18.3851 14.8432 18.2489 14.6096H18.2498Z"
-              fill="#737373" />
-          </svg>
+  <!--Modal for custom date and time end  -->
+<!-- Modal For Post starts -->
+<div x-cloak x-show="modalForPostOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalForPostOpen"
+  x-on:keydown.esc.window="modalForPostOpen = false" x-on:click.self="modalForPostOpen = false"
+  class="fixed inset-0 z-[90] flex items-end justify-center bg-black/20 backdrop-blur-md sm:items-center" role="dialog"
+  aria-modal="true" aria-labelledby="defaultModalTitle">
+  <!-- Modal Dialog -->
+  <div x-show="modalForPostOpen"
+    x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
+    x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100"
+    class="customPickerModal rounded-radius flex w-[855px] flex-col gap-4 overflow-hidden rounded bg-white p-4">
+    <!-- Dialog Header -->
+    <div class="bg-surface-alt/60 dark:bg-surface-dark/20 flex items-center justify-between">
+      <div id="defaultModalTitle" class="h2 text-black">Author Name</div>
+      <div x-on:click="modalForPostOpen = false"
+        class="group flex cursor-pointer items-center justify-start gap-2 rounded-[34px] bg-zinc-100 p-2 transition-all hover:bg-[var(--color-primary-shade)]">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M18.8535 18.146C18.8999 18.1925 18.9368 18.2476 18.9619 18.3083C18.9871 18.369 19 18.4341 19 18.4997C19 18.5654 18.9871 18.6305 18.9619 18.6912C18.9368 18.7519 18.8999 18.807 18.8535 18.8535C18.807 18.8999 18.7519 18.9368 18.6912 18.9619C18.6305 18.9871 18.5654 19 18.4997 19C18.4341 19 18.369 18.9871 18.3083 18.9619C18.2476 18.9368 18.1925 18.8999 18.146 18.8535L14 14.7068L9.85398 18.8535C9.76017 18.9473 9.63292 19 9.50025 19C9.36758 19 9.24033 18.9473 9.14652 18.8535C9.0527 18.7597 9 18.6324 9 18.4997C9 18.3671 9.0527 18.2398 9.14652 18.146L13.2932 14L9.14652 9.85398C9.0527 9.76017 9 9.63292 9 9.50025C9 9.36758 9.0527 9.24033 9.14652 9.14652C9.24033 9.0527 9.36758 9 9.50025 9C9.63292 9 9.76017 9.0527 9.85398 9.14652L14 13.2932L18.146 9.14652C18.2398 9.0527 18.3671 9 18.4997 9C18.6324 9 18.7597 9.0527 18.8535 9.14652C18.9473 9.24033 19 9.36758 19 9.50025C19 9.63292 18.9473 9.76017 18.8535 9.85398L14.7068 14L18.8535 18.146Z"
+            fill="#0E0E0E"></path>
+        </svg>
+      </div>
+    </div>
+    <!-- Dialog Body -->
+    <div class="flex flex-col gap-1">
+      <div>Content</div>
+    </div>
+    <!-- Dialog Footer -->
 
-        </button>
-        <div x-data="{
+  </div>
+</div>
+<!-- Modal For Post ends -->
+  <div class="relative">
+    <button @click="showNotifications = !showNotifications"
+      class="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 focus:outline-none">
+      <i class="fa-solid fa-bell text-gray-600"></i>
+    </button>
+    <div x-data="{
       hasUnread: false,
       init() {
         this.checkUnread();
@@ -925,7 +952,7 @@
          {{:~totalComments(children)}}
                {{else depth === 1}}
                    {{:children.length}}
-               {{/if}}
+         {{/if}}
     </div>
   </div>
   {{/if}}
@@ -936,8 +963,9 @@
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M14.6732 6.30021C14.5455 6.15556 14.3885 6.03972 14.2127 5.96038C14.0368 5.88105 13.8461 5.84004 13.6532 5.84008H10.4798V4.93341C10.4798 4.33226 10.241 3.75572 9.81593 3.33064C9.39085 2.90556 8.81431 2.66675 8.21316 2.66675C8.12894 2.66669 8.04637 2.69009 7.9747 2.73433C7.90304 2.77857 7.84511 2.8419 7.80742 2.91721L5.66656 7.20008H3.22649C2.98603 7.20008 2.75541 7.2956 2.58538 7.46564C2.41535 7.63567 2.31982 7.86628 2.31982 8.10675V13.0934C2.31982 13.3339 2.41535 13.5645 2.58538 13.7345C2.75541 13.9046 2.98603 14.0001 3.22649 14.0001H12.9732C13.3045 14.0002 13.6245 13.8793 13.873 13.6602C14.1215 13.4411 14.2815 13.1388 14.323 12.8101L15.003 7.37008C15.0271 7.17856 15.0101 6.9841 14.9533 6.79964C14.8964 6.61517 14.8009 6.44493 14.6732 6.30021ZM3.22649 8.10675H5.49316V13.0934H3.22649V8.10675Z" fill="#0E0E0E" />
     </svg>
-    <div class="p3"><span class="ml-1">{{:upvotes}}</span> Likes</div>
+    <div class="p3">Like</div>
   </div>
+  <div @click="modalForPostOpen=true">OpenPostModal</div>
    {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
   <div class="flex btn-comment flex-1 items-center justify-center gap-2 cursor-pointer" data-uid="{{:uid}}">
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
