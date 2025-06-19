@@ -468,4 +468,22 @@ button:not(.file-preview button):hover {
   padding: 8px !important;
 }
 
+/* Collapsed comment styling with ribbon */
+.commentContainer.has-replies.is-collapsed {
+  margin-left: 12px;
+  padding-left: 1.5rem;
+  border-left: 2px solid #e9ebee;
+}
+
+.reply-ribbon {
+  padding-left: 1.5rem;
+  margin-left: 12px;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+}
+
+.commentContainer.has-replies.is-collapsed .reply-ribbon {
+  padding-left: 0;
+}
+
 /* Dropdown UI */
