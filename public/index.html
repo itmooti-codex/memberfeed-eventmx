@@ -55,17 +55,6 @@
       x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100"
       class="customPickerModal rounded-radius flex w-[855px] max-h-[80vh] overflow-y-auto flex-col gap-4 overflow-hidden rounded bg-white p-4">
       <!-- Dialog Header -->
-      <div class="bg-surface-alt/60 dark:bg-surface-dark/20 flex items-center justify-between">
-        <div id="defaultModalTitle" class="h2 text-black">Author Name</div>
-        <div x-on:click="modalForPostOpen = false"
-          class="group flex cursor-pointer items-center justify-start gap-2 rounded-[34px] bg-zinc-100 p-2 transition-all hover:bg-[var(--color-primary-shade)]">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M18.8535 18.146C18.8999 18.1925 18.9368 18.2476 18.9619 18.3083C18.9871 18.369 19 18.4341 19 18.4997C19 18.5654 18.9871 18.6305 18.9619 18.6912C18.9368 18.7519 18.8999 18.807 18.8535 18.8535C18.807 18.8999 18.7519 18.9368 18.6912 18.9619C18.6305 18.9871 18.5654 19 18.4997 19C18.4341 19 18.369 18.9871 18.3083 18.9619C18.2476 18.9368 18.1925 18.8999 18.146 18.8535L14 14.7068L9.85398 18.8535C9.76017 18.9473 9.63292 19 9.50025 19C9.36758 19 9.24033 18.9473 9.14652 18.8535C9.0527 18.7597 9 18.6324 9 18.4997C9 18.3671 9.0527 18.2398 9.14652 18.146L13.2932 14L9.14652 9.85398C9.0527 9.76017 9 9.63292 9 9.50025C9 9.36758 9.0527 9.24033 9.14652 9.14652C9.24033 9.0527 9.36758 9 9.50025 9C9.63292 9 9.76017 9.0527 9.85398 9.14652L14 13.2932L18.146 9.14652C18.2398 9.0527 18.3671 9 18.4997 9C18.6324 9 18.7597 9.0527 18.8535 9.14652C18.9473 9.24033 19 9.36758 19 9.50025C19 9.63292 18.9473 9.76017 18.8535 9.85398L14.7068 14L18.8535 18.146Z"
-              fill="#0E0E0E"></path>
-          </svg>
-        </div>
-      </div>
       <div id="modalForumRoot" class="flex flex-col gap-1"></div>
       </div>
       <!-- Dialog Footer -->
@@ -816,7 +805,7 @@
            {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
              <div
              
-              class="item rounded bg-white flex flex-col gap-[14px] p-4 relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
+              class="item  {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded p-4'}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
                data-uid="{{:uid}}"
                data-id="{{:id}}"
                data-depth="{{:depth}}"
@@ -848,7 +837,15 @@
                    <i class="fa-solid fa-star text-yellow-500 ml-2" title="Featured"></i>
                    {{/if}}
                  </div>
+                  
                </div>
+               {{if ~inModal && depth === 0}}
+                 <div x-on:click="modalForPostOpen = false" class="group flex cursor-pointer items-center justify-start gap-2 rounded-[34px] bg-zinc-100 p-2 transition-all hover:bg-[var(--color-primary-shade)]">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.8535 18.146C18.8999 18.1925 18.9368 18.2476 18.9619 18.3083C18.9871 18.369 19 18.4341 19 18.4997C19 18.5654 18.9871 18.6305 18.9619 18.6912C18.9368 18.7519 18.8999 18.807 18.8535 18.8535C18.807 18.8999 18.7519 18.9368 18.6912 18.9619C18.6305 18.9871 18.5654 19 18.4997 19C18.4341 19 18.369 18.9871 18.3083 18.9619C18.2476 18.9368 18.1925 18.8999 18.146 18.8535L14 14.7068L9.85398 18.8535C9.76017 18.9473 9.63292 19 9.50025 19C9.36758 19 9.24033 18.9473 9.14652 18.8535C9.0527 18.7597 9 18.6324 9 18.4997C9 18.3671 9.0527 18.2398 9.14652 18.146L13.2932 14L9.14652 9.85398C9.0527 9.76017 9 9.63292 9 9.50025C9 9.36758 9.0527 9.24033 9.14652 9.14652C9.24033 9.0527 9.36758 9 9.50025 9C9.63292 9 9.76017 9.0527 9.85398 9.14652L14 13.2932L18.146 9.14652C18.2398 9.0527 18.3671 9 18.4997 9C18.6324 9 18.7597 9.0527 18.8535 9.14652C18.9473 9.24033 19 9.36758 19 9.50025C19 9.63292 18.9473 9.76017 18.8535 9.85398L14.7068 14L18.8535 18.146Z" fill="#0E0E0E"></path>
+          </svg>
+        </div>
+        {{/if}}
                {{if canDelete && (!~inModal || depth > 0)}}
                   <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit" x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
              <!-- Toggle Button -->
@@ -959,7 +956,7 @@
     </svg>
     <div class="p3 text-[var(--color-primary)]">
       {{if depth === 1}}
-        {{:children.length}} replies
+        {{:children.length}}
       {{else depth === 0}}
         {{:~totalComments(children)}}
       {{else}}
@@ -977,11 +974,10 @@
     </svg>
     <div class="p3">Like</div>
   </div>
-  {{if !~inModal}}
-  <div class="openPostModal cursor-pointer" data-id="{{:id}}" data-author="{{:authorName}}" @click="modalForPostOpen=true">OpenPostModal</div>
-  {{/if}}
+  
    {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
-  <div class="flex btn-comment flex-1 items-center justify-center gap-2 cursor-pointer" data-uid="{{:uid}}">
+  <div class="flex {{if ~inModal}}btn-comment{{else}}openPostModal{{/if}} flex-1 items-center justify-center gap-2 cursor-pointer" data-uid="{{:uid}}"   data-id="{{:id}}" data-author="{{:authorName}}"
+  {{if !~inModal}} @click="modalForPostOpen=true"{{/if}}>
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M11.1668 7.19992C11.1668 7.34137 11.1106 7.47702 11.0106 7.57704C10.9106 7.67706 10.7749 7.73325 10.6335 7.73325H6.10016C5.95871 7.73325 5.82306 7.67706 5.72304 7.57704C5.62302 7.47702 5.56683 7.34137 5.56683 7.19992C5.56683 7.05847 5.62302 6.92281 5.72304 6.82279C5.82306 6.72278 5.95871 6.66658 6.10016 6.66658H10.6335C10.7749 6.66658 10.9106 6.72278 11.0106 6.82279C11.1106 6.92281 11.1668 7.05847 11.1668 7.19992ZM10.6335 8.79992H6.10016C5.95871 8.79992 5.82306 8.85611 5.72304 8.95613C5.62302 9.05615 5.56683 9.1918 5.56683 9.33325C5.56683 9.4747 5.62302 9.61036 5.72304 9.71038C5.82306 9.8104 5.95871 9.86658 6.10016 9.86658H10.6335C10.7749 9.86658 10.9106 9.8104 11.0106 9.71038C11.1106 9.61036 11.1668 9.4747 11.1668 9.33325C11.1668 9.1918 11.1106 9.05615 11.0106 8.95613C10.9106 8.85611 10.7749 8.79992 10.6335 8.79992ZM15.1668 7.99992C15.1649 9.76743 14.4619 11.462 13.2121 12.7118C11.9622 13.9616 10.2677 14.6646 8.50016 14.6666H2.90016C2.61727 14.6666 2.34595 14.5542 2.14592 14.3542C1.94588 14.1541 1.8335 13.8828 1.8335 13.5999V7.99992C1.8335 6.23181 2.53588 4.53612 3.78612 3.28587C5.03636 2.03563 6.73205 1.33325 8.50016 1.33325C10.2683 1.33325 11.964 2.03563 13.2142 3.28587C14.4644 4.53612 15.1668 6.23181 15.1668 7.99992ZM14.1002 7.99992C14.1002 6.51471 13.5102 5.09032 12.46 4.04012C11.4098 2.98992 9.98537 2.39992 8.50016 2.39992C7.01495 2.39992 5.59057 2.98992 4.54036 4.04012C3.49016 5.09032 2.90016 6.51471 2.90016 7.99992V13.5999H8.50016C9.98489 13.5983 11.4083 13.0078 12.4582 11.958C13.5081 10.9081 14.0986 9.48464 14.1002 7.99992Z" fill="#0E0E0E" />
     </svg>

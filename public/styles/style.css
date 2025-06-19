@@ -470,13 +470,10 @@ button:not(.file-preview button):hover {
 
 /* Collapsed comment styling with ribbon */
 .commentContainer.has-replies.is-collapsed {
-  margin-left: 12px;
-  padding-left: 1.5rem;
-  border-left: 2px solid #e9ebee;
+  border-left: 1px solid var(--color-primary);
 }
 
 .reply-ribbon {
-  padding-left: 1.5rem;
   margin-left: 12px;
   color: var(--color-primary);
   font-size: 0.875rem;
