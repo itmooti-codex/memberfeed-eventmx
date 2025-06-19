@@ -993,20 +993,7 @@
   {{/if}}
 </div>
        {{/if}}
-               {{if depth === 0 && forumStatus !== 'Scheduled' && ~inModal}}
-               <div class="ribbon w-full  py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
-         {{:~totalComments(children)}} {{:~totalComments(children) === 1 ? 'Comment' : 'Comments'}}
-       </div>
-
-               {{else depth === 1 && isCollapsed}}
-               <div class="ribbon w-full  py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
-                   See {{:children.length}} more {{:children.length === 1 ? 'reply' : 'replies'}}
-               </div>
-               {{else depth === 1}}
-               <div class="ribbon w-full  py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
-                   Hide replies
-               </div>
-               {{/if}}
+              {{!-- Ribbon removed; replies remain collapsed by default --}}
                {{if children.length && !isCollapsed}}
                  <div data-reply="{{:uid}}" class="children visible my-4 {{:depth < 2 ? 'pl-8 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">
                    {{for children}}

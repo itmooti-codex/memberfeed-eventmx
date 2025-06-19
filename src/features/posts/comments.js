@@ -69,12 +69,7 @@ export function initCommentHandlers() {
   </div>
 
   `);
-    const ribbon = container.find('.ribbon').first();
-    if (ribbon.length) {
-      $form.insertBefore(ribbon);
-    } else {
-      container.append($form);
-    }
+    container.append($form);
     const inserted = container.find(".comment-form");
     if (inserted.length) {
       const editorEl = inserted.find(".editor")[0];
@@ -98,20 +93,5 @@ export function initCommentHandlers() {
     }
   });
 
-  $(document).on("click", ".ribbon", function () {
-    const uid = $(this).attr("data-uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
-    const source = inModal ? getModalTree() : state.postsStore;
-    const node = findNode(source, uid);
-    if (node) {
-      node.isCollapsed = !node.isCollapsed;
-      if (!inModal) {
-        state.collapsedState[node.uid] = node.isCollapsed;
-      }
-      applyFilterAndRender();
-      if (inModal) {
-        rerenderModal();
-      }
-    }
-  });
+  // Ribbon removal: replies stay hidden by default
 }
