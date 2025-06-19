@@ -14,7 +14,7 @@ export function initCommentHandlers() {
     // const uid = $(this).data("uid");
     let uid = $(this).attr("data-uid");
     const container = $(this).closest(".item");
-    const existing = container.find(".upload-section");
+    const existing = container.children(".upload-section");
 
     if (existing.length) {
       existing.remove();
@@ -70,7 +70,7 @@ export function initCommentHandlers() {
   </div>
 
   `);
-    const actions = container.find(".actions");
+    const actions = container.children(".actions").first();
     if (actions.length) {
       actions.after($form);
     } else {
