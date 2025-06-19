@@ -34,7 +34,7 @@ export function initCommentHandlers() {
     const nextType = nextDepth === 1 ? "Comment" : "Reply";
     if(nextType === "Reply") {
       console.log("Replying to a comment");
-      uid = $(this).closest('.children').attr('data-reply') || uid;
+      uid = $(this).closest('.commentContainer').attr('data-uid') || uid;
       console.log("Updated UID for reply:", uid);
     }else{
       console.log("Posting a comment");

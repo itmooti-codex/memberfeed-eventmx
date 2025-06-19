@@ -815,7 +815,8 @@
   <script id="tmpl-item" type="text/x-jsrender">
            {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
              <div
-               class="item rounded bg-white flex flex-col gap-[14px] p-4 relative "
+             
+               class="item rounded bg-white flex flex-col gap-[14px] p-4 relative {{if depth === 1}} commentContainer {{/if}}"
                data-uid="{{:uid}}"
                data-depth="{{:depth}}"
                data-forumStatus="{{:forumStatus}}"
