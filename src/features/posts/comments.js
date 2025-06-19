@@ -10,9 +10,9 @@ export function initCommentHandlers() {
   $(document).on("click", ".btn-comment", function (e) {
     e.stopPropagation();
     // const uid = $(this).data("uid");
-    const uid = $(this).attr("data-uid");
+    let uid = $(this).attr("data-uid");
     const container = $(this).closest(".item");
-    const existing = container.find(".comment-form");
+    const existing = container.find(".upload-section");
 
     if (existing.length) {
       existing.remove();
@@ -25,6 +25,14 @@ export function initCommentHandlers() {
 
     const nextDepth = Math.min((node.depth || 0) + 1, 2);
     const nextType = nextDepth === 1 ? "Comment" : "Reply";
+    if(nextType === "Reply") {
+      console.log("Replying to a comment");
+      uid = $(this).closest('.children').attr('data-reply') || uid;
+      console.log("Updated UID for reply:", uid);
+    }else{
+      console.log("Posting a comment");
+      console.log("UID for comment:", uid);
+    }
 
     const $form = $(`
       <div class="upload-section">
