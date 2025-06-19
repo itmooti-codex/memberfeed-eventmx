@@ -69,7 +69,12 @@ export function initCommentHandlers() {
   </div>
 
   `);
-    container.append($form);
+    const actions = container.find(".actions");
+    if (actions.length) {
+      actions.after($form);
+    } else {
+      container.append($form);
+    }
     const inserted = container.find(".comment-form");
     if (inserted.length) {
       const editorEl = inserted.find(".editor")[0];
@@ -85,6 +90,27 @@ export function initCommentHandlers() {
       });
     }
     initFilePond();
+  });
+
+  // Toggle visibility of replies
+  $(document).on("click", ".toggle-replies", function (e) {
+    e.stopPropagation();
+    const uid = $(this).data("uid");
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const source = inModal ? getModalTree() : state.postsStore;
+    const node = findNode(source, uid);
+    if (!node) {
+      console.error("Node not found for uid", uid);
+      return;
+    }
+    const newState = !node.isCollapsed;
+    node.isCollapsed = newState;
+    state.collapsedState[uid] = newState;
+    if (inModal) {
+      rerenderModal();
+    } else {
+      applyFilterAndRender();
+    }
   });
 
   $(document).on("click", function (e) {
