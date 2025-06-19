@@ -163,7 +163,7 @@
           </div>
 
           <script id="notificationTemplate" type="text/x-jsrender">
-          <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentForumid="{{:Parent_Forum_ID}}">
+          <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentForumid="{{:Parent_Forum_ID}}" @click="modalForPostOpen=true">
             <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
             <div class="flex-1">
               <div class="text-md font-medium text-gray-900">{{:Title}}</div>

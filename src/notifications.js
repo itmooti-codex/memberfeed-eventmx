@@ -169,7 +169,7 @@ export function initNotificationEvents() {
             body.__x.$data.showNotifications = false;
           }
         } catch {
-          // ignore if Alpine isn't available
+          console.error("Failed to hide notifications modal");
         }
         openPostModalById(forumId);
       }
