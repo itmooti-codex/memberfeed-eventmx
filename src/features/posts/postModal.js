@@ -4,6 +4,18 @@ import { tmpl } from "../../ui/render.js";
 import { setupPlyr } from "../../utils/plyr.js";
 import { PROTOCOL, WS_ENDPOINT, KEEPALIVE_MS } from "../../config.js";
 
+const MODAL_SKELETON = `
+  <div id="modal-skeleton-loader" class="p-4">
+    <div class="skeleton-item flex gap-4 mb-4">
+      <div class="skeleton-avatar"></div>
+      <div class="flex-1 flex flex-col gap-2">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line medium"></div>
+      </div>
+    </div>
+  </div>`;
+
 function normalize(node, list) {
   const {
     Author_ID,
@@ -68,10 +80,16 @@ function closeModalSocket() {
 export function initPostModalHandlers() {
   $(document).on("click", ".openPostModal", function () {
     const postId = $(this).data("id");
+    const author = $(this).data("author");
     if (!postId) return;
     const container = document.getElementById("modalForumRoot");
     if (container) {
-      container.innerHTML = "";
+      container.innerHTML = MODAL_SKELETON;
+    }
+
+    const titleEl = document.getElementById("defaultModalTitle");
+    if (titleEl) {
+      titleEl.textContent = author || "";
     }
 
     closeModalSocket();
