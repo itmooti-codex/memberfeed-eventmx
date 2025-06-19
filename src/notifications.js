@@ -9,6 +9,7 @@ import {
 } from "./config.js";
 import { GET_NOTIFICATIONS } from "./api/queries.js";
 import { fetchGraphQL } from "./api/fetch.js";
+import { openPostModalById } from "./features/posts/postModal.js";
 
 const notificationTemplate = $.templates("#notificationTemplate");
 
@@ -158,6 +159,14 @@ export function connectNotification() {
 
 export function initNotificationEvents() {
   document.addEventListener("click", async (e) => {
+    const notifEl = e.target.closest(".notification");
+    if (notifEl) {
+      const forumId = notifEl.getAttribute("data-parentforumid");
+      if (forumId) {
+        openPostModalById(forumId);
+      }
+    }
+
     const markAll = e.target.id === "markAllNotificationAsRead";
 
     let ids = [];

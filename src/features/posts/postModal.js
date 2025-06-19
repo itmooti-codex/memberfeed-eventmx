@@ -95,23 +95,31 @@ function closeModalSocket() {
   modalSocket = null;
 }
 
-export function initPostModalHandlers() {
-  $(document).on("click", ".openPostModal", function () {
-    const postId = $(this).data("id");
-    const author = $(this).data("author");
-    if (!postId) return;
-    const container = document.getElementById("modalForumRoot");
-    if (container) {
-      container.innerHTML = MODAL_SKELETON;
-    }
+export function openPostModalById(postId, author = "") {
+  if (!postId) return;
 
-    const titleEl = document.getElementById("defaultModalTitle");
-    if (titleEl) {
-      titleEl.textContent = author || "";
+  // ensure the modal is displayed (Alpine data)
+  try {
+    const body = document.querySelector("body");
+    if (body && body.__x && body.__x.$data) {
+      body.__x.$data.modalForPostOpen = true;
     }
+  } catch {
+    // ignore if Alpine isn't available
+  }
 
-    closeModalSocket();
-    modalSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
+  const container = document.getElementById("modalForumRoot");
+  if (container) {
+    container.innerHTML = MODAL_SKELETON;
+  }
+
+  const titleEl = document.getElementById("defaultModalTitle");
+  if (titleEl) {
+    titleEl.textContent = author || "";
+  }
+
+  closeModalSocket();
+  modalSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
 
     modalSocket.addEventListener("open", () => {
       modalSocket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
@@ -167,11 +175,18 @@ export function initPostModalHandlers() {
       closeModalSocket();
     });
 
-    modalSocket.addEventListener("close", () => {
-      clearInterval(keepAliveTimer);
-      keepAliveTimer = null;
-      modalSocket = null;
-    });
+  modalSocket.addEventListener("close", () => {
+    clearInterval(keepAliveTimer);
+    keepAliveTimer = null;
+    modalSocket = null;
+  });
+}
+
+export function initPostModalHandlers() {
+  $(document).on("click", ".openPostModal", function () {
+    const postId = $(this).data("id");
+    const author = $(this).data("author");
+    openPostModalById(postId, author);
   });
 
   document.addEventListener("click", (e) => {
