@@ -163,6 +163,14 @@ export function initNotificationEvents() {
     if (notifEl) {
       const forumId = notifEl.getAttribute("data-parentforumid");
       if (forumId) {
+        try {
+          const body = document.querySelector("body");
+          if (body && body.__x && body.__x.$data) {
+            body.__x.$data.showNotifications = false;
+          }
+        } catch {
+          // ignore if Alpine isn't available
+        }
         openPostModalById(forumId);
       }
     }
