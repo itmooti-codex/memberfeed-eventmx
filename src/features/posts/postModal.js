@@ -4,6 +4,23 @@ import { tmpl } from "../../ui/render.js";
 import { setupPlyr } from "../../utils/plyr.js";
 import { PROTOCOL, WS_ENDPOINT, KEEPALIVE_MS } from "../../config.js";
 
+let modalTree = [];
+
+function renderModal() {
+  const container = document.getElementById("modalForumRoot");
+  if (!container) return;
+  container.innerHTML = tmpl.render(modalTree, { inModal: true });
+  requestAnimationFrame(() => {
+    setupPlyr();
+    const btn = container.querySelector('.item[data-depth="0"] .btn-comment');
+    btn && btn.click();
+  });
+}
+
+export function rerenderModal() {
+  renderModal();
+}
+
 const MODAL_SKELETON = `
   <div id="modal-skeleton-loader" class="p-4">
     <div class="skeleton-item flex gap-4 mb-4">
@@ -132,7 +149,7 @@ export function initPostModalHandlers() {
         if (!data) return;
         const list = [];
         normalize(data, list);
-        const tree = buildTree([], list);
+        modalTree = buildTree([], list);
         // open comments and collapse replies by default
         function adjustCollapse(nodes) {
           nodes.forEach((n) => {
@@ -144,16 +161,10 @@ export function initPostModalHandlers() {
             if (Array.isArray(n.children)) adjustCollapse(n.children);
           });
         }
-        adjustCollapse(tree);
+        adjustCollapse(modalTree);
 
         if (container) {
-          container.innerHTML = tmpl.render(tree, { inModal: true });
-          requestAnimationFrame(() => {
-            setupPlyr();
-            // automatically show comment form for the post
-            const btn = container.querySelector('.item[data-depth="0"] .btn-comment');
-            btn && btn.click();
-          });
+          renderModal();
         }
       } else if (msg.type === "GQL_ERROR") {
         console.error("Subscription error", msg.payload);

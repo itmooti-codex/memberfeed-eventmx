@@ -5,6 +5,7 @@ import { moveCursorToEnd } from "../../utils/caret.js";
 import { tribute } from "../../utils/tribute.js";
 import { initFilePond } from "../../utils/filePond.js";
 import { applyFilterAndRender } from "./filters.js";
+import { rerenderModal } from "./postModal.js";
 
 export function initCommentHandlers() {
   $(document).on("click", ".btn-comment", function (e) {
@@ -97,7 +98,11 @@ export function initCommentHandlers() {
     if (node) {
       node.isCollapsed = !node.isCollapsed;
       state.collapsedState[node.uid] = node.isCollapsed;
+      const inModal = $(this).closest("#modalForumRoot").length > 0;
       applyFilterAndRender();
+      if (inModal) {
+        rerenderModal();
+      }
     }
   });
 }
