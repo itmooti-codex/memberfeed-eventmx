@@ -894,7 +894,8 @@
        {{/if}}
 
        </div>
-     {{if content !=''  }} <div class="content my-2">{{:content}}</div>{{/if}}
+     {{if content !=''  }} <div class="content">{{:content}}</div>{{/if}}
+        {{if fileContent}}
          <div class="file-preview {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
           {{if fileType === "Audio" }}
              <div class="h2 text-black mb-4">{{:fileContentName}}</div>
@@ -943,6 +944,7 @@
          {{/if}}
 
          </div>
+         {{/if}}
          <div class=" flex items-center gap-4">
   <div class="flex items-end justify-end gap-2 ">
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -998,7 +1000,7 @@
        {{/if}}
               {{!-- Toggle replies ribbon below comment --}}
                {{if depth === 1 && children.length}}
-                 <div class="reply-ribbon mt-2 cursor-pointer toggle-replies bg-[var(--grey-200)] rounded p-2 text-center" data-uid="{{:uid}}">
+                 <div class="reply-ribbon cursor-pointer toggle-replies" data-uid="{{:uid}}">
                    {{if isCollapsed}}
                      View {{:children.length}} replies
                    {{else}}
@@ -1007,7 +1009,7 @@
                  </div>
                {{/if}}
                {{if children.length && !isCollapsed}}
-                 <div data-reply="{{:uid}}" class="children visible my-4 {{:depth < 2 ? 'pl-8 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">
+                 <div data-reply="{{:uid}}" class="children visible my-4 {{:depth < 2 ? 'pl-6 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">
                    {{for children}}
                      {{include tmpl="#tmpl-item"/}}
                    {{/for}}
