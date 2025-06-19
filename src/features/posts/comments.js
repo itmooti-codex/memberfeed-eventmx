@@ -61,7 +61,12 @@ export function initCommentHandlers() {
   </div>
 
   `);
-    container.append($form);
+    const ribbon = container.find('.ribbon').first();
+    if (ribbon.length) {
+      $form.insertBefore(ribbon);
+    } else {
+      container.append($form);
+    }
     const inserted = container.find(".comment-form");
     if (inserted.length) {
       const editorEl = inserted.find(".editor")[0];

@@ -847,7 +847,7 @@
                    {{/if}}
                  </div>
                </div>
-               {{if canDelete}}
+               {{if canDelete && (!~inModal || depth > 0)}}
                   <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit" x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
              <!-- Toggle Button -->
              <div x-on:click="threeDotsForAdmin = ! threeDotsForAdmin" aria-haspopup="true" x-on:keydown.space.prevent="openedWithKeyboard = true" x-on:keydown.enter.prevent="openedWithKeyboard = true" class="cursor-pointer" x-on:keydown.down.prevent="openedWithKeyboard = true">
@@ -970,7 +970,9 @@
     </svg>
     <div class="p3">Like</div>
   </div>
+  {{if !~inModal}}
   <div class="openPostModal cursor-pointer" data-id="{{:id}}" data-author="{{:authorName}}" @click="modalForPostOpen=true">OpenPostModal</div>
+  {{/if}}
    {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
   <div class="flex btn-comment flex-1 items-center justify-center gap-2 cursor-pointer" data-uid="{{:uid}}">
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -989,14 +991,14 @@
   {{/if}}
 </div>
        {{/if}}
-               {{if depth === 0 && forumStatus !== 'Scheduled'}}
+               {{if depth === 0 && forumStatus !== 'Scheduled' && !~inModal}}
                <div class="ribbon w-full  py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
          {{:~totalComments(children)}} {{:~totalComments(children) === 1 ? 'Comment' : 'Comments'}}
        </div>
 
-               {{else depth === 1}}
+               {{else depth === 1 && isCollapsed}}
                <div class="ribbon w-full  py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
-                   {{:children.length}} {{:children.length === 1 ? 'Reply' : 'Replies'}}
+                   See {{:children.length}} more {{:children.length === 1 ? 'reply' : 'replies'}}
                </div>
                {{/if}}
                {{if children.length && !isCollapsed}}
