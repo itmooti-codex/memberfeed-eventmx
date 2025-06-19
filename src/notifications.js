@@ -16,7 +16,10 @@ export function refreshNotificationSubscription() {
   if (
     !state.notificationSocket ||
     state.notificationSocket.readyState !== WebSocket.OPEN
-  ) return;
+  ) {
+console.log("Notification socket is not open, cannot refresh subscription.");
+    return;
+  }
 
   state.notificationSocket.send(
     JSON.stringify({

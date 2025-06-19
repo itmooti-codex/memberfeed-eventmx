@@ -34,7 +34,7 @@ export const NOTIF_SUB_ID = "notification-subscription";
 export const KEEPALIVE_MS = 80000;
 export const MAX_BACKOFF = 30000;
 export const INACTIVITY_MS = 10 * 60 * 1000; 
-export let GLOBAL_AUTHOR_ID = 62;
+export let GLOBAL_AUTHOR_ID = '';
 export let GLOBAL_AUTHOR_DISPLAY_NAME = "Eduflow Pro";
 export let GLOBAL_PAGE_TAG ="Demo_Forum";
 export function setGlobals(authorId, pageTag, displayName) {
