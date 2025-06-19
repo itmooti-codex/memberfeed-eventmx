@@ -5,7 +5,7 @@ import { moveCursorToEnd } from "../../utils/caret.js";
 import { tribute } from "../../utils/tribute.js";
 import { initFilePond } from "../../utils/filePond.js";
 import { applyFilterAndRender } from "./filters.js";
-import { rerenderModal } from "./postModal.js";
+import { rerenderModal, getModalTree } from "./postModal.js";
 
 export function initCommentHandlers() {
   $(document).on("click", ".btn-comment", function (e) {
@@ -21,7 +21,13 @@ export function initCommentHandlers() {
     }
 
     $(".comment-form").remove();
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const source = inModal ? getModalTree() : state.postsStore;
+    const node = findNode(source, uid);
+    if (!node) {
+      console.error("Node not found for uid", uid);
+      return;
+    }
     const mentionHtml = `<span contenteditable="false" class="mention" data-mention-id="${node.authorId}">@${node.authorName}</span>&nbsp;`;
 
     const nextDepth = Math.min((node.depth || 0) + 1, 2);
@@ -92,13 +98,15 @@ export function initCommentHandlers() {
   });
 
   $(document).on("click", ".ribbon", function () {
-    // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const source = inModal ? getModalTree() : state.postsStore;
+    const node = findNode(source, uid);
     if (node) {
       node.isCollapsed = !node.isCollapsed;
-      state.collapsedState[node.uid] = node.isCollapsed;
-      const inModal = $(this).closest("#modalForumRoot").length > 0;
+      if (!inModal) {
+        state.collapsedState[node.uid] = node.isCollapsed;
+      }
       applyFilterAndRender();
       if (inModal) {
         rerenderModal();

@@ -21,6 +21,10 @@ export function rerenderModal() {
   renderModal();
 }
 
+export function getModalTree() {
+  return modalTree;
+}
+
 const MODAL_SKELETON = `
   <div id="modal-skeleton-loader" class="p-4">
     <div class="skeleton-item flex gap-4 mb-4">
