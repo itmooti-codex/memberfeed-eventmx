@@ -20,6 +20,7 @@ import { showToast } from "../../ui/toast.js";
 import { ensureCurrentUser } from "./user.js";
 import { processContent } from "./content.js";
 import { sendNotificationsAfterPost } from "./notifications.js";
+import { getModalTree } from "./postModal.js";
 
 export async function createForumToSubmit(
   depthOfForum,
@@ -51,7 +52,9 @@ export async function createForumToSubmit(
 
   let parentForumId;
   if (forumType !== "Post" && uidParam) {
-    const node = findNode(state.postsStore, uidParam);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const source = inModal ? getModalTree() : state.postsStore;
+    const node = findNode(source, uidParam);
     parentForumId = node ? node.id : null;
   }
   let publishedDatePayload = Date.now();
