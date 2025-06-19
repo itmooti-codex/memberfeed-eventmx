@@ -855,7 +855,7 @@
                </svg>
              </div>
          <!-- Dropdown Menu -->
-         <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false" x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 rounded left-0 bg-white p-2 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]" role="menu">
+         <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false" x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 rounded {{if !~inModal}}left-0{{else}}right-0{{/if}} bg-white p-2 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]" role="menu">
            {{if depth === 0}}
              {{if isAdmin}}
 
@@ -881,7 +881,7 @@
              {{/if}}
            {{else}}
            {{if canDelete}}
-             <div data-uid="{{:uid}}" class="btn-delete cursor-pointer px-4 py-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary)]" role="menuitem">
+             <div data-uid="{{:uid}}" class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">
                {{if depth === 1}}Delete this comment{{else}}Delete this reply{{/if}}
              </div>
            {{/if}}
