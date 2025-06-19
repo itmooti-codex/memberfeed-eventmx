@@ -441,3 +441,130 @@ mutation updateContact(
   }
 }
 `;
+export const GET_SINGLE_POST_SUBSCRIPTION=`
+subscription subscribeToForumPost(
+  $id: EduflowproForumPostID
+) {
+  subscribeToForumPost(
+    query: [{ where: { id: $id } }]
+    orderBy: [{ path: ["published_date"], type: desc }]
+  ) {
+    Author_ID: author_id
+    Formatted_Json: formatted_json
+    Date_Added: created_at
+    Published_Date: published_date
+    Disable_New_Comments: disable_new_comments
+    Featured_Forum: featured_forum
+    File_Content: file_content
+    File_Type: file_type
+    ID: id
+    Copy: copy
+    Forum_Status: forum_status
+    Unique_ID: unique_id
+    Depth: depth
+    Forum_Type: forum_type
+    Parent_Forum_ID: parent_forum_id
+    Author {
+      display_name
+      profile_image
+    }
+    Bookmarking_Contacts_Data {
+      id
+      bookmarked_forum_id
+      Bookmarking_Contact {
+        id
+        first_name
+        last_name
+      }
+    }
+    Forum_Reactors_Data {
+      id
+      reacted_to_forum_id
+      Forum_Reactor {
+        id
+        first_name
+        last_name
+      }
+    }
+    ForumPosts {
+      Author_ID: author_id
+      Formatted_Json: formatted_json
+      Date_Added: created_at
+      Published_Date: published_date
+      Disable_New_Comments: disable_new_comments
+      Featured_Forum: featured_forum
+      File_Content: file_content
+      File_Type: file_type
+      ID: id
+      Copy: copy
+      Forum_Status: forum_status
+      Unique_ID: unique_id
+      Depth: depth
+      Forum_Type: forum_type
+      Parent_Forum_ID: parent_forum_id
+      Author {
+        display_name
+        profile_image
+      }
+      Bookmarking_Contacts_Data {
+        id
+        bookmarked_forum_id
+        Bookmarking_Contact {
+          id
+          first_name
+          last_name
+        }
+      }
+      Forum_Reactors_Data {
+        id
+        reacted_to_forum_id
+        Forum_Reactor {
+          id
+          first_name
+          last_name
+        }
+      }
+      ForumPosts {
+        Author_ID: author_id
+        Formatted_Json: formatted_json
+        Date_Added: created_at
+        Published_Date: published_date
+        Disable_New_Comments: disable_new_comments
+        Featured_Forum: featured_forum
+        File_Content: file_content
+        File_Type: file_type
+        ID: id
+        Copy: copy
+        Forum_Status: forum_status
+        Unique_ID: unique_id
+        Depth: depth
+        Forum_Type: forum_type
+        Parent_Forum_ID: parent_forum_id
+        Author {
+          display_name
+          profile_image
+        }
+        Bookmarking_Contacts_Data {
+          id
+          bookmarked_forum_id
+          Bookmarking_Contact {
+            id
+            first_name
+            last_name
+          }
+        }
+        Forum_Reactors_Data {
+          id
+          reacted_to_forum_id
+          Forum_Reactor {
+            id
+            first_name
+            last_name
+          }
+        }
+      }
+    }
+  }
+}
+
+`;
