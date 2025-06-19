@@ -150,18 +150,14 @@ export function initPostModalHandlers() {
         const list = [];
         normalize(data, list);
         modalTree = buildTree([], list);
-        // open comments and collapse replies by default
-        function adjustCollapse(nodes) {
+        // open comments and replies by default
+        function expandAll(nodes) {
           nodes.forEach((n) => {
-            if (n.depth === 1) {
-              n.isCollapsed = false;
-            } else if (n.depth >= 2) {
-              n.isCollapsed = true;
-            }
-            if (Array.isArray(n.children)) adjustCollapse(n.children);
+            n.isCollapsed = false;
+            if (Array.isArray(n.children)) expandAll(n.children);
           });
         }
-        adjustCollapse(modalTree);
+        expandAll(modalTree);
 
         if (container) {
           renderModal();

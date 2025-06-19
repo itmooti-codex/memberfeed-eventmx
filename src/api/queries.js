@@ -99,10 +99,11 @@ export const SUBSCRIBE_FORUM_POSTS = `
               forum_status: "Published - Not flagged"
             }
           }
-          { orWhere: { forum_status: "Scheduled" } }
+        { orWhere: { forum_status: "Scheduled" } }
         ]
       }
         { andWhere: { forum_tag: $forum_tag } }
+        { andWhere: { forum_type: "Post" } }
       ]
       orderBy: [{ path: ["published_date"], type: desc }]
     ) {
