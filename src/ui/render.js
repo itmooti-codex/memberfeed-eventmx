@@ -25,12 +25,12 @@ export function buildTree(existingPosts, rawItems) {
     }
   });
 
-  function cloneState(uid) {
+  function cloneState(uid, defaultState = true) {
     if (state.collapsedState.hasOwnProperty(uid)) {
       return { isCollapsed: state.collapsedState[uid] };
     }
-    state.collapsedState[uid] = true;
-    return { isCollapsed: true };
+    state.collapsedState[uid] = defaultState;
+    return { isCollapsed: defaultState };
   }
 
   function convert(rawArr, depth = 0, inheritedDisable = false) {
@@ -38,7 +38,8 @@ export function buildTree(existingPosts, rawItems) {
     for (const raw of rawArr) {
       const nodeDisable = inheritedDisable || raw.disable_new_comments === true;
       const node = mapItem(raw, depth, nodeDisable);
-      Object.assign(node, cloneState(node.uid));
+      const defaultCollapse = depth === 0 ? false : true;
+      Object.assign(node, cloneState(node.uid, defaultCollapse));
       node.children = [];
       list.push(node);
       const nextDepth = depth === 0 ? 1 : 2;
