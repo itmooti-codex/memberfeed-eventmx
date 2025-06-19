@@ -133,9 +133,27 @@ export function initPostModalHandlers() {
         const list = [];
         normalize(data, list);
         const tree = buildTree([], list);
+        // open comments and collapse replies by default
+        function adjustCollapse(nodes) {
+          nodes.forEach((n) => {
+            if (n.depth === 1) {
+              n.isCollapsed = false;
+            } else if (n.depth >= 2) {
+              n.isCollapsed = true;
+            }
+            if (Array.isArray(n.children)) adjustCollapse(n.children);
+          });
+        }
+        adjustCollapse(tree);
+
         if (container) {
-          container.innerHTML = tmpl.render(tree);
-          requestAnimationFrame(setupPlyr);
+          container.innerHTML = tmpl.render(tree, { inModal: true });
+          requestAnimationFrame(() => {
+            setupPlyr();
+            // automatically show comment form for the post
+            const btn = container.querySelector('.item[data-depth="0"] .btn-comment');
+            btn && btn.click();
+          });
         }
       } else if (msg.type === "GQL_ERROR") {
         console.error("Subscription error", msg.payload);

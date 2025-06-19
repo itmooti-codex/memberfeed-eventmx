@@ -76,7 +76,7 @@ export function applyFilterAndRender() {
       }
     });
 
-    $container.html(tmpl.render(items));
+    $container.html(tmpl.render(items, { inModal: false }));
 
     for (const uid in frames) {
       const $item = $container.find(`[data-uid="${uid}"]`);
