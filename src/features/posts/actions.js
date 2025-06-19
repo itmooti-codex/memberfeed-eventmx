@@ -20,7 +20,7 @@ import { showToast } from "../../ui/toast.js";
 import { ensureCurrentUser } from "./user.js";
 import { processContent } from "./content.js";
 import { sendNotificationsAfterPost } from "./notifications.js";
-import { getModalTree } from "./postModal.js";
+import { getModalTree, rerenderModal } from "./postModal.js";
 
 export async function createForumToSubmit(
   depthOfForum,
@@ -34,8 +34,11 @@ export async function createForumToSubmit(
   forumType = forumType || computedType;
 
   await ensureCurrentUser();
-  const $btn = $(this);
   const formWrapper = document.querySelector(`.${formElementId}`);
+  const $btn = formWrapper
+    ? $(formWrapper).find('#submitForumPost')
+    : $(this);
+  const inModal = Boolean(formWrapper?.closest('#modalForumRoot'));
   const editor = $(`.${formElementId} .editor`);
   const htmlContent = editor.html().trim();
   if (!htmlContent && !pendingFile) {
@@ -52,7 +55,6 @@ export async function createForumToSubmit(
 
   let parentForumId;
   if (forumType !== "Post" && uidParam) {
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uidParam);
     if (node) {
@@ -142,7 +144,10 @@ export async function createForumToSubmit(
       const nodeDepth = Number(raw.depth ?? depthOfForum);
       let parentDisable = false;
       if (forumType !== "Post" && uidParam) {
-        const parentNode = findNode(state.postsStore, uidParam);
+        const parentNode = findNode(
+          inModal ? getModalTree() : state.postsStore,
+          uidParam,
+        );
         parentDisable = parentNode ? parentNode.commentsDisabled : false;
       }
       const newNode = mapItem(
@@ -156,6 +161,18 @@ export async function createForumToSubmit(
         state.postsStore.unshift(newNode);
         raw.ForumComments = [];
         state.rawItems.unshift(raw);
+        state.postsStore = buildTree(state.postsStore, state.rawItems);
+        applyFilterAndRender();
+      } else if (inModal) {
+        const modalTree = getModalTree();
+        const parent = findNode(modalTree, uidParam);
+        if (parent) {
+          parent.children.push(newNode);
+          parent.isCollapsed = false;
+        } else {
+          modalTree.push(newNode);
+        }
+        rerenderModal();
       } else {
         const parent = findNode(state.postsStore, uidParam);
         if (parent) {
@@ -166,9 +183,9 @@ export async function createForumToSubmit(
           state.postsStore.unshift(newNode);
         }
         state.rawItems.push(raw);
+        state.postsStore = buildTree(state.postsStore, state.rawItems);
+        applyFilterAndRender();
       }
-      state.postsStore = buildTree(state.postsStore, state.rawItems);
-      applyFilterAndRender();
       requestAnimationFrame(() => {
         document
           .querySelector(`[data-uid="${newNode.uid}"]`)
