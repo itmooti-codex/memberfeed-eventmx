@@ -32,6 +32,7 @@ export function initCommentHandlers() {
 
     const nextDepth = Math.min((node.depth || 0) + 1, 2);
     const nextType = nextDepth === 1 ? "Comment" : "Reply";
+    const placeholder = nextType === "Comment" ? "Write a comment..." : "Write a reply...";
     if(nextType === "Reply") {
       console.log("Replying to a comment");
       uid = $(this).closest('.commentContainer').attr('data-uid') || uid;
@@ -45,7 +46,7 @@ export function initCommentHandlers() {
       <div class="upload-section">
     <div class=" comment-form mt-2  w-full">
   <div class="flex w-full min-h-32 transtion-all border-[1px] hover:border-[var(--color-primary)] resize-y flex-col items-end justify-end gap-4 rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
-    <div contenteditable="true" id="editor" data-placeholder="Write a reply..." class="p2 editor flex-1 resize-y justify-start self-stretch outline-none">${mentionHtml}</div>
+      <div contenteditable="true" id="editor" data-placeholder="${placeholder}" class="p2 editor flex-1 resize-y justify-start self-stretch outline-none">${mentionHtml}</div>
     <div class="flex w-full items-center justify-between">
     ${toolbarDesign}
     <div class="flex items-center gap-2">
