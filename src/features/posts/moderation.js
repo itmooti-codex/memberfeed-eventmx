@@ -6,6 +6,7 @@ import {
 import { state } from "../../config.js";
 import { findNode } from "../../ui/render.js";
 import { applyFilterAndRender } from "./filters.js";
+import { getModalTree, rerenderModal } from "./postModal.js";
 import { removeRawById, findRawById } from "../../utils/posts.js";
 import { showToast } from "../../ui/toast.js";
 
@@ -29,8 +30,14 @@ export function initModerationHandlers() {
   $(document).on("click", ".btn-delete", function () {
     // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    pendingDelete = { uid };
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    pendingDelete = { uid, inModal };
+    const source = inModal ? getModalTree() : state.postsStore;
+    const node = findNode(source, uid) || findNode(state.postsStore, uid);
+    if (!node) {
+      console.error("Node not found for uid", uid);
+      return;
+    }
     const label = node.depth === 0 ? "post" : node.depth === 1 ? "comment" : "reply";
     deleteModalTitle.textContent = `Do you want to delete this ${label}?`;
     deleteModal.classList.remove("hidden");
@@ -43,30 +50,31 @@ export function initModerationHandlers() {
 
   $(document).on("click", "#delete-confirm", function () {
     if (!pendingDelete) return;
-    const uid = pendingDelete.uid;
+    const { uid, inModal } = pendingDelete;
     deleteModal.classList.add("hidden");
     const $item = $(`[data-uid="${uid}"]`).closest(".item");
     $item.addClass("state-disabled");
 
-    let node;
-    (function find(arr) {
-      for (const x of arr) {
-        if (x.uid === uid) {
-          node = x;
-          return;
-        }
-        find(x.children);
-        if (node) return;
-      }
-    })(state.postsStore);
+    let node =
+      findNode(state.postsStore, uid) || findNode(getModalTree(), uid);
+    if (!node) {
+      console.error("Node not found for uid", uid);
+      $item.removeClass("state-disabled");
+      pendingDelete = null;
+      return;
+    }
 
     fetchGraphQL(DELETE_FORUM_POST_MUTATION, { id: node.id })
       .then(() => {
         removeNode(state.postsStore, uid);
+        removeNode(getModalTree(), uid);
         removeRawById(state.rawItems, node.id);
         $(`[data-uid="${uid}"]`).closest(".item").remove();
         showToast("Deleted");
         state.ignoreNextSocketUpdate = true;
+        if (inModal) {
+          rerenderModal();
+        }
       })
       .catch((err) => {
         console.error("Delete failed", err);
@@ -80,9 +88,11 @@ export function initModerationHandlers() {
 
   // FEATURE
   $(document).on("click", ".btn-feature", async function () {
-    // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const nodeMain = findNode(state.postsStore, uid);
+    const nodeModal = findNode(getModalTree(), uid);
+    const node = nodeMain || nodeModal;
     if (!node) return;
     $(this).addClass("state-disabled");
     try {
@@ -90,10 +100,12 @@ export function initModerationHandlers() {
         id: node.id,
         payload: { featured_forum: true },
       });
-      node.isFeatured = true;
+      if (nodeMain) nodeMain.isFeatured = true;
+      if (nodeModal && nodeModal !== nodeMain) nodeModal.isFeatured = true;
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.featured_forum = true;
       applyFilterAndRender();
+      if (inModal) rerenderModal();
       showToast("Marked as featured");
     } catch (err) {
       console.error("Failed to mark featured", err);
@@ -104,9 +116,11 @@ export function initModerationHandlers() {
 
   // UNFEATURE
   $(document).on("click", ".btn-unfeature", async function () {
-    // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const nodeMain = findNode(state.postsStore, uid);
+    const nodeModal = findNode(getModalTree(), uid);
+    const node = nodeMain || nodeModal;
     if (!node) return;
     $(this).addClass("state-disabled");
     try {
@@ -114,10 +128,12 @@ export function initModerationHandlers() {
         id: node.id,
         payload: { featured_forum: false },
       });
-      node.isFeatured = false;
+      if (nodeMain) nodeMain.isFeatured = false;
+      if (nodeModal && nodeModal !== nodeMain) nodeModal.isFeatured = false;
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.featured_forum = false;
       applyFilterAndRender();
+      if (inModal) rerenderModal();
       showToast("Removed featured mark");
     } catch (err) {
       console.error("Failed to unmark featured", err);
@@ -128,9 +144,11 @@ export function initModerationHandlers() {
 
   // DISABLE COMMENTS
   $(document).on("click", ".btn-disable-comments", async function () {
-    // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const nodeMain = findNode(state.postsStore, uid);
+    const nodeModal = findNode(getModalTree(), uid);
+    const node = nodeMain || nodeModal;
     if (!node) return;
     $(this).addClass("state-disabled");
     const updateTree = (n, val) => {
@@ -146,8 +164,10 @@ export function initModerationHandlers() {
       });
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.disable_new_comments = true;
-      updateTree(node, true);
+      if (nodeMain) updateTree(nodeMain, true);
+      if (nodeModal && nodeModal !== nodeMain) updateTree(nodeModal, true);
       applyFilterAndRender();
+      if (inModal) rerenderModal();
       showToast("Comments disabled");
     } catch (err) {
       console.error("Failed to disable comments", err);
@@ -158,9 +178,11 @@ export function initModerationHandlers() {
 
   // ENABLE COMMENTS
   $(document).on("click", ".btn-enable-comments", async function () {
-    // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const nodeMain = findNode(state.postsStore, uid);
+    const nodeModal = findNode(getModalTree(), uid);
+    const node = nodeMain || nodeModal;
     if (!node) return;
     $(this).addClass("state-disabled");
     const updateTree = (n, val) => {
@@ -176,8 +198,10 @@ export function initModerationHandlers() {
       });
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.disable_new_comments = false;
-      updateTree(node, false);
+      if (nodeMain) updateTree(nodeMain, false);
+      if (nodeModal && nodeModal !== nodeMain) updateTree(nodeModal, false);
       applyFilterAndRender();
+      if (inModal) rerenderModal();
       showToast("Comments enabled");
     } catch (err) {
       console.error("Failed to enable comments", err);
