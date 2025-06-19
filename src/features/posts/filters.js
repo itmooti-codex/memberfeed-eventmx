@@ -11,7 +11,7 @@ export function applyFilterAndRender() {
     skeleton?.classList.add('hidden');
   }
   requestAnimationFrame(setupPlyr);
-  let items = state.postsStore;
+  let items = state.postsStore.filter((p) => p.depth === 0);
   switch (state.currentFilter) {
     case "Featured":
       items = items.filter((p) => p.isFeatured);
