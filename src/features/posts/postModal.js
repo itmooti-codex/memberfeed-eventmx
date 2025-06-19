@@ -5,22 +5,17 @@ import { setupPlyr } from "../../utils/plyr.js";
 import { PROTOCOL, WS_ENDPOINT, KEEPALIVE_MS } from "../../config.js";
 
 let modalTree = [];
-let firstRender = true;
-function renderModal(openComment = false) {
+function renderModal() {
   const container = document.getElementById("modalForumRoot");
   if (!container) return;
   container.innerHTML = tmpl.render(modalTree, { inModal: true });
   requestAnimationFrame(() => {
     setupPlyr();
-    if (openComment) {
-      const btn = container.querySelector('.item[data-depth="0"] .btn-comment');
-      btn && btn.click();
-    }
   });
 }
 
 export function rerenderModal() {
-  renderModal(false);
+  renderModal();
 }
 
 export function getModalTree() {
@@ -116,7 +111,6 @@ export function initPostModalHandlers() {
     }
 
     closeModalSocket();
-    firstRender = true;
     modalSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
 
     modalSocket.addEventListener("open", () => {
@@ -156,11 +150,10 @@ export function initPostModalHandlers() {
         const list = [];
         normalize(data, list);
         modalTree = buildTree([], list);
-        // replies remain collapsed; only main comment form opens initially
+        // replies remain collapsed; comment forms remain closed by default
 
         if (container) {
-          renderModal(firstRender);
-          firstRender = false;
+          renderModal();
         }
       } else if (msg.type === "GQL_ERROR") {
         console.error("Subscription error", msg.payload);
