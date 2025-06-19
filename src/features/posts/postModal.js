@@ -1,8 +1,8 @@
-import { fetchGraphQL } from "../../api/fetch.js";
 import { GET_SINGLE_POST_SUBSCRIPTION } from "../../api/queries.js";
 import { buildTree } from "../../ui/render.js";
 import { tmpl } from "../../ui/render.js";
 import { setupPlyr } from "../../utils/plyr.js";
+import { PROTOCOL, WS_ENDPOINT, KEEPALIVE_MS } from "../../config.js";
 
 function normalize(node, list) {
   const {
@@ -51,27 +51,96 @@ function normalize(node, list) {
   }
 }
 
+const POST_MODAL_SUB_ID = "post-modal-subscription";
+let modalSocket = null;
+let keepAliveTimer = null;
+
+function closeModalSocket() {
+  if (modalSocket && modalSocket.readyState === WebSocket.OPEN) {
+    modalSocket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
+    modalSocket.close();
+  }
+  clearInterval(keepAliveTimer);
+  keepAliveTimer = null;
+  modalSocket = null;
+}
+
 export function initPostModalHandlers() {
-  $(document).on("click", ".openPostModal", async function () {
+  $(document).on("click", ".openPostModal", function () {
     const postId = $(this).data("id");
     if (!postId) return;
     const container = document.getElementById("modalForumRoot");
     if (container) {
       container.innerHTML = "";
     }
-    try {
-      const res = await fetchGraphQL(GET_SINGLE_POST_SUBSCRIPTION, { id: postId });
-      const data = res?.data?.subscribeToForumPost;
-      if (!data) return;
-      const list = [];
-      normalize(data, list);
-      const tree = buildTree([], list);
-      if (container) {
-        container.innerHTML = tmpl.render(tree);
-        requestAnimationFrame(setupPlyr);
+
+    closeModalSocket();
+
+    modalSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
+
+    modalSocket.addEventListener("open", () => {
+      modalSocket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
+      keepAliveTimer = setInterval(() => {
+        modalSocket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
+      }, KEEPALIVE_MS);
+    });
+
+    modalSocket.addEventListener("message", ({ data }) => {
+      let msg;
+      try {
+        msg = JSON.parse(data);
+      } catch {
+        console.error("Invalid JSON", data);
+        return;
       }
-    } catch (err) {
-      console.error("Failed to load post", err);
+
+      if (msg.type === "CONNECTION_ACK") {
+        modalSocket.send(
+          JSON.stringify({
+            id: POST_MODAL_SUB_ID,
+            type: "GQL_START",
+            payload: {
+              query: GET_SINGLE_POST_SUBSCRIPTION,
+              variables: { id: postId },
+            },
+          })
+        );
+      } else if (
+        msg.type === "GQL_DATA" &&
+        msg.id === POST_MODAL_SUB_ID &&
+        msg.payload?.data
+      ) {
+        const data = msg.payload.data.subscribeToForumPost;
+        if (!data) return;
+        const list = [];
+        normalize(data, list);
+        const tree = buildTree([], list);
+        if (container) {
+          container.innerHTML = tmpl.render(tree);
+          requestAnimationFrame(setupPlyr);
+        }
+      } else if (msg.type === "GQL_ERROR") {
+        console.error("Subscription error", msg.payload);
+      } else if (msg.type === "GQL_COMPLETE") {
+        closeModalSocket();
+      }
+    });
+
+    modalSocket.addEventListener("error", (e) => {
+      console.error("Post modal WebSocket error", e);
+      closeModalSocket();
+    });
+
+    modalSocket.addEventListener("close", () => {
+      clearInterval(keepAliveTimer);
+      keepAliveTimer = null;
+      modalSocket = null;
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest('[x-on\\:click="modalForPostOpen = false"]')) {
+      closeModalSocket();
     }
   });
 }
