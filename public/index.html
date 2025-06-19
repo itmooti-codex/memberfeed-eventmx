@@ -53,7 +53,7 @@
     <div x-show="modalForPostOpen"
       x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
       x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100"
-      class="customPickerModal rounded-radius flex w-[855px] flex-col gap-4 overflow-hidden rounded bg-white p-4">
+      class="customPickerModal rounded-radius flex w-[855px] max-h-[80vh] overflow-y-auto flex-col gap-4 overflow-hidden rounded bg-white p-4">
       <!-- Dialog Header -->
       <div class="bg-surface-alt/60 dark:bg-surface-dark/20 flex items-center justify-between">
         <div id="defaultModalTitle" class="h2 text-black">Author Name</div>
@@ -994,7 +994,7 @@
          {{:~totalComments(children)}} {{:~totalComments(children) === 1 ? 'Comment' : 'Comments'}}
        </div>
 
-               {{else depth === 1}}
+               {{if depth === 1}}
                <div class="ribbon w-full  py-2 bg-[#e9ebee] text-center cursor-pointer text-sm hover:bg-[#007bff] hover:text-white" data-uid="{{:uid}}">
                    {{:children.length}} {{:children.length === 1 ? 'Reply' : 'Replies'}}
                </div>
