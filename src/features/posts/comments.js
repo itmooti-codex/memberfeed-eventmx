@@ -61,7 +61,6 @@ export function initCommentHandlers() {
         tribute.attach(editorEl);
       }
       container.find(".children").addClass("visible");
-      initFilePond();
       requestAnimationFrame(() => {
         inserted[0].scrollIntoView({ behavior: "smooth", block: "center" });
         if (editorEl) {
@@ -69,6 +68,7 @@ export function initCommentHandlers() {
         }
       });
     }
+    initFilePond();
   });
 
   $(document).on("click", function (e) {
