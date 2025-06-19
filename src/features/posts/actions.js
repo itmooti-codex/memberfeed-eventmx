@@ -58,8 +58,9 @@ export async function createForumToSubmit(
     if (node) {
       parentForumId = node.id;
     } else {
-      const container = $(this).closest('.item');
-      parentForumId = Number(container.data('id')) || null;
+      console.log("Parent node not found, trying to find closest item");
+      const elemetnt = document.querySelector(`.commentContainer_${uidParam}`);
+      parentForumId = elemetnt ? elemetnt.getAttribute("data-id") : null;
     }
   }
   let publishedDatePayload = Date.now();

@@ -816,7 +816,7 @@
            {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
              <div
              
-               class="item rounded bg-white flex flex-col gap-[14px] p-4 relative {{if depth === 1}} commentContainer {{/if}}"
+               class="item rounded bg-white flex flex-col gap-[14px] p-4 relative {{if depth === 1}} commentContainer_{{:uid}} {{/if}}"
                data-uid="{{:uid}}"
                data-id="{{:id}}"
                data-depth="{{:depth}}"
