@@ -3,6 +3,7 @@ import { initReactionHandlers } from './reactions.js';
 import { initModerationHandlers } from './moderation.js';
 import { initFilterHandlers, applyFilterAndRender } from './filters.js';
 import { initPreviewHandlers } from './preview.js';
+import { initPostModalHandlers } from './postModal.js';
 
 export function initPosts() {
   initCommentHandlers();
@@ -10,6 +11,7 @@ export function initPosts() {
   initModerationHandlers();
   initFilterHandlers();
   initPreviewHandlers();
+  initPostModalHandlers();
 }
 
 export { applyFilterAndRender };

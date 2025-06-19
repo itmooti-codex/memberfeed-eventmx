@@ -66,9 +66,7 @@
           </svg>
         </div>
       </div>
-      <!-- Dialog Body -->
-      <div class="flex flex-col gap-1">
-        <div>Content</div>
+      <div id="modalForumRoot" class="flex flex-col gap-1"></div>
       </div>
       <!-- Dialog Footer -->
 
@@ -972,7 +970,7 @@
     </svg>
     <div class="p3">Like</div>
   </div>
-  <div @click="modalForPostOpen=true">OpenPostModal</div>
+  <div class="openPostModal cursor-pointer" data-id="{{:id}}" @click="modalForPostOpen=true">OpenPostModal</div>
    {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
   <div class="flex btn-comment flex-1 items-center justify-center gap-2 cursor-pointer" data-uid="{{:uid}}">
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
