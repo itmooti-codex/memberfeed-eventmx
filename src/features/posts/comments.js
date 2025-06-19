@@ -8,7 +8,8 @@ import { applyFilterAndRender } from "./filters.js";
 import { rerenderModal, getModalTree } from "./postModal.js";
 
 export function initCommentHandlers() {
-  $(document).on("click", ".btn-comment", function (e) {
+  $(document).off("click.btnComment");
+  $(document).on("click.btnComment", ".btn-comment", function (e) {
     e.stopPropagation();
     // const uid = $(this).data("uid");
     let uid = $(this).attr("data-uid");
@@ -93,7 +94,8 @@ export function initCommentHandlers() {
   });
 
   // Toggle visibility of replies
-  $(document).on("click", ".toggle-replies", function (e) {
+  $(document).off("click.toggleReplies");
+  $(document).on("click.toggleReplies", ".toggle-replies", function (e) {
     e.stopPropagation();
     const uid = $(this).data("uid");
     const inModal = $(this).closest("#modalForumRoot").length > 0;
@@ -113,7 +115,8 @@ export function initCommentHandlers() {
     }
   });
 
-  $(document).on("click", function (e) {
+  $(document).off("click.hideUploadMenu");
+  $(document).on("click.hideUploadMenu", function (e) {
     if (!$(e.target).closest(".comment-form, #post-creation-form").length) {
       $("#upload-menu").hide();
     }
