@@ -996,7 +996,16 @@
   {{/if}}
 </div>
        {{/if}}
-              {{!-- Ribbon removed; replies remain collapsed by default --}}
+              {{!-- Toggle replies ribbon below comment --}}
+               {{if depth === 1 && children.length}}
+                 <div class="reply-ribbon mt-2 cursor-pointer toggle-replies bg-[var(--grey-200)] rounded p-2 text-center" data-uid="{{:uid}}">
+                   {{if isCollapsed}}
+                     View {{:children.length}} replies
+                   {{else}}
+                     Hide replies
+                   {{/if}}
+                 </div>
+               {{/if}}
                {{if children.length && !isCollapsed}}
                  <div data-reply="{{:uid}}" class="children visible my-4 {{:depth < 2 ? 'pl-8 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">
                    {{for children}}

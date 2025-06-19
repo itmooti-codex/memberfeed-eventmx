@@ -156,14 +156,7 @@ export function initPostModalHandlers() {
         const list = [];
         normalize(data, list);
         modalTree = buildTree([], list);
-        // open comments and replies by default
-        function expandAll(nodes) {
-          nodes.forEach((n) => {
-            n.isCollapsed = false;
-            if (Array.isArray(n.children)) expandAll(n.children);
-          });
-        }
-        expandAll(modalTree);
+        // replies remain collapsed; only main comment form opens initially
 
         if (container) {
           renderModal(firstRender);
