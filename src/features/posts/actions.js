@@ -55,7 +55,12 @@ export async function createForumToSubmit(
     const inModal = $(this).closest("#modalForumRoot").length > 0;
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uidParam);
-    parentForumId = node ? node.id : null;
+    if (node) {
+      parentForumId = node.id;
+    } else {
+      const container = $(this).closest('.item');
+      parentForumId = Number(container.data('id')) || null;
+    }
   }
   let publishedDatePayload = Date.now();
   let forumStatusForPayload = "Published - Not flagged";
