@@ -7,6 +7,7 @@ import {
 } from "../../api/queries.js";
 import { state, GLOBAL_AUTHOR_ID } from "../../config.js";
 import { findNode } from "../../ui/render.js";
+import { getModalTree } from "./postModal.js";
 import { findRawById } from "../../utils/posts.js";
 import { safeArray } from "../../utils/formatter.js";
 import { showToast } from "../../ui/toast.js";
@@ -16,7 +17,13 @@ export function initReactionHandlers() {
   $(document).on("click", ".btn-like", async function () {
     // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const source = inModal ? getModalTree() : state.postsStore;
+    const node = findNode(source, uid);
+    if (!node) {
+      console.error("Node not found for uid", uid);
+      return;
+    }
     $(this).addClass("state-disabled");
     let toastMsg = "";
 
@@ -71,7 +78,13 @@ export function initReactionHandlers() {
   $(document).on("click", ".btn-bookmark", async function () {
     // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    const node = findNode(state.postsStore, uid);
+    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const source = inModal ? getModalTree() : state.postsStore;
+    const node = findNode(source, uid);
+    if (!node) {
+      console.error("Node not found for uid", uid);
+      return;
+    }
     $(this).addClass("state-disabled");
     let toastMsg = "";
 
