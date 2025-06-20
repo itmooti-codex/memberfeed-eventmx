@@ -493,9 +493,7 @@ button:not(.file-preview button):hover {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  width: 2px;
-  background-color: black;
-  height: 100px;
-  /* To be dynamically updated */
+  pointer-events: none;
+  /* Line styles applied dynamically */
 }
 /* Dropdown UI */
