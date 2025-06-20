@@ -22,6 +22,22 @@ import { processContent } from "./content.js";
 import { sendNotificationsAfterPost } from "./notifications.js";
 import { getModalTree, rerenderModal } from "./postModal.js";
 
+function getImageOrientation(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        resolve(img.width >= img.height ? "landscape" : "portrait");
+      };
+      img.onerror = () => resolve("");
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve("");
+    reader.readAsDataURL(file);
+  });
+}
+
 export async function createForumToSubmit(
   depthOfForum,
   forumType,
@@ -124,6 +140,12 @@ export async function createForumToSubmit(
     fileData.type = fileData.type || pendingFile.type;
     finalPayload.file_content = JSON.stringify(fileData);
     finalPayload.file_type = fileTypeCheck;
+    finalPayload.file_name = pendingFile.name;
+    finalPayload.file_size = pendingFile.size;
+    finalPayload.file_link = JSON.stringify({ link: fileData.s3_id });
+    if (fileTypeCheck === "Image") {
+      finalPayload.image_orientation = await getImageOrientation(pendingFile);
+    }
   }
 
   try {
