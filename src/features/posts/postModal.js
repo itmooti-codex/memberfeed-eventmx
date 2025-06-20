@@ -1,6 +1,6 @@
 import { GET_SINGLE_POST_SUBSCRIPTION } from "../../api/queries.js";
 import { buildTree } from "../../ui/render.js";
-import { tmpl } from "../../ui/render.js";
+import { renderItems } from "../../ui/render.js";
 import { setupPlyr } from "../../utils/plyr.js";
 import { PROTOCOL, WS_ENDPOINT, KEEPALIVE_MS } from "../../config.js";
 
@@ -8,7 +8,7 @@ let modalTree = [];
 function renderModal() {
   const container = document.getElementById("modalForumRoot");
   if (!container) return;
-  container.innerHTML = tmpl.render(modalTree, { inModal: true });
+  container.innerHTML = renderItems(modalTree, { inModal: true });
   requestAnimationFrame(() => {
     setupPlyr();
   });
