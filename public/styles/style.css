@@ -492,7 +492,6 @@ button:not(.file-preview button):hover {
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
   pointer-events: none;
   /* Line styles applied dynamically */
 }

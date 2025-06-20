@@ -168,17 +168,16 @@ window.updateNotificationPreferences = updateNotificationPreferences;
 function updateLines() {
   const comments = document.querySelectorAll('.mainComment');
   comments.forEach(comment => {
-    const ribbon = comment.nextElementSibling;
+    const container = comment.closest('.commentContainer');
+    const ribbon = container?.querySelector('.ribbonForOpeningReplies');
     if (ribbon && ribbon.classList.contains('ribbonForOpeningReplies')) {
       const commentRect = comment.getBoundingClientRect();
       const ribbonRect = ribbon.getBoundingClientRect();
       const verticalDistance =
         ribbonRect.top + ribbonRect.height / 2 - commentRect.bottom;
-      const horizontalDistance =
-        ribbonRect.left - (commentRect.left + commentRect.width / 2);
+
 
       comment.style.setProperty('--line-height', `${verticalDistance}px`);
-      comment.style.setProperty('--line-horizontal', `${horizontalDistance}px`);
       comment.classList.add('line-ready');
     }
   });
@@ -188,10 +187,11 @@ const style = document.createElement('style');
 style.textContent = `
     .mainComment.line-ready::after {
         height: var(--line-height);
-        width: var(--line-horizontal);
-        border-left: 2px solid black;
-        border-bottom: 2px solid black;
+        width:16px;
+        border-left: 1px solid var(--grey-200);
+        border-bottom: 1px solid var(--grey-200);
         box-sizing: border-box;
+        border-radius: 0 0 0 12px;
     }
 `;
 document.head.appendChild(style);
