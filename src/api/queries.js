@@ -123,6 +123,10 @@ export const SUBSCRIBE_FORUM_POSTS = `
       featured_forum
       file_content
       file_type
+      file_name
+      file_link
+      file_size
+      image_orientation
       id
       copy
       forum_status
@@ -462,6 +466,10 @@ subscription subscribeToForumPost(
     Featured_Forum: featured_forum
     File_Content: file_content
     File_Type: file_type
+    file_name
+    file_link
+    file_size
+    image_orientation
     ID: id
     Copy: copy
     Forum_Status: forum_status
@@ -500,6 +508,10 @@ subscription subscribeToForumPost(
       Featured_Forum: featured_forum
       File_Content: file_content
       File_Type: file_type
+      file_name
+      file_link
+      file_size
+      image_orientation
       ID: id
       Copy: copy
       Forum_Status: forum_status
@@ -538,6 +550,10 @@ subscription subscribeToForumPost(
         Featured_Forum: featured_forum
         File_Content: file_content
         File_Type: file_type
+        file_name
+        file_link
+        file_size
+        image_orientation
         ID: id
         Copy: copy
         Forum_Status: forum_status
