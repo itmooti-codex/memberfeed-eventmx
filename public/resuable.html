@@ -1,11 +1,10 @@
-{{if (forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus
-=== 'Scheduled' && isAdmin))}}
 <div class="item  {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded p-4'}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
     data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-forumStatus="{{:forumStatus}}">
-
     <div class="flex items-start justify-between">
         <div class="author flex items-center mb-2">
-
+            <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]" src="{{:authorImage}}"
+                alt="{{:authorName}}"
+                onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';">
             <div class="info flex items-start gap-2">
                 <div class="flex flex-col items-start">
                     <span class="name font-bold">{{:authorName}}</span>
@@ -120,7 +119,7 @@
         {{/if}}
         {{if depth === 0 && fileContent}}
 
-        {{if fileType === "Image"}}
+        {{if fileType === "Image" && !~inModal}}
         <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
         {{else fileType === "Audio"}}
         <audio class="js-player" controls>
@@ -132,7 +131,7 @@
             <source src="{{:fileContent}}" type="video/mp4" />
             Your browser does not support video.
         </video>
-        {{else}}
+        {{else fileType === "File"}}
         <a href="{{:fileContent}}"
             class="flex w-full flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
             <div class="inline-flex items-center justify-start gap-2 self-stretch rounded-xl">
@@ -257,7 +256,21 @@
         {{/if}}
     </div>
     {{/if}}
-
+    {{!-- Toggle replies ribbon below comment --}}
+    {{if depth === 1 && children.length}}
+    <div class="reply-ribbon cursor-pointer toggle-replies" data-uid="{{:uid}}">
+        {{if isCollapsed}}
+        See {{:children.length}} more replies
+        {{else}}
+        Collapse replies
+        {{/if}}
+    </div>
+    {{/if}}
+    {{if children.length && !isCollapsed}}
+    <div data-reply="{{:uid}}" class="children visible my-4 flex flex-col gap-3">
+        {{for children}}
+        {{include tmpl="#tmpl-comment"/}}
+        {{/for}}
+    </div>
+    {{/if}}
 </div>
-</div>
-{{/if}}

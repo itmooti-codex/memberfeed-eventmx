@@ -23,7 +23,7 @@ export function getModalTree() {
 }
 
 const MODAL_SKELETON = `
-  <div id="modal-skeleton-loader" class="p-4">
+  <div id="modal-skeleton-loader" class="p-4 w-[855px]">
     <div class="skeleton-item flex gap-4 mb-4">
       <div class="skeleton-avatar"></div>
       <div class="flex-1 flex flex-col gap-2">
