@@ -367,6 +367,9 @@ button:not(.file-preview button):hover {
   color: var(--color-primary);
   text-decoration: underline;
 }
+.editor{
+  font-size: 16px !important;
+}
 
 /* Skeleton loader styles */
 .skeleton-item {
