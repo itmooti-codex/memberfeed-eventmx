@@ -476,7 +476,6 @@ button:not(.file-preview button):hover {
 .reply-ribbon {
   margin-left: 12px;
   color: var(--color-primary);
-  font-size: 0.875rem;
 }
 
 .commentContainer.has-replies.is-collapsed .reply-ribbon {

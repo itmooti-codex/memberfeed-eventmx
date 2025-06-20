@@ -1140,14 +1140,14 @@ data-uid="{{:uid}}"
                                 {{include tmpl="#tmpl-comment"/}}
                               {{/for}}
                               {{if depth === 1 && isCollapsed}}
-                                <div class="reply-ribbon cursor-pointer toggle-replies" data-uid="{{:uid}}">
+                                <div class="reply-ribbon cursor-pointer h3 toggle-replies" data-uid="{{:uid}}">
                                   See {{:children.length}} more replies
                                 </div>
                               {{/if}}
                         </div>
                   {{/if}}
                   {{if depth === 1 && children.length}}
-                    <div class="reply-ribbon cursor-pointer toggle-replies {{if depth === 1}}ribbonForOpeningReplies{{/if}}"  data-uid="{{:uid}}">
+                    <div class="reply-ribbon cursor-pointer h3 toggle-replies {{if depth === 1}}ribbonForOpeningReplies{{/if}}"  data-uid="{{:uid}}">
                           {{if isCollapsed}}
                             See {{:children.length}} more replies
                           {{else}}
