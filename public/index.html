@@ -671,7 +671,7 @@
     </div>
   </div>
 
-  <div id="post-filters" class=" post-filters w-full bg-transparent p-[24px_0_16px_0] flex items-center">
+  <div id="post-filters" class=" post-filters max-[702px]:flex-col max-[702px]:items-start gap-2 w-full bg-transparent p-[24px_0_16px_0] flex items-center">
     <div class="flex-1 search-wrapper w-full  relative">
       <input type="text" id="searchPost" class="py-2 pl-8 rounded text-sm w-full"
         placeholder="Search by author or text…" autocomplete="off" />
@@ -814,7 +814,7 @@
     </div>
 {{/if}}
 {{/if}}
-<div class="{{if fileType === 'Image' && ~inModal}} w-full flex-[2] min-[702px]:h-[90vh] max-[702px]:h-full !rounded-none overflow-y-auto {{/if}}item {{if fileType != "Image" && ~inModal}} min-[702px]:w-[855px] max-[700px]:w-full min-[702px]:max-h-[80vh] max-[702px]:h-screen{{/if}} {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded p-4'}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
+<div class="{{if fileType === 'Image' && ~inModal}} w-full flex-[2] min-[702px]:h-[90vh] max-[702px]:h-full !rounded-none overflow-y-auto {{/if}}item {{if fileType != "Image" && ~inModal}} overflow-auto min-[702px]:w-[855px] max-[700px]:w-full min-[702px]:max-h-[80vh] max-[702px]:h-screen{{/if}} {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded p-4'}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
     data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-forumStatus="{{:forumStatus}}">
     <div class="flex items-start justify-between w-full">
         <div class="author flex items-center mb-2">
@@ -931,7 +931,7 @@
     {{if fileContent || fileContentComment}}
     <div class="file-preview {{if fileType === " Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
         {{if fileType === "Audio" && depth === 0}}
-        <div class="h2 text-black mb-4">{{:fileContentName}}</div>
+        <div class="h2 text-black mb-4 max-[702px]:line-clamp-1">{{:fileContentName}}</div>
         {{/if}}
         {{if depth === 0 && fileContent}}
 
@@ -958,8 +958,8 @@
                             fill="#0963D8" />
                     </svg>
                     <div class="inline-flex flex-col items-start justify-center gap-1">
-                        <div class="h3 justify-start text-center font-['Inter'] text-black">{{:fileContentName}}</div>
-                        <div class="p3 justify-start text-center font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}
+                        <div class="h3 justify-start  font-['Inter'] text-black max-[702px]:line-clamp-1">{{:fileContentName}}</div>
+                        <div class="p3 justify-start  font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}
                         </div>
                     </div>
                 </div>
@@ -994,9 +994,9 @@
                             fill="#0963D8" />
                     </svg>
                     <div class="inline-flex flex-col items-start justify-center gap-1">
-                        <div class="h3 justify-start text-center font-['Inter'] text-black">{{:fileContentCommentName}}
+                        <div class="h3 justify-start  font-['Inter'] text-black  max-[702px]:line-clamp-1">{{:fileContentCommentName}}
                         </div>
-                        <div class="p3 justify-start text-center font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}
+                        <div class="p3 justify-start  font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}
                         </div>
                     </div>
                 </div>
@@ -1138,7 +1138,7 @@ data-uid="{{:uid}}"
                  {{if fileType === "Image"}}
                    <img src="{{:fileContentComment}}" style="width:211px;height:138px;object-fit:contain;" alt="preview" />
                  {{else fileType === "Audio"}}
-                 <label for="audio-player">{{:fileContentCommentName}}</label>
+                 <label for="audio-player " class="max-[702px]:line-clamp-1">{{:fileContentCommentName}}</label>
                    <audio class="js-player" controls>
                      <source src="{{:fileContentComment}}" type="audio/mpeg" />
                      Your browser does not support the audio tag.
@@ -1157,8 +1157,8 @@ data-uid="{{:uid}}"
                         <path d="M28.0316 9.85346L20.4931 2.315C20.3931 2.21502 20.2743 2.13575 20.1435 2.0817C20.0128 2.02765 19.8727 1.99989 19.7312 2H6.80814C6.23691 2 5.68907 2.22692 5.28514 2.63085C4.88122 3.03477 4.6543 3.58261 4.6543 4.15385V27.8462C4.6543 28.4174 4.88122 28.9652 5.28514 29.3692C5.68907 29.7731 6.23691 30 6.80814 30H26.1928C26.764 30 27.3118 29.7731 27.7158 29.3692C28.1197 28.9652 28.3466 28.4174 28.3466 27.8462V10.6154C28.3467 10.4739 28.319 10.3338 28.2649 10.2031C28.2109 10.0724 28.1316 9.95355 28.0316 9.85346ZM19.7312 20.3077H13.2697C12.9841 20.3077 12.7101 20.1942 12.5082 19.9923C12.3062 19.7903 12.1928 19.5164 12.1928 19.2308C12.1928 18.9452 12.3062 18.6712 12.5082 18.4693C12.7101 18.2673 12.9841 18.1538 13.2697 18.1538H19.7312C20.0168 18.1538 20.2908 18.2673 20.4927 18.4693C20.6947 18.6712 20.8081 18.9452 20.8081 19.2308C20.8081 19.5164 20.6947 19.7903 20.4927 19.9923C20.2908 20.1942 20.0168 20.3077 19.7312 20.3077ZM19.7312 10.6154V4.59942L25.7472 10.6154H19.7312Z" fill="#0963D8" />
                       </svg>
                       <div class="inline-flex flex-col items-start justify-center gap-1">
-                        <div class="h3 justify-start text-center font-['Inter'] text-black">{{:fileContentCommentName}}</div>
-                        <div class="p3 justify-start text-center font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}</div>
+                        <div class="h3 justify-start  font-['Inter'] text-black max-[702px]:line-clamp-1">{{:fileContentCommentName}}</div>
+                        <div class="p3 justify-start  font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}</div>
                       </div>
                     </div>
                   </div>
