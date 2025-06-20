@@ -482,5 +482,20 @@ button:not(.file-preview button):hover {
 .commentContainer.has-replies.is-collapsed .reply-ribbon {
   padding-left: 0;
 }
+.mainComment {
+  position: relative;
+  z-index: 1;
+}
 
+.mainComment::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background-color: black;
+  height: 100px;
+  /* To be dynamically updated */
+}
 /* Dropdown UI */

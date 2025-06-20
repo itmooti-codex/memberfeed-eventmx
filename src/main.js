@@ -165,3 +165,32 @@ export async function updateNotificationPreferences() {
   }
 }
 window.updateNotificationPreferences = updateNotificationPreferences;
+function updateLines() {
+  const comments = document.querySelectorAll('.mainComment');
+  comments.forEach(comment => {
+    const ribbon = comment.nextElementSibling;
+    if (ribbon && ribbon.classList.contains('ribbonForOpeningReplies')) {
+      const commentRect = comment.getBoundingClientRect();
+      const ribbonRect = ribbon.getBoundingClientRect();
+      const distance = ribbonRect.top - commentRect.bottom;
+
+      comment.style.setProperty('--line-height', `${distance}px`);
+      comment.classList.add('line-ready');
+    }
+  });
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    .mainComment.line-ready::after {
+        height: var(--line-height);
+    }
+`;
+document.head.appendChild(style);
+
+// Initial run
+updateLines();
+
+// Watch for DOM changes (dynamic rendering)
+const observer = new MutationObserver(() => updateLines());
+observer.observe(document.body, { childList: true, subtree: true });
