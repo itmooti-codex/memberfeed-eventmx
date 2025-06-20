@@ -16,6 +16,7 @@ import {
 } from "../uploads/handlers.js";
 import { processFileFields } from "../../utils/handleFile.js";
 import { applyFilterAndRender } from "./filters.js";
+import { mergeLists } from "../../utils/merge.js";
 import { showToast } from "../../ui/toast.js";
 import { ensureCurrentUser } from "./user.js";
 import { processContent } from "./content.js";
@@ -189,14 +190,15 @@ export async function createForumToSubmit(
       if (forumType === "Post") {
         state.postsStore.unshift(newNode);
         raw.ForumComments = [];
-        state.rawItems.unshift(raw);
+        state.rawItems = mergeLists(state.rawItems, [raw]);
         state.postsStore = buildTree(state.postsStore, state.rawItems);
         applyFilterAndRender();
       } else if (inModal) {
         const modalTree = getModalTree();
         const parent = findNode(modalTree, uidParam);
         if (parent) {
-          parent.children.push(newNode);
+          const exists = parent.children.find((c) => c.uid === newNode.uid);
+          if (!exists) parent.children.push(newNode);
           parent.isCollapsed = false;
         } else {
           modalTree.push(newNode);
@@ -205,13 +207,14 @@ export async function createForumToSubmit(
       } else {
         const parent = findNode(state.postsStore, uidParam);
         if (parent) {
-          parent.children.push(newNode);
+          const exists = parent.children.find((c) => c.uid === newNode.uid);
+          if (!exists) parent.children.push(newNode);
           parent.isCollapsed = false;
           state.collapsedState[parent.uid] = false;
         } else {
           state.postsStore.unshift(newNode);
         }
-        state.rawItems.push(raw);
+        state.rawItems = mergeLists(state.rawItems, [raw]);
         state.postsStore = buildTree(state.postsStore, state.rawItems);
         applyFilterAndRender();
       }
