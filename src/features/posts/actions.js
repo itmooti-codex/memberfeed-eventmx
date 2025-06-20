@@ -37,6 +37,13 @@ function getImageOrientation(file) {
     reader.readAsDataURL(file);
   });
 }
+function formatFileSize(bytes) {
+  const MB = 1024 * 1024;
+  if (bytes >= MB) {
+    return `${(bytes / MB).toFixed(2)}mb`;
+  }
+  return `${Math.ceil(bytes / 1024)}kb`;
+}
 
 export async function createForumToSubmit(
   depthOfForum,
@@ -141,7 +148,7 @@ export async function createForumToSubmit(
     finalPayload.file_content = JSON.stringify(fileData);
     finalPayload.file_type = fileTypeCheck;
     finalPayload.file_name = pendingFile.name;
-    finalPayload.file_size = pendingFile.size;
+    finalPayload.file_size = formatFileSize(pendingFile.size);
     finalPayload.file_link = JSON.stringify(fileData);
     if (fileTypeCheck === "Image") {
       finalPayload.image_orientation = await getImageOrientation(pendingFile);

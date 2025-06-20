@@ -55,10 +55,10 @@
       class="customPickerModal rounded-radius flex w-[855px] max-h-[80vh] overflow-y-auto flex-col gap-4 overflow-hidden rounded bg-white p-4">
       <!-- Dialog Header -->
       <div id="modalForumRoot" class="flex flex-col gap-1"></div>
-      </div>
-      <!-- Dialog Footer -->
-
     </div>
+    <!-- Dialog Footer -->
+
+  </div>
   </div>
 
   <div
@@ -438,7 +438,8 @@
     </div>
     <div class="h-0 self-stretch outline-1 outline-offset-[-0.50px] outline-zinc-300"></div>
     <div class="inline-flex items-center justify-start gap-4 self-stretch">
-      <div class="flex items-center justify-center gap-2 rounded bg-[var(--grey-300)] transition-all hover:bg-[var(--color-primary)] group px-3 py-2 cursor-pointer"
+      <div
+        class="flex items-center justify-center gap-2 rounded bg-[var(--grey-300)] transition-all hover:bg-[var(--color-primary)] group px-3 py-2 cursor-pointer"
         id="startRecordingOuterButton">
         <div data-property-1="filled" class="relative h-4 w-4 overflow-hidden">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -451,7 +452,8 @@
         <div class="justify-start text-center p3 group-hover:text-white transition-all">Start
           Recording</div>
       </div>
-      <div class="flex items-center justify-center gap-2 transition-all rounded bg-[var(--grey-300)] hover:bg-[var(--color-primary)] group px-3 py-2 cursor-pointer"
+      <div
+        class="flex items-center justify-center gap-2 transition-all rounded bg-[var(--grey-300)] hover:bg-[var(--color-primary)] group px-3 py-2 cursor-pointer"
         id="uploadFileOuterButton">
         <div class="relative h-4 w-4 overflow-hidden">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -911,15 +913,27 @@
                                 Your browser does not support video.
                               </video>
                             {{else}}
-                              <a href="{{:fileContent}}" target="_blank" class="line-clamp-1 cursor-pointer text-[var(--color-primary)] hover:underline">{{:fileContentName}}</a>
-                            {{/if}}
+                              <a href="{{:fileContent}}"class="flex w-full flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
+                                <div class="inline-flex items-center justify-start gap-2 self-stretch rounded-xl">
+                                  <div class="flex items-center justify-start gap-3">
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M28.0316 9.85346L20.4931 2.315C20.3931 2.21502 20.2743 2.13575 20.1435 2.0817C20.0128 2.02765 19.8727 1.99989 19.7312 2H6.80814C6.23691 2 5.68907 2.22692 5.28514 2.63085C4.88122 3.03477 4.6543 3.58261 4.6543 4.15385V27.8462C4.6543 28.4174 4.88122 28.9652 5.28514 29.3692C5.68907 29.7731 6.23691 30 6.80814 30H26.1928C26.764 30 27.3118 29.7731 27.7158 29.3692C28.1197 28.9652 28.3466 28.4174 28.3466 27.8462V10.6154C28.3467 10.4739 28.319 10.3338 28.2649 10.2031C28.2109 10.0724 28.1316 9.95355 28.0316 9.85346ZM19.7312 20.3077H13.2697C12.9841 20.3077 12.7101 20.1942 12.5082 19.9923C12.3062 19.7903 12.1928 19.5164 12.1928 19.2308C12.1928 18.9452 12.3062 18.6712 12.5082 18.4693C12.7101 18.2673 12.9841 18.1538 13.2697 18.1538H19.7312C20.0168 18.1538 20.2908 18.2673 20.4927 18.4693C20.6947 18.6712 20.8081 18.9452 20.8081 19.2308C20.8081 19.5164 20.6947 19.7903 20.4927 19.9923C20.2908 20.1942 20.0168 20.3077 19.7312 20.3077ZM19.7312 10.6154V4.59942L25.7472 10.6154H19.7312Z" fill="#0963D8" />
+                                    </svg>
+                                    <div class="inline-flex flex-col items-start justify-center gap-1">
+                                      <div class="h3 justify-start text-center font-['Inter'] text-black">{{:fileContentName}}</div>
+                                      <div class="p3 justify-start text-center font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </a>
+                         {{/if}}
                
            {{/if}}
            {{if depth > 0 && fileContentComment}}
                  {{if fileType === "Image"}}
-                   <img src="{{:fileContentComment}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
+                   <img src="{{:fileContentComment}}" style="width:211px;height:138px;object-fit:contain;" alt="preview" />
                  {{else fileType === "Audio"}}
-                 <label for="audio-player">Recording1.mp3</label>
+                 <label for="audio-player">{{:fileContentCommentName}}</label>
                    <audio class="js-player" controls>
                      <source src="{{:fileContentComment}}" type="audio/mpeg" />
                      Your browser does not support the audio tag.
@@ -931,8 +945,20 @@
                      Your browser does not support video.
                    </video>
                  {{else}}
-                   <div>{{:fileContentCommentName}}</div>
-                 {{/if}}
+                 <a href="{{:fileContentComment}}"class="flex w-full flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
+                  <div class="inline-flex items-center justify-start gap-2 self-stretch rounded-xl">
+                    <div class="flex items-center justify-start gap-3">
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M28.0316 9.85346L20.4931 2.315C20.3931 2.21502 20.2743 2.13575 20.1435 2.0817C20.0128 2.02765 19.8727 1.99989 19.7312 2H6.80814C6.23691 2 5.68907 2.22692 5.28514 2.63085C4.88122 3.03477 4.6543 3.58261 4.6543 4.15385V27.8462C4.6543 28.4174 4.88122 28.9652 5.28514 29.3692C5.68907 29.7731 6.23691 30 6.80814 30H26.1928C26.764 30 27.3118 29.7731 27.7158 29.3692C28.1197 28.9652 28.3466 28.4174 28.3466 27.8462V10.6154C28.3467 10.4739 28.319 10.3338 28.2649 10.2031C28.2109 10.0724 28.1316 9.95355 28.0316 9.85346ZM19.7312 20.3077H13.2697C12.9841 20.3077 12.7101 20.1942 12.5082 19.9923C12.3062 19.7903 12.1928 19.5164 12.1928 19.2308C12.1928 18.9452 12.3062 18.6712 12.5082 18.4693C12.7101 18.2673 12.9841 18.1538 13.2697 18.1538H19.7312C20.0168 18.1538 20.2908 18.2673 20.4927 18.4693C20.6947 18.6712 20.8081 18.9452 20.8081 19.2308C20.8081 19.5164 20.6947 19.7903 20.4927 19.9923C20.2908 20.1942 20.0168 20.3077 19.7312 20.3077ZM19.7312 10.6154V4.59942L25.7472 10.6154H19.7312Z" fill="#0963D8" />
+                      </svg>
+                      <div class="inline-flex flex-col items-start justify-center gap-1">
+                        <div class="h3 justify-start text-center font-['Inter'] text-black">{{:fileContentCommentName}}</div>
+                        <div class="p3 justify-start text-center font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+             {{/if}}
            {{/if}}
          </div>
        {{/if}}
