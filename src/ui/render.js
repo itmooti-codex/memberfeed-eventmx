@@ -135,4 +135,15 @@ export function findNode(arr, uid) {
   return null;
 }
 
-export const tmpl = $.templates("#tmpl-item");
+export const tmplPost = $.templates("#tmpl-post");
+export const tmplComment = $.templates("#tmpl-comment");
+
+export function renderItems(items, data) {
+  return items
+    .map((item) =>
+      item.depth === 0
+        ? tmplPost.render(item, data)
+        : tmplComment.render(item, data)
+    )
+    .join("");
+}

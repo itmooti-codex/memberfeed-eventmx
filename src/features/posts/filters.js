@@ -1,6 +1,6 @@
 import { state, searchInput, clearIcon, searchIcon, GLOBAL_AUTHOR_ID } from "../../config.js";
 import { downCevron } from "../../ui/emoji.js";
-import { tmpl } from "../../ui/render.js";
+import { renderItems } from "../../ui/render.js";
 import { setupPlyr } from "../../utils/plyr.js";
 export function applyFilterAndRender() {
   const skeleton = document.getElementById('skeleton-loader');
@@ -76,7 +76,7 @@ export function applyFilterAndRender() {
       }
     });
 
-    $container.html(tmpl.render(items, { inModal: false }));
+    $container.html(renderItems(items, { inModal: false }));
 
     for (const uid in frames) {
       const $item = $container.find(`[data-uid="${uid}"]`);
