@@ -44,8 +44,17 @@ export function initCommentHandlers() {
     }
 
     const $form = $(`
-      <div class="upload-section">
-    <div class=" comment-form mt-2  w-full">
+      <div class="upload-section flex items-start gap-2 mt-2">
+
+<div class="size-8 rounded-full  border border-zinc-300 ">
+    <img class=" size-full object-cover rounded-full" 
+     src="${node.authorImage}"
+      alt="${node.authorName}"
+                     onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';"
+    />
+  </div>
+
+    <div class=" comment-form   w-full">
   <div class="flex w-full min-h-32 transtion-all border-[1px] hover:border-[var(--color-primary)] resize-y flex-col items-end justify-end gap-4 rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
       <div contenteditable="true" id="editor" data-placeholder="${placeholder}" class="p2 editor flex-1 resize-y justify-start self-stretch outline-none">${mentionHtml}</div>
     <div class="flex w-full items-center justify-between">
