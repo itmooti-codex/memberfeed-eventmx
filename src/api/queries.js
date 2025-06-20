@@ -55,6 +55,10 @@ mutation createForumPost($payload: ForumPostCreateInput = null) {
     featured_forum
     file_content
     file_type
+    file_name
+    file_link
+    file_size
+    image_orientation
     copy
     forum_status
     depth
