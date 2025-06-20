@@ -1018,9 +1018,9 @@
                {{if depth === 1 && children.length}}
                  <div class="reply-ribbon cursor-pointer toggle-replies" data-uid="{{:uid}}">
                    {{if isCollapsed}}
-                     View {{:children.length}} replies
+                   See {{:children.length}} more replies
                    {{else}}
-                     Hide replies
+                    Collapse replies
                    {{/if}}
                  </div>
                {{/if}}
@@ -1037,7 +1037,7 @@
 
 
   <script id="tmpl-comment" type="text/x-jsrender">
-    <div class="item my-3
+    <div class="item {{if depth ===1}}mb-6{{else depth > 1}} mb-4 {{else}}{{/if}}
     {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
 data-uid="{{:uid}}"
                data-id="{{:id}}"
@@ -1045,8 +1045,8 @@ data-uid="{{:uid}}"
                data-forumStatus="{{:forumStatus}}">
       <div class=" flex w-full items-start gap-2"
 >
-  <div class="size-6 rounded-full">
-    <img class="commenterImage size-full rounded-full border border-zinc-300" 
+  <div class="size-6 rounded-full {{if depth===1}}mainComment{{/if}}">
+    <img class="commenterImage size-full rounded-full border border-zinc-300 " 
      src="{{:authorImage}}"
                      alt="{{:authorName}}"
                      onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';"
@@ -1117,7 +1117,6 @@ data-uid="{{:uid}}"
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10.5052 4.7251C10.4095 4.61661 10.2918 4.52973 10.1599 4.47023C10.028 4.41073 9.88493 4.37997 9.74023 4.38H7.36023V3.7C7.36023 3.24913 7.18113 2.81673 6.86232 2.49792C6.5435 2.17911 6.1111 2 5.66023 2C5.59707 1.99995 5.53514 2.01751 5.48139 2.05069C5.42764 2.08387 5.3842 2.13136 5.35593 2.18785L3.75028 5.4H1.92023C1.73989 5.4 1.56693 5.47164 1.4394 5.59917C1.31188 5.72669 1.24023 5.89965 1.24023 6.08V9.82C1.24023 10.0003 1.31188 10.1733 1.4394 10.3008C1.56693 10.4284 1.73989 10.5 1.92023 10.5H9.23023C9.47873 10.5001 9.71872 10.4095 9.90512 10.2451C10.0915 10.0808 10.2115 9.85405 10.2426 9.6075L10.7526 5.5275C10.7707 5.38386 10.758 5.23802 10.7153 5.09967C10.6727 4.96132 10.601 4.83363 10.5052 4.7251ZM1.92023 6.08H3.62023V9.82H1.92023V6.08Z" fill="#0963D8" />
               </svg>
-
               <div class="likerOnCommentCounter justify-start text-center font-['Inter'] text-xs leading-none font-normal text-stone-950">{{:upvotes}}</div>
             </div>
           </div>
@@ -1132,27 +1131,29 @@ data-uid="{{:uid}}"
 
     </div> -->
      {{!-- Toggle replies ribbon below comment --}}
-                  {{if depth === 1 && children.length}}
-                    <div class="reply-ribbon cursor-pointer toggle-replies" data-uid="{{:uid}}">
-                          {{if isCollapsed}}
-                            View {{:children.length}} replies
-                          {{else}}
-                            Collapse replies
-                          {{/if}}
-                    </div>
-                  {{/if}}
+                  
                   {{if children.length && !isCollapsed}}
-                        <div data-reply="{{:uid}}" class="children visible my-4 flex flex-col gap-3">
-                              {{if depth === 1 && isCollapsed}}
-                                <div class="reply-ribbon cursor-pointer toggle-replies" data-uid="{{:uid}}">
-                                  View {{:children.length}} replies
-                                </div>
-                              {{/if}}
+                        <div data-reply="{{:uid}}" class="children visible  flex flex-col gap-3">
+                              
                               {{!-- Render child comments --}}
                               {{for children}}
                                 {{include tmpl="#tmpl-comment"/}}
                               {{/for}}
+                              {{if depth === 1 && isCollapsed}}
+                                <div class="reply-ribbon cursor-pointer toggle-replies" data-uid="{{:uid}}">
+                                  See {{:children.length}} more replies
+                                </div>
+                              {{/if}}
                         </div>
+                  {{/if}}
+                  {{if depth === 1 && children.length}}
+                    <div class="reply-ribbon cursor-pointer toggle-replies {{if depth === 1}}ribbonForOpeningReplies{{/if}}"  data-uid="{{:uid}}">
+                          {{if isCollapsed}}
+                            See {{:children.length}} more replies
+                          {{else}}
+                            Collapse replies
+                          {{/if}}
+                    </div>
                   {{/if}}
   </div>
 
