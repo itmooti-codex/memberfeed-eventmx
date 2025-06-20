@@ -469,9 +469,9 @@ button:not(.file-preview button):hover {
 }
 
 /* Collapsed comment styling with ribbon */
-.commentContainer.has-replies.is-collapsed {
+/* .commentContainer.has-replies.is-collapsed {
   border-left: 1px solid var(--color-primary);
-}
+} */
 
 .reply-ribbon {
   margin-left: 12px;
