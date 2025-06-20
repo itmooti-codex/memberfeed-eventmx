@@ -142,7 +142,7 @@ export async function createForumToSubmit(
     finalPayload.file_type = fileTypeCheck;
     finalPayload.file_name = pendingFile.name;
     finalPayload.file_size = pendingFile.size;
-    finalPayload.file_link = JSON.stringify({ link: fileData.s3_id });
+    finalPayload.file_link = JSON.stringify(fileData);
     if (fileTypeCheck === "Image") {
       finalPayload.image_orientation = await getImageOrientation(pendingFile);
     }

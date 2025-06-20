@@ -82,7 +82,7 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     (b) => b.Bookmarking_Contact?.id === GLOBAL_AUTHOR_ID
   );
 
-  const linkData = raw.file_link || raw.file_content;
+  const linkData = raw.file_content;
   const parsed = parseFileField(linkData);
   const fileContent = parsed.link || "";
   const fileName = raw.file_name || parsed.name || "";
