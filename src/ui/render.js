@@ -1,4 +1,16 @@
 import { safeArray, timeAgo, parseDate } from "../utils/formatter.js";
+
+function parseFileField(val) {
+  if (!val) return {};
+  if (typeof val === "string") {
+    try {
+      return JSON.parse(val);
+    } catch {
+      return {};
+    }
+  }
+  return val;
+}
 import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from "../config.js";
 
 export function buildTree(existingPosts, rawItems) {
@@ -70,15 +82,12 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     (b) => b.Bookmarking_Contact?.id === GLOBAL_AUTHOR_ID
   );
 
-  const fileContentRaw = raw.file_content;
-  const fileContent =
-    typeof fileContentRaw === "string"
-      ? fileContentRaw
-      : fileContentRaw?.link || "";
-  const fileName =
-    typeof fileContentRaw === "string"
-      ? fileContentRaw
-      : fileContentRaw?.name || "";
+  const linkData = raw.file_link || raw.file_content;
+  const parsed = parseFileField(linkData);
+  const fileContent = parsed.link || "";
+  const fileName = raw.file_name || parsed.name || "";
+  const fileSize = raw.file_size || parsed.size || 0;
+  const orientation = raw.image_orientation || "";
 
   return {
     id: raw.id,
@@ -110,6 +119,8 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     fileType: raw.file_type || "None",
     fileContent: depth === 0 ? fileContent : "",
     fileContentName: depth === 0 ? fileName : "",
+    fileSize: fileSize,
+    imageOrientation: orientation,
     fileContentComment: depth > 0 ? fileContent : null,
     fileContentCommentName: depth > 0 ? fileName : "",
   };
