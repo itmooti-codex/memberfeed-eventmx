@@ -891,12 +891,12 @@
 
        </div>
      {{if content !=''  }} <div class="content">{{:content}}</div>{{/if}}
-        {{if fileContent}}
+       {{if fileContent || fileContentComment}}
          <div class="file-preview {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
-          {{if fileType === "Audio" }}
+          {{if fileType === "Audio" && depth === 0}}
              <div class="h2 text-black mb-4">{{:fileContentName}}</div>
            {{/if}}
-           {{if fileContent}}
+           {{if depth === 0 && fileContent}}
 
                             {{if fileType === "Image"}}
                               <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
@@ -915,32 +915,27 @@
                             {{/if}}
                
            {{/if}}
-           {{if depth > 0}}
-           {{if fileContentComment}}
-                 {{if fileContentComment}}
-                   {{if fileType === "Image"}}
-                     <img src="{{:fileContentComment || fileContentComment}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
-                   {{else fileType === "Audio"}}
-                   <label for="audio-player">Recording1.mp3</label>
-                     <audio class="js-player" controls>
-                       <source src="{{:fileContentComment}}" type="audio/mpeg" />
-                       Your browser does not support the audio tag.
-                     </audio>
-                    
-                   {{else fileType === "Video"}}
-                     <video class="js-player" controls style="width: 100%; height: auto;">
-                       <source src="{{:fileContentComment}}" type="video/mp4" />
-                       Your browser does not support video.
-                     </video>
-                   {{else}}
-                     <div>{{:fileContentCommentName}}</div>
-                   {{/if}}
-                 {{/if}}
-               {{/if}}
-         {{/if}}
+           {{if depth > 0 && fileContentComment}}
+                 {{if fileType === "Image"}}
+                   <img src="{{:fileContentComment}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
+                 {{else fileType === "Audio"}}
+                 <label for="audio-player">Recording1.mp3</label>
+                   <audio class="js-player" controls>
+                     <source src="{{:fileContentComment}}" type="audio/mpeg" />
+                     Your browser does not support the audio tag.
+                   </audio>
 
+                 {{else fileType === "Video"}}
+                   <video class="js-player" controls style="width: 100%; height: auto;">
+                     <source src="{{:fileContentComment}}" type="video/mp4" />
+                     Your browser does not support video.
+                   </video>
+                 {{else}}
+                   <div>{{:fileContentCommentName}}</div>
+                 {{/if}}
+           {{/if}}
          </div>
-         {{/if}}
+       {{/if}}
          <div class=" flex items-center gap-4">
   <div class="flex items-end justify-end gap-2 ">
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
