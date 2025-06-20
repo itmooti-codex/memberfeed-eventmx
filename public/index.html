@@ -806,7 +806,7 @@
            {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
              <div
              
-              class="item  {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded p-4'}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
+              class="item w-full items-start gap-2 {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded p-4'}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
                data-uid="{{:uid}}"
                data-id="{{:id}}"
                data-depth="{{:depth}}"
@@ -815,13 +815,15 @@
                >
                <div class="flex items-start justify-between">
                <div class="author flex items-center mb-2">
-                 <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]"
+                 <div class="size-6">
+                 <img class="commenterImage size-full rounded-[29px] border border-zinc-300 avatar w-[40px] h-[40px] bg-[#ccc] mr-[12px]"
                      src="{{:authorImage}}"
                      alt="{{:authorName}}"
                      onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';">
+                 </div>
                  <div class="info flex items-start gap-2">
                   <div class="flex flex-col items-start">
-                     <span class="name font-bold">{{:authorName}}</span>
+                     <span class="name commenterName font-bold">{{:authorName}}</span>
                      {{if forumStatus==='Scheduled'}}
                 <div class="flex items-center gap-1">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -831,7 +833,7 @@
                    <div class="text-sm text-[#65676b]">{{:~formatDate(sheduledDate)}}</div>
                 </div>
                    {{else}}
-                   <span class="timestamp text-sm text-[#65676b]">{{:timeAgo}}</span>
+                   <span class="timestamp commentedTime text-sm text-[#65676b]">{{:timeAgo}}</span>
                    {{/if}}
                   </div>
                    {{if isFeatured}}
@@ -848,7 +850,7 @@
         </div>
         {{/if}}
                {{if canDelete && (!~inModal || depth > 0)}}
-                  <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit" x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
+                  <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="dots relative w-fit" x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
              <!-- Toggle Button -->
              <div x-on:click="threeDotsForAdmin = ! threeDotsForAdmin" aria-haspopup="true" x-on:keydown.space.prevent="openedWithKeyboard = true" x-on:keydown.enter.prevent="openedWithKeyboard = true" class="cursor-pointer" x-on:keydown.down.prevent="openedWithKeyboard = true">
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -892,9 +894,9 @@
        {{/if}}
 
        </div>
-     {{if content !=''  }} <div class="content">{{:content}}</div>{{/if}}
+     {{if content !=''  }} <div class="content commentCopy">{{:content}}</div>{{/if}}
        {{if fileContent || fileContentComment}}
-         <div class="file-preview {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
+         <div class="file-preview commentFile {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
           {{if fileType === "Audio" && depth === 0}}
              <div class="h2 text-black mb-4">{{:fileContentName}}</div>
            {{/if}}
@@ -967,7 +969,7 @@
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M14.6732 6.30021C14.5455 6.15556 14.3885 6.03972 14.2127 5.96038C14.0368 5.88105 13.8461 5.84004 13.6532 5.84008H10.4798V4.93341C10.4798 4.33226 10.241 3.75572 9.81593 3.33064C9.39085 2.90556 8.81431 2.66675 8.21316 2.66675C8.12894 2.66669 8.04637 2.69009 7.9747 2.73433C7.90304 2.77857 7.84511 2.8419 7.80742 2.91721L5.66656 7.20008H3.22649C2.98603 7.20008 2.75541 7.2956 2.58538 7.46564C2.41535 7.63567 2.31982 7.86628 2.31982 8.10675V13.0934C2.31982 13.3339 2.41535 13.5645 2.58538 13.7345C2.75541 13.9046 2.98603 14.0001 3.22649 14.0001H12.9732C13.3045 14.0002 13.6245 13.8793 13.873 13.6602C14.1215 13.4411 14.2815 13.1388 14.323 12.8101L15.003 7.37008C15.0271 7.17856 15.0101 6.9841 14.9533 6.79964C14.8964 6.61517 14.8009 6.44493 14.6732 6.30021ZM3.22649 8.10675H5.49316V13.0934H3.22649V8.10675Z" fill="var(--color-primary)" />
     </svg>
-    <div class="p3 text-[var(--color-primary)]">{{:upvotes}}</div>
+    <div class="p3 likerOnCommentCounter text-[var(--color-primary)]">{{:upvotes}}</div>
   </div>
   {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
   <div class="flex items-end justify-end gap-2 {{if depth === 1}}cursor-pointer toggle-replies{{/if}}" {{if depth === 1}}data-uid="{{:uid}}"{{/if}}>
@@ -988,7 +990,7 @@
 </div>
        {{if forumStatus === 'Published - Not flagged'}}
        <div class="flex items-center gap-4 border-t border-[var(--grey-200)] pt-[14px] actions">
-  <div class="flex flex-1 items-center justify-center gap-2 cursor-pointer btn-like {{:hasUpvoted ? ' liked' : ''}}" data-uid="{{:uid}}">
+  <div class="flex flex-1 items-center justify-center gap-2 cursor-pointer btn-like likeOnCommentButton {{:hasUpvoted ? ' liked' : ''}}" data-uid="{{:uid}}">
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M14.6732 6.30021C14.5455 6.15556 14.3885 6.03972 14.2127 5.96038C14.0368 5.88105 13.8461 5.84004 13.6532 5.84008H10.4798V4.93341C10.4798 4.33226 10.241 3.75572 9.81593 3.33064C9.39085 2.90556 8.81431 2.66675 8.21316 2.66675C8.12894 2.66669 8.04637 2.69009 7.9747 2.73433C7.90304 2.77857 7.84511 2.8419 7.80742 2.91721L5.66656 7.20008H3.22649C2.98603 7.20008 2.75541 7.2956 2.58538 7.46564C2.41535 7.63567 2.31982 7.86628 2.31982 8.10675V13.0934C2.31982 13.3339 2.41535 13.5645 2.58538 13.7345C2.75541 13.9046 2.98603 14.0001 3.22649 14.0001H12.9732C13.3045 14.0002 13.6245 13.8793 13.873 13.6602C14.1215 13.4411 14.2815 13.1388 14.323 12.8101L15.003 7.37008C15.0271 7.17856 15.0101 6.9841 14.9533 6.79964C14.8964 6.61517 14.8009 6.44493 14.6732 6.30021ZM3.22649 8.10675H5.49316V13.0934H3.22649V8.10675Z" fill="#0E0E0E" />
     </svg>
@@ -996,7 +998,7 @@
   </div>
   
    {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
-  <div class="flex {{if ~inModal}}btn-comment{{else}}openPostModal{{/if}} flex-1 items-center justify-center gap-2 cursor-pointer" data-uid="{{:uid}}"   data-id="{{:id}}" data-author="{{:authorName}}"
+  <div class="flex {{if ~inModal}}btn-comment{{else}}openPostModal{{/if}} flex-1 items-center justify-center gap-2 cursor-pointer openreplyOnCommentButton" data-uid="{{:uid}}"   data-id="{{:id}}" data-author="{{:authorName}}"
   {{if !~inModal}} @click="modalForPostOpen=true"{{/if}}>
     <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M11.1668 7.19992C11.1668 7.34137 11.1106 7.47702 11.0106 7.57704C10.9106 7.67706 10.7749 7.73325 10.6335 7.73325H6.10016C5.95871 7.73325 5.82306 7.67706 5.72304 7.57704C5.62302 7.47702 5.56683 7.34137 5.56683 7.19992C5.56683 7.05847 5.62302 6.92281 5.72304 6.82279C5.82306 6.72278 5.95871 6.66658 6.10016 6.66658H10.6335C10.7749 6.66658 10.9106 6.72278 11.0106 6.82279C11.1106 6.92281 11.1668 7.05847 11.1668 7.19992ZM10.6335 8.79992H6.10016C5.95871 8.79992 5.82306 8.85611 5.72304 8.95613C5.62302 9.05615 5.56683 9.1918 5.56683 9.33325C5.56683 9.4747 5.62302 9.61036 5.72304 9.71038C5.82306 9.8104 5.95871 9.86658 6.10016 9.86658H10.6335C10.7749 9.86658 10.9106 9.8104 11.0106 9.71038C11.1106 9.61036 11.1668 9.4747 11.1668 9.33325C11.1668 9.1918 11.1106 9.05615 11.0106 8.95613C10.9106 8.85611 10.7749 8.79992 10.6335 8.79992ZM15.1668 7.99992C15.1649 9.76743 14.4619 11.462 13.2121 12.7118C11.9622 13.9616 10.2677 14.6646 8.50016 14.6666H2.90016C2.61727 14.6666 2.34595 14.5542 2.14592 14.3542C1.94588 14.1541 1.8335 13.8828 1.8335 13.5999V7.99992C1.8335 6.23181 2.53588 4.53612 3.78612 3.28587C5.03636 2.03563 6.73205 1.33325 8.50016 1.33325C10.2683 1.33325 11.964 2.03563 13.2142 3.28587C14.4644 4.53612 15.1668 6.23181 15.1668 7.99992ZM14.1002 7.99992C14.1002 6.51471 13.5102 5.09032 12.46 4.04012C11.4098 2.98992 9.98537 2.39992 8.50016 2.39992C7.01495 2.39992 5.59057 2.98992 4.54036 4.04012C3.49016 5.09032 2.90016 6.51471 2.90016 7.99992V13.5999H8.50016C9.98489 13.5983 11.4083 13.0078 12.4582 11.958C13.5081 10.9081 14.0986 9.48464 14.1002 7.99992Z" fill="#0E0E0E" />
@@ -1025,10 +1027,12 @@
                  </div>
                {{/if}}
                {{if children.length && !isCollapsed}}
+                 <div class="repliesRenderContainer">
                  <div data-reply="{{:uid}}" class="children visible my-4 {{:depth < 2 ? 'pl-6 ml-[12px] border-l border-2-[#e9ebee]' : ''}}">
                    {{for children}}
                      {{include tmpl="#tmpl-comment"/}}
                    {{/for}}
+                 </div>
                  </div>
                {{/if}}
              </div>
