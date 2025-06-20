@@ -809,7 +809,7 @@
 {{if fileContent || fileContentComment}}
     <div class=" flex-[3] flex items-center h-[90vh] justify-center">
         {{if depth === 0 && fileContent}}
-        <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:cover;" alt="preview" />
+        <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:contain;" alt="preview" />
         {{/if}}
     </div>
 {{/if}}
