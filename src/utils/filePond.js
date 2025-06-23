@@ -148,11 +148,22 @@ export function initFilePond() {
 
           let cancelBtn = section.querySelector(".cancelRecordingBtn");
           if (!cancelBtn) {
-            cancelBtn = document.createElement("button");
-            cancelBtn.type = "button";
+            cancelBtn = document.createElement("div");
+            // cancelBtn.type = "button";
             cancelBtn.className = "cancelRecordingBtn";
-            cancelBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Cancel Recording';
-            recordBtn.insertAdjacentElement("afterend", cancelBtn);
+            cancelBtn.innerHTML = `
+              <div div class="inline-flex group cursor-pointer justify-start items-center gap-3" >
+                <div class="px-3 py-2 rounded border border-1 border-offset-[-1px] border-red-600 flex justify-start items-center gap-2  group-hover:bg-[#FDD0D1] group-hover:border-[#FDD0D1]" transition-all>
+                  <div data-property-1="ph:stop-fill" class="w-3 h-3 relative overflow-hidden">
+                    <div class="w-2.5 h-2.5 left-[1px] top-[1px] absolute bg-red-600 "></div>
+                  </div>
+                  <div class="text-center justify-start text-red-600 text-xs font-normal font-['Inter'] leading-none ">Cancel Recording</div>
+                </div>
+            </div >
+`;
+
+            const canvasElement = section.querySelector(".canvasWaveform");
+            canvasElement.insertAdjacentElement("beforebegin", cancelBtn);
 
             cancelBtn.addEventListener("click", () => {
               if (animationId) cancelAnimationFrame(animationId);
