@@ -92,25 +92,7 @@ mutation updateForumPost($id: EduflowproForumPostID, $payload: ForumPostUpdateIn
   }
 }`;
 
-export const SUBSCRIBE_FORUM_POSTS = `
-  subscription subscribeToForumPosts($forum_tag: TextScalar) {
-    subscribeToForumPosts(
-      query: [
-             {
-        whereGroup: [
-          {
-            where: {
-              forum_status: "Published - Not flagged"
-            }
-          }
-        { orWhere: { forum_status: "Scheduled" } }
-        ]
-      }
-        { andWhere: { forum_tag: $forum_tag } }
-        { andWhere: { forum_type: "Post" } }
-      ]
-      orderBy: [{ path: ["published_date"], type: desc }]
-    ) {
+const SUBSCRIBE_FORUM_POSTS_FIELDS = `
       author_id
       Author {
         display_name
@@ -158,9 +140,40 @@ export const SUBSCRIBE_FORUM_POSTS = `
         }
         reacted_to_forum_id
       }
+`;
+
+export function SUBSCRIBE_FORUM_POSTS(isAdmin = false) {
+  const extraStatusFilter = isAdmin
+    ? ""
+    : `{ andWhere: { forum_status: \"Published - Not flagged\" } }`;
+  const scheduledFilter = isAdmin
+    ? '{ orWhere: { forum_status: "Scheduled" } }'
+    : "";
+  return `
+  subscription subscribeToForumPosts($forum_tag: TextScalar) {
+    subscribeToForumPosts(
+      query: [
+             {
+        whereGroup: [
+          {
+            where: {
+              forum_status: "Published - Not flagged"
+            }
+          }
+          ${scheduledFilter}
+        ]
+      }
+      ${extraStatusFilter}
+        { andWhere: { forum_tag: $forum_tag } }
+        { andWhere: { forum_type: "Post" } }
+      ]
+      orderBy: [{ path: ["published_date"], type: desc }]
+    ) {
+${SUBSCRIBE_FORUM_POSTS_FIELDS}
     }
   }
 `;
+}
 
 export const CREATE_BOOKMARK_MUTATION = `
 mutation createOBookmarkingContactBookmarkedForum($payload: OBookmarkingContactBookmarkedForumCreateInput = null) {
