@@ -12,6 +12,7 @@ export function initCommentHandlers() {
   $(document).on("click.btnComment", ".btn-comment", function (e) {
     e.stopPropagation();
     // const uid = $(this).data("uid");
+    let commentingUser =state.currentUser.profile_image;
     let uid = $(this).attr("data-uid");
     const container = $(this).closest(".item");
     const existing = container.children(".upload-section");
@@ -44,8 +45,8 @@ export function initCommentHandlers() {
 
 <div class="!w-8 !h-8 shrink-0 rounded-full  border border-zinc-300 ">
     <img class=" size-full object-cover rounded-full" 
-     src="${node.authorImage}"
-      alt="${node.authorName}"
+     src="${commentingUser}"
+
                      onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';"
     />
   </div>
