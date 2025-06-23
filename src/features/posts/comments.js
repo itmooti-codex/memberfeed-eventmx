@@ -43,7 +43,7 @@ export function initCommentHandlers() {
     const $form = $(`
       <div class="upload-section flex items-start gap-2 mt-2 ${isPost ? 'mx-4' : ''}">
 
-<div class="!w-8 !h-8 shrink-0 rounded-full  border border-zinc-300 ">
+<div class="!w-6 !h-6 shrink-0 rounded-full  border border-zinc-300 ">
     <img class=" size-full object-cover rounded-full" 
      src="${commentingUser}"
 
