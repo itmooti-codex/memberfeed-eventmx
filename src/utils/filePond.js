@@ -149,7 +149,6 @@ export function initFilePond() {
           let cancelBtn = section.querySelector(".cancelRecordingBtn");
           if (!cancelBtn) {
             cancelBtn = document.createElement("div");
-            // cancelBtn.type = "button";
             cancelBtn.className = "cancelRecordingBtn";
             cancelBtn.innerHTML = `
               <div div class="inline-flex group cursor-pointer justify-start items-center gap-3" >
@@ -157,7 +156,7 @@ export function initFilePond() {
                   <div data-property-1="ph:stop-fill" class="w-3 h-3 relative overflow-hidden">
                     <div class="w-2.5 h-2.5 left-[1px] top-[1px] absolute bg-red-600 "></div>
                   </div>
-                  <div class="text-center justify-start text-red-600 text-xs font-normal font-['Inter'] leading-none ">Cancel Recording</div>
+                  <div class="text-center justify-start text-red-600 text-xs font-normal font-['Inter'] leading-none ">Stop Recording</div>
                 </div>
             </div >
 `;
@@ -173,12 +172,12 @@ export function initFilePond() {
               if (isSafari && recordBtn._safariRecorder) {
                 recordBtn._safariRecorder.stop();
                 delete recordBtn._safariRecorder;
-                recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
+              
                 isRecording = false;
               } else {
                 recorder.stop().getMp3().then(([buffer, blob]) => {
                   isRecording = false;
-                  recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
+                
 
                   const file = new File(buffer, "recorded-audio.mp3", {
                     type: blob.type,
@@ -265,7 +264,7 @@ export function initFilePond() {
             }
           }).catch((e) => {
             console.error("Mic access failed:", e.name, e.message);
-            recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
+           
             inputElement.disabled = false;
             canvas.style.display = "none";
           });
