@@ -62,7 +62,7 @@ function startApp(tagName, contactId, displayName) {
       tribute.collection[0].values = contacts.map((c) => ({
         key: c.Display_Name || "Anonymous",
         value: c.Contact_ID,
-        image: c.Profile_Image,
+        image: c.Profile_Image || DEFAULT_AVATAR,
       }));
       const current = contacts.find((c) => c.Contact_ID === GLOBAL_AUTHOR_ID);
       if (current) {
