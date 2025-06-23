@@ -930,7 +930,7 @@
     </div>
     {{if content !='' }} <div class="content {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
     {{if fileContent || fileContentComment}}
-    <div class="file-preview {{if fileType === " Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
+    <div class="file-preview {{if fileType === " Audio"}}bg-[var(--grey-300)] p-3 mx-4  rounded{{/if}} {{if fileType ==="File"}}mx-4{{/if}} ">
         {{if fileType === "Audio" && depth === 0}}
         <div class="h2 text-black mb-4 max-[702px]:line-clamp-1">{{:fileContentName}}</div>
         {{/if}}
@@ -1134,7 +1134,7 @@ data-uid="{{:uid}}"
         </div>
         {{if content !=''  }} <div class="content">{{:content}}</div>{{/if}}
        {{if fileContentComment}}
-           <div class="file-preview w-full  {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
+           <div class="file-preview w-full  {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}} ">
                      {{if depth > 0 && fileContentComment}}
                  {{if fileType === "Image"}}
                    <img src="{{:fileContentComment}}" style="width:211px;height:138px;object-fit:contain;" alt="preview" />
