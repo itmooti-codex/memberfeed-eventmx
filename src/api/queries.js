@@ -363,6 +363,11 @@ export function GET_NOTIFICATIONS() {
                   _OPERATOR_: neq
                 }
               }
+             {
+              andWhere: {
+                forum_status: "Published - Not flagged"
+              }
+            }
             ]
           }
         }
