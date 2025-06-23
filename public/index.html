@@ -928,9 +928,9 @@
         {{/if}}
 
     </div>
-    {{if content !='' }} <div class="content {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
+    {{if content !='' }} <div class="content {{if forumStatus != "Published - Not flagged" && !fileContent}}mb-4{{/if}} {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
     {{if fileContent || fileContentComment}}
-    <div class="file-preview {{if fileType === " Audio"}}bg-[var(--grey-300)] p-3 mx-4  rounded{{/if}} {{if fileType ==="File"}}mx-4{{/if}} ">
+    <div class="file-preview {{if forumStatus != "Published - Not flagged"}}mb-4{{/if}} {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 mx-4  rounded{{/if}} {{if fileType ==="File"}}mx-4{{/if}} ">
         {{if fileType === "Audio" && depth === 0}}
         <div class="h2 text-black mb-4 max-[702px]:line-clamp-1">{{:fileContentName}}</div>
         {{/if}}
@@ -1007,6 +1007,7 @@
         {{/if}}
     </div>
     {{/if}}
+    {{if forumStatus === "Published - Not flagged"}}
     <div class=" flex items-center gap-4 {{if depth === 0 }} px-4{{/if}}">
         <div class="flex items-end justify-end gap-2 ">
             <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1036,6 +1037,7 @@
         </div>
         {{/if}}
     </div>
+    {{/if}}
     {{if forumStatus === 'Published - Not flagged'}}
     <div class="flex items-center gap-4 border-t border-[var(--grey-200)] {{if depth === 0 }} p-4{{/if}} actions">
         <div class="flex flex-1 items-center justify-center gap-2 cursor-pointer btn-like {{:hasUpvoted ? ' liked' : ''}}"
