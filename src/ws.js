@@ -71,7 +71,7 @@ export function connect() {
           id: SUB_ID,
           type: "GQL_START",
           payload: {
-            query: SUBSCRIBE_FORUM_POSTS,
+            query: SUBSCRIBE_FORUM_POSTS(state.userRole === "admin"),
             variables: { forum_tag: GLOBAL_PAGE_TAG }
           }
         })
