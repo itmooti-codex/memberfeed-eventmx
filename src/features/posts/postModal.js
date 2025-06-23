@@ -34,7 +34,7 @@ const MODAL_SKELETON = `
     </div>
   </div>`;
 const DELETED_MODAL_HTML = `
-  <div class="flex items-start justify-between p-4 w-[855px] max-[855px]:w-full">
+  <div class="flex items-start justify-between p-4 w-[855px] max-[855px]:w-full max-[855px]:w-full">
     <div class="font-semibold">
     <img src="https://files.ontraport.com/media/18ded122924c40dda5df5dfd30bd4874.phpju0bt7?Expires=4904280560&Signature=P4Q2t4zBd-FYETAdawPhNOvkAbj3qsmstq7FP5OdK52k72q6WGTEOy4NT9orvOk5nHhkf2DE9Y7ibtCgTbZ4NoezM-uTRcP8vpcfm6oXjeACVaqFwTEhgazYWm3xnF1YFU2ssPnvtmYI7kxGEtxTLPLovzYZMeOtkIm7PYhDHR094-Uc8x-VLyKktEFjjFbZ3zshhTnM50~t5zfjbuRDTJ16wY1YaWotp2DQVPwlzvbuzg6Rs2Vuo02a7rBq8370klWcfE835qHwYDYtxfiTvt8cPwqmeilTLemlBBNR~WYrmX39KTEgh2rxdbpFfZSKsx~1xmz8REkyIF6USwjsYA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA" />
     </div>
