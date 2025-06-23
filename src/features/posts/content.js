@@ -1,15 +1,10 @@
 export function processContent(rawHtml) {
+  console.log("Processing content for posts/comments", rawHtml);
   const allowedTags = ['b', 'i', 'u', 'a', 'br', 'p', 'span', 'div', 'ul', 'ol', 'li', 'strong', 'em', 'iframe'];
   const allowedAttrs = ['href', 'target', 'class', 'style', 'data-mention-id', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'];
 
   const sanitize = html => DOMPurify.sanitize(html, { ALLOWED_TAGS: allowedTags, ALLOWED_ATTR: allowedAttrs });
   rawHtml = sanitize(rawHtml);
-
-  const extractLink = rawHtml.trim().match(/^(https?:\/\/[^\s]+)$/)?.[0] || null;
-  const getMatch = (regex) => extractLink && regex.exec(extractLink);
-  const yt = getMatch(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
-  const vi = getMatch(/vimeo\.com\/(\d+)/);
-  const loom = getMatch(/loom\.com\/share\/([a-zA-Z0-9]+)/);
 
   const getDomain = (url) => {
     try {
@@ -19,10 +14,9 @@ export function processContent(rawHtml) {
     }
   };
 
-  const renderPreview = (platform, idPath, fullUrl) => {
+  const renderPreview = (platform, fullUrl) => {
     const domain = getDomain(fullUrl);
     return `
-      <a class="block contentA mb-2" href="${fullUrl}" target="_blank" style="color: blue; text-decoration: underline;">${fullUrl}</a>
       <a href="${fullUrl}" target="_blank" class="flex flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
         <div class="flex items-center justify-start gap-2 self-stretch rounded-xl">
           <div class="flex flex-1 flex-col items-start justify-center gap-1">
@@ -39,51 +33,23 @@ export function processContent(rawHtml) {
     `;
   };
 
-  if (yt) return renderPreview('YouTube', `watch?v=${yt[1]}`, `https://www.youtube.com/watch?v=${yt[1]}`);
-  if (vi) return renderPreview('Vimeo', `video/${vi[1]}`, `https://player.vimeo.com/video/${vi[1]}`);
-  if (loom) return renderPreview('Loom', `share/${loom[1]}`, `https://www.loom.com/share/${loom[1]}`);
-  if (extractLink) return renderPreview(getDomain(extractLink), extractLink, extractLink);
+  const matchUrl = rawHtml.match(/https?:\/\/[^\s<>"']+/);
+  const hasOnlyUrl = matchUrl && rawHtml.trim() === matchUrl[0];
+  const matchedUrl = matchUrl?.[0] || null;
+  const remainingText = matchedUrl ? rawHtml.replace(matchedUrl, '').trim() : rawHtml.trim();
 
-  const container = document.createElement("div");
-  container.innerHTML = rawHtml;
+  const getPlatform = (url) => {
+    if (/youtube\.com\/watch\?v=|youtu\.be\//.test(url)) return 'YouTube';
+    if (/vimeo\.com\//.test(url)) return 'Vimeo';
+    if (/loom\.com\/share\//.test(url)) return 'Loom';
+    return getDomain(url);
+  };
 
-  container.querySelectorAll("a").forEach(a => {
-    const href = a.href;
-    const matches = {
-      yt: /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/.exec(href),
-      vi: /vimeo\.com\/(\d+)/.exec(href),
-      loom: /loom\.com\/share\/([a-zA-Z0-9]+)/.exec(href)
-    };
+  if (matchedUrl) {
+    const previewHTML = renderPreview(getPlatform(matchedUrl), matchedUrl);
+    if (hasOnlyUrl) return previewHTML;
+    return `<div>${remainingText}</div>${previewHTML}`;
+  }
 
-    const makeIframe = (src, link) => `
-      <a class="block mb-2" href="${link}" target="_blank" style="color: blue; text-decoration: underline;">${link}</a>
-      <iframe class="!w-full" width="300" height="315" src="${src}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    `;
-
-    let iframeHTML = null;
-    if (matches.yt) iframeHTML = makeIframe(`https://www.youtube.com/embed/${matches.yt[1]}`, `https://www.youtube.com/watch?v=${matches.yt[1]}`);
-    else if (matches.vi) iframeHTML = makeIframe(`https://player.vimeo.com/video/${matches.vi[1]}`, `https://player.vimeo.com/video/${matches.vi[1]}`);
-    else if (matches.loom) iframeHTML = makeIframe(`https://www.loom.com/embed/${matches.loom[1]}`, `https://www.loom.com/share/${matches.loom[1]}`);
-
-    if (iframeHTML) {
-      const wrapper = document.createElement("span");
-      wrapper.classList.add("video-tooltip-wrapper");
-      const tooltip = document.createElement("span");
-      tooltip.classList.add("video-tooltip");
-      tooltip.innerHTML = iframeHTML;
-
-      a.classList.add("video-link");
-      a.setAttribute("target", "_blank");
-
-      a.parentNode.insertBefore(wrapper, a);
-      wrapper.appendChild(a);
-      wrapper.appendChild(tooltip);
-    } else {
-      a.setAttribute("target", "_blank");
-      a.style.color = "blue";
-      a.style.textDecoration = "underline";
-    }
-  });
-
-  return sanitize(container.innerHTML);
+  return sanitize(rawHtml);
 }
