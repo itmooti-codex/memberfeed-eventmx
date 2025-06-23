@@ -353,7 +353,7 @@ button:not(.file-preview button):hover {
 }
 
 /* Style links inside post content and editor */
-.content a,
+.content .contentA,
 .editor a {
   color: var(--color-primary);
   text-decoration: underline;
