@@ -35,7 +35,9 @@ const MODAL_SKELETON = `
   </div>`;
 const DELETED_MODAL_HTML = `
   <div class="flex items-start justify-between p-4 w-[855px]">
-    <div class="font-semibold">Post has been deleted</div>
+    <div class="font-semibold">
+    <img src="https://files.ontraport.com/media/18ded122924c40dda5df5dfd30bd4874.phpju0bt7?Expires=4904280560&Signature=P4Q2t4zBd-FYETAdawPhNOvkAbj3qsmstq7FP5OdK52k72q6WGTEOy4NT9orvOk5nHhkf2DE9Y7ibtCgTbZ4NoezM-uTRcP8vpcfm6oXjeACVaqFwTEhgazYWm3xnF1YFU2ssPnvtmYI7kxGEtxTLPLovzYZMeOtkIm7PYhDHR094-Uc8x-VLyKktEFjjFbZ3zshhTnM50~t5zfjbuRDTJ16wY1YaWotp2DQVPwlzvbuzg6Rs2Vuo02a7rBq8370klWcfE835qHwYDYtxfiTvt8cPwqmeilTLemlBBNR~WYrmX39KTEgh2rxdbpFfZSKsx~1xmz8REkyIF6USwjsYA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA" />
+    </div>
     <div x-on:click="modalForPostOpen = false"
       class="group flex cursor-pointer items-center justify-start gap-2 rounded-[34px] bg-zinc-100 p-2 transition-all hover:bg-[var(--color-primary-shade)]">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
