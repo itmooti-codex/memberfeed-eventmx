@@ -43,7 +43,7 @@
     selectedDate: '', 
     today: new Date().toISOString().split('T')[0] 
    
-}" class="max-w-[700px] max-[700px]:!w-full bg-[#f1f1f1] flex flex-col items-center min-[702px]:justify-center m-auto p-6 max-[768px]:p-2">
+}" class="max-w-[700px] max-[700px]:!w-full bg-[#f1f1f1] flex flex-col items-center min-[702px]:justify-center m-auto p-6 max-[768px]:p-0">
   <!--Modal for custom date and time end  -->
   <!-- Modal For Post starts -->
   <div x-cloak x-show="modalForPostOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalForPostOpen"
@@ -423,7 +423,7 @@
   </div>
 
   <div
-    class="inline-flex flex-col items-start justify-center gap-3 self-stretch overflow-hidden rounded bg-white p-4 cursor-pointer">
+    class="inline-flex flex-col items-start justify-center gap-3 self-stretch overflow-hidden rounded bg-white p-4 cursor-pointer max-[702px]:mx-2">
     <div class="inline-flex items-center justify-start gap-2 self-stretch" id="create-post-trigger">
 
       <div class="relative h-8 w-8 overflow-hidden rounded-full border-[2px] border-solid border-[var(--grey-200)]">
@@ -672,7 +672,7 @@
     </div>
   </div>
 
-  <div id="post-filters" class=" post-filters max-[702px]:flex-col max-[702px]:items-start gap-2 w-full bg-transparent p-[24px_0_16px_0] flex items-center">
+  <div id="post-filters" class=" post-filters max-[702px]:px-2 max-[702px]:flex-col max-[702px]:items-start gap-2 w-full bg-transparent p-[24px_0_16px_0] flex items-center">
     <div class="flex-1 search-wrapper w-full  relative">
       <input type="text" id="searchPost" class="py-2 pl-8 rounded text-sm w-full"
         placeholder="Search by author or text…" autocomplete="off" />
@@ -937,7 +937,7 @@
         {{if depth === 0 && fileContent}}
 
         {{if fileType === "Image"}}
-        <img src="{{:fileContent}}" class="{{if ~inModal}}hidden{{/if}} {{if imageOrientation ==="portrait"}}object-contain size-full {{else}} w-full h-[300px] object-cover{{/if}}"  {{if ~inModal}}class="min-[702px]:hidden max-[702px]:block"{{/if}} alt="preview" />
+        <img src="{{:fileContent}}" class="{{if ~inModal}}min-[702px]:hidden max-[702px]:block{{/if}} {{if imageOrientation ==="portrait"}} object-contain size-full {{else}} w-full h-[300px] object-cover{{/if}}"  alt="preview" />
         {{else fileType === "Audio"}}
         <audio class="js-player" controls>
             <source src="{{:fileContent}}" type="audio/mpeg" />
