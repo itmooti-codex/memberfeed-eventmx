@@ -33,6 +33,18 @@ const MODAL_SKELETON = `
       </div>
     </div>
   </div>`;
+const DELETED_MODAL_HTML = `
+  <div class="flex items-start justify-between p-4 w-[855px]">
+    <div class="font-semibold">Post has been deleted</div>
+    <div x-on:click="modalForPostOpen = false"
+      class="group flex cursor-pointer items-center justify-start gap-2 rounded-[34px] bg-zinc-100 p-2 transition-all hover:bg-[var(--color-primary-shade)]">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M18.8535 18.146C18.8999 18.1925 18.9368 18.2476 18.9619 18.3083C18.9871 18.369 19 18.4341 19 18.4997C19 18.5654 18.9871 18.6305 18.9619 18.6912C18.9368 18.7519 18.8999 18.807 18.8535 18.8535C18.807 18.8999 18.7519 18.9368 18.6912 18.9619C18.6305 18.9871 18.5654 19 18.4997 19C18.4341 19 18.369 18.9871 18.3083 18.9619C18.2476 18.9368 18.1925 18.8999 18.146 18.8535L14 14.7068L9.85398 18.8535C9.76017 18.9473 9.63292 19 9.50025 19C9.36758 19 9.24033 18.9473 9.14652 18.8535C9.0527 18.7597 9 18.6324 9 18.4997C9 18.3671 9.0527 18.2398 9.14652 18.146L13.2932 14L9.14652 9.85398C9.0527 9.76017 9 9.63292 9 9.50025C9 9.36758 9.0527 9.24033 9.14652 9.14652C9.24033 9.0527 9.36758 9 9.50025 9C9.63292 9 9.76017 9.0527 9.85398 9.14652L14 13.2932L18.146 9.14652C18.2398 9.0527 18.3671 9 18.4997 9C18.6324 9 18.7597 9.0527 18.8535 9.14652C18.9473 9.24033 19 9.36758 19 9.50025C19 9.63292 18.9473 9.76017 18.8535 9.85398L14.7068 14L18.8535 18.146Z"
+          fill="#0E0E0E"></path>
+      </svg>
+    </div>
+  </div>`;
 
 function normalize(node, list) {
   const {
@@ -154,7 +166,13 @@ export function openPostModalById(postId, author = "") {
         msg.payload?.data
       ) {
         const data = msg.payload.data.subscribeToForumPost;
-        if (!data) return;
+        if (!data) {
+          console.log("Post not found or deleted");
+          if (container) {
+            container.innerHTML = DELETED_MODAL_HTML;
+          }
+          return;
+        }
         const list = [];
         normalize(data, list);
         modalTree = buildTree([], list);
