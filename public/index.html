@@ -1028,7 +1028,7 @@
                 {{if depth === 1}}
                 {{:children.length}}
                 {{else depth === 0}}
-                {{:~totalComments(children)}}
+                {{:totalCommentAndReplies || ~totalComments(children)}}
                 {{else}}
                 {{:children.length}}
                 {{/if}}

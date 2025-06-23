@@ -132,6 +132,12 @@ export const SUBSCRIBE_FORUM_POSTS = `
       forum_status
       unique_id
       depth
+      ForumPosts {
+            id
+            ForumPosts {
+            id
+      }
+      }
       forum_type
       parent_forum_id
       Bookmarking_Contacts_Data{
@@ -450,7 +456,7 @@ mutation updateContact(
   }
 }
 `;
-export const GET_SINGLE_POST_SUBSCRIPTION=`
+export const GET_SINGLE_POST_SUBSCRIPTION = `
 subscription subscribeToForumPost(
   $id: EduflowproForumPostID
 ) {

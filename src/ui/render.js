@@ -123,6 +123,8 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     imageOrientation: orientation,
     fileContentComment: depth > 0 ? fileContent : null,
     fileContentCommentName: depth > 0 ? fileName : "",
+    totalCommentAndReplies: (raw.ForumPosts ? raw.ForumPosts.length : 0) + (raw.ForumPosts?.reduce((sum, item) => sum + (item.ForumPosts?.length || 0), 0) || 0)
+
   };
 }
 

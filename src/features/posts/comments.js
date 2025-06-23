@@ -40,11 +40,13 @@ export function initCommentHandlers() {
       console.log("Updated UID for reply:", uid);
     }else{
       console.log("Posting a comment");
+      console.log("nextType", nextType);
       console.log("UID for comment:", uid);
     }
+   let isPost = (nextType === "Comment");
 
     const $form = $(`
-      <div class="upload-section flex items-start gap-2 mt-2">
+      <div class="upload-section flex items-start gap-2 mt-2 ${isPost ? 'mx-4' : ''}">
 
 <div class="size-8 rounded-full  border border-zinc-300 ">
     <img class=" size-full object-cover rounded-full" 
