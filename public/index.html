@@ -815,9 +815,9 @@
     </div>
 {{/if}}
 {{/if}}
-<div class="{{if fileType === 'Image' && ~inModal}} w-full flex-[2] min-[702px]:h-[90vh] max-[702px]:h-full !rounded-none overflow-y-auto {{/if}}item {{if fileType != "Image" && ~inModal}} overflow-auto min-[702px]:w-[855px] max-[700px]:w-full min-[702px]:max-h-[80vh] max-[702px]:h-screen{{/if}} {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded p-4'}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
+<div class="{{if fileType === 'Image' && ~inModal}} w-full flex-[2] min-[702px]:h-[90vh] max-[702px]:h-full !rounded-none overflow-y-auto {{/if}}item {{if fileType != "Image" && ~inModal}} overflow-auto min-[702px]:w-[855px] max-[700px]:w-full min-[702px]:max-h-[80vh] max-[702px]:h-screen{{/if}} {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded '}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
     data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-forumStatus="{{:forumStatus}}">
-    <div class="flex items-start justify-between w-full">
+    <div class="flex items-start justify-between w-full{{if depth === 0 }} px-4 pt-4{{/if}}">
         <div class="author flex items-center mb-2">
             <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]" src="{{:authorImage}}"
                 alt="{{:authorName}}"
@@ -928,7 +928,7 @@
         {{/if}}
 
     </div>
-    {{if content !='' }} <div class="content">{{:content}}</div>{{/if}}
+    {{if content !='' }} <div class="content {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
     {{if fileContent || fileContentComment}}
     <div class="file-preview {{if fileType === " Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}}">
         {{if fileType === "Audio" && depth === 0}}
@@ -1007,7 +1007,7 @@
         {{/if}}
     </div>
     {{/if}}
-    <div class=" flex items-center gap-4">
+    <div class=" flex items-center gap-4 {{if depth === 0 }} px-4{{/if}}">
         <div class="flex items-end justify-end gap-2 ">
             <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -1037,7 +1037,7 @@
         {{/if}}
     </div>
     {{if forumStatus === 'Published - Not flagged'}}
-    <div class="flex items-center gap-4 border-t border-[var(--grey-200)] pt-[14px] actions">
+    <div class="flex items-center gap-4 border-t border-[var(--grey-200)] {{if depth === 0 }} p-4{{/if}} actions">
         <div class="flex flex-1 items-center justify-center gap-2 cursor-pointer btn-like {{:hasUpvoted ? ' liked' : ''}}"
             data-uid="{{:uid}}">
             <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1084,7 +1084,7 @@
     </div>
     {{/if}}
     {{if children.length && !isCollapsed}}
-    <div data-reply="{{:uid}}" class="children visible my-4 flex flex-col gap-3">
+    <div data-reply="{{:uid}}" class="children visible flex flex-col gap-3 {{if depth === 0 }} p-4{{/if}}">
         {{for children}}
         {{include tmpl="#tmpl-comment"/}}
         {{/for}}
