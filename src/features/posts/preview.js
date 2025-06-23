@@ -23,7 +23,7 @@ if (previewModal) {
 
 $(document).on(
   'click',
-  '.file-preview img, .file-preview video, .file-preview audio, .file-preview a',
+  '.file-preview img',
   function (e) {
     e.preventDefault();
     if (!previewModal) return;
