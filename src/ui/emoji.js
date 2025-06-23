@@ -1,7 +1,7 @@
 export const emojiPickerHtml = `
-  <div class="emoji-wrapper relative">
+  <div class="emoji-wrapper relative w-full">
     <button type="button" class="emoji-toggle">😊</button>
-    <div class="emoji-picker hidden absolute bg-white border rounded shadow-md p-1 mt-1 z-10">
+    <div class="emoji-picker hidden absolute bg-white border rounded shadow-md p-1 mt-1 z-10 flex-wrap">
       <span class="cursor-pointer px-1">😀</span>
       <span class="cursor-pointer px-1">😂</span>
       <span class="cursor-pointer px-1">😍</span>
@@ -17,7 +17,7 @@ export const emojiPickerHtml = `
 `;
 
 export const toolbarDesign = `
-<div class="flex items-center justify-start toolbar max-[702px]:gap-1">
+<div class="flex items-center justify-start toolbar max-[702px]:gap-1 w-full">
 <button
             class="flex items-center justify-start !border-none gap-2  rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="bold">

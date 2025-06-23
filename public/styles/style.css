@@ -169,11 +169,15 @@ button:not(.file-preview button):hover {
 }
 
 
+.emoji-wrapper{
+  width: 100%;
+}
 
 /* Display emojis in a horizontal row with spacing */
 .emoji-picker {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .clearIcon.hidden {
@@ -485,3 +489,8 @@ button:not(.file-preview button):hover {
   /* Line styles applied dynamically */
 }
 /* Dropdown UI */
+
+
+.tribute-container{
+  max-height: 150px !important;
+}

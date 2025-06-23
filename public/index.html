@@ -106,7 +106,7 @@
 
         <!-- Notification Panel -->
         <div x-show="showNotifications" @click.outside="showNotifications = false" x-transition
-          class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-[50000] p-4">
+          class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-[50000] p-4 max-[702px]:fixed max-[702px]:w-full">
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-semibold text-lg">Notifications</h3>
             <div class="flex items-center gap-3 text-gray-500">
@@ -295,7 +295,7 @@
     </button>
     <div x-cloak x-show="modalToSelectUser" x-transition.opacity.duration.200ms
       x-trap.inert.noscroll="modalToSelectUser"
-      class="fixed inset-0 flex items-end justify-center bg-black/20 p-4 pb-8 backdrop-blur-md sm:items-center lg:p-8"
+      class="fixed inset-0 flex items-center justify-center bg-black/20 p-4 pb-8 backdrop-blur-md sm:items-center lg:p-8"
       role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
       <!-- Modal Dialog -->
       <div x-show="modalToSelectUser"
