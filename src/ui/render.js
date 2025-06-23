@@ -2,15 +2,22 @@ import { safeArray, timeAgo, parseDate } from "../utils/formatter.js";
 
 function parseFileField(val) {
   if (!val) return {};
-  if (typeof val === "string") {
+  let result = val;
+
+  // Keep parsing until it's a proper object
+  while (typeof result === "string") {
     try {
-      return JSON.parse(val);
+      result = JSON.parse(result);
     } catch {
-      return {};
+      // If not JSON anymore, return as { link: result }
+      return { link: result };
     }
   }
-  return val;
+
+  return result;
 }
+
+
 import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from "../config.js";
 
 export function buildTree(existingPosts, rawItems) {
@@ -83,7 +90,7 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
   );
 
   const linkData = raw.file_content;
-  const parsed = parseFileField(linkData);
+  const parsed =  parseFileField(linkData);
   const fileContent = parsed.link || "";
   const fileName = raw.file_name || parsed.name || "";
   const fileSize = raw.file_size || parsed.size || 0;

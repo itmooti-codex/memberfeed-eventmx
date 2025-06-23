@@ -72,10 +72,14 @@ export async function createForumToSubmit(
 
   $btn.prop("disabled", true);
   $("#upload-options").prop("disabled", true);
-  formWrapper.classList.add("state-disabled");
   if (forumType === "Post") {
-    document.querySelector(".createPostMainModal").classList.add("state-disabled");
+    $(".postingLoader").removeClass("hidden");
+    $(".postingLoader").addClass("flex");
+  } else {
+    formWrapper.classList.add("state-disabled");
   }
+  
+  
 
   let parentForumId;
   if (forumType !== "Post" && uidParam) {
@@ -247,9 +251,13 @@ export async function createForumToSubmit(
       filepondCloseButton.click();
     }
     $("#upload-options").prop("disabled", false);
-    formWrapper.classList.remove("state-disabled");
+    
+    
     if (forumType === "Post") {
-      document.querySelector(".createPostMainModal").classList.remove("state-disabled");
+      $(".postingLoader").removeClass("flex");
+      $(".postingLoader").addClass("hidden");
+    }else{
+      formWrapper.classList.remove("state-disabled");
     }
   }
 }

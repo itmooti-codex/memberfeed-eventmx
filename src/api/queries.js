@@ -45,6 +45,7 @@ export const CREATE_FORUM_POST_MUTATION = `
 mutation createForumPost($payload: ForumPostCreateInput = null) {
   createForumPost(payload: $payload) {
     id 
+    unique_id 
     author_id 
      Author{
       display_name
