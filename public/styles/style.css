@@ -99,17 +99,7 @@ body {
   pointer-events: none;
 }
 
-button:not(.file-preview button) {
-  background: #fff;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  font-size: 12px !important;
-  line-height: normal;
-  transition: 0.2s ease-in-out;
-  cursor: pointer;
-  width: max-content;
-  padding: 8px 10px !important;
-}
+
 .canvasWaveform:empty {
   display: none;
 }
@@ -178,10 +168,7 @@ button:not(.file-preview button):hover {
   gap: 0.25rem;
 }
 
-.toolbar button {
-  padding: 4px 6px !important;
-  font-weight: bold;
-}
+
 
 /* Display emojis in a horizontal row with spacing */
 .emoji-picker {

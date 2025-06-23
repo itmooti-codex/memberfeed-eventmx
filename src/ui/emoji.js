@@ -17,9 +17,9 @@ export const emojiPickerHtml = `
 `;
 
 export const toolbarDesign = `
-<div class="flex items-center justify-start toolbar">
+<div class="flex items-center justify-start toolbar max-[702px]:gap-1">
 <button
-            class="flex items-center justify-start !border-none gap-2 rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="flex items-center justify-start !border-none gap-2  rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="bold">
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -28,7 +28,7 @@ export const toolbarDesign = `
             </svg>
           </button>
           <button
-            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="italic">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -38,7 +38,7 @@ export const toolbarDesign = `
 
           </button>
           <button
-            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="underline">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -48,7 +48,7 @@ export const toolbarDesign = `
 
           </button>
           <button
-            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px] max-[702px]:p-[2px]"
             data-cmd="link">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -57,7 +57,7 @@ export const toolbarDesign = `
             </svg>
           </button>
           <div id="dropArea" @click="($event) => $event.target.closest('.upload-section')?.querySelector('.filepond--drop-label')?.click()"
-            class="classUploadFiles flex p-[8px_10px] !border-none items-center justify-start gap-2 rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="classUploadFiles flex   !border-none items-center justify-start gap-2 rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="bold">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path  class="group-hover:fill-[var(--color-primary)]" d="M14.6664 9.66675V14.111C14.6664 14.2584 14.6079 14.3997 14.5037 14.5039C14.3995 14.6081 14.2582 14.6666 14.1109 14.6666H1.88903C1.7417 14.6666 1.60039 14.6081 1.49621 14.5039C1.39203 14.3997 1.3335 14.2584 1.3335 14.111V9.66675C1.3335 9.51941 1.39203 9.37811 1.49621 9.27392C1.60039 9.16974 1.7417 9.11121 1.88903 9.11121C2.03637 9.11121 2.17767 9.16974 2.28186 9.27392C2.38604 9.37811 2.44457 9.51941 2.44457 9.66675V13.5555H13.5553V9.66675C13.5553 9.51941 13.6138 9.37811 13.718 9.27392C13.8222 9.16974 13.9635 9.11121 14.1109 9.11121C14.2582 9.11121 14.3995 9.16974 14.5037 9.27392C14.6079 9.37811 14.6664 9.51941 14.6664 9.66675ZM5.6153 5.05996L7.44441 3.23015V9.66675C7.44441 9.81409 7.50294 9.95539 7.60712 10.0596C7.7113 10.1638 7.85261 10.2223 7.99994 10.2223C8.14728 10.2223 8.28859 10.1638 8.39277 10.0596C8.49695 9.95539 8.55548 9.81409 8.55548 9.66675V3.23015L10.3846 5.05996C10.4888 5.1642 10.6302 5.22276 10.7776 5.22276C10.9251 5.22276 11.0664 5.1642 11.1707 5.05996C11.2749 4.95571 11.3335 4.81433 11.3335 4.66691C11.3335 4.51949 11.2749 4.37811 11.1707 4.27387L8.39299 1.49618C8.34139 1.44453 8.28012 1.40356 8.21268 1.3756C8.14524 1.34764 8.07295 1.33325 7.99994 1.33325C7.92694 1.33325 7.85465 1.34764 7.78721 1.3756C7.71977 1.40356 7.6585 1.44453 7.6069 1.49618L4.82921 4.27387C4.72497 4.37811 4.66641 4.51949 4.66641 4.66691C4.66641 4.81433 4.72497 4.95571 4.82921 5.05996C4.93346 5.1642 5.07484 5.22276 5.22226 5.22276C5.36968 5.22276 5.51106 5.1642 5.6153 5.05996Z" fill="#737373"/>
@@ -65,7 +65,7 @@ export const toolbarDesign = `
           </div>
 
            <div  id="recordBtn"
-            class="flex recordBtn p-[8px_10px] !border-none items-center justify-start gap-2 rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
+            class="flex recordBtn   !border-none items-center justify-start gap-2 rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="bold">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path class="group-hover:fill-[var(--color-primary)]" d="M8.24421 9.66658C9.64153 9.66658 10.774 8.54754 10.774 7.16659V3.83325C10.774 2.4523 9.64153 1.33325 8.24421 1.33325C6.84689 1.33325 5.71445 2.4523 5.71445 3.83325V7.16659C5.71445 8.54754 6.84689 9.66658 8.24421 9.66658ZM13.1549 7.13682C13.1549 7.07135 13.1014 7.01778 13.0359 7.01778H12.143C12.0775 7.01778 12.024 7.07135 12.024 7.13682C12.024 9.22462 10.332 10.9166 8.24421 10.9166C6.15641 10.9166 4.46445 9.22462 4.46445 7.13682C4.46445 7.07135 4.41088 7.01778 4.3454 7.01778H3.45254C3.38707 7.01778 3.3335 7.07135 3.3335 7.13682C3.3335 9.64724 5.21742 11.7187 7.64897 12.0118V13.5356H5.48677C5.2829 13.5356 5.11921 13.7484 5.11921 14.0118V14.5475C5.11921 14.613 5.16088 14.6666 5.21147 14.6666H11.2769C11.3275 14.6666 11.3692 14.613 11.3692 14.5475V14.0118C11.3692 13.7484 11.2055 13.5356 11.0017 13.5356H8.77992V12.0193C11.2397 11.7514 13.1549 9.66807 13.1549 7.13682Z" fill="#737373"/>
@@ -73,7 +73,7 @@ export const toolbarDesign = `
           </div>
           <div class="emoji-wrapper relative">
             <button
-              class="flex emoji-toggle items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1">
+              class="flex emoji-toggle items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path class="group-hover:fill-[var(--color-primary)]"
                   d="M10.9325 9.75005C10.2894 10.8619 9.22062 11.5 8 11.5C6.77938 11.5 5.71062 10.8625 5.06687 9.75005C5.03404 9.69317 5.01274 9.63038 5.00417 9.56527C4.99561 9.50015 4.99995 9.43399 5.01696 9.37056C5.03396 9.30713 5.06329 9.24766 5.10328 9.19556C5.14327 9.14347 5.19312 9.09975 5.25 9.06692C5.30688 9.03409 5.36967 9.01279 5.43478 9.00422C5.49989 8.99566 5.56605 9 5.62949 9.01701C5.69292 9.03401 5.75239 9.06334 5.80448 9.10333C5.85658 9.14331 5.90029 9.19317 5.93313 9.25005C6.39937 10.0569 7.13312 10.5 8 10.5C8.86688 10.5 9.60063 10.0563 10.0675 9.25005C10.0988 9.1903 10.1418 9.13748 10.194 9.09479C10.2462 9.05209 10.3065 9.0204 10.3712 9.00161C10.436 8.98282 10.5039 8.97733 10.5708 8.98546C10.6378 8.99359 10.7024 9.01518 10.7608 9.04893C10.8191 9.08267 10.8701 9.12788 10.9106 9.18183C10.951 9.23578 10.9801 9.29736 10.9962 9.36285C11.0122 9.42835 11.0149 9.49642 11.0039 9.56296C10.993 9.6295 10.9687 9.69314 10.9325 9.75005ZM14.5 8.00005C14.5003 8.64733 14.4042 9.29104 14.215 9.91005C14.1909 9.98819 14.148 10.0592 14.09 10.1169L10.1169 14.09C10.0595 14.1481 9.98865 14.1911 9.91063 14.215C8.60288 14.6172 7.20158 14.5965 5.90632 14.1558C4.61105 13.7151 3.48788 12.8769 2.69677 11.7606C1.90566 10.6443 1.48696 9.30689 1.50031 7.93877C1.51366 6.57065 1.95838 5.24163 2.77112 4.14101C3.58386 3.04038 4.72318 2.22428 6.0268 1.80894C7.33042 1.3936 8.73185 1.4002 10.0315 1.82781C11.3311 2.25542 12.4627 3.08223 13.265 4.19047C14.0674 5.29871 14.4995 6.63186 14.5 8.00005ZM13.5 8.00005C13.4986 6.84943 13.1359 5.7283 12.4631 4.79488C11.7903 3.86146 10.8413 3.16288 9.7502 2.79772C8.65906 2.43255 7.48079 2.41924 6.38168 2.75966C5.28257 3.10009 4.31811 3.77705 3.62439 4.69504C2.93068 5.61302 2.54274 6.72566 2.51531 7.87596C2.48789 9.02625 2.82238 10.1561 3.47156 11.1061C4.12075 12.0561 5.05186 12.7783 6.1335 13.1707C7.21514 13.5631 8.3927 13.6059 9.5 13.2932L13.2931 9.50005C13.4309 9.01198 13.5005 8.50719 13.5 8.00005ZM5.75 7.50005C5.89834 7.50005 6.04334 7.45606 6.16668 7.37365C6.29001 7.29124 6.38614 7.17411 6.44291 7.03706C6.49968 6.90002 6.51453 6.74922 6.48559 6.60373C6.45665 6.45824 6.38522 6.32461 6.28033 6.21972C6.17544 6.11483 6.0418 6.0434 5.89632 6.01446C5.75083 5.98552 5.60003 6.00037 5.46299 6.05714C5.32594 6.1139 5.20881 6.21003 5.1264 6.33337C5.04399 6.45671 5 6.60171 5 6.75005C5 6.94896 5.07902 7.13973 5.21967 7.28038C5.36032 7.42103 5.55109 7.50005 5.75 7.50005ZM10.25 6.00005C10.1017 6.00005 9.95666 6.04403 9.83332 6.12645C9.70999 6.20886 9.61386 6.32599 9.55709 6.46304C9.50033 6.60008 9.48547 6.75088 9.51441 6.89637C9.54335 7.04185 9.61478 7.17549 9.71967 7.28038C9.82456 7.38527 9.9582 7.4567 10.1037 7.48564C10.2492 7.51458 10.4 7.49972 10.537 7.44296C10.6741 7.38619 10.7912 7.29006 10.8736 7.16673C10.956 7.04339 11 6.89838 11 6.75005C11 6.55114 10.921 6.36037 10.7803 6.21972C10.6397 6.07907 10.4489 6.00005 10.25 6.00005Z"

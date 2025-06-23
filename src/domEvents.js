@@ -31,11 +31,11 @@ function renderContacts(list, containerId) {
       modalToSelectUser=false;"
       class="cursor-pointer flex items-center flex-col "
     >
-      <div class="flex items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
+      <div class="flex  items-center flex-col gap-2 m-[5px] cursor-pointer h-[128px] w-[128px] rounded-full border-[4px] border-[rgba(200,200,200,0.4)] transition-[border] duration-200 ease-linear hover:border-[rgba(0,0,0,0.2)]">
         <img
           src="${c.Profile_Image || DEFAULT_AVATAR}"
           alt="${c.Display_Name || "Anonymous"}"
-          class="h-full w-full rounded-full object-cover" />
+          class="h-full shrink-0 w-full rounded-full object-cover" />
       </div>
       <div>${c.Display_Name || "Anonymous"}</div>
     </div>

@@ -426,7 +426,7 @@
     class="inline-flex flex-col items-start justify-center gap-3 self-stretch overflow-hidden rounded bg-white p-4 cursor-pointer max-[702px]:mx-2">
     <div class="inline-flex items-center justify-start gap-2 self-stretch" id="create-post-trigger">
 
-      <div class="relative h-8 w-8 overflow-hidden rounded-full border-[2px] border-solid border-[var(--grey-200)]">
+      <div class="relative h-8 w-8 shrink-0 overflow-hidden rounded-full border-[2px] border-solid border-[var(--grey-200)]">
         <img id="current-user-avatar"
           src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
           alt="avatar" class="size-full object-cover  rounded-full ml-auto" />
@@ -488,7 +488,7 @@
         <div class="h-[2px] self-stretch bg-[var(--grey-200)]"></div>
       </div>
       <div class="flex items-center gap-2">
-        <div class="relative h-8 w-8 overflow-hidden rounded-full border-[2px] border-solid border-[var(--grey-200)]">
+        <div class="relative h-8 shrink-0 w-8 overflow-hidden rounded-full border-[2px] border-solid border-[var(--grey-200)]">
           <img id="current-user-avatar-modal"
             src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
             alt="avatar" class="size-full object-cover  rounded-full ml-auto" />
@@ -819,7 +819,7 @@
     data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-forumStatus="{{:forumStatus}}">
     <div class="flex items-start justify-between w-full{{if depth === 0 }} px-4 pt-4{{/if}}">
         <div class="author flex items-center mb-2">
-            <img class="avatar w-[40px] h-[40px] bg-[#ccc] rounded-full mr-[12px]" src="{{:authorImage}}"
+            <img class="avatar w-[40px] shrink-0 h-[40px] bg-[#ccc] rounded-full mr-[12px]" src="{{:authorImage}}"
                 alt="{{:authorName}}"
                 onerror="this.onerror=null;this.src='https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA';">
             <div class="info flex items-start gap-2">
@@ -1106,7 +1106,7 @@ data-uid="{{:uid}}"
                data-forumStatus="{{:forumStatus}}">
       <div class=" flex w-full items-start gap-2"
 >
-  <div class="size-6 rounded-full  border border-zinc-300  {{if depth===1}}mainComment{{/if}}">
+  <div class="size-6 rounded-full shrink-0  border border-zinc-300  {{if depth===1}}mainComment{{/if}}">
     <img class="commenterImage size-full size-full object-cover rounded-full " 
      src="{{:authorImage}}"
                      alt="{{:authorName}}"
