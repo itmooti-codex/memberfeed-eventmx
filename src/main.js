@@ -18,12 +18,15 @@ import { renderNotificationToggles } from "./ui/notificationPreference.js";
 import { toggleAllOff, toggleOption } from "./ui/notificationPreference.js";
 import { showToast } from "./ui/toast.js";
 import { refreshNotificationSubscription } from "./notifications.js";
+import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
 export let notificationPreferences = null;
 
 window.createForumToSubmit = createForumToSubmit;
 window.toggleAllOff = toggleAllOff;
 window.toggleOption = toggleOption;
 window.state = state;
+window.disableBodyScroll = disableBodyScroll;
+window.enableBodyScroll = enableBodyScroll;
 
 export function getNotificationPreferences(contactId) {
   return fetchGraphQL(GET__CONTACTS_NOTIFICATION_PREFERENCEE, { id: contactId })

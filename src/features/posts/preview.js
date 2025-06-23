@@ -1,3 +1,5 @@
+import { disableBodyScroll, enableBodyScroll } from "../../utils/bodyScroll.js";
+
 export function initPreviewHandlers() {
 // File preview modal logic
 const previewModal = document.getElementById('file-preview-modal');
@@ -10,6 +12,7 @@ if (previewClose) {
     previewModal.classList.add('hidden');
     previewModal.classList.remove('show');
     previewContainer.innerHTML = '';
+    enableBodyScroll();
   });
 }
 
@@ -54,6 +57,7 @@ $(document).on(
     }
     previewModal.classList.remove('hidden');
     previewModal.classList.add('show');
+    disableBodyScroll();
   }
 );
 }
