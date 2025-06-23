@@ -6,6 +6,7 @@ import {
 } from "./api/queries.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { showToast } from "./ui/toast.js";
+import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
 
 function renderContacts(list, containerId) {
   const container = document.getElementById(containerId);
@@ -74,6 +75,7 @@ export function setupCreatePostModal() {
     trigger.addEventListener("click", () => {
       modal.classList.remove("hidden");
       modal.classList.add("show");
+      disableBodyScroll();
       document.getElementById("post-editor").focus();
     });
   }
@@ -82,6 +84,7 @@ export function setupCreatePostModal() {
     closeBtn.addEventListener("click", () => {
       modal.classList.add("hidden");
       modal.classList.remove("show");
+      enableBodyScroll();
     });
   }
 

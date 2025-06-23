@@ -9,6 +9,7 @@ import { applyFilterAndRender } from "./filters.js";
 import { getModalTree, rerenderModal } from "./postModal.js";
 import { removeRawById, findRawById } from "../../utils/posts.js";
 import { showToast } from "../../ui/toast.js";
+import { disableBodyScroll, enableBodyScroll } from "../../utils/bodyScroll.js";
 
 const deleteModal = document.getElementById("delete-modal");
 const deleteModalTitle = document.getElementById("delete-modal-title");
@@ -41,10 +42,12 @@ export function initModerationHandlers() {
     const label = node.depth === 0 ? "post" : node.depth === 1 ? "comment" : "reply";
     deleteModalTitle.textContent = `Do you want to delete this ${label}?`;
     deleteModal.classList.remove("hidden");
+    disableBodyScroll();
   });
 
   $(document).on("click", "#delete-cancel", function () {
     deleteModal.classList.add("hidden");
+    enableBodyScroll();
     pendingDelete = null;
   });
 
@@ -52,6 +55,7 @@ export function initModerationHandlers() {
     if (!pendingDelete) return;
     const { uid, inModal } = pendingDelete;
     deleteModal.classList.add("hidden");
+    enableBodyScroll();
     const $item = $(`[data-uid="${uid}"]`).closest(".item");
     $item.addClass("state-disabled");
 
