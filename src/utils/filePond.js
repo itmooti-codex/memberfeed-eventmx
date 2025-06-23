@@ -170,22 +170,40 @@ export function initFilePond() {
               canvas.style.display = "none";
               mediaStream?.getTracks().forEach((track) => track.stop());
 
-              if (isRecording) {
-                if (isSafari && recordBtn._safariRecorder) {
-                  recordBtn._safariRecorder.stop();
-                  delete recordBtn._safariRecorder;
-                } else {
-                  recorder.stop();
-                }
-              }
+              if (isSafari && recordBtn._safariRecorder) {
+                recordBtn._safariRecorder.stop();
+                delete recordBtn._safariRecorder;
+                recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
+                isRecording = false;
+              } else {
+                recorder.stop().getMp3().then(([buffer, blob]) => {
+                  isRecording = false;
+                  recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
 
-              inputElement.disabled = false;
-              pond.removeFile();
-              setPendingFile(null);
-              setFileTypeCheck("");
-              isRecording = false;
-              recordBtn.innerHTML = `${micIcon}<span class="p3">Record Audio</span>`; 
-              cancelBtn.remove();
+                  const file = new File(buffer, "recorded-audio.mp3", {
+                    type: blob.type,
+                    lastModified: Date.now(),
+                  });
+
+                  const cancelButton = section.querySelector(".cancelRecordingBtn");
+                  if (cancelButton) cancelButton.remove();
+
+                  pond.setOptions({ allowBrowse: true, allowDrop: false, allowPaste: false });
+                  inputElement.disabled = false;
+
+                  pond.addFile(file).then(() => {
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    inputElement.files = dataTransfer.files;
+                    setPendingFile(file);
+                    setFileTypeCheck("Audio");
+
+                    const nativeEvent = new Event("change", { bubbles: true });
+                    inputElement.dispatchEvent(nativeEvent);
+                    $(inputElement).trigger("change");
+                  });
+                }).catch((e) => console.error(e));
+              }
             });
           }
 
@@ -239,12 +257,10 @@ export function initFilePond() {
 
               safariRecorder.start();
               isRecording = true;
-              recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Recording';
               recordBtn._safariRecorder = safariRecorder;
             } else {
               recorder.start().then(() => {
                 isRecording = true;
-                recordBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Recording';
               });
             }
           }).catch((e) => {
@@ -253,44 +269,6 @@ export function initFilePond() {
             inputElement.disabled = false;
             canvas.style.display = "none";
           });
-        } else {
-          cancelAnimationFrame(animationId);
-          canvas.style.display = "none";
-          mediaStream?.getTracks().forEach((track) => track.stop());
-
-          if (isSafari && recordBtn._safariRecorder) {
-            recordBtn._safariRecorder.stop();
-            recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
-            isRecording = false;
-          } else {
-            recorder.stop().getMp3().then(([buffer, blob]) => {
-              isRecording = false;
-              recordBtn.innerHTML = `${micIcon} <span class="p3">Record Audio</span>`;
-
-              const file = new File(buffer, "recorded-audio.mp3", {
-                type: blob.type,
-                lastModified: Date.now(),
-              });
-
-              const cancelBtn = section.querySelector(".cancelRecordingBtn");
-              if (cancelBtn) cancelBtn.remove();
-
-              pond.setOptions({ allowBrowse: true, allowDrop: false, allowPaste: false });
-              inputElement.disabled = false;
-
-              pond.addFile(file).then(() => {
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-                inputElement.files = dataTransfer.files;
-                setPendingFile(file);
-                setFileTypeCheck("Audio");
-
-                const nativeEvent = new Event("change", { bubbles: true });
-                inputElement.dispatchEvent(nativeEvent);
-                $(inputElement).trigger("change");
-              });
-            }).catch((e) => console.error(e));
-          }
         }
       });
     }
