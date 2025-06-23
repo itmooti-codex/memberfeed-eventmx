@@ -34,14 +34,8 @@ export function initCommentHandlers() {
     const nextDepth = Math.min((node.depth || 0) + 1, 2);
     const nextType = nextDepth === 1 ? "Comment" : "Reply";
     const placeholder = nextType === "Comment" ? "Write a comment..." : "Write a reply...";
-    if(nextType === "Reply") {
-      console.log("Replying to a comment");
+    if(nextType === "Reply") {  
       uid = $(this).closest('.commentContainer').attr('data-uid') || uid;
-      console.log("Updated UID for reply:", uid);
-    }else{
-      console.log("Posting a comment");
-      console.log("nextType", nextType);
-      console.log("UID for comment:", uid);
     }
    let isPost = (nextType === "Comment");
 
