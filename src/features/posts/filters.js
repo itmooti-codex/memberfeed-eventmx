@@ -50,7 +50,11 @@ export function applyFilterAndRender() {
   const $container = $("#forum-root");
   if (items.length === 0) {
     $container.html(
-      '<div class="empty-state text-center p-4">No posts found.</div>'
+      `
+      <div class="flex items-center justify-center">
+      <img src="https://files.ontraport.com/media/a0035d45f3d546fbaea5b859bb0c422d.phpjnymep?Expires=4904265367&Signature=JPJ44QSQjnzAgxD-YHCJNbnztS6p28flUCC7WUSeRCIPJMZQEcEXxTqxgrs-ku2KTtAHq27NWEOS2zII9Sz-tK475IT6MRNRNgoQCg7xhEigBaopVCNXHLQj~5zfAW1H1yz3wiqbd0xNgjEIQvJL7vB-~DTltfzHXlWfHLEOXtSLEvne-wJbwKgUrCFO0jfrUHIXxqfTyNEAMsWf3co7X9LXBy1lP9yGkYhSeRxeRk-nX7TWb~WqbvJORM5yMfveVVD7KCBL7mx9JdXIDaKosdL4bpqqsb7fGwGAK2CZ50GaXzbnxywEjDAYEfmmVGAjQjn~8bJmzUl3rGlChctyPg__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA" class="size-full object-contain" />
+      </div>
+      `
     );
   } else {
     // Preserve existing media elements to avoid reloads
