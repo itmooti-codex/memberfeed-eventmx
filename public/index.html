@@ -111,6 +111,9 @@
         <!-- Notification Panel -->
         <div x-show="showNotifications" @click.outside="showNotifications = false" x-transition
           class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-[50000] p-4 max-[702px]:fixed max-[702px]:w-full">
+          <div class="absolute notificationsLoader hidden inset-0 bg-[#00000095] z-10 items-center justify-center flex">
+            <div class="h-8 w-8 animate-spin rounded-full border-2 border-solid border-white border-t-transparent"></div>
+          </div>
           <div class="flex items-center justify-between mb-3">
             <h3 class="font-semibold text-lg">Notifications</h3>
             <div class="flex items-center gap-3 text-gray-500">
