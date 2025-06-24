@@ -818,7 +818,7 @@
 
   <script id="tmpl-post" type="text/x-jsrender">
            {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
-      {{if fileType === 'Image' && ~inModal}}<div class="flex bg-black items-start gap-8 min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
+      {{if fileType === 'Image' && ~inModal}}<div class="flex max-[702px]:h-screen bg-black items-start gap-8 min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
 {{if fileType === 'Image' && ~inModal}}
 {{if fileContent || fileContentComment}}
     <div class=" flex-[3] flex items-center h-[90vh] justify-center max-[702px]:hidden">
@@ -1302,7 +1302,7 @@ data-uid="{{:uid}}"
 <div class="!hidden">
    
                {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
-          {{if fileType === 'Image' && ~inModal}}<div class="flex bg-black items-start gap-8 min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
+          {{if fileType === 'Image' && ~inModal}}<div class=" flex bg-black  items-start gap-8 min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
     {{if fileType === 'Image' && ~inModal}}
     {{if fileContent || fileContentComment}}
         <div class=" flex-[3] flex items-center h-[90vh] justify-center max-[702px]:hidden">
