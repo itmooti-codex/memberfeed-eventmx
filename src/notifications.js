@@ -210,6 +210,9 @@ export function initNotificationEvents() {
     `;
 
     try {
+      if (markAll) {
+        $(".notificationsLoader").removeClass("hidden").addClass("flex");
+      }
       await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
 
       if (markAll) {
@@ -229,6 +232,10 @@ export function initNotificationEvents() {
       }
     } catch (error) {
       console.error("Error marking announcement(s) as read:", error);
+    } finally {
+      if (markAll) {
+        $(".notificationsLoader").removeClass("flex").addClass("hidden");
+      }
     }
   });
 }
