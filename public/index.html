@@ -823,7 +823,7 @@
 {{if fileContent || fileContentComment}}
     <div class=" flex-[3] flex items-center h-[90vh] justify-center max-[702px]:hidden">
         {{if depth === 0 && fileContent}}
-        <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:contain;" alt="preview" />
+        <img src="{{:fileContent}}" style="width:100%;height:100%;object-fit:contain;" alt="preview" />
         {{/if}}
     </div>
 {{/if}}
@@ -1288,8 +1288,9 @@ data-uid="{{:uid}}"
   <div id="toast-container" class="toast-container !z-[999999999]"></div>
 
   <div id="file-preview-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[9999999999]">
-    <div class="modal-content bg-white p-4 m-4 rounded relative max-w-full max-h-full">
-      <div id="preview-container" class="max-h-[80vh] overflow-auto"></div>
+    <div class="modal-content bg-white p-4 m-4 rounded relative">
+      <!-- <div class="modal-content bg-white p-4 m-4 rounded relative max-w-full max-h-full"> -->
+      <div id="preview-container" class="h-[80vh] aspect-square overflow-auto"></div>
     </div>
     <a id="download-preview" href="#" download class="absolute top-2 left-2 cursor-pointer">
       <i class="fa-solid fa-download text-white text-2xl"></i>
@@ -1299,5 +1300,4 @@ data-uid="{{:uid}}"
     </div>
   </div>
 </body>
-
 </html>
