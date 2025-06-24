@@ -350,7 +350,7 @@
 
   <div x-data="{ selectedFilterTab: 'allPosts' }" class="w-full mt-[60px] mb-6">
     <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()"
-      class="flex gap-2 overflow-x-auto" role="tablist" aria-label="tab options">
+      class="flex gap-2 overflow-x-auto max-[702px]:mt-4" role="tablist" aria-label="tab options">
       <div x-on:click="selectedFilterTab = 'allPosts'" data-filter="Recent"
         x-bind:aria-selected="selectedFilterTab === 'allPosts'"
         x-bind:tabindex="selectedFilterTab === 'allPosts' ? '0' : '-1'"
@@ -888,7 +888,7 @@
             <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard"
                 x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false"
                 x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()"
-                class="absolute top-11 rounded {{if !~inModal}}left-0{{else}}right-0{{/if}} bg-white p-2 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]"
+                class="absolute top-11 rounded {{if !~inModal}}right-0{{else}}right-0{{/if}} bg-white p-2 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]"
                 role="menu">
                 {{if depth === 0}}
                 {{if isAdmin}}
