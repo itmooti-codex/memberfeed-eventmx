@@ -180,6 +180,7 @@ export function initNotificationEvents() {
     let ids = [];
 
     if (markAll) {
+      console.log("Marking all notifications as read");
       const container = document.getElementById("notificationContainerSocket");
       const elements = container.querySelectorAll("[data-announcement].unread");
       ids = Array.from(elements).map((el) => el.getAttribute("data-announcement"));

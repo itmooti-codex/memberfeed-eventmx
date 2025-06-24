@@ -128,10 +128,10 @@
           </div>
 
           <div class="flex items-center justify-between mb-3">
-            <button id="markAllNotificationAsRead" x-tooltip="'Mark all as read'"
-              class="text-[var(--color-primary)] hover:text-blue-800">
-              <i class="fa-solid fa-envelope-open"></i>
-            </button>
+            <div id="markAllNotificationAsRead" x-tooltip="'Mark all as read'"
+              class="cursor-pointer text-[var(--color-primary)] hover:text-blue-800">
+             Mark all as read
+            </div>
             <div x-data="{ toggle: false }" x-init="$watch('toggle', value => {
                 const hideEls = document.querySelectorAll('.read');
                 const unreadEls = document.querySelectorAll('.unread');
