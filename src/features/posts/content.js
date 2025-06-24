@@ -20,8 +20,8 @@ export function processContent(rawHtml) {
       <a href="${fullUrl}" target="_blank" class="flex flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
         <div class="flex items-center justify-start gap-2 self-stretch rounded-xl">
           <div class="flex flex-1 flex-col items-start justify-center gap-1">
-            <div class="justify-start text-center font-['Inter'] text-xs leading-none font-medium text-stone-950">${platform}</div>
-            <div class="justify-start text-center font-['Inter'] text-xs leading-none font-normal text-neutral-500">${fullUrl}</div>
+            <div class="justify-start font-['Inter'] text-xs leading-none font-medium text-stone-950 max-[702px]:line-clamp-1">${platform}</div>
+            <div class="justify-start font-['Inter'] text-xs leading-none font-normal text-neutral-500 max-[702px]:line-clamp-1">${fullUrl}</div>
           </div>
           <div class="relative h-8 w-8 overflow-hidden">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,11 +33,6 @@ export function processContent(rawHtml) {
     `;
   };
 
-  const matchUrl = rawHtml.match(/https?:\/\/[^\s<>"']+/);
-  const hasOnlyUrl = matchUrl && rawHtml.trim() === matchUrl[0];
-  const matchedUrl = matchUrl?.[0] || null;
-  const remainingText = matchedUrl ? rawHtml.replace(matchedUrl, '').trim() : rawHtml.trim();
-
   const getPlatform = (url) => {
     if (/youtube\.com\/watch\?v=|youtu\.be\//.test(url)) return 'YouTube';
     if (/vimeo\.com\//.test(url)) return 'Vimeo';
@@ -45,11 +40,32 @@ export function processContent(rawHtml) {
     return getDomain(url);
   };
 
-  if (matchedUrl) {
-    const previewHTML = renderPreview(getPlatform(matchedUrl), matchedUrl);
-    if (hasOnlyUrl) return previewHTML;
-    return `<div>${remainingText}</div>${previewHTML}`;
+  const parts = [];
+  const urlRegex = /https?:\/\/[^\s<>"']+/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = urlRegex.exec(rawHtml)) !== null) {
+    const url = match[0];
+    const index = match.index;
+
+    const textPart = rawHtml.slice(lastIndex, index).trim();
+    if (textPart && !/^<div>\s*(<br\s*\/?>)*\s*<\/div>$/.test(textPart)) {
+      parts.push(`<div>${textPart}</div>`);
+    }
+
+    parts.push(renderPreview(getPlatform(url), url));
+    lastIndex = index + url.length;
   }
 
-  return sanitize(rawHtml);
+  const finalText = rawHtml.slice(lastIndex).trim();
+  if (finalText && !/^<div>\s*(<br\s*\/?>)*\s*<\/div>$/.test(finalText)) {
+    parts.push(`<div>${finalText}</div>`);
+  }
+
+  const cleanedParts = parts.filter(
+    part => part.replace(/\s|<br\s*\/?>/gi, '') !== '<div></div>'
+  );
+
+  return `<div class="flex flex-col gap-2">${cleanedParts.join('')}</div>`;
 }

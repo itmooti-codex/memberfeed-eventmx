@@ -12,7 +12,7 @@ export async function sendNotificationsAfterPost(forumData) {
     Author,
     Parent_Forum,
   } = forumData;
-
+  console.log('forumData', forumData);
   const type = forum_type || "Post";
   const isPost = type === "Post";
   const mentionedIds = Array.from(copy.matchAll(/data-mention-id=['"](\d+)['"]/g)).map(m => Number(m[1]));
