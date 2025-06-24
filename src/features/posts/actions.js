@@ -256,6 +256,7 @@ export async function createForumToSubmit(
     if (forumType === "Post") {
       $(".postingLoader").removeClass("flex");
       $(".postingLoader").addClass("hidden");
+      document.getElementById("close-post-modal")?.click();
     }else{
       formWrapper.classList.remove("state-disabled");
     }
