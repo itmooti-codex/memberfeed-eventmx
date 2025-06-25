@@ -225,26 +225,56 @@
                 </div>
               </div>
             </div>
-
-      <a  href="../src/ui/userProfile.html" target="_blank"
-        class="relative cursor-pointer flex items-center justify-center rounded-full  bg-[#f4f1f1] outline outline-1 outline-offset-[-1px] outline-[#d9d9d9] p-2">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M19.8974 18.8498C19.8299 18.9668 19.7327 19.0639 19.6158 19.1314C19.4988 19.1989 19.3661 19.2345 19.231 19.2344H0.768484C0.633516 19.2343 0.500959 19.1987 0.384124 19.1311C0.26729 19.0635 0.17029 18.9664 0.102866 18.8495C0.0354414 18.7325 -3.46252e-05 18.5999 2.53589e-08 18.465C3.46759e-05 18.33 0.0355787 18.1974 0.103063 18.0805C1.56757 15.5487 3.82442 13.7332 6.45822 12.8726C5.15542 12.097 4.14323 10.9152 3.57709 9.50871C3.01094 8.1022 2.92215 6.54874 3.32434 5.08689C3.72653 3.62504 4.59746 2.33562 5.8034 1.41666C7.00934 0.497697 8.48359 0 9.99976 0C11.5159 0 12.9902 0.497697 14.1961 1.41666C15.4021 2.33562 16.273 3.62504 16.6752 5.08689C17.0774 6.54874 16.9886 8.1022 16.4224 9.50871C15.8563 10.9152 14.8441 12.097 13.5413 12.8726C16.1751 13.7332 18.432 15.5487 19.8965 18.0805C19.9641 18.1974 19.9998 18.33 20 18.465C20.0002 18.6001 19.9648 18.7328 19.8974 18.8498Z"
-            fill="#737373" />
-        </svg>
-
-        <div
-          class="absolute bottom-0 right-[-10px] flex items-center justify-center rounded-full bg-[#f4f1f1] outline outline-1 outline-offset-[-1px] outline-[#ffffff] p-2">
-          <svg width="8" height="4" viewBox="0 0 8 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div x-data="{ open: false, selected: 'Profile' }" class="sort-filter relative cursor-pointer"
+  @click.away="open = false">
+  <div  @click="open = !open" :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
+    class=" inline-flex items-center justify-start gap-3 rounded px-3 py-2 ">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
-              d="M7.24449 0.851063L4.21434 3.88121C4.1862 3.90939 4.15278 3.93174 4.116 3.94699C4.07921 3.96223 4.03978 3.97008 3.99996 3.97008C3.96014 3.97008 3.92071 3.96223 3.88392 3.94699C3.84714 3.93174 3.81372 3.90939 3.78558 3.88121L0.755426 0.851063C0.698568 0.794205 0.666626 0.717089 0.666626 0.63668C0.666626 0.55627 0.698568 0.479154 0.755426 0.422296C0.812284 0.365438 0.8894 0.333496 0.969809 0.333496C1.05022 0.333496 1.12733 0.365438 1.18419 0.422296L3.99996 3.23844L6.81573 0.422296C6.84388 0.394143 6.8773 0.371811 6.91409 0.356574C6.95087 0.341338 6.99029 0.333496 7.03011 0.333496C7.06992 0.333496 7.10935 0.341338 7.14613 0.356574C7.18292 0.371811 7.21634 0.394143 7.24449 0.422296C7.27265 0.45045 7.29498 0.483872 7.31021 0.520656C7.32545 0.55744 7.33329 0.596865 7.33329 0.63668C7.33329 0.676494 7.32545 0.715919 7.31021 0.752703C7.29498 0.789487 7.27265 0.82291 7.24449 0.851063Z"
+              d="M19.8974 18.8498C19.8299 18.9668 19.7327 19.0639 19.6158 19.1314C19.4988 19.1989 19.3661 19.2345 19.231 19.2344H0.768484C0.633516 19.2343 0.500959 19.1987 0.384124 19.1311C0.26729 19.0635 0.17029 18.9664 0.102866 18.8495C0.0354414 18.7325 -3.46252e-05 18.5999 2.53589e-08 18.465C3.46759e-05 18.33 0.0355787 18.1974 0.103063 18.0805C1.56757 15.5487 3.82442 13.7332 6.45822 12.8726C5.15542 12.097 4.14323 10.9152 3.57709 9.50871C3.01094 8.1022 2.92215 6.54874 3.32434 5.08689C3.72653 3.62504 4.59746 2.33562 5.8034 1.41666C7.00934 0.497697 8.48359 0 9.99976 0C11.5159 0 12.9902 0.497697 14.1961 1.41666C15.4021 2.33562 16.273 3.62504 16.6752 5.08689C17.0774 6.54874 16.9886 8.1022 16.4224 9.50871C15.8563 10.9152 14.8441 12.097 13.5413 12.8726C16.1751 13.7332 18.432 15.5487 19.8965 18.0805C19.9641 18.1974 19.9998 18.33 20 18.465C20.0002 18.6001 19.9648 18.7328 19.8974 18.8498Z"
               fill="#737373" />
           </svg>
+  </div>
 
-        </div>
-
-      </a>
+  <div x-show="open" @click.away="open = false"
+    class=" border-1-[#ccc] list-style-none absolute top-[100%] right-0 z-[10] mr-[4px] w-fit rounded border bg-[#ffffff] p-2 shadow-lg"
+    x-transition>
+    <a href="../src/ui/userProfile.html" target="_blank"
+      class="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-[var(--color-primary-shade)]"
+      :class="{ 'active': selected === 'Profile' }" data-sort="Profile" @click="selected = 'Profile'; open = false">
+      <div class="size-[20px] shrink-0">
+        <img class="size-full rounded-full"
+          src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+          alt="" />
+      </div>
+      <div class="flex flex-col">
+        <div class="h3">Profile</div>
+        <div class="p3">Uttam</div>
+      </div>
+    </a>
+    <div class="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-[var(--color-primary-shade)]"
+      :class="{ 'active': selected === 'Change Password' }" data-sort="Change Password"
+      @click="selected = 'Change Password'; open = false">
+      <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M12.8642 5.77745H10.8889V4.29597C10.8889 3.51014 10.5767 2.7565 10.0211 2.20084C9.46539 1.64518 8.71175 1.33301 7.92593 1.33301C7.1401 1.33301 6.38646 1.64518 5.8308 2.20084C5.27513 2.7565 4.96296 3.51014 4.96296 4.29597V5.77745H2.98765C2.72571 5.77745 2.4745 5.88151 2.28928 6.06673C2.10406 6.25195 2 6.50316 2 6.76511V13.6787C2 13.9406 2.10406 14.1918 2.28928 14.3771C2.4745 14.5623 2.72571 14.6663 2.98765 14.6663H12.8642C13.1261 14.6663 13.3774 14.5623 13.5626 14.3771C13.7478 14.1918 13.8519 13.9406 13.8519 13.6787V6.76511C13.8519 6.50316 13.7478 6.25195 13.5626 6.06673C13.3774 5.88151 13.1261 5.77745 12.8642 5.77745ZM8.41975 10.6312V12.1972C8.41975 12.3282 8.36773 12.4538 8.27512 12.5464C8.1825 12.639 8.0569 12.691 7.92593 12.691C7.79496 12.691 7.66935 12.639 7.57674 12.5464C7.48413 12.4538 7.4321 12.3282 7.4321 12.1972V10.6312C7.10261 10.5147 6.82491 10.2854 6.64808 9.984C6.47126 9.68257 6.40668 9.32832 6.46578 8.98388C6.52488 8.63944 6.70384 8.32698 6.97103 8.10172C7.23823 7.87647 7.57645 7.75292 7.92593 7.75292C8.2754 7.75292 8.61363 7.87647 8.88082 8.10172C9.14802 8.32698 9.32697 8.63944 9.38607 8.98388C9.44517 9.32832 9.3806 9.68257 9.20377 9.984C9.02694 10.2854 8.74924 10.5147 8.41975 10.6312ZM9.90124 5.77745H5.95062V4.29597C5.95062 3.77209 6.15873 3.26966 6.52917 2.89922C6.89961 2.52877 7.40204 2.32066 7.92593 2.32066C8.44981 2.32066 8.95224 2.52877 9.32268 2.89922C9.69312 3.26966 9.90124 3.77209 9.90124 4.29597V5.77745Z"
+          fill="#0963D8" />
+      </svg>
+      <div class="p3 text-nowrap">Change Password</div>
+    </div>
+    <div class="flex cursor-pointer items-center gap-2 rounded p-2 text-nowrap hover:bg-[var(--color-primary-shade)]"
+      :class="{ 'active': selected === 'Most Popular' }" data-sort="Most Popular"
+      @click="selected = 'Most Popular'; open = false">
+      <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M7.5 13.5C7.5 13.6326 7.44732 13.7598 7.35355 13.8536C7.25979 13.9473 7.13261 14 7 14H3C2.86739 14 2.74021 13.9473 2.64645 13.8536C2.55268 13.7598 2.5 13.6326 2.5 13.5V2.5C2.5 2.36739 2.55268 2.24021 2.64645 2.14645C2.74021 2.05268 2.86739 2 3 2H7C7.13261 2 7.25979 2.05268 7.35355 2.14645C7.44732 2.24021 7.5 2.36739 7.5 2.5C7.5 2.63261 7.44732 2.75979 7.35355 2.85355C7.25979 2.94732 7.13261 3 7 3H3.5V13H7C7.13261 13 7.25979 13.0527 7.35355 13.1464C7.44732 13.2402 7.5 13.3674 7.5 13.5ZM14.3538 7.64625L11.8538 5.14625C11.7838 5.07624 11.6947 5.02856 11.5977 5.00924C11.5006 4.98991 11.4 4.99981 11.3086 5.03769C11.2172 5.07556 11.1391 5.13971 11.0841 5.22201C11.0292 5.30431 10.9999 5.40105 11 5.5V7.5H7C6.86739 7.5 6.74021 7.55268 6.64645 7.64645C6.55268 7.74021 6.5 7.86739 6.5 8C6.5 8.13261 6.55268 8.25979 6.64645 8.35355C6.74021 8.44732 6.86739 8.5 7 8.5H11V10.5C10.9999 10.5989 11.0292 10.6957 11.0841 10.778C11.1391 10.8603 11.2172 10.9244 11.3086 10.9623C11.4 11.0002 11.5006 11.0101 11.5977 10.9908C11.6947 10.9714 11.7838 10.9238 11.8538 10.8538L14.3538 8.35375C14.4002 8.30731 14.4371 8.25217 14.4623 8.19147C14.4874 8.13077 14.5004 8.06571 14.5004 8C14.5004 7.93429 14.4874 7.86923 14.4623 7.80853C14.4371 7.74783 14.4002 7.69269 14.3538 7.64625Z"
+          fill="#0963D8" />
+      </svg>
+      <div class="p3 text-nowrap">Logout</div>
+    </div>
+  </div>
+</div>
+ 
     </div>
   </div>
 
@@ -837,12 +867,12 @@
 
   <script id="tmpl-post" type="text/x-jsrender">
            {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
-      {{if fileType === 'Image' && ~inModal}}<div class="flex max-[702px]:h-screen bg-black items-start gap-8 min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
+      {{if fileType === 'Image' && ~inModal}}<div class="flex max-[702px]:h-screen bg-black items-start  min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
 {{if fileType === 'Image' && ~inModal}}
 {{if fileContent || fileContentComment}}
-    <div class=" flex-[3] flex items-center h-[90vh] justify-center max-[702px]:hidden" data-or="{{:imageOrientation}}">
+    <div class=" flex-[3] flex items-center h-[90vh] justify-center max-[702px]:hidden px-4" data-or="{{:imageOrientation}}">
         {{if depth === 0 && fileContent}}
-        <img src="{{:fileContent}}" style="width:100%;height:300px;object-fit:contain;" alt="preview" />
+        <img src="{{:fileContent}}" style="width:100%;height:100%;object-fit:contain;" alt="preview" />
         {{/if}}
     </div>
 {{/if}}
