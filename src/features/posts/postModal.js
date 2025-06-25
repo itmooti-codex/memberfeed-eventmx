@@ -69,6 +69,10 @@ function normalize(node, list) {
     Bookmarking_Contacts_Data,
     Forum_Reactors_Data,
     ForumPosts,
+    file_name,
+    file_link,
+    file_size,
+    image_orientation,
   } = node;
   list.push({
     author_id: Author_ID,
@@ -79,6 +83,10 @@ function normalize(node, list) {
     featured_forum: Featured_Forum,
     file_content: File_Content,
     file_type: File_Type,
+    file_name,
+    file_link,
+    file_size,
+    image_orientation,
     id: ID,
     copy: Copy,
     forum_status: Forum_Status,
