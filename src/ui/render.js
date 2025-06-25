@@ -94,7 +94,7 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
   const fileContent = parsed.link || "";
   const fileName = raw.file_name || parsed.name || "";
   const fileSize = raw.file_size || parsed.size || 0;
-  const orientation = raw.image_orientation || "";
+  // const orientation = raw.image_orientation || "";
 
   return {
     id: raw.id,
@@ -127,7 +127,7 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     fileContent: depth === 0 ? fileContent : "",
     fileContentName: depth === 0 ? fileName : "",
     fileSize: fileSize,
-    imageOrientation: orientation,
+    imageOrientation: raw.image_orientation || "no ",
     fileContentComment: depth > 0 ? fileContent : null,
     fileContentCommentName: depth > 0 ? fileName : "",
     totalCommentAndReplies: (raw.ForumPosts ? raw.ForumPosts.length : 0) + (raw.ForumPosts?.reduce((sum, item) => sum + (item.ForumPosts?.length || 0), 0) || 0)
