@@ -71,6 +71,7 @@ export function initFilePond() {
     pond.on("addfile", (error, fileItem) => {
       if (error) return;
       const file = fileItem.file;
+      setPendingFile(file);
       const type = file.type;
       const name = file.name;
       const isVideo = type.startsWith("video/");
