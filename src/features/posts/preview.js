@@ -1,4 +1,5 @@
 import { disableBodyScroll, enableBodyScroll } from "../../utils/bodyScroll.js";
+import { pauseAllPlayers } from "../../utils/plyr.js";
 
 export function initPreviewHandlers() {
 // File preview modal logic
@@ -11,6 +12,7 @@ if (previewClose) {
   previewClose.addEventListener('click', () => {
     previewModal.classList.add('hidden');
     previewModal.classList.remove('show');
+    pauseAllPlayers(previewContainer);
     previewContainer.innerHTML = '';
     enableBodyScroll();
   });
