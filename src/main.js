@@ -1,7 +1,7 @@
 import { state,notificationStore, GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, GLOBAL_PAGE_TAG } from "./config.js";
 import { setGlobals } from "./config.js";
 import { FETCH_CONTACTS_QUERY, GET_CONTACTS_BY_TAGS, GET__CONTACTS_NOTIFICATION_PREFERENCEE, UPDATE_CONTACT_NOTIFICATION_PREFERENCE } from "./api/queries.js";
-import { setupPlyr } from "./utils/plyr.js";
+import { setupPlyr, pauseAllPlayers } from "./utils/plyr.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { tribute } from "./utils/tribute.js";
 import { initFilePond } from "./utils/filePond.js";
@@ -27,6 +27,7 @@ window.toggleOption = toggleOption;
 window.state = state;
 window.disableBodyScroll = disableBodyScroll;
 window.enableBodyScroll = enableBodyScroll;
+window.pauseAllPlayers = pauseAllPlayers;
 
 export function getNotificationPreferences(contactId) {
   return fetchGraphQL(GET__CONTACTS_NOTIFICATION_PREFERENCEE, { id: contactId })
