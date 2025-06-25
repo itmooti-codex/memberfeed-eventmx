@@ -75,7 +75,7 @@ export function initFilePond() {
       setFileTypeCheck(file.type.startsWith("audio/") ? "Audio" :
         file.type.startsWith("video/") ? "Video" :
           file.type.startsWith("image/") ? "Image" :
-            "Document");
+            "File");
       const type = file.type;
       const name = file.name;
       const isVideo = type.startsWith("video/");
