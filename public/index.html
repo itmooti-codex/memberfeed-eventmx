@@ -115,11 +115,22 @@
             </div>
           </div>
           <div class="flex items-center justify-between mb-3">
-            <h3 class="font-semibold text-lg">Notifications</h3>
+            <div class="flex gap-x-4 items-center">
+              <div class="block min-[703px]:hidden" @click="showNotifications = false">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M19.707 18.292C19.7999 18.3849 19.8736 18.4952 19.9238 18.6166C19.9741 18.738 20 18.8681 20 18.9995C20 19.1309 19.9741 19.261 19.9238 19.3824C19.8736 19.5038 19.7999 19.6141 19.707 19.707C19.6141 19.7999 19.5038 19.8736 19.3824 19.9238C19.261 19.9741 19.1309 20 18.9995 20C18.8681 20 18.738 19.9741 18.6166 19.9238C18.4952 19.8736 18.3849 19.7999 18.292 19.707L10 11.4137L1.70796 19.707C1.52033 19.8946 1.26585 20 1.0005 20C0.735151 20 0.48067 19.8946 0.29304 19.707C0.105409 19.5193 5.23067e-09 19.2648 0 18.9995C-5.23067e-09 18.7341 0.10541 18.4797 0.29304 18.292L8.58633 10L0.29304 1.70796C0.105409 1.52033 -1.97701e-09 1.26585 0 1.0005C1.97701e-09 0.735151 0.105409 0.48067 0.29304 0.29304C0.48067 0.105409 0.735151 1.97701e-09 1.0005 0C1.26585 -1.97701e-09 1.52033 0.105409 1.70796 0.29304L10 8.58633L18.292 0.29304C18.4797 0.10541 18.7341 -5.23067e-09 18.9995 0C19.2648 5.23067e-09 19.5193 0.105409 19.707 0.29304C19.8946 0.48067 20 0.735151 20 1.0005C20 1.26585 19.8946 1.52033 19.707 1.70796L11.4137 10L19.707 18.292Z"
+                    fill="black" />
+                </svg>
+              </div>
+              <h3 class="h3">Notifications</h3>
+            
+            
+            </div>
             <div class="flex items-center gap-3 text-gray-500">
               <button @click="openSettings=true;showNotifications=false" x-tooltip="'Settings'"
                 class="hover:text-[var(--color-primary)]">
-                <i class="fa-solid fa-gear"></i>
+                <i class="fa-solid fa-gear text-[var(--color-black)]"></i>
               </button>
               <!-- <button @click="showNotifications = false" x-tooltip="'Close'" class="hover:text-red-500">
                 <i class="fa-solid fa-xmark"></i>
@@ -127,9 +138,9 @@
             </div>
           </div>
 
-          <div class="flex items-center justify-between mb-3 flex-row-reverse">
+          <div class="flex items-center justify-between mb-3 flex-row-reverse ">
             <button id="markAllNotificationAsRead" x-tooltip="'Mark all as read'"
-              class="text-[var(--dark-primary)]">
+              class="text-[var(--color-black)] p3 font-medium">
               <!-- <i class="fa-solid fa-envelope-open"></i> -->
               Mark all as read
             </button>
@@ -187,7 +198,7 @@
                                                       }
                                                   })">
               
-                <div class="flex items-center gap-x-2">
+                <div class="flex items-center gap-x-2 text-[var(--color-black)] p3 font-medium">
                   <button :class="selected === 'all' 
                                                           ? 'py-1 px-2 rounded text-[var(--color-primary)] bg-[var(--color-primary-shade)]' 
                                                           : 'py-1 px-2 rounded text-[var(--dark-color)]'" @click="selected = 'all'">
@@ -216,16 +227,17 @@
           <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" @click="modalForPostOpen=true">
             <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
             <div class="flex-1">
-              <div class="text-md font-medium text-gray-900">{{:Title}}</div>
+              <div class="p3 text-[var(--color-black)]">{{:Title}}</div>
               <div class="text-sm line-clamp-1 font-medium text-gray-900">{{:Parent_Forum?.copy}}</div>
-              <div class="text-xs text-gray-500">{{:~formatDate(Parent_Forum?.published_date)}}</div>
+              <div class="p3 text-[var(--color-grey)]">{{:~formatDate(Parent_Forum?.published_date)}}</div>
             </div>
           </div>
         </script>
 
-          <div class="mt-2 flex justify-end">
-            <button x-tooltip="'View all'" class="text-[var(--color-primary)] hover:text-blue-800">
-              <i class="fa-solid fa-arrow-right"></i>
+          <div class="mt-2 flex justify-center">
+            <button x-tooltip="'View all'" class="text-[var(--color-primary)] hover:text-blue-800 p3">
+              View All
+              <i class="fa-solid fa-arrow-right pl-2"></i>
             </button>
           </div>
         </div>
