@@ -35,6 +35,7 @@ $(document).on(
     let el;
     if (this.tagName.toLowerCase() === 'img') {
       el = document.createElement('img');
+      el.style.cssText = `height: 100%; width:100%; object-fit:contain;`;
       el.src = src;
     } else if (this.tagName.toLowerCase() === 'video') {
       el = document.createElement('video');
