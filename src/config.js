@@ -75,5 +75,5 @@ export const notificationStore = {
 export const searchInput = document.getElementById("searchPost");
 export const clearIcon = document.querySelector(".clearIcon");
 export const searchIcon = document.querySelector(".searchIcon");
-export const subscriberContactsForModal = [40, 62];
+export const subscriberContactsForModal = [40, 62, 86];
 export const adminContactsForModal = [83];

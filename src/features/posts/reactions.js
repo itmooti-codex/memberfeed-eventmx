@@ -14,7 +14,9 @@ import { showToast } from "../../ui/toast.js";
 
 export function initReactionHandlers() {
   // LIKE / UNLIKE
-  $(document).on("click", ".btn-like", async function () {
+  // $(document).on("click", ".btn-like", async function () {
+  $(document).off("click.btnLike");
+  $(document).on("click.btnLike", ".btn-like", async function () {
     // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
     const inModal = $(this).closest("#modalForumRoot").length > 0;
@@ -75,7 +77,9 @@ export function initReactionHandlers() {
   });
 
   // BOOKMARK / UNBOOKMARK
-  $(document).on("click", ".btn-bookmark", async function () {
+  // $(document).on("click", ".btn-bookmark", async function () {
+  $(document).off("click.btnBookmark");
+  $(document).on("click.btnBookmark", ".btn-bookmark", async function () {
     // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
     const inModal = $(this).closest("#modalForumRoot").length > 0;
