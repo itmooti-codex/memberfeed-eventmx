@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../public/styles/style.css">
+</head>
+<body class="bg-[var(--color-primary-shade)] p-4">
+   
+    <div class="flex flex-col gap-y-6 p-4 rounded-[16px] bg-[var(--color-white)]">
+    <div class="h3 text-[var(--color-black)]">Profile</div>
+    
+<div class="flex gap-x-3 items-center">
+    <div class="h-[108px] max-[500px]:h-[48px] aspect-square rounded-full bg-[var(--grey-200)]  overflow-hidden border border-grey-200">
+        <img src="https://plus.unsplash.com/premium_photo-1668896122554-2a4456667f65?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" style="height: 100%; width: 100%; object-fit: cover;">
+</div>
+
+<div class="flex flex-col gap-y-2">
+
+
+<div class="flex items-center gap-x-2 p3 text-[var(--color-primary)] py-2 px-3 border  border-[var(--color-primary)] rounded w-max">
+ <div>
+    <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M12.833 8.9588V12.8476C12.833 12.9765 12.7818 13.1001 12.6907 13.1913C12.5995 13.2824 12.4759 13.3337 12.3469 13.3337H1.65284C1.52392 13.3337 1.40028 13.2824 1.30912 13.1913C1.21796 13.1001 1.16675 12.9765 1.16675 12.8476V8.9588C1.16675 8.82988 1.21796 8.70624 1.30912 8.61508C1.40028 8.52392 1.52392 8.47271 1.65284 8.47271C1.78176 8.47271 1.9054 8.52392 1.99656 8.61508C2.08772 8.70624 2.13894 8.82988 2.13894 8.9588V12.3615H11.8608V8.9588C11.8608 8.82988 11.9121 8.70624 12.0032 8.61508C12.0944 8.52392 12.218 8.47271 12.3469 8.47271C12.4759 8.47271 12.5995 8.52392 12.6907 8.61508C12.7818 8.70624 12.833 8.82988 12.833 8.9588ZM4.91333 4.92786L6.51379 3.32678V8.9588C6.51379 9.08772 6.56501 9.21136 6.65617 9.30252C6.74733 9.39368 6.87097 9.4449 6.99989 9.4449C7.12881 9.4449 7.25245 9.39368 7.34361 9.30252C7.43477 9.21136 7.48599 9.08772 7.48599 8.9588V3.32678L9.08645 4.92786C9.17766 5.01907 9.30137 5.07031 9.43037 5.07031C9.55936 5.07031 9.68307 5.01907 9.77428 4.92786C9.86549 4.83665 9.91673 4.71294 9.91673 4.58395C9.91673 4.45495 9.86549 4.33124 9.77428 4.24003L7.3438 1.80956C7.29866 1.76436 7.24505 1.72851 7.18604 1.70405C7.12702 1.67958 7.06377 1.66699 6.99989 1.66699C6.93601 1.66699 6.87276 1.67958 6.81374 1.70405C6.75473 1.72851 6.70112 1.76436 6.65598 1.80956L4.2255 4.24003C4.13429 4.33124 4.08305 4.45495 4.08305 4.58395C4.08305 4.71294 4.13429 4.83665 4.2255 4.92786C4.31671 5.01907 4.44042 5.07031 4.56941 5.07031C4.69841 5.07031 4.82212 5.01907 4.91333 4.92786Z"
+            fill="#0963D8" />
+    </svg>
+ </div>
+        
+Upload
+</div>
+
+<div class="p2 text-[var(--color-grey)]">At least 800*800px recommended. At least JPG is allowed.</div>
+
+</div>
+</div>
+
+<div class="bg-[var(--grey-200)] h-[1px]"></div>
+
+<div class="flex flex-col gap-y-4">
+<div class="flex min-[702px]:items-center gap-x-4 max-[500px]:flex-col  gap-y-4">
+<div class="flex flex-col grow">
+    <label for="username" class="p3">Username</label>
+    <input type="text" id="username" name="username"
+        class="border border-[var(--grey-200)] focus:border-[var(--color-primary)] outline-none duration-300 p2 rounded py-2 px-3" />
+    </div>
+
+    <div class="flex flex-col grow">
+        <label for="emailAddress" class="p3">Email Address</label>
+        <input type="text" id="emailAddress" name="emailAddress"
+            class="border border-[var(--grey-200)] focus:border-[var(--color-primary)] outline-none duration-300 p2 rounded py-2 px-3" />
+        </div>
+        </div>
+
+
+        <div class="flex min-[702px]:items-center gap-x-4 max-[500px]:flex-col  gap-y-4">
+            <div class="flex flex-col grow">
+                <label for="telephoneNumber" class="p3">Phone Number</label>
+                <input type="tel" id="telephoneNumber" name="telephoneNumber"
+                    class="border border-[var(--grey-200)] focus:border-[var(--color-primary)] outline-none duration-300 p2 rounded py-2 px-3" />
+            </div>
+        
+            <div class="flex flex-col grow">
+                <label for="emailAddress" class="p3">Email Address</label>
+                <input type="text" id="emailAddress" name="emailAddress"
+                    class="border border-[var(--grey-200)] focus:border-[var(--color-primary)] outline-none duration-300 p2 rounded py-2 px-3" />
+            </div>      </div>
+
+
+
+                <div class="flex flex-col grow">
+                    <label for="biography" class="p3">Bio</label>
+                    <textarea type="tel" id="biography" name="biography"
+                        class="border border-[var(--grey-200)] focus:border-[var(--color-primary)] outline-none duration-300 p2 rounded py-2 px-3 h-20" > gsdf</textarea>
+                </div>
+               </div>       
+               
+               
+               <div class="flex items-center min-[702px]:justify-end gap-x-3 ">
+                <div class="border border-[var(--color-primary)] rounded  text-[var(--color-primary)] py-2 px-3 cursor-pointer max-[702px]:grow max-[702px]:text-center">Reset</div>
+                <div class="border bg-[var(--color-primary)] border-[var(--color-primary)] rounded  text-[var(--color-white)] py-2 px-3 cursor-pointer max-[702px]:grow max-[702px]:text-center">Save</div>
+               </div>
+    
+       </div>
+
+
+</body>
+</html>
