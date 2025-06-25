@@ -229,11 +229,11 @@
   @click.away="open = false">
   <div  @click="open = !open" :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
     class=" inline-flex items-center justify-start gap-3 rounded px-3 py-2 ">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M19.8974 18.8498C19.8299 18.9668 19.7327 19.0639 19.6158 19.1314C19.4988 19.1989 19.3661 19.2345 19.231 19.2344H0.768484C0.633516 19.2343 0.500959 19.1987 0.384124 19.1311C0.26729 19.0635 0.17029 18.9664 0.102866 18.8495C0.0354414 18.7325 -3.46252e-05 18.5999 2.53589e-08 18.465C3.46759e-05 18.33 0.0355787 18.1974 0.103063 18.0805C1.56757 15.5487 3.82442 13.7332 6.45822 12.8726C5.15542 12.097 4.14323 10.9152 3.57709 9.50871C3.01094 8.1022 2.92215 6.54874 3.32434 5.08689C3.72653 3.62504 4.59746 2.33562 5.8034 1.41666C7.00934 0.497697 8.48359 0 9.99976 0C11.5159 0 12.9902 0.497697 14.1961 1.41666C15.4021 2.33562 16.273 3.62504 16.6752 5.08689C17.0774 6.54874 16.9886 8.1022 16.4224 9.50871C15.8563 10.9152 14.8441 12.097 13.5413 12.8726C16.1751 13.7332 18.432 15.5487 19.8965 18.0805C19.9641 18.1974 19.9998 18.33 20 18.465C20.0002 18.6001 19.9648 18.7328 19.8974 18.8498Z"
-              fill="#737373" />
-          </svg>
+<div class="size-[30px] shrink-0">
+  <img class="size-full rounded-full avatar-photo"
+    src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
+    alt="" />
+</div>
   </div>
 
   <div x-show="open" @click.away="open = false"
@@ -243,13 +243,13 @@
       class="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-[var(--color-primary-shade)]"
       :class="{ 'active': selected === 'Profile' }" data-sort="Profile" @click="selected = 'Profile'; open = false">
       <div class="size-[20px] shrink-0">
-        <img class="size-full rounded-full"
+        <img class="size-full rounded-full avatar-photo"
           src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
           alt="" />
       </div>
       <div class="flex flex-col">
         <div class="h3">Profile</div>
-        <div class="p3">Uttam</div>
+        <div class="p3 avatar-name">Uttam</div>
       </div>
     </a>
     <div class="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-[var(--color-primary-shade)]"
