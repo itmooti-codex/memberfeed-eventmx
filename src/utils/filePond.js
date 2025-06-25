@@ -257,9 +257,18 @@ export function initFilePond() {
                 inputElement.disabled = false;
 
                 pond.addFile(file).then(() => {
-                  const dataTransfer = new DataTransfer();
-                  dataTransfer.items.add(file);
-                  inputElement.files = dataTransfer.files;
+                  // const dataTransfer = new DataTransfer();
+                  // dataTransfer.items.add(file);
+                  // inputElement.files = dataTransfer.files;
+                  try {
+                    if (typeof DataTransfer !== "undefined") {
+                      const dt = new DataTransfer();
+                      dt.items.add(file);
+                      inputElement.files = dt.files;
+                    }
+                  } catch (e) {
+                    console.warn("DataTransfer unsupported", e);
+                  }
                   setPendingFile(file);
                   setFileTypeCheck("Audio");
 
