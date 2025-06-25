@@ -15,7 +15,7 @@ export function initFilePond() {
     const canvas = section.querySelector(".waveform");
     if (!inputElement || !dropArea || !canvas) return;
     const ctx = canvas.getContext("2d");
-    
+
     const pond = FilePond.create(inputElement, {
       allowReplace: true,
       allowBrowse: true,
@@ -61,9 +61,9 @@ export function initFilePond() {
         e.preventDefault();
         dropArea.classList.remove("dragover");
         const files = e.dataTransfer.files;
-       
-          pond.addFile(files[0]);
-        
+
+        pond.addFile(files[0]);
+
       });
     });
 
@@ -178,12 +178,12 @@ export function initFilePond() {
               if (isSafari && recordBtn._safariRecorder) {
                 recordBtn._safariRecorder.stop();
                 delete recordBtn._safariRecorder;
-              
+
                 isRecording = false;
               } else {
                 recorder.stop().getMp3().then(([buffer, blob]) => {
                   isRecording = false;
-                
+
 
                   const file = new File(buffer, "recorded-audio.mp3", {
                     type: blob.type,
@@ -197,9 +197,6 @@ export function initFilePond() {
                   inputElement.disabled = false;
 
                   pond.addFile(file).then(() => {
-                    // const dataTransfer = new DataTransfer();
-                    // dataTransfer.items.add(file);
-                    // inputElement.files = dataTransfer.files;
                     try {
                       if (typeof DataTransfer !== "undefined") {
                         const dt = new DataTransfer();
@@ -211,7 +208,7 @@ export function initFilePond() {
                     }
                     setPendingFile(file);
                     setFileTypeCheck("Audio");
-
+                    pond.getFiles();
                     const nativeEvent = new Event("change", { bubbles: true });
                     inputElement.dispatchEvent(nativeEvent);
                     $(inputElement).trigger("change");
@@ -257,9 +254,6 @@ export function initFilePond() {
                 inputElement.disabled = false;
 
                 pond.addFile(file).then(() => {
-                  // const dataTransfer = new DataTransfer();
-                  // dataTransfer.items.add(file);
-                  // inputElement.files = dataTransfer.files;
                   try {
                     if (typeof DataTransfer !== "undefined") {
                       const dt = new DataTransfer();
@@ -271,7 +265,7 @@ export function initFilePond() {
                   }
                   setPendingFile(file);
                   setFileTypeCheck("Audio");
-
+                  pond.getFiles();
                   const nativeEvent = new Event("change", { bubbles: true });
                   inputElement.dispatchEvent(nativeEvent);
                   $(inputElement).trigger("change");
@@ -288,7 +282,7 @@ export function initFilePond() {
             }
           }).catch((e) => {
             console.error("Mic access failed:", e.name, e.message);
-           
+
             inputElement.disabled = false;
             canvas.style.display = "none";
           });
