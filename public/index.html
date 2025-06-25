@@ -229,7 +229,7 @@
         @click.away="open = false">
         <div @click="open = !open" class=" inline-flex items-center justify-start gap-3 rounded px-3 py-2 ">
           <div class="size-[30px] shrink-0 relative">
-            <img class="size-full rounded-full avatar-photo"
+            <img class="size-full rounded-full avatar-photo border-[1px] border-[var(--color-primary)]"
               src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
               alt="" />
             <div class="absolute bottom-0 -right-[8px]">
@@ -253,7 +253,7 @@
             :class="{ 'active': selected === 'Profile' }" data-sort="Profile"
             @click="selected = 'Profile'; open = false">
             <div class="size-[25px] shrink-0 relative">
-              <img class="size-full rounded-full avatar-photo"
+              <img class="size-full rounded-full avatar-photo border-[1px] border-[var(--grey-200)]"
                 src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D"
                 alt="" />
             </div>
