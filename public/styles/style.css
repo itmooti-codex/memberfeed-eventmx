@@ -105,6 +105,7 @@ body,
 .canvasWaveform:empty {
   display: none;
 }
+
 button:not(.file-preview button):hover {
   /* background: var(--color-primary);
   color: white;
@@ -130,12 +131,18 @@ button:not(.file-preview button):hover {
 }
 
 .btn-like.liked,
-.btn-bookmark.bookmarked {
+.bookmarked {
   color: var(--color-primary);
 }
 
+.btn-bookmark path,
+.btn-bookmark {
+  fill: var(--color-black);
 
-.btn-like.liked path {
+}
+
+.btn-like.liked path,
+.btn-bookmark.bookmarked path {
   fill: var(--color-primary);
 }
 
@@ -177,7 +184,7 @@ button:not(.file-preview button):hover {
 }
 
 
-.emoji-wrapper{
+.emoji-wrapper {
   width: 100%;
 }
 
@@ -366,7 +373,7 @@ button:not(.file-preview button):hover {
   color: var(--color-primary);
   text-decoration: underline;
 }
-.editor{
+.editor {
   font-size: 16px !important;
 }
 
@@ -483,6 +490,7 @@ button:not(.file-preview button):hover {
 .commentContainer.has-replies.is-collapsed .reply-ribbon {
   padding-left: 0;
 }
+
 .mainComment {
   position: relative;
   z-index: 1;
@@ -496,9 +504,55 @@ button:not(.file-preview button):hover {
   pointer-events: none;
   /* Line styles applied dynamically */
 }
+
 /* Dropdown UI */
 
 
-.tribute-container{
+.tribute-container {
   max-height: 150px !important;
 }
+/* added below css for custom loader */
+
+.loading-state {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 10px solid #ddd;
+  border-top-color: orange;
+  animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 10px solid #ddd;
+  border-top-color: orange;
+  animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* added css above for the custom loader. */
