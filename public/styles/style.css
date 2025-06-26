@@ -134,11 +134,16 @@ button:not(.file-preview button):hover {
   color: var(--color-primary);
 }
 
-.btn-like.liked path,
-.btn-bookmark.bookmarked path {
+.btn-bookmark path {
+  fill: #0e0e0e;
+
+}
+
+.btn-like.liked path {
   fill: var(--color-primary);
 }
 
+/* added above */
 .file-filter-menu {
   display: none;
 }
