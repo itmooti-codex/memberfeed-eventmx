@@ -2,15 +2,47 @@ import { GET_SINGLE_POST_SUBSCRIPTION } from "../../api/queries.js";
 import { buildTree } from "../../ui/render.js";
 import { renderItems } from "../../ui/render.js";
 import { setupPlyr } from "../../utils/plyr.js";
-import { PROTOCOL, WS_ENDPOINT, KEEPALIVE_MS } from "../../config.js";
+import { PROTOCOL, WS_ENDPOINT, KEEPALIVE_MS, state } from "../../config.js";
 
 let modalTree = [];
+let highlightId = null;
+
+function scrollAndHighlight() {
+  if (!highlightId) return;
+  const container = document.getElementById("modalForumRoot");
+  const target = container?.querySelector(`[data-id="${highlightId}"]`);
+  if (target) {
+    target.classList.add("highlighted");
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => target.classList.remove("highlighted"), 2000);
+  }
+  highlightId = null;
+}
+
+function expandPathToId(tree, id) {
+  function dfs(nodes) {
+    for (const node of nodes) {
+      if (node.id === id) {
+        return [node];
+      }
+      const path = dfs(node.children);
+      if (path) {
+        node.isCollapsed = false;
+        state.collapsedState[node.uid] = false;
+        return [node, ...path];
+      }
+    }
+    return null;
+  }
+  dfs(tree);
+}
 function renderModal() {
   const container = document.getElementById("modalForumRoot");
   if (!container) return;
   container.innerHTML = renderItems(modalTree, { inModal: true });
   requestAnimationFrame(() => {
     setupPlyr();
+    scrollAndHighlight();
   });
 }
 
@@ -118,8 +150,10 @@ function closeModalSocket() {
 
 }
 
-export function openPostModalById(postId, author = "") {
+export function openPostModalById(postId, author = "", highlight = null) {
   if (!postId) return;
+
+  highlightId = highlight ? Number(highlight) : null;
 
   window.dispatchEvent(new CustomEvent('open-modal'));
 
@@ -179,6 +213,9 @@ export function openPostModalById(postId, author = "") {
         const list = [];
         normalize(data, list);
         modalTree = buildTree([], list);
+        if (highlightId) {
+          expandPathToId(modalTree, highlightId);
+        }
         // replies remain collapsed; comment forms remain closed by default
 
         if (container) {

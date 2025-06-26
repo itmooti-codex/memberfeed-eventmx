@@ -176,7 +176,7 @@ class="max-w-[700px] max-[700px]:!w-full bg-[#f1f1f1] flex flex-col items-center
           </div>
 
         <script id="notificationTemplate" type="text/x-jsrender">
-                                    <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" @click="modalForPostOpen=true">
+                                    <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" data-targetid="{{:Parent_Forum_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
                                       <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
                                       <div class="flex-1">
                                         <div class="p3 text-[var(--color-black)]">{{:Title}}</div>
