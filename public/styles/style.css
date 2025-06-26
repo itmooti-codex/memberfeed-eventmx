@@ -540,6 +540,17 @@ button:not(.file-preview button):hover {
   }
 }
 
+.highlighted {
+  background-color: #FEF3C7;
+  animation: highlight-fade 2s forwards;
+}
+
+@keyframes highlight-fade {
+  from { background-color: #FEF3C7; }
+  to { background-color: transparent; }
+}
+
+
 .loading {
   width: 100px;
   height: 100px;
