@@ -30,26 +30,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body x-data="{
-  showNotifications: false,
-  showSettings: false,
-  modalForPostOpen:false,
-  openSettings:false,
-  openScheduleDatePicker: false,
-  modalForCustomDateTime: false,
-  selectedDate: '',
-  today: new Date().toISOString().split('T')[0]
-}" x-init="
-  $watch('modalForPostOpen', v => {
-    if (v) {
-      window.disableBodyScroll();
-    } else {
-      window.enableBodyScroll();
-      window.pauseAllPlayers?.();
-    }
-  });
-  $watch('modalForCustomDateTime', v => v ? window.disableBodyScroll() : window.enableBodyScroll());
-"
+<body 
 class="max-w-[700px] max-[700px]:!w-full bg-[#f1f1f1] flex flex-col items-center min-[702px]:justify-center m-auto p-6 max-[768px]:p-0">
 <div class="loading-state z-[9999999999]">
   <div class="loading"></div>
