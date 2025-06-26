@@ -1,7 +1,8 @@
+import '../src/initAlpine.js';
 import { state,notificationStore, GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, GLOBAL_PAGE_TAG } from "./config.js";
 import { setGlobals } from "./config.js";
 import { FETCH_CONTACTS_QUERY, GET_CONTACTS_BY_TAGS, GET__CONTACTS_NOTIFICATION_PREFERENCEE, UPDATE_CONTACT_NOTIFICATION_PREFERENCE } from "./api/queries.js";
-import { setupPlyr, pauseAllPlayers } from "./utils/plyr.js";
+import { pauseAllPlayers } from "./utils/plyr.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { tribute } from "./utils/tribute.js";
 import { initFilePond } from "./utils/filePond.js";
@@ -20,7 +21,7 @@ import { showToast } from "./ui/toast.js";
 import { refreshNotificationSubscription } from "./notifications.js";
 import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
 export let notificationPreferences = null;
-
+Alpine.start();
 window.createForumToSubmit = createForumToSubmit;
 window.toggleAllOff = toggleAllOff;
 window.toggleOption = toggleOption;

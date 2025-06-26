@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
+ 
 
   <!-- ✅ Plyr -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
@@ -33,26 +34,8 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<body x-data="{
-    showNotifications: false,
-    showSettings: false,
-    modalForPostOpen:false,
-    openSettings:false,
-    openScheduleDatePicker: false,
-    modalForCustomDateTime: false,
-    selectedDate: '',
-    today: new Date().toISOString().split('T')[0]
-}" x-init="
-    $watch('modalForPostOpen', v => {
-      if (v) {
-        window.disableBodyScroll();
-      } else {
-        window.enableBodyScroll();
-        window.pauseAllPlayers?.();
-      }
-    });
-    $watch('modalForCustomDateTime', v => v ? window.disableBodyScroll() : window.enableBodyScroll());
-  " class="max-w-[700px] max-[700px]:!w-full bg-[#f1f1f1] flex flex-col items-center min-[702px]:justify-center m-auto p-6 max-[768px]:p-0">
+<body class="max-w-[700px] max-[700px]:!w-full bg-[#f1f1f1] flex flex-col items-center min-[702px]:justify-center m-auto p-6 max-[768px]:p-0">
+
   <!--Modal for custom date and time end  -->
   <!-- Modal For Post starts -->
   <div x-cloak x-show="modalForPostOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalForPostOpen"
