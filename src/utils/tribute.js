@@ -5,9 +5,9 @@ export const tribute = new Tribute({
       {
         trigger: "@",
         menuItemTemplate: (item) =>
-          `<div class="mention-item flex items-center gap-4">
-           <img src="${item.original.image || DEFAULT_AVATAR}" width="24" height="24" class = "rounded-full"/>
-           <span class = "font-light text-sm">${item.string}</span>
+          `<div class="mention-item flex items-center gap-4 h-6">
+           <img src="${item.original.image || DEFAULT_AVATAR}" width="24" height="24" class = "rounded-full size-6 shrink-0"/>
+           <span class = "font-light text-sm ">${item.string}</span>
          </div>`,
         selectTemplate: (item) =>
           `<span contenteditable="false" class="mention"  data-mention-id="${item.original.value}">

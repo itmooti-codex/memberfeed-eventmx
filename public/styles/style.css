@@ -293,9 +293,8 @@ button:not(.file-preview button):hover {
 }
 
 .mention {
-  background-color: #e4e6eb;
-  padding: 0 0.25rem;
-  border-radius: 0.25rem;
+  color: var(--color-primary);
+  font-size: 12px;
 }
 
 .empty-state {
@@ -511,6 +510,21 @@ button:not(.file-preview button):hover {
 .tribute-container {
   max-height: 150px !important;
 }
+.tribute-container ul{
+  background-color: white !important;
+  padding: 12px !important;
+  border-radius: 4px !important;
+}
+.tribute-container li:hover {
+  background-color: var(--color-primary-shade) !important;
+  color: black !important;
+  border-radius: 4px !important;
+}
+.tribute-container li.highlight{
+  background-color: var(--color-primary-shade) !important;
+    color: black !important;
+    border-radius: 4px !important;
+}
 /* added below css for custom loader */
 
 .loading-state {
@@ -541,13 +555,16 @@ button:not(.file-preview button):hover {
 }
 
 .highlighted {
-  background-color: #FEF3C7;
-  animation: highlight-fade 2s forwards;
+  /* background-color: #FEF3C7; */
+  padding: 8px;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  animation: highlight-fade 5s forwards;
 }
 
 @keyframes highlight-fade {
-  from { background-color: #FEF3C7; }
-  to { background-color: transparent; }
+  from { border: 1px solid var(--color-primary); }
+  to { border: transparent; }
 }
 
 
