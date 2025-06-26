@@ -1,6 +1,5 @@
-// src/initAlpine.js
 ; (function () {
-    const el = document.documentElement; // or document.body, whichever you chose
+    const el = document.documentElement;
 
     el.setAttribute('x-data', `{
     showNotifications: false,
@@ -23,12 +22,8 @@
         window.pauseAllPlayers?.();
       }
     });
-
-    // listen for our custom events
     window.addEventListener('open-modal', () => modalForPostOpen = true);
     window.addEventListener('close-modal', () => modalForPostOpen = false);
-
-    // if you still need the existing custom-date-time watcher:
     $watch('modalForCustomDateTime', v => v ? window.disableBodyScroll() : window.enableBodyScroll());
   `);
 })();
