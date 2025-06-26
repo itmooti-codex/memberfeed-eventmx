@@ -82,15 +82,18 @@ export async function createForumToSubmit(
   
 
   let parentForumId;
+  let rootForumId;
   if (forumType !== "Post" && uidParam) {
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uidParam);
     if (node) {
       parentForumId = node.id;
+      rootForumId = node.depth === 0 ? node.id : node.parentId;
     } else {
       console.log("Parent node not found, trying to find closest item");
       const elemetnt = document.querySelector(`.commentContainer_${uidParam}`);
       parentForumId = elemetnt ? elemetnt.getAttribute("data-id") : null;
+      rootForumId = parentForumId;
     }
   }
   let publishedDatePayload = Date.now();
@@ -166,7 +169,8 @@ export async function createForumToSubmit(
     });
     const raw = res.data?.createForumPost;
     if (raw && raw.id) {
-      await sendNotificationsAfterPost(raw);
+      // await sendNotificationsAfterPost(raw);
+      await sendNotificationsAfterPost(raw, rootForumId);
     }
     if (raw) {
       if (!raw.Author) {

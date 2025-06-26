@@ -2,7 +2,8 @@ import { fetchGraphQL } from "../../api/fetch.js";
 import { CREATE_NOTIFICATION } from "../../api/queries.js";
 import { state } from "../../config.js";
 
-export async function sendNotificationsAfterPost(forumData) {
+// export async function sendNotificationsAfterPost(forumData) {
+export async function sendNotificationsAfterPost(forumData, rootForumId = null) {
   if (!forumData || !forumData.id || !Array.isArray(state.allContacts)) return;
   const {
     id,
@@ -43,11 +44,12 @@ export async function sendNotificationsAfterPost(forumData) {
         ? `${postAuthorName} commented on your post.`
         : `${postAuthorName} replied to your comment.`;
     }
-
+    const parentForumForNotification = rootForumId ?? parent_forum_id;
     return {
       notified_contact_id: contactId,
       parent_forum_id: id,
-      ...(isPost ? {} : { parent_forum_if_not_a_post: parent_forum_id }),
+      // ...(isPost ? {} : { parent_forum_if_not_a_post: parent_forum_id }),
+      ...(isPost ? {} : { parent_forum_if_not_a_post: parentForumForNotification }),
       notification_type,
       title,
     };

@@ -32,3 +32,13 @@ export function setupPlyr() {
     }
   });
 }
+
+export function pauseAllPlayers(root = document) {
+  root.querySelectorAll('.js-player').forEach((el) => {
+    if (el.plyr && typeof el.plyr.pause === 'function') {
+      el.plyr.pause();
+    } else if (typeof el.pause === 'function') {
+      el.pause();
+    }
+  });
+}
