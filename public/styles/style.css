@@ -130,16 +130,18 @@ button:not(.file-preview button):hover {
 }
 
 .btn-like.liked,
-.btn-bookmark.bookmarked {
+.bookmarked {
   color: var(--color-primary);
 }
 
-.btn-bookmark path {
-  fill: #0e0e0e;
+.btn-bookmark path,
+.btn-bookmark {
+  fill: var(--color-black);
 
 }
 
-.btn-like.liked path {
+.btn-like.liked path,
+.btn-bookmark.bookmarked path {
   fill: var(--color-primary);
 }
 
