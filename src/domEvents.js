@@ -23,10 +23,12 @@ function renderContacts(list, containerId) {
           ? `
             document.getElementById('adminSchedulePostButton').classList.remove('hidden');
             document.querySelector('.tabsForAdmin').classList.remove('hidden');
+            document.querySelector('.featurePostBtnForAdmin').classList.remove('hidden');
           `
           : `
             document.getElementById('adminSchedulePostButton').classList.add('hidden');
             document.querySelector('.tabsForAdmin').classList.add('hidden');
+            document.querySelector('.featurePostBtnForAdmin').classList.add('hidden');
           `
         }
       loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}');
