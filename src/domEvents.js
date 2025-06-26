@@ -7,6 +7,7 @@ import {
 import { fetchGraphQL } from "./api/fetch.js";
 import { showToast } from "./ui/toast.js";
 import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
+import { setPendingFile, setFileTypeCheck } from "./features/uploads/handlers.js";
 
 function renderContacts(list, containerId) {
   const container = document.getElementById(containerId);
@@ -64,6 +65,22 @@ export function loadModalContacts() {
     });
 }
 
+function resetCreatePostModal() {
+  const editor = document.getElementById("post-editor");
+  if (editor) editor.innerHTML = "";
+  const fileInput = document.getElementById("file-input");
+  if (fileInput) {
+    if (fileInput.filepond) {
+      fileInput.filepond.removeFiles();
+    }
+    fileInput.value = "";
+  }
+  const sched = document.getElementById("scheduledDateContainer");
+  if (sched) sched.textContent = "";
+  setPendingFile(null);
+  setFileTypeCheck("");
+}
+
 export function setupCreatePostModal() {
   const trigger = document.getElementById("create-post-trigger");
   const modal = document.getElementById("create-post-modal");
@@ -85,12 +102,14 @@ export function setupCreatePostModal() {
       modal.classList.add("hidden");
       modal.classList.remove("show");
       enableBodyScroll();
+      resetCreatePostModal();
     });
   }
 
   if (modal) {
     modal.addEventListener("click", (e) => {
       if (e.target === modal) {
+        resetCreatePostModal();
         closeBtn?.click();
       }
     });
