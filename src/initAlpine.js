@@ -22,6 +22,9 @@ export function applyAlpineData() {
     });
     $watch('modalForCustomDateTime', v => v ? window.disableBodyScroll() : window.enableBodyScroll());
   `);
+  if (window.Alpine && typeof window.Alpine.initTree === 'function') {
+    window.Alpine.initTree(el);
+  }
 }
 
 window.deferLoadingAlpine = function(callback) {
