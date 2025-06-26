@@ -167,6 +167,9 @@ button:not(.file-preview button):hover {
 .sort-filter.open .sort-filter-menu {
   display: block;
 }
+.notification a{
+  display: none;
+}
 
 .toolbar {
   display: flex;
