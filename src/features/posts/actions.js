@@ -52,6 +52,8 @@ export async function createForumToSubmit(
   formElementId,
   uidParam,
 ) {
+  let featuredToggler = document.querySelector('.featurePostBtnForAdmin');
+  let isFeaturedPostForAdmin = featuredToggler.getAttribute('data-featured-value') || 'false';
   depthOfForum = Number(depthOfForum);
   const computedType =
     depthOfForum === 0 ? "Post" : depthOfForum === 1 ? "Comment" : "Reply";
@@ -111,6 +113,7 @@ export async function createForumToSubmit(
 
   const payload = {
     author_id: GLOBAL_AUTHOR_ID,
+    featured_forum: isFeaturedPostForAdmin,
     Author: {
       display_name: GLOBAL_AUTHOR_DISPLAY_NAME,
     },

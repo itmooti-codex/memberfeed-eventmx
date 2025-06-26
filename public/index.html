@@ -670,20 +670,25 @@
         </div>
       </div>
       <div class="flex items-center justify-between w-full">
-        <div class="flex items-center gap-2 featurePostBtnForAdmin">
-          <div class="flex items-center justify-center" x-data="{featurePostToggler: '0'}">
-            <div class="relative h-4 w-8 rounded-full transition duration-200 ease-linear"
-              :class="[featurePostToggler === '1' ? 'bg-[var(--color-primary)]' : 'bg-gray-400']">
-              <label for="featurePostToggler"
-                class="absolute left-0 mb-2 h-4 w-4 transform cursor-pointer rounded-full border-2 bg-white transition duration-100 ease-linear"
-                :class="[featurePostToggler === '1' ? 'translate-x-full border-[var(--color-primary)]' : 'translate-x-0 border-gray-400']"></label>
-              <input type="checkbox" id="featurePostToggler" name="featurePostToggler"
-                class="h-full w-full appearance-none focus:outline-none active:outline-none"
-                @click="featurePostToggler === '0' ? featurePostToggler = '1' : featurePostToggler = '0'" />
-            </div>
+      <div class="flex items-center gap-2 featurePostBtnForAdmin" x-data="{ featurePostToggler: false }"
+        :data-featured-value="featurePostToggler">
+        <div class="flex items-center justify-center">
+          <div class="relative h-4 w-8 rounded-full transition duration-200 ease-linear" :class="featurePostToggler 
+              ? 'bg-[var(--color-primary)]' 
+              : 'bg-gray-400'">
+            <label for="featurePostToggler"
+              class="absolute left-0 mb-2 h-4 w-4 transform cursor-pointer rounded-full border-2 bg-white transition duration-100 ease-linear"
+              :class="featurePostToggler 
+                ? 'translate-x-full border-[var(--color-primary)]' 
+                : 'translate-x-0 border-gray-400'"></label>
+            <input type="checkbox" id="featurePostToggler" name="featurePostToggler"
+              class="h-full w-full appearance-none focus:outline-none active:outline-none"
+              @click="featurePostToggler = !featurePostToggler" />
           </div>
-          <div class="text-[var(--color-grey)] p3">Feature this post</div>
         </div>
+        <div class="text-[var(--color-grey)] p-3">Feature this post</div>
+      </div>
+
         <div class="flex items-center gap-3 ml-auto">
           <div class="relative cursor-pointer inline-block text-left hidden" id="adminSchedulePostButton">
             <!-- Trigger Button -->
