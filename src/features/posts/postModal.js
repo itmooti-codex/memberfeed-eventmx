@@ -115,20 +115,13 @@ function closeModalSocket() {
   clearInterval(keepAliveTimer);
   keepAliveTimer = null;
   modalSocket = null;
+
 }
 
 export function openPostModalById(postId, author = "") {
   if (!postId) return;
 
-  // ensure the modal is displayed (Alpine data)
-  try {
-    const body = document.querySelector("body");
-    if (body && body.__x && body.__x.$data) {
-      body.__x.$data.modalForPostOpen = true;
-    }
-  } catch {
-    // ignore if Alpine isn't available
-  }
+  window.dispatchEvent(new CustomEvent('open-modal'));
 
   const container = document.getElementById("modalForumRoot");
   if (container) {
@@ -219,6 +212,7 @@ export function initPostModalHandlers() {
 
   document.addEventListener("click", (e) => {
     if (e.target.closest('[x-on\\:click="modalForPostOpen = false"]')) {
+      window.dispatchEvent(new CustomEvent('close-modal'));
       closeModalSocket();
     }
   });
