@@ -65,7 +65,7 @@ export function connectNotification() {
       <div class="flex w-12 mx-auto my-6">
         <div class="relative">
           <div class="w-12 h-12 rounded-full absolute border border-solid border-gray-200"></div>
-          <div class="w-12 h-12 rounded-full animate-spin absolute border border-solid border-yellow-500 border-t-transparent"></div>
+          <div class="w-12 h-12 rounded-full animate-spin absolute border border-solid border-[var(--color-primary)] border-t-transparent"></div>
         </div>
       </div>`;
   }
