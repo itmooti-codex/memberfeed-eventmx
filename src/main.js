@@ -1,5 +1,5 @@
 import '../src/initAlpine.js';
-import { state,notificationStore, GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, GLOBAL_PAGE_TAG } from "./config.js";
+import { state, notificationStore, GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, GLOBAL_PAGE_TAG } from "./config.js";
 import { setGlobals } from "./config.js";
 import { FETCH_CONTACTS_QUERY, GET_CONTACTS_BY_TAGS, GET__CONTACTS_NOTIFICATION_PREFERENCEE, UPDATE_CONTACT_NOTIFICATION_PREFERENCE } from "./api/queries.js";
 import { pauseAllPlayers } from "./utils/plyr.js";
@@ -120,7 +120,7 @@ async function loadSelectedUserForum(tagName, contactId, displayName, profileIma
     };
     updateCurrentUserUI(state);
   }
-    startApp(tagName, contactId, displayName);
+  startApp(tagName, contactId, displayName);
 }
 
 window.loadSelectedUserForum = loadSelectedUserForum;
@@ -131,6 +131,25 @@ initScheduledPostHandler();
 
 window.addEventListener("DOMContentLoaded", () => {
   loadModalContacts();
+  //  Remove OP watermark
+  setTimeout(() => {
+    const el = document.querySelector('body > div:nth-child(1)');
+    if (el) {
+      el.classList.add("all-unset");
+      el.classList.add('!hidden');
+    }
+  }, 2000);
+  // Loader
+  setTimeout(() => {
+    const loader = document.querySelector('.loading-state');
+    if (loader) {
+      loader.style.transition = 'opacity 0.5s ease';
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 500);
+    }
+  }, 1000);
 });
 
 $.views.helpers({
