@@ -43,6 +43,12 @@ function renderModal() {
   requestAnimationFrame(() => {
     setupPlyr();
     scrollAndHighlight();
+    const btn = container.querySelector(
+      '.item[data-depth="0"] .btn-comment'
+    );
+    if (btn) {
+      $(btn).trigger("click");
+    }
   });
 }
 
