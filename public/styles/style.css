@@ -343,7 +343,7 @@ button:not(.file-preview button):hover {
 }
 
 /* Toast styles */
-#toast-container {
+#toast-wrapper {
   position: fixed;
   top: 1rem;
   right: 1rem;
