@@ -291,7 +291,7 @@
   <div x-cloak x-show="modalForCustomDateTime" x-transition.opacity.duration.200ms
     x-trap.inert.noscroll="modalForCustomDateTime" x-on:keydown.esc.window="modalForCustomDateTime = false"
     x-on:click.self="modalForCustomDateTime = false"
-    class="fixed inset-0 !z-[99999999999999] flex items-end justify-center bg-black/20 backdrop-blur-md sm:items-center"
+    class="fixed inset-0 !z-[99999999999999] flex items-end max-[702px]:items-center justify-center bg-black/20 backdrop-blur-md sm:items-center"
     role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
     <!-- Modal Dialog -->
     <div x-show="modalForCustomDateTime"
@@ -669,7 +669,7 @@
           <canvas class="canvasWaveform waveform w-full" id="waveform" width="450" height="100"></canvas>
         </div>
       </div>
-      <div class="flex items-center justify-between w-full">
+      <div class="flex items-center justify-between w-full max-[702px]:items-start max-[702px]:gap-2 max-[702px]:flex-col">
       <div class="flex items-center gap-2 featurePostBtnForAdmin" x-data="{ featurePostToggler: false }"
         :data-featured-value="featurePostToggler">
         <div class="flex items-center justify-center">
@@ -700,13 +700,13 @@
                   d="M6 2.25C5.10999 2.25 4.23996 2.51392 3.49994 3.00839C2.75991 3.50285 2.18314 4.20566 1.84254 5.02793C1.50195 5.85019 1.41283 6.75499 1.58647 7.62791C1.7601 8.50082 2.18869 9.30264 2.81802 9.93198C3.44736 10.5613 4.24918 10.9899 5.1221 11.1635C5.99501 11.3372 6.89981 11.2481 7.72208 10.9075C8.54434 10.5669 9.24715 9.99009 9.74162 9.25007C10.2361 8.51005 10.5 7.64002 10.5 6.75C10.4986 5.55694 10.0241 4.41315 9.18048 3.56953C8.33686 2.72591 7.19306 2.25136 6 2.25ZM8.14032 5.14031L6.26532 7.01531C6.23047 7.05015 6.18911 7.07779 6.14359 7.09665C6.09807 7.1155 6.04928 7.12521 6 7.12521C5.95073 7.12521 5.90194 7.1155 5.85642 7.09665C5.81089 7.07779 5.76953 7.05015 5.73469 7.01531C5.69985 6.98047 5.67221 6.93911 5.65335 6.89359C5.6345 6.84806 5.62479 6.79927 5.62479 6.75C5.62479 6.70073 5.6345 6.65194 5.65335 6.60641C5.67221 6.56089 5.69985 6.51953 5.73469 6.48469L7.60969 4.60969C7.64453 4.57485 7.68589 4.54721 7.73142 4.52835C7.77694 4.5095 7.82573 4.49979 7.875 4.49979C7.92428 4.49979 7.97307 4.5095 8.01859 4.52835C8.06411 4.54721 8.10547 4.57485 8.14032 4.60969C8.17516 4.64453 8.20279 4.68589 8.22165 4.73141C8.24051 4.77694 8.25021 4.82573 8.25021 4.875C8.25021 4.92427 8.24051 4.97306 8.22165 5.01859C8.20279 5.06411 8.17516 5.10547 8.14032 5.14031ZM4.5 1.125C4.5 1.02554 4.53951 0.930161 4.60984 0.859835C4.68016 0.789509 4.77555 0.75 4.875 0.75H7.125C7.22446 0.75 7.31984 0.789509 7.39017 0.859835C7.46049 0.930161 7.5 1.02554 7.5 1.125C7.5 1.22446 7.46049 1.31984 7.39017 1.39017C7.31984 1.46049 7.22446 1.5 7.125 1.5H4.875C4.77555 1.5 4.68016 1.46049 4.60984 1.39017C4.53951 1.31984 4.5 1.22446 4.5 1.125Z"
                   fill="white" />
               </svg>
-              <div class="justify-start text-center p3 text-white">Post Later
+              <div class="justify-start text-center p3 text-white text-nowrap">Post Later
               </div>
             </div>
 
             <!-- Dropdown -->
             <div x-show="openScheduleDatePicker" @click.outside="openScheduleDatePicker = false"
-              class="absolute mt-2 bottom-[2rem] right-0 w-64 bg-white shadow-lg rounded border p-2 z-50" x-transition>
+              class="absolute mt-2 bottom-[2rem] right-0 max-[702px]:-right-[50%] w-64 bg-white shadow-lg rounded border p-2 z-50" x-transition>
               <div for="datePicker" class="block h3 text-black mb-2">Schedule Announcement</div>
               <div class="flex flex-col ">
                 <div class="cursor-pointer hover:bg-[var(--color-primary-shade)] rounded p-2 p3 text-black"
