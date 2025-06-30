@@ -39,8 +39,10 @@ function expandPathToId(tree, id) {
 function renderModal(openForm = false) {
   const container = document.getElementById("modalForumRoot");
   if (!container) return;
+  const prevScroll = container.scrollTop;
   container.innerHTML = renderItems(modalTree, { inModal: true });
   requestAnimationFrame(() => {
+    container.scrollTop = prevScroll;
     setupPlyr();
     scrollAndHighlight();
     if (openForm) {
