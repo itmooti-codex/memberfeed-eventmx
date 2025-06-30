@@ -178,14 +178,16 @@ export function openPostModalById(postId, author = "", highlight = null) {
   closeModalSocket();
   modalSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
 
-    modalSocket.addEventListener("open", () => {
-      modalSocket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
-      keepAliveTimer = setInterval(() => {
-        modalSocket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
-      }, KEEPALIVE_MS);
-    });
+  let firstUpdate = true;
 
-    modalSocket.addEventListener("message", ({ data }) => {
+  modalSocket.addEventListener("open", () => {
+    modalSocket.send(JSON.stringify({ type: "CONNECTION_INIT" }));
+    keepAliveTimer = setInterval(() => {
+      modalSocket.send(JSON.stringify({ type: "KEEP_ALIVE" }));
+    }, KEEPALIVE_MS);
+  });
+
+  modalSocket.addEventListener("message", ({ data }) => {
       let msg;
       try {
         msg = JSON.parse(data);
@@ -225,7 +227,8 @@ export function openPostModalById(postId, author = "", highlight = null) {
           expandPathToId(modalTree, highlightId);
         }
         if (container) {
-          renderModal(true);
+          renderModal(firstUpdate);
+          firstUpdate = false;
         }
       } else if (msg.type === "GQL_ERROR") {
         console.error("Subscription error", msg.payload);
