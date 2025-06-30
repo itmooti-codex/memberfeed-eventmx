@@ -1,5 +1,5 @@
 export const emojiPickerHtml = `
-  <div class="emoji-wrapper relative w-full">
+  <div class="emoji-wrapper relative w-full flex items-center gap-2">
     <button type="button" class="emoji-toggle">😊</button>
     <div class="emoji-picker hidden absolute bg-white border rounded shadow-md p-1 mt-1 z-10 flex-wrap">
       <span class="cursor-pointer px-1">😀</span>
@@ -71,7 +71,7 @@ export const toolbarDesign = `
           <path class="group-hover:fill-[var(--color-primary)]" d="M8.24421 9.66658C9.64153 9.66658 10.774 8.54754 10.774 7.16659V3.83325C10.774 2.4523 9.64153 1.33325 8.24421 1.33325C6.84689 1.33325 5.71445 2.4523 5.71445 3.83325V7.16659C5.71445 8.54754 6.84689 9.66658 8.24421 9.66658ZM13.1549 7.13682C13.1549 7.07135 13.1014 7.01778 13.0359 7.01778H12.143C12.0775 7.01778 12.024 7.07135 12.024 7.13682C12.024 9.22462 10.332 10.9166 8.24421 10.9166C6.15641 10.9166 4.46445 9.22462 4.46445 7.13682C4.46445 7.07135 4.41088 7.01778 4.3454 7.01778H3.45254C3.38707 7.01778 3.3335 7.07135 3.3335 7.13682C3.3335 9.64724 5.21742 11.7187 7.64897 12.0118V13.5356H5.48677C5.2829 13.5356 5.11921 13.7484 5.11921 14.0118V14.5475C5.11921 14.613 5.16088 14.6666 5.21147 14.6666H11.2769C11.3275 14.6666 11.3692 14.613 11.3692 14.5475V14.0118C11.3692 13.7484 11.2055 13.5356 11.0017 13.5356H8.77992V12.0193C11.2397 11.7514 13.1549 9.66807 13.1549 7.13682Z" fill="#737373"/>
           </svg>
           </div>
-          <div class="emoji-wrapper relative">
+          <div class="emoji-wrapper relative flex items-center gap-2">
             <button
               class="flex emoji-toggle items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

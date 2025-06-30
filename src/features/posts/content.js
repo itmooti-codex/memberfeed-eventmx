@@ -21,7 +21,7 @@ export function processContent(rawHtml) {
         <div class="flex items-center justify-start gap-2 self-stretch rounded-xl">
           <div class="flex flex-1 flex-col items-start justify-center gap-1">
             <div class="justify-start font-['Inter'] text-xs leading-none font-medium text-stone-950 max-[702px]:line-clamp-1">${platform}</div>
-            <div class="justify-start font-['Inter'] text-xs leading-none font-normal text-neutral-500 max-[702px]:line-clamp-1">${fullUrl}</div>
+            <div class="justify-start font-['Inter'] text-xs leading-none font-normal text-neutral-500 line-clamp-1">${fullUrl}</div>
           </div>
           <div class="relative h-8 w-8 overflow-hidden">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
