@@ -229,11 +229,13 @@ export async function createForumToSubmit(
         state.postsStore = buildTree(state.postsStore, state.rawItems);
         applyFilterAndRender();
       }
-      requestAnimationFrame(() => {
-        document
-          .querySelector(`[data-uid="${newNode.uid}"]`)
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
+      if (!inModal) {
+        requestAnimationFrame(() => {
+          document
+            .querySelector(`[data-uid="${newNode.uid}"]`)
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
       state.ignoreNextSocketUpdate = true;
       showToast(forumType === "Post" ? "Post created" : "Comment added");
       if (forumType === "Post") {
