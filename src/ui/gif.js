@@ -35,7 +35,7 @@ export function initGifPicker() {
     </div>`
   ).appendTo('body');
 
-  const apiKey = '94CIbzCFrmRmAtulBbV6g0XRteWMqzfr';
+  const apiKeyGIPHY = '94CIbzCFrmRmAtulBbV6g0XRteWMqzfr';
   let pondInstance = null;
 
   function showLoading() { $('#gif-loading').removeClass('hidden'); }
@@ -59,8 +59,8 @@ export function initGifPicker() {
   async function search(term = '') {
     showLoading();
     const endpoint = term
-      ? `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${encodeURIComponent(term)}&limit=20`
-      : `https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}&limit=20`;
+      ? `https://api.giphy.com/v1/gifs/search?api_key=${apiKeyGIPHY}&q=${encodeURIComponent(term)}&limit=20`
+      : `https://api.giphy.com/v1/gifs/trending?api_key=${apiKeyGIPHY}&limit=20`;
 
     try {
       const res = await fetch(endpoint);
