@@ -3,8 +3,10 @@ import { buildTree } from "../../ui/render.js";
 import { renderItems } from "../../ui/render.js";
 import { setupPlyr } from "../../utils/plyr.js";
 import { PROTOCOL, WS_ENDPOINT, KEEPALIVE_MS, state } from "../../config.js";
+import { mergeLists } from "../../utils/merge.js";
 
 let modalTree = [];
+let modalRawItems = [];
 let highlightId = null;
 
 function scrollAndHighlight() {
@@ -165,6 +167,9 @@ export function openPostModalById(postId, author = "", highlight = null) {
 
   highlightId = highlight ? Number(highlight) : null;
 
+  modalRawItems = [];
+  modalTree = [];
+
   window.dispatchEvent(new CustomEvent('open-modal'));
 
   const container = document.getElementById("modalForumRoot");
@@ -228,7 +233,8 @@ export function openPostModalById(postId, author = "", highlight = null) {
         }
         const list = [];
         normalize(data, list);
-        modalTree = buildTree([], list);
+        modalRawItems = mergeLists(modalRawItems, list);
+        modalTree = buildTree(modalTree, modalRawItems);
         if (highlightId) {
           expandPathToId(modalTree, highlightId);
         }
