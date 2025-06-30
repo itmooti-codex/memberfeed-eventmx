@@ -65,6 +65,7 @@ export const state = {
   initialPostsLoaded: false,
   isConnecting: false,
   ignoreNextSocketUpdate: false,
+  ignoreNextModalUpdate: false,
   userRole: "subscriber"
 };
 export const notificationStore = {

@@ -215,6 +215,7 @@ export async function createForumToSubmit(
           modalTree.push(newNode);
         }
         rerenderModal();
+        state.ignoreNextModalUpdate = true;
       } else {
         const parent = findNode(state.postsStore, uidParam);
         if (parent) {

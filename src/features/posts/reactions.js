@@ -73,6 +73,7 @@ export function initReactionHandlers() {
     $item.find(".btn-like span").text(node.upvotes);
     $item.find(".btn-like").toggleClass("liked", node.hasUpvoted);
     if (toastMsg) showToast(toastMsg);
+    if (inModal) state.ignoreNextModalUpdate = true;
   });
   $(document).off("click.btnBookmark");
   $(document).on("click.btnBookmark", ".btn-bookmark", async function (e) {
@@ -130,5 +131,6 @@ export function initReactionHandlers() {
     const $item = $(`[data-uid="${uid}"]`);
     $item.find(".btn-bookmark").toggleClass("bookmarked", node.hasBookmarked);
     if (toastMsg) showToast(toastMsg);
+    if (inModal) state.ignoreNextModalUpdate = true;
   });
 }
