@@ -78,6 +78,7 @@ export function initModerationHandlers() {
         state.ignoreNextSocketUpdate = true;
         if (inModal) {
           rerenderModal();
+          state.ignoreNextModalUpdate = true;
         }
       })
       .catch((err) => {
@@ -109,7 +110,10 @@ export function initModerationHandlers() {
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.featured_forum = true;
       applyFilterAndRender();
-      if (inModal) rerenderModal();
+      if (inModal) {
+        rerenderModal();
+        state.ignoreNextModalUpdate = true;
+      }
       showToast("Marked as featured");
     } catch (err) {
       console.error("Failed to mark featured", err);
@@ -137,7 +141,10 @@ export function initModerationHandlers() {
       const rawItem = findRawById(state.rawItems, node.id);
       if (rawItem) rawItem.featured_forum = false;
       applyFilterAndRender();
-      if (inModal) rerenderModal();
+      if (inModal) {
+        rerenderModal();
+        state.ignoreNextModalUpdate = true;
+      }
       showToast("Removed featured mark");
     } catch (err) {
       console.error("Failed to unmark featured", err);
@@ -171,7 +178,10 @@ export function initModerationHandlers() {
       if (nodeMain) updateTree(nodeMain, true);
       if (nodeModal && nodeModal !== nodeMain) updateTree(nodeModal, true);
       applyFilterAndRender();
-      if (inModal) rerenderModal();
+      if (inModal) {
+        rerenderModal();
+        state.ignoreNextModalUpdate = true;
+      }
       showToast("Comments disabled");
     } catch (err) {
       console.error("Failed to disable comments", err);
@@ -205,7 +215,10 @@ export function initModerationHandlers() {
       if (nodeMain) updateTree(nodeMain, false);
       if (nodeModal && nodeModal !== nodeMain) updateTree(nodeModal, false);
       applyFilterAndRender();
-      if (inModal) rerenderModal();
+      if (inModal) {
+        rerenderModal();
+        state.ignoreNextModalUpdate = true;
+      }
       showToast("Comments enabled");
     } catch (err) {
       console.error("Failed to enable comments", err);

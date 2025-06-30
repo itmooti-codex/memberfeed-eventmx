@@ -214,6 +214,10 @@ export function openPostModalById(postId, author = "", highlight = null) {
         msg.id === POST_MODAL_SUB_ID &&
         msg.payload?.data
       ) {
+        if (state.ignoreNextModalUpdate) {
+          state.ignoreNextModalUpdate = false;
+          return;
+        }
         const data = msg.payload.data.subscribeToForumPost;
         if (!data) {
           console.log("Post not found or deleted");
