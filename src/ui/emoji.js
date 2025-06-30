@@ -92,6 +92,7 @@ export const toolbarDesign = `
               <span class="cursor-pointer px-1 hover:bg-[var(--color-primary)]">🚀</span>
               <span class="cursor-pointer px-1 hover:bg-[var(--color-primary)]">🥳</span>
             </div>
+          <button class="gif-toggle flex items-center justify-start !border-none gap-2 rounded !bg-transparent hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]">GIF</button>
           </div>
         </div>
 `;

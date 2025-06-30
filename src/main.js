@@ -8,6 +8,7 @@ import { tribute } from "./utils/tribute.js";
 import { initFilePond } from "./utils/filePond.js";
 import "./features/uploads/handlers.js";
 import { initEmojiHandlers } from "./ui/emoji.js";
+import { initGifPicker } from "./ui/gif.js";
 import { initRichText } from "./utils/richText.js";
 import { initPosts } from "./features/posts/index.js";
 import { updateCurrentUserUI } from "./ui/user.js";
@@ -82,6 +83,7 @@ function startApp(tagName, contactId, displayName) {
   initPosts();
   initFilePond();
   initEmojiHandlers();
+  initGifPicker();
   initRichText();
   setupCreatePostModal();
 
