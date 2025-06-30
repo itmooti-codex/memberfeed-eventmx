@@ -36,7 +36,6 @@ function expandPathToId(tree, id) {
   }
   dfs(tree);
 }
-// function renderModal() {
 function renderModal(openForm = false) {
   const container = document.getElementById("modalForumRoot");
   if (!container) return;
@@ -44,11 +43,6 @@ function renderModal(openForm = false) {
   requestAnimationFrame(() => {
     setupPlyr();
     scrollAndHighlight();
-    // const btn = container.querySelector(
-    //   '.item[data-depth="0"] .btn-comment'
-    // );
-    // if (btn) {
-    //   $(btn).trigger("click");
     if (openForm) {
       const btn = container.querySelector(
         '.item[data-depth="0"] .btn-comment'

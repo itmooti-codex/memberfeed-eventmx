@@ -13,11 +13,10 @@ import { safeArray } from "../../utils/formatter.js";
 import { showToast } from "../../ui/toast.js";
 
 export function initReactionHandlers() {
-  // LIKE / UNLIKE
-  // $(document).on("click", ".btn-like", async function () {
   $(document).off("click.btnLike");
-  $(document).on("click.btnLike", ".btn-like", async function () {
-    // const uid = $(this).data("uid");
+  $(document).on("click.btnLike", ".btn-like", async function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     const uid = $(this).attr("data-uid");
     const inModal = $(this).closest("#modalForumRoot").length > 0;
     const source = inModal ? getModalTree() : state.postsStore;
@@ -63,7 +62,7 @@ export function initReactionHandlers() {
         node.upvotes++;
         node.hasUpvoted = true;
         node.voteRecordId = newId;
-        toastMsg = "Voted";
+        toastMsg = "Liked";
       }
     } catch (err) {
       console.error("error is", err);
@@ -75,12 +74,10 @@ export function initReactionHandlers() {
     $item.find(".btn-like").toggleClass("liked", node.hasUpvoted);
     if (toastMsg) showToast(toastMsg);
   });
-
-  // BOOKMARK / UNBOOKMARK
-  // $(document).on("click", ".btn-bookmark", async function () {
   $(document).off("click.btnBookmark");
-  $(document).on("click.btnBookmark", ".btn-bookmark", async function () {
-    // const uid = $(this).data("uid");
+  $(document).on("click.btnBookmark", ".btn-bookmark", async function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     const uid = $(this).attr("data-uid");
     const inModal = $(this).closest("#modalForumRoot").length > 0;
     const source = inModal ? getModalTree() : state.postsStore;
