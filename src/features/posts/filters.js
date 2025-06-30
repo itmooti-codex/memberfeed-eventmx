@@ -27,7 +27,8 @@ export function applyFilterAndRender() {
       break;
   }
   if (state.currentFileFilter !== "All") {
-    items = items.filter((p) => p.fileType === state.currentFileFilter);
+    const targetType = state.currentFileFilter.toLowerCase();
+    items = items.filter((p) => (p.fileType || '').toLowerCase() === targetType);
   }
   if (state.currentSearchTerm) {
     const q = state.currentSearchTerm.toLowerCase();
@@ -40,9 +41,21 @@ export function applyFilterAndRender() {
 
   // sort posts
   if (state.currentSort === "Latest") {
-    items = items.slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    items = items
+      .slice()
+      .sort(
+        (a, b) =>
+          (b.createdAt ? new Date(b.createdAt).getTime() : 0) -
+          (a.createdAt ? new Date(a.createdAt).getTime() : 0)
+      );
   } else if (state.currentSort === "Oldest") {
-    items = items.slice().sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    items = items
+      .slice()
+      .sort(
+        (a, b) =>
+          (a.createdAt ? new Date(a.createdAt).getTime() : 0) -
+          (b.createdAt ? new Date(b.createdAt).getTime() : 0)
+      );
   } else if (state.currentSort === "Most Popular") {
     const score = (p) => (p.upvotes || 0) + (Array.isArray(p.children) ? p.children.length : 0);
     items = items.slice().sort((a, b) => score(b) - score(a));
@@ -114,17 +127,7 @@ $(document).on("click", ".filter-btn", function () {
   applyFilterAndRender();
 });
 
-// toggle menu
-$("#file-filter-btn").on("click", function (e) {
-  e.stopPropagation();
-  $(".file-filter").toggleClass("open");
-});
-
-// toggle sort menu
-$("#sort-filter-btn").on("click", function (e) {
-  e.stopPropagation();
-  $(".sort-filter").toggleClass("open");
-});
+  // menu toggling handled by Alpine via :class bindings
 
 // pick a file type
 $(document).on("click", "#file-filter-menu li", function () {
@@ -136,7 +139,6 @@ $(document).on("click", "#file-filter-menu li", function () {
   $(this).addClass("active");
 
   // close dropdown and re-render
-  $(".file-filter").removeClass("open");
   applyFilterAndRender();
 });
 
@@ -150,19 +152,10 @@ $(document).on("click", "#sort-filter-menu li", function () {
   $(this).addClass("active");
 
   // close dropdown and re-render
-  $(".sort-filter").removeClass("open");
   applyFilterAndRender();
 });
 
-// click outside to close
-$(document).on("click", function (e) {
-  if (!$(e.target).closest(".file-filter").length) {
-    $(".file-filter").removeClass("open");
-  }
-  if (!$(e.target).closest(".sort-filter").length) {
-    $(".sort-filter").removeClass("open");
-  }
-});
+
 
 searchInput.addEventListener("input", (e) => {
   clearTimeout(state.debounceTimer);
