@@ -1,6 +1,6 @@
 export function initGifPicker() {
   const modal = $(
-    `<div id="gif-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-12 z-[999999]">
+    `<div id="gif-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-12 z-[2147483642]">
       <div class="bg-white w-full max-w-4xl rounded-lg shadow-lg overflow-hidden">
         <div class="p-4 border-b flex space-x-2">
           <input type="text" id="gif-search-input" placeholder="Search GIFs…" class="flex-grow px-4 py-2 border rounded-lg focus:outline-none focus:ring" />
@@ -89,10 +89,12 @@ export function initGifPicker() {
           console.log('Target input is not a FilePond instance');
           return;
         }
-        await targetInput.fileposnd.addFile(file);
+        await targetInput.filepond.addFile(file);
       } catch (err) {
         console.log('Failed to add GIF', err);
       }
+    }else{
+      console.log('Target input not found or not a FilePond instance');
     }
     $('#gif-modal').addClass('hidden');
   });
