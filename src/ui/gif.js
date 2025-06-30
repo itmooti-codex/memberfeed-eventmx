@@ -64,7 +64,7 @@ export function initGifPicker() {
 
   $(document).on('click', '.gif-toggle', function (e) {
     e.stopPropagation();
-    targetInput = $(this).closest('.comment-form, .post-form').find('.file-input')[0];
+    targetInput = $(this).closest('.upload-section').find('.file-input')[0];
     if (!targetInput) targetInput = document.querySelector('#file-input');
     $('#gif-modal').removeClass('hidden');
     $('#gif-search-input').val('');
