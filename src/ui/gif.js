@@ -35,7 +35,7 @@ export function initGifPicker() {
     </div>`
   ).appendTo('body');
 
-  const apiKey = 'Ivfu3HjgtK75rqD0xdRxNYlhXo5UqR3u';
+  const apiKey = '94CIbzCFrmRmAtulBbV6g0XRteWMqzfr';
   let pondInstance = null;
 
   function showLoading() { $('#gif-loading').removeClass('hidden'); }
