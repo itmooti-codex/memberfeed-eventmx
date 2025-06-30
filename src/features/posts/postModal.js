@@ -230,8 +230,6 @@ export function openPostModalById(postId, author = "", highlight = null) {
         if (highlightId) {
           expandPathToId(modalTree, highlightId);
         }
-        // replies remain collapsed; comment forms remain closed by default
-
         if (container) {
           renderModal(true);
         }
