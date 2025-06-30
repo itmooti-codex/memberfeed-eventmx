@@ -22,12 +22,23 @@ export function initGifPicker() {
     </div>`
   ).appendTo('body');
 
-  const apiKey = '1caQBCCly08w0vinpWmp1AK5ep8o6gsj';
+  const apiKey = 'Ivfu3HjgtK75rqD0xdRxNYlhXo5UqR3u';
   let targetInput = null;
 
   function showLoading() { $('#gif-loading').removeClass('hidden'); }
   function hideLoading() { $('#gif-loading').addClass('hidden'); }
-
+  async function fetchGifBlob(url) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.blob();
+    } catch (err) {
+      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+      const res = await fetch(proxyUrl);
+      if (!res.ok) throw err;
+      return await res.blob();
+    }
+  }
   async function search(term = '') {
     showLoading();
     const endpoint = term
@@ -66,12 +77,21 @@ export function initGifPicker() {
     const url = $(this).data('full');
     if (targetInput && targetInput.filepond) {
       try {
-        const res = await fetch(url);
-        const blob = await res.blob();
+        const blob = await fetchGifBlob(url);
+        console.log('Adding GIF:', url);
+        if (!blob || blob.type !== 'image/gif') {
+          console.log('Fetched blob is not a GIF:', blob);
+          return;
+        } 
         const file = new File([blob], 'giphy.gif', { type: blob.type });
-        await targetInput.filepond.addFile(file);
+        console.log('Creating File object:', file);
+        if (!targetInput.filepond) {
+          console.log('Target input is not a FilePond instance');
+          return;
+        }
+        await targetInput.fileposnd.addFile(file);
       } catch (err) {
-        console.error('Failed to add GIF', err);
+        console.log('Failed to add GIF', err);
       }
     }
     $('#gif-modal').addClass('hidden');
