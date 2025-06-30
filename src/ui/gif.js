@@ -1,7 +1,13 @@
 export function initGifPicker() {
   const modal = $(
-    `<div id="gif-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-12 z-[2147483642]">
-      <div class="bg-white w-full max-w-4xl rounded-lg shadow-lg overflow-hidden">
+    `<div id="gif-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-12 !z-[2147483647]">
+      <div class="bg-white w-full max-w-4xl rounded-lg shadow-lg overflow-hidden relative">
+        <div id="pond-loading" class="hidden absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+          <svg class="animate-spin h-12 w-12 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+        </div>
         <div class="p-4 border-b flex space-x-2">
           <input type="text" id="gif-search-input" placeholder="Search GIFs…" class="flex-grow px-4 py-2 border rounded-lg focus:outline-none focus:ring" />
           <button id="gif-search-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none">Search</button>
@@ -23,27 +29,43 @@ export function initGifPicker() {
   ).appendTo('body');
 
   const apiKey = 'Ivfu3HjgtK75rqD0xdRxNYlhXo5UqR3u';
-  let targetInput = null;
+  let pondInstance = null;
 
-  function showLoading() { $('#gif-loading').removeClass('hidden'); }
-  function hideLoading() { $('#gif-loading').addClass('hidden'); }
+  function showLoading() {
+    $('#gif-loading').removeClass('hidden');
+  }
+
+  function hideLoading() {
+    $('#gif-loading').addClass('hidden');
+  }
+
+  function showPondLoading() {
+    $('#pond-loading').removeClass('hidden');
+  }
+
+  function hidePondLoading() {
+    $('#pond-loading').addClass('hidden');
+  }
+
   async function fetchGifBlob(url) {
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.blob();
-    } catch (err) {
+    } catch {
       const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
       const res = await fetch(proxyUrl);
-      if (!res.ok) throw err;
+      if (!res.ok) throw new Error(`Proxy HTTP ${res.status}`);
       return await res.blob();
     }
   }
+
   async function search(term = '') {
     showLoading();
     const endpoint = term
       ? `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${encodeURIComponent(term)}&limit=20`
       : `https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}&limit=20`;
+
     try {
       const res = await fetch(endpoint);
       const data = await res.json();
@@ -64,37 +86,52 @@ export function initGifPicker() {
 
   $(document).on('click', '.gif-toggle', function (e) {
     e.stopPropagation();
-    targetInput = $(this).closest('.upload-section').find('.file-input')[0];
-    if (!targetInput) targetInput = document.querySelector('#file-input');
+
+    const actualInput = document.getElementById('file-input');
+    if (!actualInput) {
+      console.error('Couldn’t find #file-input');
+      return;
+    }
+
+    pondInstance = FilePond.find(actualInput);
+    console.log('Resolved FilePond instance:', pondInstance);
+    if (!pondInstance) {
+      console.error('No FilePond instance found on #file-input');
+      return;
+    }
+
     $('#gif-modal').removeClass('hidden');
     $('#gif-search-input').val('');
     search();
   });
 
-  $('#gif-close-btn').on('click', () => $('#gif-modal').addClass('hidden'));
-  $('#gif-search-btn').on('click', () => search($('#gif-search-input').val().trim()));
+  $('#gif-close-btn').on('click', () => {
+    $('#gif-modal').addClass('hidden');
+  });
+
+  $('#gif-search-btn').on('click', () => {
+    search($('#gif-search-input').val().trim());
+  });
+
   $('#gif-grid').on('click', 'img', async function () {
     const url = $(this).data('full');
-    if (targetInput && targetInput.filepond) {
+    if (pondInstance) {
       try {
+        showPondLoading();
         const blob = await fetchGifBlob(url);
-        console.log('Adding GIF:', url);
-        if (!blob || blob.type !== 'image/gif') {
-          console.log('Fetched blob is not a GIF:', blob);
-          return;
-        } 
-        const file = new File([blob], 'giphy.gif', { type: blob.type });
-        console.log('Creating File object:', file);
-        if (!targetInput.filepond) {
-          console.log('Target input is not a FilePond instance');
-          return;
+        if (blob.type === 'image/gif') {
+          const file = new File([blob], 'giphy.gif', { type: blob.type });
+          await pondInstance.addFile(file);
+        } else {
+          console.warn('Fetched blob is not a GIF:', blob.type);
         }
-        await targetInput.filepond.addFile(file);
       } catch (err) {
-        console.log('Failed to add GIF', err);
+        console.error('Failed to add GIF', err);
+      } finally {
+        hidePondLoading();
       }
-    }else{
-      console.log('Target input not found or not a FilePond instance');
+    } else {
+      console.error('No FilePond instance available to add the file');
     }
     $('#gif-modal').addClass('hidden');
   });
