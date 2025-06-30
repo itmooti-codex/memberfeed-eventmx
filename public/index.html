@@ -779,7 +779,7 @@
         class="flex-1 ml-auto flex items-center justify-end w-full max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-4">
         <div class="flex items-center gap-4">
           <div x-data="{ open: false, selected: 'Latest' }" class="sort-filter relative cursor-pointer"
-            @click.away="open = false">
+            :class="{ 'open': open }" @click.away="open = false">
             <div id="sort-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
               class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
               <div class="text-center justify-start p2 text-black" x-text="selected"></div>
@@ -810,7 +810,7 @@
           </div>
   
   
-          <div x-data="{ open: false, selected: 'All' }" @click.away="open = false"
+          <div x-data="{ open: false, selected: 'All' }" :class="{ 'open': open }" @click.away="open = false"
             class="file-filter relative cursor-pointer">
             <div id="file-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
               class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
