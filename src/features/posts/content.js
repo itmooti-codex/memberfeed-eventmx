@@ -1,35 +1,22 @@
 export function processContent(rawHtml) {
+  console.log("Processing content for posts/comments", rawHtml);
+
   const allowedTags = ['b', 'i', 'u', 'a', 'br', 'p', 'span', 'div', 'ul', 'ol', 'li', 'strong', 'em', 'iframe'];
   const allowedAttrs = ['href', 'target', 'class', 'style', 'data-mention-id', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'];
+  const sanitize = html => DOMPurify.sanitize(html, { ALLOWED_TAGS: allowedTags, ALLOWED_ATTR: allowedAttrs });
+  rawHtml = sanitize(rawHtml);
 
-  rawHtml = DOMPurify.sanitize(rawHtml, {
-    ALLOWED_TAGS: allowedTags,
-    ALLOWED_ATTR: allowedAttrs
-  });
-
-  const urlRegex = /https?:\/\/[^\s<>"']+/g;
-
-  const getDomain = (url) => {
-    try {
-      return new URL(url).hostname.replace(/^www\./, '');
-    } catch {
-      return '';
-    }
-  };
-
-  const getPlatform = (url) => {
-    if (/youtube\.com\/watch\?v=|youtu\.be\//.test(url)) return 'YouTube';
-    if (/vimeo\.com\//.test(url)) return 'Vimeo';
-    if (/loom\.com\/share\//.test(url)) return 'Loom';
-    return getDomain(url);
+  const getDomain = url => {
+    try { return new URL(url).hostname.replace(/^www\./, ''); }
+    catch { return ''; }
   };
 
   const renderPreview = (platform, fullUrl) => `
-    <a href="${fullUrl}" target="_blank" class="flex flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2 underline text-[var(--color-primary)]">
+    <a href="${fullUrl}" target="_blank" class="flex flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
       <div class="flex items-center justify-start gap-2 self-stretch rounded-xl">
         <div class="flex flex-1 flex-col items-start justify-center gap-1">
-          <div class="justify-start font-['Inter'] text-xs leading-none font-medium text-stone-950 max-[702px]:line-clamp-1">${platform}</div>
-          <div class="justify-start font-['Inter'] text-xs leading-none font-normal text-neutral-500 line-clamp-1">${fullUrl}</div>
+          <div class="font-['Inter'] text-xs leading-none font-medium text-stone-950 max-[702px]:line-clamp-1">${platform}</div>
+          <div class="font-['Inter'] text-xs leading-none font-normal text-neutral-500 line-clamp-1">${fullUrl}</div>
         </div>
         <div class="relative h-8 w-8 overflow-hidden">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,39 +27,55 @@ export function processContent(rawHtml) {
     </a>
   `;
 
+  const getPlatform = url => {
+    if (/youtube\.com\/watch\?v=|youtu\.be\//.test(url)) return 'YouTube';
+    if (/vimeo\.com\//.test(url)) return 'Vimeo';
+    if (/loom\.com\/share\//.test(url)) return 'Loom';
+    return getDomain(url);
+  };
+
   const parser = new DOMParser();
   const doc = parser.parseFromString(rawHtml, 'text/html');
 
-  function processNode(node) {
-    if (node.nodeType === Node.ELEMENT_NODE && node.nodeName === 'A') {
-      node.classList.add('underline', 'text-[var(--color-primary)]');
-      return;
-    }
+  doc.body.querySelectorAll('a').forEach(a => {
+    a.classList.add('underline', 'text-[var(--color-primary)]');
+  });
+
+  function replaceUrls(node) {
     if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent;
-      let match, lastIndex = 0;
+      const text = node.nodeValue;
+      const urlRegex = /https?:\/\/[^\s<>"']+/g;
+      let match;
       const frag = document.createDocumentFragment();
+      let lastIndex = 0;
+
       while ((match = urlRegex.exec(text)) !== null) {
         const url = match[0];
-        const index = match.index;
-        if (index > lastIndex) {
-          frag.appendChild(document.createTextNode(text.slice(lastIndex, index)));
+        const idx = match.index;
+        if (idx > lastIndex) {
+          frag.appendChild(document.createTextNode(text.slice(lastIndex, idx)));
         }
-        const temp = document.createElement('div');
-        temp.innerHTML = renderPreview(getPlatform(url), url);
-        frag.appendChild(temp.firstChild);
-        lastIndex = index + url.length;
+        frag.appendChild(
+          document.createRange().createContextualFragment(
+            renderPreview(getPlatform(url), url)
+          )
+        );
+        lastIndex = idx + url.length;
       }
+
       if (lastIndex < text.length) {
         frag.appendChild(document.createTextNode(text.slice(lastIndex)));
       }
-      node.parentNode.replaceChild(frag, node);
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      Array.from(node.childNodes).forEach(processNode);
+
+      if (frag.childNodes.length) {
+        node.parentNode.replaceChild(frag, node);
+      }
+    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'A') {
+      Array.from(node.childNodes).forEach(replaceUrls);
     }
   }
 
-  Array.from(doc.body.childNodes).forEach(processNode);
+  Array.from(doc.body.childNodes).forEach(replaceUrls);
 
   return `<div class="flex flex-col gap-2">${doc.body.innerHTML}</div>`;
 }
