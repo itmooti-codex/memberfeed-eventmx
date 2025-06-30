@@ -31,21 +31,10 @@ export function initGifPicker() {
   const apiKey = 'Ivfu3HjgtK75rqD0xdRxNYlhXo5UqR3u';
   let pondInstance = null;
 
-  function showLoading() {
-    $('#gif-loading').removeClass('hidden');
-  }
-
-  function hideLoading() {
-    $('#gif-loading').addClass('hidden');
-  }
-
-  function showPondLoading() {
-    $('#pond-loading').removeClass('hidden');
-  }
-
-  function hidePondLoading() {
-    $('#pond-loading').addClass('hidden');
-  }
+  function showLoading() { $('#gif-loading').removeClass('hidden'); }
+  function hideLoading() { $('#gif-loading').addClass('hidden'); }
+  function showPondLoading() { $('#pond-loading').removeClass('hidden'); }
+  function hidePondLoading() { $('#pond-loading').addClass('hidden'); }
 
   async function fetchGifBlob(url) {
     try {
@@ -87,19 +76,27 @@ export function initGifPicker() {
     }
   }
 
+  // Handle toggle click: choose input inside create-post-modal or fallback to comment-form
   $(document).on('click', '.gif-toggle', function (e) {
     e.stopPropagation();
-
-    const actualInput = document.getElementById('file-input');
+    const $toggle = $(this);
+    console.log('GIF toggle clicked:', $toggle);
+    let actualInput;
+    if (document.querySelector('#create-post-modal').classList.contains('show')) {
+      const wrapper = document.querySelector('#create-post-modal');
+      actualInput = wrapper.querySelector('#file-input');
+    } else {
+      actualInput = document.querySelector('.comment-form').querySelector('#file-input');
+    }
     if (!actualInput) {
-      console.error('Couldn’t find #file-input');
+      console.error('Couldn’t find the correct file input');
       return;
     }
 
     pondInstance = FilePond.find(actualInput);
     console.log('Resolved FilePond instance:', pondInstance);
     if (!pondInstance) {
-      console.error('No FilePond instance found on #file-input');
+      console.error('No FilePond instance found on selected input');
       return;
     }
 
@@ -108,13 +105,9 @@ export function initGifPicker() {
     search();
   });
 
-  $('#gif-close-btn').on('click', () => {
-    $('#gif-modal').addClass('hidden');
-  });
+  $('#gif-close-btn').on('click', () => $('#gif-modal').addClass('hidden'));
 
-  $('#gif-search-btn').on('click', () => {
-    search($('#gif-search-input').val().trim());
-  });
+  $('#gif-search-btn').on('click', () => search($('#gif-search-input').val().trim()));
 
   $('#gif-grid').on('click', 'img', async function () {
     const url = $(this).data('full');
