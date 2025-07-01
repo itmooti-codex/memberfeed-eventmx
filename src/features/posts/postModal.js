@@ -43,6 +43,26 @@ function renderModal(openForm = false) {
   if (!container) return;
   const prevScroll = container.scrollTop;
   container.innerHTML = renderItems(modalTree, { inModal: true });
+  if (
+    modalTree.length &&
+    Array.isArray(modalTree[0].children) &&
+    modalTree[0].children.length === 0
+  ) {
+    const html = `
+  <div class="flex items-center justify-center p-4 w-full shrink-0">
+    <img
+      src="https://files.ontraport.com/media/7cb0246253aa468f9f13c0043ee37640.phpkhswnn?Expires=4904960534&Signature=eOqtZ4CkICqtnm5bq9pcsIrr-3U8AlMO0IZtMCBwSo-BtLoc5wyB0tq6Y7WTQXBIR5x18ww5jQIBjv7Av9i404Shh4tSvkRusGsCZibIQ~giPi0W1~uLCyX-DMFoSVQYTp8m53fTO0q0JtjPl9OnqwG8No6NNQBfP9zMP9Jo6Zx8DV4rRihfOz7r6TI0IHs-XLfzSi4Cbhn36xCMrxTmaZ6hQ9B22sUMJ6RiLyzMOPjCJfMDuGEBT10rOt7xYMM2-mIgCWXlv1oI4TzVAXznljefNYUzaOs~dwbH7lhsHQoU3yGaTDAdr6ofMAqTF1BznXZbbUi--8sYRvqQskahMA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
+      class="size-full shrink-0 object-contain"
+      alt="No posts found"
+    >
+  </div>
+`;
+
+    const commentForm = document.querySelector('.actions');
+    if (commentForm) {
+      commentForm.insertAdjacentHTML('afterend', html);
+    }
+  }
   requestAnimationFrame(() => {
     container.scrollTop = prevScroll;
     setupPlyr();
