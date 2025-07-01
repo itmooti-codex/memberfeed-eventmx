@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notifications</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,11 +16,230 @@
 </head>
 
 <body class="max-w-[700px] bg-[#f1f1f1] flex flex-col m-auto p-6 min-h-screen">
-  <header class="mb-4">
-    <div class="brand-main text-2xl font-bold text-[var(--color-primary)]">
-      <a href="index.html" class="hover:text-[var(--color-primary-shade)]">IT MOOTI</a>
+    <div
+      class="fixed top-0 left-0 w-full max-[702px]:px-4 min-[702px]:px-[120px] py-[12px] bg-white  flex items-center justify-between z-[9999]">
+    
+      <div clas="brand-main">
+        <div class="text-2xl font-bold text-[var(--color-primary)]">
+          <a href="#topOfForum" class="hover:text-[var(--color-primary-shade)]">IT MOOTI</a>
+        </div>
+      </div>
+    
+      <div class="flex items-center gap-10">
+        <div class="relative">
+          <div @click="showNotifications = !showNotifications"
+            class=" bg-white rounded-full !border-none cursor-pointer !outline-none focus:outline-none">
+            <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M13.0758 19.2308C13.0758 19.4348 12.9948 19.6304 12.8505 19.7747C12.7062 19.919 12.5106 20 12.3066 20H6.15273C5.94872 20 5.75306 19.919 5.6088 19.7747C5.46455 19.6304 5.3835 19.4348 5.3835 19.2308C5.3835 19.0268 5.46455 18.8311 5.6088 18.6868C5.75306 18.5426 5.94872 18.4615 6.15273 18.4615H12.3066C12.5106 18.4615 12.7062 18.5426 12.8505 18.6868C12.9948 18.8311 13.0758 19.0268 13.0758 19.2308ZM18.2498 14.6096C17.7152 13.6904 16.922 11.0894 16.922 7.69231C16.922 5.65218 16.1115 3.69561 14.6689 2.25302C13.2263 0.810437 11.2698 0 9.22966 0C7.18953 0 5.23296 0.810437 3.79037 2.25302C2.34778 3.69561 1.53735 5.65218 1.53735 7.69231C1.53735 11.0904 0.743116 13.6904 0.209462 14.6096C0.0731841 14.8433 0.000937784 15.1088 9.06823e-06 15.3793C-0.000919647 15.6499 0.0695022 15.9158 0.204173 16.1505C0.338843 16.3851 0.533 16.5801 0.767064 16.7157C1.00113 16.8514 1.26682 16.9229 1.53735 16.9231H16.922C17.1924 16.9227 17.458 16.8511 17.6919 16.7153C17.9258 16.5796 18.1199 16.3847 18.2544 16.1501C18.389 15.9155 18.4593 15.6495 18.4583 15.3791C18.4574 15.1087 18.3851 14.8432 18.2489 14.6096H18.2498Z"
+                fill="#737373" />
+            </svg>
+    
+          </div>
+          <div x-data="{
+                                  hasUnread: false,
+                                  init() {
+                                    this.checkUnread();
+                                    this.$watch('hasUnread', value => {
+                                    });
+                            
+                                    setInterval(() => {
+                                      this.checkUnread();
+                                    }, 1000);
+                                  },
+                                  checkUnread() {
+                                    const container = document.getElementById('notificationContainerSocket');
+                                    this.hasUnread = container && container.querySelector('.unread') !== null;
+                                  }
+                                }" x-show="hasUnread" x-cloak class="absolute top-0 right-0 -mt-1 -mr-1">
+            <span class="relative flex size-2">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+              <span class="relative inline-flex size-2 rounded-full bg-red-500"></span>
+            </span>
+          </div>
+    
+          <!-- Notification Panel -->
+          <div x-show="showNotifications" @click.outside="showNotifications = false" x-transition
+            class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-[50000] p-4 max-[702px]:fixed max-[702px]:w-full">
+            <div class="absolute notificationsLoader hidden inset-0 bg-[#00000095] z-10 items-center justify-center flex">
+              <div class="h-8 w-8 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
+              </div>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex gap-x-4 items-center">
+                <div class="block min-[703px]:hidden" @click="showNotifications = false">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M19.707 18.292C19.7999 18.3849 19.8736 18.4952 19.9238 18.6166C19.9741 18.738 20 18.8681 20 18.9995C20 19.1309 19.9741 19.261 19.9238 19.3824C19.8736 19.5038 19.7999 19.6141 19.707 19.707C19.6141 19.7999 19.5038 19.8736 19.3824 19.9238C19.261 19.9741 19.1309 20 18.9995 20C18.8681 20 18.738 19.9741 18.6166 19.9238C18.4952 19.8736 18.3849 19.7999 18.292 19.707L10 11.4137L1.70796 19.707C1.52033 19.8946 1.26585 20 1.0005 20C0.735151 20 0.48067 19.8946 0.29304 19.707C0.105409 19.5193 5.23067e-09 19.2648 0 18.9995C-5.23067e-09 18.7341 0.10541 18.4797 0.29304 18.292L8.58633 10L0.29304 1.70796C0.105409 1.52033 -1.97701e-09 1.26585 0 1.0005C1.97701e-09 0.735151 0.105409 0.48067 0.29304 0.29304C0.48067 0.105409 0.735151 1.97701e-09 1.0005 0C1.26585 -1.97701e-09 1.52033 0.105409 1.70796 0.29304L10 8.58633L18.292 0.29304C18.4797 0.10541 18.7341 -5.23067e-09 18.9995 0C19.2648 5.23067e-09 19.5193 0.105409 19.707 0.29304C19.8946 0.48067 20 0.735151 20 1.0005C20 1.26585 19.8946 1.52033 19.707 1.70796L11.4137 10L19.707 18.292Z"
+                      fill="black" />
+                  </svg>
+                </div>
+                <h3 class="h3">Notifications</h3>
+    
+    
+              </div>
+              <div class="flex items-center gap-3 text-gray-500">
+                <button @click="openSettings=true;showNotifications=false" x-tooltip="'Settings'"
+                  class="hover:text-[var(--color-primary)]">
+                  <i class="fa-solid fa-gear text-[var(--color-black)]"></i>
+                </button>
+              </div>
+            </div>
+    
+            <div class="flex items-center justify-between mb-3 flex-row-reverse ">
+              <button id="markAllNotificationAsRead" x-tooltip="'Mark all as read'"
+                class="text-[var(--color-black)] p3 font-medium">
+                Mark all as read
+              </button>
+    
+              <div x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
+                                                                                          const hideEls = document.querySelectorAll('.read');
+                                                                                          const unreadEls = document.querySelectorAll('.unread');
+                                                                                          const noNotif = document.getElementById('noNotification');
+                                                                                          const mainNotificationContainer = document.getElementById('notificationContainerSocket');
+                                                                                      
+                                                                                          hideEls.forEach(el => el.classList.toggle('hidden', value === 'unread'));
+                                                                                      
+                                                                                          if (value === 'unread' && unreadEls.length === 0 && noNotif) {
+                                                                                            noNotif.classList.remove('hidden');
+                                                                                            mainNotificationContainer.classList.add('hidden');
+                                                                                          } else if (noNotif) {
+                                                                                            mainNotificationContainer.classList.remove('hidden');
+                                                                                            noNotif.classList.add('hidden');
+                                                                                          }
+                                                                                      })">
+    
+                <div class="flex items-center gap-x-2 text-[var(--color-black)] p3 font-medium">
+                  <button
+                    :class="selected === 'all' 
+                                                                                                  ? 'py-1 px-2 rounded text-[var(--color-primary)] bg-[var(--color-primary-shade)]' 
+                                                                                                  : 'py-1 px-2 rounded text-[var(--dark-color)]'"
+                    @click="selected = 'all'">
+                    All
+                  </button>
+    
+                  <button
+                    :class="selected === 'unread' 
+                                                                                                      ? 'py-1 px-2 rounded text-[var(--color-primary)] bg-[var(--color-primary-shade)]' 
+                                                                                                      : 'py-1 px-2 rounded text-[var(--dark-color)]'"
+                    @click="selected = 'unread'">
+                    Unread
+                  </button>
+                </div>
+              </div>
+    
+            </div>
+            <div>
+              <div id="notificationContainerSocket"
+                class="flex flex-col gap-2 max-h-[350px] min-h-[100px] h-auto overflow-y-auto">
+              </div>
+              <div class="text-gray-500 text-sm p-4 hidden" id="noNotification">
+                No notifications
+              </div>
+            </div>
+    
+            <script id="notificationTemplate" type="text/x-jsrender">
+                                           <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" data-targetid="{{:Parent_Forum_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
+                                            <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
+                                            <div class="flex-1">
+                                              <div class="p3 text-[var(--color-black)]">{{:Title}}</div>
+                                              <div class="text-sm line-clamp-1 font-medium text-gray-900">{{:Parent_Forum?.copy}}</div>
+                                              <div class="p3 text-[var(--color-grey)]">{{:~formatDate(Parent_Forum?.published_date)}}</div>
+                                            </div>
+                                          </div>
+                                        </script>
+    
+            <div class="mt-2 flex justify-center">
+              <a href="notifications.html" x-tooltip="'View all'"
+                class="text-[var(--color-primary)] hover:text-blue-800 p3">
+                View All
+                <i class="fa-solid fa-arrow-right pl-2"></i>
+              </a>
+            </div>
+          </div>
+    
+          <!-- Settings Panel -->
+          <div id="notification-Settings" x-show="openSettings" x-transition
+            class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-50 p-4">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold text-lg">Notification Preferences</h3>
+              <button @click="openSettings=false" x-tooltip="'Close'" class="hover:text-red-500 text-gray-500">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+    
+            <div class="space-y-3 text-sm text-gray-800">
+              <div class="space-y-3 text-sm text-gray-800" id="notificationOptionsContainer">
+              </div>
+              <div class="pt-4 text-right" id="updatePreferenceButton">
+                <button onclick="updateNotificationPreferences()"
+                  class="px-4 py-2 bg-[var(--color-primary)] text-white rounded hover:opacity-90 transition">
+                  Save Preferences
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div x-data="{ open: false, selected: 'Profile' }" class="sort-filter relative cursor-pointer"
+          @click.away="open = false">
+          <div @click="open = !open" class=" inline-flex items-center justify-start gap-3 rounded px-3 py-2 ">
+            <div class="size-[30px] shrink-0 relative">
+              <img class="size-full rounded-full avatar-photo border-[1px] border-[var(--color-primary)]" src="" alt="" />
+              <div class="absolute bottom-0 -right-[8px]">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0.5" y="0.5" width="15" height="15" rx="7.5" fill="#F4F1F1" />
+                  <rect x="0.5" y="0.5" width="15" height="15" rx="7.5" stroke="white" />
+                  <path
+                    d="M11.2446 6.85106L8.21446 9.88121C8.18632 9.90939 8.1529 9.93174 8.11612 9.94699C8.07933 9.96223 8.0399 9.97008 8.00008 9.97008C7.96026 9.97008 7.92083 9.96223 7.88404 9.94699C7.84726 9.93174 7.81384 9.90939 7.7857 9.88121L4.75555 6.85106C4.69869 6.7942 4.66675 6.71709 4.66675 6.63668C4.66675 6.55627 4.69869 6.47915 4.75555 6.4223C4.81241 6.36544 4.88952 6.3335 4.96993 6.3335C5.05034 6.3335 5.12746 6.36544 5.18431 6.4223L8.00008 9.23844L10.8158 6.4223C10.844 6.39414 10.8774 6.37181 10.9142 6.35657C10.951 6.34134 10.9904 6.3335 11.0302 6.3335C11.07 6.3335 11.1095 6.34134 11.1463 6.35657C11.183 6.37181 11.2165 6.39414 11.2446 6.4223C11.2728 6.45045 11.2951 6.48387 11.3103 6.52066C11.3256 6.55744 11.3334 6.59686 11.3334 6.63668C11.3334 6.67649 11.3256 6.71592 11.3103 6.7527C11.2951 6.78949 11.2728 6.82291 11.2446 6.85106Z"
+                    fill="#737373" />
+                </svg>
+    
+              </div>
+            </div>
+          </div>
+    
+          <div x-show="open" @click.away="open = false"
+            class=" border-1-[#ccc] list-style-none absolute top-[100%] right-0 z-[10] mr-[4px] w-fit rounded border bg-[#ffffff] p-2 shadow-lg"
+            x-transition>
+            <a href="../src/ui/userProfile.html" target="_blank"
+              class="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-[var(--color-primary-shade)]"
+              :class="{ 'active': selected === 'Profile' }" data-sort="Profile" @click="selected = 'Profile'; open = false">
+              <div class="size-[25px] shrink-0 relative">
+                <img class="size-full rounded-full avatar-photo border-[1px] border-[var(--grey-200)]" src="" alt="" />
+              </div>
+              <div class="flex flex-col">
+                <div class="h3">Profile</div>
+                <div class="p3 avatar-name">Uttam</div>
+              </div>
+            </a>
+            <div class="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-[var(--color-primary-shade)]"
+              :class="{ 'active': selected === 'Change Password' }" data-sort="Change Password"
+              @click="selected = 'Change Password'; open = false">
+              <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12.8642 5.77745H10.8889V4.29597C10.8889 3.51014 10.5767 2.7565 10.0211 2.20084C9.46539 1.64518 8.71175 1.33301 7.92593 1.33301C7.1401 1.33301 6.38646 1.64518 5.8308 2.20084C5.27513 2.7565 4.96296 3.51014 4.96296 4.29597V5.77745H2.98765C2.72571 5.77745 2.4745 5.88151 2.28928 6.06673C2.10406 6.25195 2 6.50316 2 6.76511V13.6787C2 13.9406 2.10406 14.1918 2.28928 14.3771C2.4745 14.5623 2.72571 14.6663 2.98765 14.6663H12.8642C13.1261 14.6663 13.3774 14.5623 13.5626 14.3771C13.7478 14.1918 13.8519 13.9406 13.8519 13.6787V6.76511C13.8519 6.50316 13.7478 6.25195 13.5626 6.06673C13.3774 5.88151 13.1261 5.77745 12.8642 5.77745ZM8.41975 10.6312V12.1972C8.41975 12.3282 8.36773 12.4538 8.27512 12.5464C8.1825 12.639 8.0569 12.691 7.92593 12.691C7.79496 12.691 7.66935 12.639 7.57674 12.5464C7.48413 12.4538 7.4321 12.3282 7.4321 12.1972V10.6312C7.10261 10.5147 6.82491 10.2854 6.64808 9.984C6.47126 9.68257 6.40668 9.32832 6.46578 8.98388C6.52488 8.63944 6.70384 8.32698 6.97103 8.10172C7.23823 7.87647 7.57645 7.75292 7.92593 7.75292C8.2754 7.75292 8.61363 7.87647 8.88082 8.10172C9.14802 8.32698 9.32697 8.63944 9.38607 8.98388C9.44517 9.32832 9.3806 9.68257 9.20377 9.984C9.02694 10.2854 8.74924 10.5147 8.41975 10.6312ZM9.90124 5.77745H5.95062V4.29597C5.95062 3.77209 6.15873 3.26966 6.52917 2.89922C6.89961 2.52877 7.40204 2.32066 7.92593 2.32066C8.44981 2.32066 8.95224 2.52877 9.32268 2.89922C9.69312 3.26966 9.90124 3.77209 9.90124 4.29597V5.77745Z"
+                  fill="#0963D8" />
+              </svg>
+              <div class="p3 text-nowrap">Change Password</div>
+            </div>
+            <div
+              class="flex cursor-pointer items-center gap-2 rounded p-2 text-nowrap hover:bg-[var(--color-primary-shade)]"
+              :class="{ 'active': selected === 'Most Popular' }" data-sort="Most Popular"
+              @click="selected = 'Most Popular'; open = false">
+              <svg class="shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M7.5 13.5C7.5 13.6326 7.44732 13.7598 7.35355 13.8536C7.25979 13.9473 7.13261 14 7 14H3C2.86739 14 2.74021 13.9473 2.64645 13.8536C2.55268 13.7598 2.5 13.6326 2.5 13.5V2.5C2.5 2.36739 2.55268 2.24021 2.64645 2.14645C2.74021 2.05268 2.86739 2 3 2H7C7.13261 2 7.25979 2.05268 7.35355 2.14645C7.44732 2.24021 7.5 2.36739 7.5 2.5C7.5 2.63261 7.44732 2.75979 7.35355 2.85355C7.25979 2.94732 7.13261 3 7 3H3.5V13H7C7.13261 13 7.25979 13.0527 7.35355 13.1464C7.44732 13.2402 7.5 13.3674 7.5 13.5ZM14.3538 7.64625L11.8538 5.14625C11.7838 5.07624 11.6947 5.02856 11.5977 5.00924C11.5006 4.98991 11.4 4.99981 11.3086 5.03769C11.2172 5.07556 11.1391 5.13971 11.0841 5.22201C11.0292 5.30431 10.9999 5.40105 11 5.5V7.5H7C6.86739 7.5 6.74021 7.55268 6.64645 7.64645C6.55268 7.74021 6.5 7.86739 6.5 8C6.5 8.13261 6.55268 8.25979 6.64645 8.35355C6.74021 8.44732 6.86739 8.5 7 8.5H11V10.5C10.9999 10.5989 11.0292 10.6957 11.0841 10.778C11.1391 10.8603 11.2172 10.9244 11.3086 10.9623C11.4 11.0002 11.5006 11.0101 11.5977 10.9908C11.6947 10.9714 11.7838 10.9238 11.8538 10.8538L14.3538 8.35375C14.4002 8.30731 14.4371 8.25217 14.4623 8.19147C14.4874 8.13077 14.5004 8.06571 14.5004 8C14.5004 7.93429 14.4874 7.86923 14.4623 7.80853C14.4371 7.74783 14.4002 7.69269 14.3538 7.64625Z"
+                  fill="#0963D8" />
+              </svg>
+              <div class="p3 text-nowrap">Logout</div>
+            </div>
+          </div>
+        </div>
+    
+      </div>
     </div>
-  </header>
 
   <div id="notificationContainerSocket" class="flex flex-col gap-2"></div>
   <div class="text-gray-500 text-sm p-4 hidden" id="noNotification">No notifications</div>
