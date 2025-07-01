@@ -35,7 +35,11 @@
     </div>
   </script>
 
-  <script type="module" src="../src/main.js"></script>
+  <script type="module">
+    import { setGlobals, GLOBAL_PAGE_TAG, GLOBAL_AUTHOR_DISPLAY_NAME } from '../src/config.js';
+    setGlobals(40, GLOBAL_PAGE_TAG, GLOBAL_AUTHOR_DISPLAY_NAME);
+  </script>
+  <script type="module" src="../src/notifications-only.js"></script>
 </body>
 
 </html>
