@@ -162,7 +162,7 @@ function closeModalSocket() {
 
 }
 
-export function openPostModalById(postId, author = "", highlight = null) {
+export function openPostModalById(postId, author = "", highlight = null, openForm = true) {
   if (!postId) return;
 
   highlightId = highlight ? Number(highlight) : null;
@@ -185,7 +185,7 @@ export function openPostModalById(postId, author = "", highlight = null) {
   closeModalSocket();
   modalSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
 
-  let firstUpdate = true;
+  let firstUpdate = openForm;
 
   modalSocket.addEventListener("open", () => {
     modalSocket.send(JSON.stringify({ type: "CONNECTION_INIT" }));

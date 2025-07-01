@@ -174,7 +174,7 @@ export function initNotificationEvents() {
           console.error("Failed to hide notifications modal");
         }
         const highlight = /Comment|Reply/.test(notifType) ? targetId : null;
-        openPostModalById(forumId, "", highlight);
+        openPostModalById(forumId, "", highlight, false);
       }
     }
 
