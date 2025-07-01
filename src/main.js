@@ -57,7 +57,14 @@ function startApp(tagName, contactId, displayName) {
     state.userRole = role.toLowerCase();
   }
 
-  tribute.attach(document.getElementById("post-editor"));
+  const postEditor = document.getElementById("post-editor");
+  const hasForumRoot = document.getElementById("forum-root");
+  const hasNotifContainer = document.getElementById("notificationContainerSocket");
+  const hasNotifOptions = document.getElementById("notificationOptionsContainer");
+
+  if (postEditor) {
+    tribute.attach(postEditor);
+  }
   fetchGraphQL(FETCH_CONTACTS_QUERY)
     .then((res) => {
       const contacts = res.data.calcContacts;
@@ -79,13 +86,17 @@ function startApp(tagName, contactId, displayName) {
     .catch((err) => {
       console.error("Failed to fetch contacts", err);
     });
-  getNotificationPreferences(contactId);
-  initPosts();
-  initFilePond();
-  initEmojiHandlers();
-  initGifPicker();
-  initRichText();
-  setupCreatePostModal();
+  if (hasNotifContainer || hasNotifOptions) {
+    getNotificationPreferences(contactId);
+  }
+  if (hasForumRoot) {
+    initPosts();
+    initFilePond();
+    initEmojiHandlers();
+    initGifPicker();
+    initRichText();
+    setupCreatePostModal();
+  }
 
   fetchGraphQL(GET_CONTACTS_BY_TAGS, {
     id: GLOBAL_AUTHOR_ID,
@@ -95,9 +106,13 @@ function startApp(tagName, contactId, displayName) {
       const result = res?.data?.calcContacts;
       if (Array.isArray(result) && result.length > 0) {
         setContactIncludedInTag(true);
-        connect();
-        connectNotification();
-      } else {
+        if (hasForumRoot) {
+          connect();
+        }
+        if (hasNotifContainer) {
+          connectNotification();
+        }
+      } else if (hasForumRoot) {
         const el = document.getElementById("forum-root");
         document.getElementById("skeleton-loader")?.remove();
         el.replaceChildren(
@@ -132,7 +147,9 @@ initNotificationEvents();
 initScheduledPostHandler();
 
 window.addEventListener("DOMContentLoaded", () => {
-  loadModalContacts();
+  if (document.getElementById("subscriberContacts") || document.getElementById("adminContacts")) {
+    loadModalContacts();
+  }
   //  Remove OP watermark
   setTimeout(() => {
     const el = document.querySelector('body > div:nth-child(1)');
