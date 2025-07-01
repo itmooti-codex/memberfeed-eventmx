@@ -13,6 +13,11 @@ import {
 // but notifications-only.js runs on its own page without main.js, so we
 // must register the helpers here as well.
 $.views.helpers({
+  totalComments(comments) {
+    return comments.reduce((total, comment) => {
+      return total + 1 + (comment.children?.length || 0);
+    }, 0);
+  },
   formatDate(unix) {
     if (!unix) return "";
     const date = new Date(Number(unix) * 1000);
