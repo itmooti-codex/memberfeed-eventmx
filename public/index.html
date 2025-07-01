@@ -1033,9 +1033,9 @@
         {{if fileType === "Image"}}
         <img src="{{:fileContent}}" class="
         {{if ~inModal}}min-[702px]:hidden max-[702px]:block
-        {{if imageOrientation ==="portrait"}} object-contain size-full {{else}} w-full h-[300px] object-cover{{/if}}
+        {{if imageOrientation ==="portrait"}} object-contain size-full {{else}} w-full h-full object-cover{{/if}}
         {{/if}} 
-        {{if !~inModal && imageOrientation ==="portrait"}} object-contain size-full {{else !~inModal && imageOrientation !="portrait"}} w-full h-[300px] object-cover{{/if}}"  alt="preview" />
+        {{if !~inModal && imageOrientation ==="portrait"}} object-contain size-full {{else !~inModal && imageOrientation !="portrait"}} w-full h-full object-cover{{/if}}"  alt="preview" />
         {{else fileType === "Audio"}}
         <audio class="js-player" controls>
             <source src="{{:fileContent}}" type="audio/mpeg" />
@@ -1527,7 +1527,7 @@
   
           {{if fileType === "Image"}}
           <img class="{{if ~inModal}}min-[702px]:hidden max-[702px]:block {{if imageOrientation ===" portrait"}}
-            object-contain size-full {{else}} w-full h-[300px] object-cover" alt="preview" />
+            object-contain size-full {{else}} w-full h-full object-cover" alt="preview" />
           {{else fileType === "Audio"}}
           <audio class="js-player" controls>
             <source type="audio/mpeg" />
