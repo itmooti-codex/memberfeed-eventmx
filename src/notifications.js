@@ -13,6 +13,14 @@ import { openPostModalById } from "./features/posts/postModal.js";
 
 const notificationTemplate = $.templates("#notificationTemplate");
 
+function getNotificationContainers() {
+  return Array.from(
+    document.querySelectorAll(
+      "#notificationContainerSocket, #notificationContainerPage"
+    )
+  );
+}
+
 export function refreshNotificationSubscription() {
   if (
     !state.notificationSocket ||
@@ -59,9 +67,9 @@ export function connectNotification() {
   state.notifIsConnecting = true;
   state.notificationSocket = new WebSocket(WS_ENDPOINT, PROTOCOL);
 
-  const notifContainer = document.getElementById("notificationContainerSocket");
-  if (notifContainer) {
-    notifContainer.innerHTML = `
+  const notifContainers = getNotificationContainers();
+  for (const c of notifContainers) {
+    c.innerHTML = `
       <div class="flex w-12 mx-auto my-6">
         <div class="relative">
           <div class="w-12 h-12 rounded-full absolute border border-solid border-gray-200"></div>
@@ -107,26 +115,26 @@ export function connectNotification() {
       msg.payload?.data
     ) {
       const notifications = msg.payload.data.subscribeToAnnouncements;
-      const notifContainer = document.getElementById("notificationContainerSocket");
+      const notifContainers = getNotificationContainers();
 
-      if (notifContainer) {
-        notifContainer.innerHTML = "";
+      for (const container of notifContainers) {
+        container.innerHTML = "";
 
         if (!notifications || (Array.isArray(notifications) && notifications.length === 0)) {
-          notifContainer.innerHTML = `<div class="text-gray-500 text-sm p-4">No notifications</div>`;
-          return;
+          container.innerHTML = `<div class="text-gray-500 text-sm p-4">No notifications</div>`;
+          continue;
         }
 
         if (Array.isArray(notifications)) {
           notifications.forEach((notif) => {
             if (notif?.Title) {
               const html = notificationTemplate.render(notif);
-              notifContainer.insertAdjacentHTML("beforeend", html);
+              container.insertAdjacentHTML("beforeend", html);
             }
           });
         } else if (notifications?.Title) {
           const html = notificationTemplate.render(notifications);
-          notifContainer.insertAdjacentHTML("beforeend", html);
+          container.insertAdjacentHTML("beforeend", html);
         }
       }
     } else if (msg.type === "GQL_ERROR") {
@@ -184,9 +192,12 @@ export function initNotificationEvents() {
 
     if (markAll) {
       console.log("Marking all notifications as read");
-      const container = document.getElementById("notificationContainerSocket");
-      const elements = container.querySelectorAll("[data-announcement].unread");
-      ids = Array.from(elements).map((el) => el.getAttribute("data-announcement"));
+      const containers = getNotificationContainers();
+      const elements = [];
+      containers.forEach((c) => {
+        elements.push(...c.querySelectorAll("[data-announcement].unread"));
+      });
+      ids = elements.map((el) => el.getAttribute("data-announcement"));
     } else {
       const unreadElements = document.querySelectorAll(".unread");
       for (const el of unreadElements) {
@@ -220,11 +231,12 @@ export function initNotificationEvents() {
       await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
 
       if (markAll) {
-        const container = document.getElementById("notificationContainerSocket");
-        const elements = container.querySelectorAll("[data-announcement].unread");
-        elements.forEach((el) => {
-          el.classList.remove("unread");
-          el.classList.add("read");
+        const containers = getNotificationContainers();
+        containers.forEach((c) => {
+          c.querySelectorAll("[data-announcement].unread").forEach((el) => {
+            el.classList.remove("unread");
+            el.classList.add("read");
+          });
         });
       } else {
         document.querySelectorAll(".unread").forEach((el) => {

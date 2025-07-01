@@ -241,8 +241,8 @@
       </div>
     </div>
 
-  <div id="notificationContainerSocket" class="flex flex-col gap-2"></div>
-  <div class="text-gray-500 text-sm p-4 hidden" id="noNotification">No notifications</div>
+  <div id="notificationContainerPage" class="flex flex-col gap-2"></div>
+  <div class="text-gray-500 text-sm p-4 hidden" id="noNotificationPage">No notifications</div>
 
   <script id="notificationTemplate" type="text/x-jsrender">
     <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}" data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" data-targetid="{{:Parent_Forum_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
