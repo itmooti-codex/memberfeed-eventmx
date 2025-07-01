@@ -16,6 +16,495 @@
 </head>
 
 <body class="max-w-[700px] bg-[#f1f1f1] flex flex-col m-auto p-6 min-h-screen">
+      <div x-cloak x-show="modalForPostOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalForPostOpen"
+        class="fixed inset-0 z-[999999] max-[702px]:overflow-y-auto flex min-[702px]:items-center max-[702px]:items-start max-[702px]:justify-start min-[702px]:justify-center bg-black/20 backdrop-blur-md "
+        role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
+        <!-- Modal Dialog -->
+        <div x-show="modalForPostOpen"
+          x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
+          x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100"
+          class="customPickerModal rounded-radius flex   max-[702px]:overflow-y-auto flex-col gap-4 min-[702px]:overflow-hidden rounded bg-white max-[702px]:w-full">
+          <!-- Dialog Header -->
+          <div id="modalForumRoot" class="flex flex-col gap-1"></div>
+        </div>
+        <!-- Dialog Footer -->
+      
+      </div>
+
+          <script id="tmpl-post" type="text/x-jsrender">
+                      {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
+                {{if fileType === 'Image' && ~inModal}}<div class="flex max-[702px]:h-screen bg-black items-start  min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
+            {{if fileType === 'Image' && ~inModal}}
+            {{if fileContent || fileContentComment}}
+              <div class=" flex-[3] flex items-center h-[90vh] justify-center max-[702px]:hidden px-4" data-or="{{:imageOrientation}}">
+                  {{if depth === 0 && fileContent}}
+                  <img src="{{:fileContent}}" style="width:100%;height:100%;object-fit:contain;" alt="preview" />
+                  {{/if}}
+              </div>
+            {{/if}}
+            {{/if}}
+            <div class="{{if fileType === 'Image' && ~inModal}} w-full flex-[2] min-[702px]:h-[90vh] max-[702px]:h-full !rounded-none overflow-y-auto {{/if}}item {{if fileType != "Image" && ~inModal}} overflow-auto min-[855px]:w-[855px] max-[855px]:w-full min-[702px]:max-h-[80vh] max-[702px]:h-screen{{/if}} {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded '}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
+              data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-forumStatus="{{:forumStatus}}">
+              <div class="flex items-start justify-between w-full{{if depth === 0 }} px-4 pt-4{{/if}}">
+                  <div class="author flex items-center mb-2">
+                      <img class="avatar w-[40px] shrink-0 h-[40px] bg-[#ccc] rounded-full mr-[12px]" src="{{:authorImage}}"
+                          alt="{{:authorName}}"
+                          >
+                      <div class="info flex items-start gap-2">
+                          <div class="flex flex-col items-start">
+                              <span class="name font-bold">{{:authorName}}</span>
+                              {{if forumStatus==='Scheduled'}}
+                              <div class="flex items-center gap-1">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                      <path
+                                          d="M9 20H6C4.93913 20 3.92172 19.5786 3.17157 18.8284C2.42143 18.0783 2 17.0609 2 16V7C2 5.93913 2.42143 4.92172 3.17157 4.17157C3.92172 3.42143 4.93913 3 6 3H17C18.0609 3 19.0783 3.42143 19.8284 4.17157C20.5786 4.92172 21 5.93913 21 7V10M8 2V4M15 2V4M2 8H21M18.5 15.643L17 17.143"
+                                          stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                      <path
+                                          d="M17 22C19.7614 22 22 19.7614 22 17C22 14.2386 19.7614 12 17 12C14.2386 12 12 14.2386 12 17C12 19.7614 14.2386 22 17 22Z"
+                                          stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+                                  <div class="text-sm text-[#65676b]">{{:~formatDate(sheduledDate)}}</div>
+                              </div>
+                              {{else}}
+                              <span class="timestamp text-sm text-[#65676b]">{{:timeAgo}}</span>
+                              {{/if}}
+                          </div>
+                          {{if isFeatured}}
+                          <i class="fa-solid fa-star text-yellow-500 ml-2" title="Featured"></i>
+                          {{/if}}
+                      </div>
+            
+                  </div>
+                  {{if ~inModal && depth === 0}}
+                  <div x-on:click="modalForPostOpen = false"
+                      class="group flex cursor-pointer items-center justify-start gap-2 rounded-[34px] bg-zinc-100 p-2 transition-all hover:bg-[var(--color-primary-shade)]">
+                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                              d="M18.8535 18.146C18.8999 18.1925 18.9368 18.2476 18.9619 18.3083C18.9871 18.369 19 18.4341 19 18.4997C19 18.5654 18.9871 18.6305 18.9619 18.6912C18.9368 18.7519 18.8999 18.807 18.8535 18.8535C18.807 18.8999 18.7519 18.9368 18.6912 18.9619C18.6305 18.9871 18.5654 19 18.4997 19C18.4341 19 18.369 18.9871 18.3083 18.9619C18.2476 18.9368 18.1925 18.8999 18.146 18.8535L14 14.7068L9.85398 18.8535C9.76017 18.9473 9.63292 19 9.50025 19C9.36758 19 9.24033 18.9473 9.14652 18.8535C9.0527 18.7597 9 18.6324 9 18.4997C9 18.3671 9.0527 18.2398 9.14652 18.146L13.2932 14L9.14652 9.85398C9.0527 9.76017 9 9.63292 9 9.50025C9 9.36758 9.0527 9.24033 9.14652 9.14652C9.24033 9.0527 9.36758 9 9.50025 9C9.63292 9 9.76017 9.0527 9.85398 9.14652L14 13.2932L18.146 9.14652C18.2398 9.0527 18.3671 9 18.4997 9C18.6324 9 18.7597 9.0527 18.8535 9.14652C18.9473 9.24033 19 9.36758 19 9.50025C19 9.63292 18.9473 9.76017 18.8535 9.85398L14.7068 14L18.8535 18.146Z"
+                              fill="#0E0E0E"></path>
+                      </svg>
+                  </div>
+                  {{/if}}
+                  {{if canDelete && (!~inModal || depth > 0)}}
+                  <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit"
+                      x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
+                      <!-- Toggle Button -->
+                      <div x-on:click="threeDotsForAdmin = ! threeDotsForAdmin" aria-haspopup="true"
+                          x-on:keydown.space.prevent="openedWithKeyboard = true"
+                          x-on:keydown.enter.prevent="openedWithKeyboard = true" class="cursor-pointer"
+                          x-on:keydown.down.prevent="openedWithKeyboard = true">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                              <path
+                                  d="M13 12C13 12.2967 12.912 12.5867 12.7472 12.8334C12.5824 13.08 12.3481 13.2723 12.074 13.3858C11.7999 13.4993 11.4983 13.5291 11.2074 13.4712C10.9164 13.4133 10.6491 13.2704 10.4393 13.0607C10.2296 12.8509 10.0867 12.5836 10.0288 12.2926C9.97094 12.0017 10.0006 11.7001 10.1142 11.426C10.2277 11.1519 10.42 10.9176 10.6666 10.7528C10.9133 10.588 11.2033 10.5 11.5 10.5C11.8978 10.5 12.2794 10.658 12.5607 10.9393C12.842 11.2206 13 11.6022 13 12ZM11.5 5C11.7967 5 12.0867 4.91203 12.3334 4.74721C12.58 4.58238 12.7723 4.34811 12.8858 4.07403C12.9994 3.79994 13.0291 3.49834 12.9712 3.20737C12.9133 2.91639 12.7704 2.64912 12.5607 2.43934C12.3509 2.22956 12.0836 2.0867 11.7926 2.02882C11.5017 1.97094 11.2001 2.00065 10.926 2.11418C10.6519 2.22771 10.4176 2.41997 10.2528 2.66665C10.088 2.91332 10 3.20333 10 3.5C10 3.89783 10.158 4.27936 10.4393 4.56066C10.7206 4.84197 11.1022 5 11.5 5ZM11.5 19C11.2033 19 10.9133 19.088 10.6666 19.2528C10.42 19.4176 10.2277 19.6519 10.1142 19.926C10.0006 20.2001 9.97094 20.5017 10.0288 20.7926C10.0867 21.0836 10.2296 21.3509 10.4393 21.5607C10.6491 21.7704 10.9164 21.9133 11.2074 21.9712C11.4983 22.0291 11.7999 21.9993 12.074 21.8858C12.3481 21.7723 12.5824 21.58 12.7472 21.3334C12.912 21.0867 13 20.7967 13 20.5C13 20.1022 12.842 19.7206 12.5607 19.4393C12.2794 19.158 11.8978 19 11.5 19Z"
+                                  fill="black" />
+                          </svg>
+                      </div>
+                      <!-- Dropdown Menu -->
+                      <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard"
+                          x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false"
+                          x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()"
+                          class="absolute top-11 rounded {{if !~inModal}}right-0{{else}}right-0{{/if}} bg-white p-2 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]"
+                          role="menu">
+                          {{if depth === 0}}
+                          {{if isAdmin}}
+            
+                          <div data-uid="{{:uid}}"
+                              class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
+                              role="menuitem">Delete this post</div>
+                          {{if forumStatus === 'Published - Not flagged'}}
+                          {{if !isFeatured}}
+                          <div data-uid="{{:uid}}"
+                              class="btn-feature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
+                              role="menuitem">Mark this post as featured</div>
+                          {{else}}
+                          <div data-uid="{{:uid}}"
+                              class="btn-unfeature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
+                              role="menuitem">Remove featured mark</div>
+                          {{/if}}
+                          {{if commentsDisabled}}
+                          <div data-uid="{{:uid}}"
+                              class="btn-enable-comments cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
+                              role="menuitem">Enable comments on this post</div>
+                          {{else}}
+                          <div data-uid="{{:uid}}"
+                              class="btn-disable-comments cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
+                              role="menuitem">Disable comments on this post</div>
+                          {{/if}}
+                          {{else}}
+                          <div data-uid="{{:uid}}"
+                              class="postNowFromScheduled cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
+                              role="menuitem">Post Now</div>
+                          {{/if}}
+                          {{else}}
+                          {{if canDelete}}
+                          <div data-uid="{{:uid}}"
+                              class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
+                              role="menuitem">Delete this post</div>
+                          {{/if}}
+                          {{/if}}
+                          {{else}}
+                          {{if canDelete}}
+                          <div data-uid="{{:uid}}"
+                              class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
+                              role="menuitem">
+                              {{if depth === 1}}Delete this comment{{else}}Delete this reply{{/if}}
+                          </div>
+                          {{/if}}
+                          {{/if}}
+                      </div>
+                  </div>
+                  {{/if}}
+            
+              </div>
+              {{if content !='' }} <div class="content p2 {{if forumStatus != "Published - Not flagged" && !fileContent}}mb-4{{/if}} {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
+              {{if fileContent || fileContentComment}}
+              <div class="file-preview {{if forumStatus != "Published - Not flagged"}}mb-4{{/if}} {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 mx-4  rounded{{/if}} {{if fileType ==="File"}}mx-4{{/if}} ">
+                  {{if fileType === "Audio" && depth === 0}}
+                  <div class="h2 text-black mb-4 max-[702px]:line-clamp-1">{{:fileContentName}}</div>
+                  {{/if}}
+                  {{if depth === 0 && fileContent}}
+            
+                  {{if fileType === "Image"}}
+                  <img src="{{:fileContent}}" class="
+                  {{if ~inModal}}min-[702px]:hidden max-[702px]:block
+                  {{if imageOrientation ==="portrait"}} object-contain size-full {{else}} w-full h-full object-cover{{/if}}
+                  {{/if}} 
+                  {{if !~inModal && imageOrientation ==="portrait"}} object-contain size-full {{else !~inModal && imageOrientation !="portrait"}} w-full h-full object-cover{{/if}}"  alt="preview" />
+                  {{else fileType === "Audio"}}
+                  <audio class="js-player" controls>
+                      <source src="{{:fileContent}}" type="audio/mpeg" />
+                      Your browser does not support the audio tag.
+                  </audio>
+                  {{else fileType === "Video"}}
+                  <video preload="auto" class="js-player" controls style="width: 100%; height: auto;">
+                      <source src="{{:fileContent}}" type="video/mp4" />
+                      Your browser does not support video.
+                  </video>
+                  {{else fileType === "File"}}
+                  <a href="{{:fileContent}}"
+                      class="flex w-full flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
+                      <div class="inline-flex items-center justify-start gap-2 self-stretch rounded-xl">
+                          <div class="flex items-center justify-start gap-3">
+                              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path
+                                      d="M28.0316 9.85346L20.4931 2.315C20.3931 2.21502 20.2743 2.13575 20.1435 2.0817C20.0128 2.02765 19.8727 1.99989 19.7312 2H6.80814C6.23691 2 5.68907 2.22692 5.28514 2.63085C4.88122 3.03477 4.6543 3.58261 4.6543 4.15385V27.8462C4.6543 28.4174 4.88122 28.9652 5.28514 29.3692C5.68907 29.7731 6.23691 30 6.80814 30H26.1928C26.764 30 27.3118 29.7731 27.7158 29.3692C28.1197 28.9652 28.3466 28.4174 28.3466 27.8462V10.6154C28.3467 10.4739 28.319 10.3338 28.2649 10.2031C28.2109 10.0724 28.1316 9.95355 28.0316 9.85346ZM19.7312 20.3077H13.2697C12.9841 20.3077 12.7101 20.1942 12.5082 19.9923C12.3062 19.7903 12.1928 19.5164 12.1928 19.2308C12.1928 18.9452 12.3062 18.6712 12.5082 18.4693C12.7101 18.2673 12.9841 18.1538 13.2697 18.1538H19.7312C20.0168 18.1538 20.2908 18.2673 20.4927 18.4693C20.6947 18.6712 20.8081 18.9452 20.8081 19.2308C20.8081 19.5164 20.6947 19.7903 20.4927 19.9923C20.2908 20.1942 20.0168 20.3077 19.7312 20.3077ZM19.7312 10.6154V4.59942L25.7472 10.6154H19.7312Z"
+                                      fill="#0963D8" />
+                              </svg>
+                              <div class="inline-flex flex-col items-start justify-center gap-1">
+                                  <div class="h3 justify-start  font-['Inter'] text-black max-[702px]:line-clamp-1">{{:fileContentName}}</div>
+                                  <div class="p3 justify-start  font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </a>
+                  {{/if}}
+            
+                  {{/if}}
+                  {{if depth > 0 && fileContentComment}}
+                  {{if fileType === "Image"}}
+                  <img src="{{:fileContentComment}}" style="width:211px;height:138px;object-fit:contain;" alt="preview" />
+                  {{else fileType === "Audio"}}
+                  <label for="audio-player">{{:fileContentCommentName}}</label>
+                  <audio class="js-player" controls>
+                      <source src="{{:fileContentComment}}" type="audio/mpeg" />
+                      Your browser does not support the audio tag.
+                  </audio>
+            
+                  {{else fileType === "Video"}}
+                  <video preload="auto" class="js-player" controls style="width: 100%; height: auto;">
+                      <source src="{{:fileContentComment}}" type="video/mp4" />
+                      Your browser does not support video.
+                  </video>
+                  {{else}}
+                  <a href="{{:fileContentComment}}"
+                      class="flex w-full flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
+                      <div class="inline-flex items-center justify-start gap-2 self-stretch rounded-xl">
+                          <div class="flex items-center justify-start gap-3">
+                              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path
+                                      d="M28.0316 9.85346L20.4931 2.315C20.3931 2.21502 20.2743 2.13575 20.1435 2.0817C20.0128 2.02765 19.8727 1.99989 19.7312 2H6.80814C6.23691 2 5.68907 2.22692 5.28514 2.63085C4.88122 3.03477 4.6543 3.58261 4.6543 4.15385V27.8462C4.6543 28.4174 4.88122 28.9652 5.28514 29.3692C5.68907 29.7731 6.23691 30 6.80814 30H26.1928C26.764 30 27.3118 29.7731 27.7158 29.3692C28.1197 28.9652 28.3466 28.4174 28.3466 27.8462V10.6154C28.3467 10.4739 28.319 10.3338 28.2649 10.2031C28.2109 10.0724 28.1316 9.95355 28.0316 9.85346ZM19.7312 20.3077H13.2697C12.9841 20.3077 12.7101 20.1942 12.5082 19.9923C12.3062 19.7903 12.1928 19.5164 12.1928 19.2308C12.1928 18.9452 12.3062 18.6712 12.5082 18.4693C12.7101 18.2673 12.9841 18.1538 13.2697 18.1538H19.7312C20.0168 18.1538 20.2908 18.2673 20.4927 18.4693C20.6947 18.6712 20.8081 18.9452 20.8081 19.2308C20.8081 19.5164 20.6947 19.7903 20.4927 19.9923C20.2908 20.1942 20.0168 20.3077 19.7312 20.3077ZM19.7312 10.6154V4.59942L25.7472 10.6154H19.7312Z"
+                                      fill="#0963D8" />
+                              </svg>
+                              <div class="inline-flex flex-col items-start justify-center gap-1">
+                                  <div class="h3 justify-start  font-['Inter'] text-black  max-[702px]:line-clamp-1">{{:fileContentCommentName}}
+                                  </div>
+                                  <div class="p3 justify-start  font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </a>
+                  {{/if}}
+                  {{/if}}
+              </div>
+              {{/if}}
+              {{if forumStatus === "Published - Not flagged"}}
+              <div class=" flex items-center gap-4 {{if depth === 0 }} px-4{{/if}}">
+                  <div class="flex items-end justify-end gap-2 ">
+                      <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                              d="M14.6732 6.30021C14.5455 6.15556 14.3885 6.03972 14.2127 5.96038C14.0368 5.88105 13.8461 5.84004 13.6532 5.84008H10.4798V4.93341C10.4798 4.33226 10.241 3.75572 9.81593 3.33064C9.39085 2.90556 8.81431 2.66675 8.21316 2.66675C8.12894 2.66669 8.04637 2.69009 7.9747 2.73433C7.90304 2.77857 7.84511 2.8419 7.80742 2.91721L5.66656 7.20008H3.22649C2.98603 7.20008 2.75541 7.2956 2.58538 7.46564C2.41535 7.63567 2.31982 7.86628 2.31982 8.10675V13.0934C2.31982 13.3339 2.41535 13.5645 2.58538 13.7345C2.75541 13.9046 2.98603 14.0001 3.22649 14.0001H12.9732C13.3045 14.0002 13.6245 13.8793 13.873 13.6602C14.1215 13.4411 14.2815 13.1388 14.323 12.8101L15.003 7.37008C15.0271 7.17856 15.0101 6.9841 14.9533 6.79964C14.8964 6.61517 14.8009 6.44493 14.6732 6.30021ZM3.22649 8.10675H5.49316V13.0934H3.22649V8.10675Z"
+                              fill="var(--color-primary)" />
+                      </svg>
+                      <div class="p3 text-[var(--color-black)]">{{:upvotes}}</div>
+                  </div>
+                  {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
+                  <div class="flex items-end justify-end gap-2 {{if depth === 1}}cursor-pointer toggle-replies{{/if}}" {{if
+                      depth===1}}data-uid="{{:uid}}" {{/if}}>
+                      <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                              d="M11.1668 7.19992C11.1668 7.34137 11.1106 7.47702 11.0106 7.57704C10.9106 7.67706 10.7749 7.73325 10.6335 7.73325H6.10016C5.95871 7.73325 5.82306 7.67706 5.72304 7.57704C5.62302 7.47702 5.56683 7.34137 5.56683 7.19992C5.56683 7.05847 5.62302 6.92281 5.72304 6.82279C5.82306 6.72278 5.95871 6.66658 6.10016 6.66658H10.6335C10.7749 6.66658 10.9106 6.72278 11.0106 6.82279C11.1106 6.92281 11.1668 7.05847 11.1668 7.19992ZM10.6335 8.79992H6.10016C5.95871 8.79992 5.82306 8.85611 5.72304 8.95613C5.62302 9.05615 5.56683 9.1918 5.56683 9.33325C5.56683 9.4747 5.62302 9.61036 5.72304 9.71038C5.82306 9.8104 5.95871 9.86658 6.10016 9.86658H10.6335C10.7749 9.86658 10.9106 9.8104 11.0106 9.71038C11.1106 9.61036 11.1668 9.4747 11.1668 9.33325C11.1668 9.1918 11.1106 9.05615 11.0106 8.95613C10.9106 8.85611 10.7749 8.79992 10.6335 8.79992ZM15.1668 7.99992C15.1649 9.76743 14.4619 11.462 13.2121 12.7118C11.9622 13.9616 10.2677 14.6646 8.50016 14.6666H2.90016C2.61727 14.6666 2.34595 14.5542 2.14592 14.3542C1.94588 14.1541 1.8335 13.8828 1.8335 13.5999V7.99992C1.8335 6.23181 2.53588 4.53612 3.78612 3.28587C5.03636 2.03563 6.73205 1.33325 8.50016 1.33325C10.2683 1.33325 11.964 2.03563 13.2142 3.28587C14.4644 4.53612 15.1668 6.23181 15.1668 7.99992ZM14.1002 7.99992C14.1002 6.51471 13.5102 5.09032 12.46 4.04012C11.4098 2.98992 9.98537 2.39992 8.50016 2.39992C7.01495 2.39992 5.59057 2.98992 4.54036 4.04012C3.49016 5.09032 2.90016 6.51471 2.90016 7.99992V13.5999H8.50016C9.98489 13.5983 11.4083 13.0078 12.4582 11.958C13.5081 10.9081 14.0986 9.48464 14.1002 7.99992Z"
+                              fill="var(--color-primary)" />
+                      </svg>
+                      <div class="p3 text-[var(--color-black)]">
+                          {{if depth === 1}}
+                          {{:children.length}}
+                          {{else depth === 0}}
+                          {{:totalCommentAndReplies || ~totalComments(children)}}
+                          {{else}}
+                          {{:children.length}}
+                          {{/if}}
+                      </div>
+                  </div>
+                  {{/if}}
+              </div>
+              {{/if}}
+              {{if forumStatus === 'Published - Not flagged'}}
+              <div class="flex items-center gap-4 border-t border-[var(--grey-200)] {{if depth === 0 }} mx-4 p-4{{/if}} actions">
+                  <div class="flex flex-1 items-center justify-center gap-2 cursor-pointer btn-like {{:hasUpvoted ? ' liked' : ''}}"
+                      data-uid="{{:uid}}">
+                      <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                              d="M14.6732 6.30021C14.5455 6.15556 14.3885 6.03972 14.2127 5.96038C14.0368 5.88105 13.8461 5.84004 13.6532 5.84008H10.4798V4.93341C10.4798 4.33226 10.241 3.75572 9.81593 3.33064C9.39085 2.90556 8.81431 2.66675 8.21316 2.66675C8.12894 2.66669 8.04637 2.69009 7.9747 2.73433C7.90304 2.77857 7.84511 2.8419 7.80742 2.91721L5.66656 7.20008H3.22649C2.98603 7.20008 2.75541 7.2956 2.58538 7.46564C2.41535 7.63567 2.31982 7.86628 2.31982 8.10675V13.0934C2.31982 13.3339 2.41535 13.5645 2.58538 13.7345C2.75541 13.9046 2.98603 14.0001 3.22649 14.0001H12.9732C13.3045 14.0002 13.6245 13.8793 13.873 13.6602C14.1215 13.4411 14.2815 13.1388 14.323 12.8101L15.003 7.37008C15.0271 7.17856 15.0101 6.9841 14.9533 6.79964C14.8964 6.61517 14.8009 6.44493 14.6732 6.30021ZM3.22649 8.10675H5.49316V13.0934H3.22649V8.10675Z"
+                              fill="#0E0E0E" />
+                      </svg>
+                      <div class="p3">Like</div>
+                  </div>
+            
+                  {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
+                  <div class="flex {{if ~inModal}}btn-comment{{else}}openPostModal{{/if}} flex-1 items-center justify-center gap-2 cursor-pointer group"
+                      data-uid="{{:uid}}" data-id="{{:id}}" data-author="{{:authorName}}" {{if !~inModal}}
+                      @click="modalForPostOpen=true" {{/if}}>
+                      <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path class="group-hover:fill-[var(--color-primary)]"
+                              d="M11.1668 7.19992C11.1668 7.34137 11.1106 7.47702 11.0106 7.57704C10.9106 7.67706 10.7749 7.73325 10.6335 7.73325H6.10016C5.95871 7.73325 5.82306 7.67706 5.72304 7.57704C5.62302 7.47702 5.56683 7.34137 5.56683 7.19992C5.56683 7.05847 5.62302 6.92281 5.72304 6.82279C5.82306 6.72278 5.95871 6.66658 6.10016 6.66658H10.6335C10.7749 6.66658 10.9106 6.72278 11.0106 6.82279C11.1106 6.92281 11.1668 7.05847 11.1668 7.19992ZM10.6335 8.79992H6.10016C5.95871 8.79992 5.82306 8.85611 5.72304 8.95613C5.62302 9.05615 5.56683 9.1918 5.56683 9.33325C5.56683 9.4747 5.62302 9.61036 5.72304 9.71038C5.82306 9.8104 5.95871 9.86658 6.10016 9.86658H10.6335C10.7749 9.86658 10.9106 9.8104 11.0106 9.71038C11.1106 9.61036 11.1668 9.4747 11.1668 9.33325C11.1668 9.1918 11.1106 9.05615 11.0106 8.95613C10.9106 8.85611 10.7749 8.79992 10.6335 8.79992ZM15.1668 7.99992C15.1649 9.76743 14.4619 11.462 13.2121 12.7118C11.9622 13.9616 10.2677 14.6646 8.50016 14.6666H2.90016C2.61727 14.6666 2.34595 14.5542 2.14592 14.3542C1.94588 14.1541 1.8335 13.8828 1.8335 13.5999V7.99992C1.8335 6.23181 2.53588 4.53612 3.78612 3.28587C5.03636 2.03563 6.73205 1.33325 8.50016 1.33325C10.2683 1.33325 11.964 2.03563 13.2142 3.28587C14.4644 4.53612 15.1668 6.23181 15.1668 7.99992ZM14.1002 7.99992C14.1002 6.51471 13.5102 5.09032 12.46 4.04012C11.4098 2.98992 9.98537 2.39992 8.50016 2.39992C7.01495 2.39992 5.59057 2.98992 4.54036 4.04012C3.49016 5.09032 2.90016 6.51471 2.90016 7.99992V13.5999H8.50016C9.98489 13.5983 11.4083 13.0078 12.4582 11.958C13.5081 10.9081 14.0986 9.48464 14.1002 7.99992Z"
+                              fill="#0E0E0E" />
+                      </svg>
+                      <div class="p3 group-hover:text-[var(--color-primary)]">{{if depth === 0}}Comment{{else}}Reply{{/if}}</div>
+                  </div>
+                  {{/if}}
+                  {{if depth === 0}}
+                  <div class="flex flex-1 items-center justify-center gap-2 cursor-pointer btn-bookmark {{:hasBookmarked ? ' bookmarked' : ''}}"
+                      data-uid="{{:uid}}">
+            
+                      <svg shownWhilstBookmarked {{:hasBookmarked ? 'hidden' : ''}} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11.9047 1.33301H4.28575C4.03316 1.33301 3.79092 1.43335 3.61232 1.61195C3.43371 1.79056 3.33337 2.03279 3.33337 2.28538V14.258C3.33335 14.3309 3.35283 14.4025 3.3898 14.4653C3.42677 14.5281 3.47988 14.5798 3.54361 14.6151C3.60734 14.6505 3.67937 14.6681 3.75221 14.6662C3.82506 14.6643 3.89606 14.6429 3.95786 14.6043L8.09455 12.0193L12.2326 14.6043C12.2944 14.6429 12.3654 14.6643 12.4382 14.6662C12.5111 14.6681 12.5831 14.6505 12.6468 14.6151C12.7106 14.5798 12.7637 14.5281 12.8007 14.4653C12.8376 14.4025 12.8571 14.3309 12.8571 14.258V2.28538C12.8571 2.03279 12.7567 1.79056 12.5781 1.61195C12.3995 1.43335 12.1573 1.33301 11.9047 1.33301ZM12.0408 13.5213L8.31087 11.1907C8.246 11.1502 8.17105 11.1287 8.09455 11.1287C8.01805 11.1287 7.94309 11.1502 7.87822 11.1907L4.14969 13.5213V2.28538C4.14969 2.2493 4.16403 2.21469 4.18954 2.18917C4.21506 2.16366 4.24966 2.14933 4.28575 2.14933H11.9047C11.9408 2.14933 11.9754 2.16366 12.0009 2.18917C12.0264 2.21469 12.0408 2.2493 12.0408 2.28538V13.5213Z" fill="#0E0E0E"/>
+                      </svg>
+            
+                    <svg shownWhilstNotBookmarked {{:!hasBookmarked ? 'hidden' : ''}} width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M8.53326 0.333313H1.06644C0.783541 0.333313 0.512224 0.445696 0.312181 0.645739C0.112139 0.845781 -0.000244141 1.1171 -0.000244141 1.4V13.1336C-0.000196781 13.2287 0.0253214 13.3222 0.0736625 13.4042C0.122004 13.4862 0.191406 13.5537 0.274668 13.5999C0.357929 13.646 0.452017 13.669 0.547166 13.6665C0.642315 13.6639 0.735058 13.636 0.815772 13.5856L4.79985 11.0955L8.7846 13.5856C8.8653 13.6358 8.95797 13.6636 9.05302 13.6661C9.14807 13.6685 9.24204 13.6454 9.3252 13.5993C9.40835 13.5532 9.47768 13.4858 9.52598 13.4039C9.57429 13.322 9.59983 13.2286 9.59995 13.1336V1.4C9.59995 1.1171 9.48756 0.845781 9.28752 0.645739C9.08748 0.445696 8.81616 0.333313 8.53326 0.333313Z" fill="#0963D8"/>
+                          </svg>
+                          
+            
+                      <div class="p3">{{:hasBookmarked ? ' Saved' : 'Save'}}</div>
+                  </div>
+                  {{/if}}
+              </div>
+              {{/if}}
+              {{!-- Toggle replies ribbon below comment --}}
+              {{if depth === 1 && children.length}}
+              <div class="reply-ribbon cursor-pointer toggle-replies" data-uid="{{:uid}}">
+                  {{if isCollapsed}}
+                  See {{:children.length}} more replies
+                  {{else}}
+                  Collapse replies
+                  {{/if}}
+              </div>
+              {{/if}}
+              {{if children.length && !isCollapsed}}
+              <div data-reply="{{:uid}}" class="children visible flex flex-col gap-3 {{if depth === 0 }} p-4{{/if}}">
+                  {{for children}}
+                  {{include tmpl="#tmpl-comment"/}}
+                  {{/for}}
+              </div>
+              {{/if}}
+            </div>
+            {{if fileType === 'Image' && ~inModal}}</div>{{/if}}
+                        
+                        {{/if}}
+              </script>
+          
+          
+          <script id="tmpl-comment" type="text/x-jsrender">
+              <div class="item {{if depth ===1}}mb-6{{else depth > 1}} mb-4 {{else}}{{/if}}
+              {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
+            data-uid="{{:uid}}"
+                          data-id="{{:id}}"
+                          data-depth="{{:depth}}"
+                          data-forumStatus="{{:forumStatus}}">
+                <div class=" flex w-full items-start gap-2"
+            >
+            <div class="size-6 rounded-full shrink-0  border border-zinc-300  {{if depth===1}}mainComment{{/if}}">
+              <img class="commenterImage size-full size-full object-cover rounded-full " 
+                src="{{:authorImage}}"
+                                alt="{{:authorName}}"
+                                
+              />
+            </div>
+            <div class="flex w-full flex-col gap-4">
+              <div class="commentBodyn flex w-full flex-col gap-2">
+                <div class="flex flex-col items-start justify-center gap-2">
+                  <div class="flex flex-col items-start justify-center gap-0.5">
+                    <div class="h3 commenterName justify-start text-center font-['Inter'] text-black">{{:authorName}}</div>
+                    <div class="p3 commentedTime justify-start text-center font-['Inter'] text-black">
+                        {{if forumStatus==='Scheduled'}}
+                                    <div class="flex items-center gap-1">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M9 20H6C4.93913 20 3.92172 19.5786 3.17157 18.8284C2.42143 18.0783 2 17.0609 2 16V7C2 5.93913 2.42143 4.92172 3.17157 4.17157C3.92172 3.42143 4.93913 3 6 3H17C18.0609 3 19.0783 3.42143 19.8284 4.17157C20.5786 4.92172 21 5.93913 21 7V10M8 2V4M15 2V4M2 8H21M18.5 15.643L17 17.143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M17 22C19.7614 22 22 19.7614 22 17C22 14.2386 19.7614 12 17 12C14.2386 12 12 14.2386 12 17C12 19.7614 14.2386 22 17 22Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                          </svg>
+                                            <div class="text-sm text-[#65676b]">{{:~formatDate(sheduledDate)}}</div>
+                                    </div>
+                              {{else}}
+                              <span class="timestamp text-sm text-[#65676b]">{{:timeAgo}}</span>
+                              {{/if}}
+                    </div>
+                  </div>
+                  {{if content !=''  }} <div class="content">{{:content}}</div>{{/if}}
+                  {{if fileContentComment}}
+                      <div class="file-preview w-full  {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 rounded{{/if}} ">
+                                {{if depth > 0 && fileContentComment}}
+                            {{if fileType === "Image"}}
+                              <img src="{{:fileContentComment}}" style="width:211px;height:138px;object-fit:contain;" alt="preview" />
+                            {{else fileType === "Audio"}}
+                            <label for="audio-player " class="max-[702px]:line-clamp-1">{{:fileContentCommentName}}</label>
+                              <audio class="js-player" controls>
+                                <source src="{{:fileContentComment}}" type="audio/mpeg" />
+                                Your browser does not support the audio tag.
+                              </audio>
+            
+                            {{else fileType === "Video"}}
+                              <video preload="auto" class="js-player" controls style="width: 100%; height: auto;">
+                                <source src="{{:fileContentComment}}" type="video/mp4" />
+                                Your browser does not support video.
+                              </video>
+                            {{else}}
+                            <a href="{{:fileContentComment}}"class="flex w-full flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
+                            <div class="inline-flex items-center justify-start gap-2 self-stretch rounded-xl">
+                              <div class="flex items-center justify-start gap-3">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M28.0316 9.85346L20.4931 2.315C20.3931 2.21502 20.2743 2.13575 20.1435 2.0817C20.0128 2.02765 19.8727 1.99989 19.7312 2H6.80814C6.23691 2 5.68907 2.22692 5.28514 2.63085C4.88122 3.03477 4.6543 3.58261 4.6543 4.15385V27.8462C4.6543 28.4174 4.88122 28.9652 5.28514 29.3692C5.68907 29.7731 6.23691 30 6.80814 30H26.1928C26.764 30 27.3118 29.7731 27.7158 29.3692C28.1197 28.9652 28.3466 28.4174 28.3466 27.8462V10.6154C28.3467 10.4739 28.319 10.3338 28.2649 10.2031C28.2109 10.0724 28.1316 9.95355 28.0316 9.85346ZM19.7312 20.3077H13.2697C12.9841 20.3077 12.7101 20.1942 12.5082 19.9923C12.3062 19.7903 12.1928 19.5164 12.1928 19.2308C12.1928 18.9452 12.3062 18.6712 12.5082 18.4693C12.7101 18.2673 12.9841 18.1538 13.2697 18.1538H19.7312C20.0168 18.1538 20.2908 18.2673 20.4927 18.4693C20.6947 18.6712 20.8081 18.9452 20.8081 19.2308C20.8081 19.5164 20.6947 19.7903 20.4927 19.9923C20.2908 20.1942 20.0168 20.3077 19.7312 20.3077ZM19.7312 10.6154V4.59942L25.7472 10.6154H19.7312Z" fill="#0963D8" />
+                                </svg>
+                                <div class="inline-flex flex-col items-start justify-center gap-1">
+                                  <div class="h3 justify-start  font-['Inter'] text-black max-[702px]:line-clamp-1">{{:fileContentCommentName}}</div>
+                                  <div class="p3 justify-start  font-['Inter'] text-[var(--color-grey)]">{{:fileSize}}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </a>
+                        {{/if}}
+                      {{/if}}
+                        </div>
+                  {{/if}}
+                  <div class="flex items-start justify-start gap-4 actions">
+                    <div class="flex items-center justify-center gap-2">
+                      <div class="likeOnCommentButton flex cursor-pointer items-center justify-center gap-2 rounded">
+                        <div class="p3 justify-center text-[var(--color-grey)] btn-like {{:hasUpvoted ? ' liked' : ''}}" data-uid="{{:uid}}">Like</div>
+                      </div>
+                      <div class="h-[3px] w-[3px] rounded-full bg-zinc-300"></div>
+                      <div class="flex items-center justify-center gap-1 rounded">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M10.5052 4.7251C10.4095 4.61661 10.2918 4.52973 10.1599 4.47023C10.028 4.41073 9.88493 4.37997 9.74023 4.38H7.36023V3.7C7.36023 3.24913 7.18113 2.81673 6.86232 2.49792C6.5435 2.17911 6.1111 2 5.66023 2C5.59707 1.99995 5.53514 2.01751 5.48139 2.05069C5.42764 2.08387 5.3842 2.13136 5.35593 2.18785L3.75028 5.4H1.92023C1.73989 5.4 1.56693 5.47164 1.4394 5.59917C1.31188 5.72669 1.24023 5.89965 1.24023 6.08V9.82C1.24023 10.0003 1.31188 10.1733 1.4394 10.3008C1.56693 10.4284 1.73989 10.5 1.92023 10.5H9.23023C9.47873 10.5001 9.71872 10.4095 9.90512 10.2451C10.0915 10.0808 10.2115 9.85405 10.2426 9.6075L10.7526 5.5275C10.7707 5.38386 10.758 5.23802 10.7153 5.09967C10.6727 4.96132 10.601 4.83363 10.5052 4.7251ZM1.92023 6.08H3.62023V9.82H1.92023V6.08Z" fill="#0963D8" />
+                        </svg>
+                        <div class="likerOnCommentCounter justify-start text-center font-['Inter'] text-xs leading-none font-normal text-stone-950">{{:upvotes}}</div>
+                      </div>
+                    </div>
+                    <div class="flex h-4 w-[2px] items-center justify-center border-1 border-red-500 bg-[var(--color-grey)]"></div>
+                    <div class="p3 openreplyOnCommentButton cursor-pointer justify-start text-[var(--color-grey)]
+                    {{if ~inModal}}btn-comment{{else}}openPostModal{{/if}} " data-uid="{{:uid}}"   data-id="{{:id}}" data-author="{{:authorName}}"
+                    >Reply</div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="repliesRenderContainer">
+            
+              </div> -->
+                {{!-- Toggle replies ribbon below comment --}}
+                            
+                            {{if children.length && !isCollapsed}}
+                                  <div data-reply="{{:uid}}" class="children visible  flex flex-col gap-3">
+                                        
+                                        {{!-- Render child comments --}}
+                                        {{for children}}
+                                          {{include tmpl="#tmpl-comment"/}}
+                                        {{/for}}
+                                        {{if depth === 1 && isCollapsed}}
+                                          <div class="reply-ribbon cursor-pointer h3 toggle-replies" data-uid="{{:uid}}">
+                                            See {{:children.length}} more replies
+                                          </div>
+                                        {{/if}}
+                                  </div>
+                            {{/if}}
+                            {{if depth === 1 && children.length}}
+                              <div class="reply-ribbon cursor-pointer h3 toggle-replies {{if depth === 1}}ribbonForOpeningReplies{{/if}}"  data-uid="{{:uid}}">
+                                    {{if isCollapsed}}
+                                      See {{:children.length}} more replies
+                                    {{else}}
+                                      Collapse replies
+                                    {{/if}}
+                              </div>
+                            {{/if}}
+            </div>
+            
+              
+            {{if canDelete && (!~inModal || depth > 0)}}
+                            <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit" x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
+                        <!-- Toggle Button -->
+                        <div x-on:click="threeDotsForAdmin = ! threeDotsForAdmin" aria-haspopup="true" x-on:keydown.space.prevent="openedWithKeyboard = true" x-on:keydown.enter.prevent="openedWithKeyboard = true" class="cursor-pointer" x-on:keydown.down.prevent="openedWithKeyboard = true">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 7.66667C9 7.86445 8.94135 8.05779 8.83147 8.22224C8.72159 8.38669 8.56541 8.51486 8.38268 8.59055C8.19996 8.66623 7.99889 8.68604 7.80491 8.64745C7.61093 8.60887 7.43275 8.51363 7.29289 8.37377C7.15304 8.23392 7.0578 8.05574 7.01922 7.86176C6.98063 7.66778 7.00043 7.46671 7.07612 7.28398C7.15181 7.10126 7.27998 6.94508 7.44443 6.8352C7.60888 6.72532 7.80222 6.66667 8 6.66667C8.26522 6.66667 8.51957 6.77202 8.70711 6.95956C8.89464 7.1471 9 7.40145 9 7.66667ZM8 3C8.19778 3 8.39112 2.94135 8.55557 2.83147C8.72002 2.72159 8.84819 2.56541 8.92388 2.38268C8.99957 2.19996 9.01937 1.99889 8.98079 1.80491C8.9422 1.61093 8.84696 1.43275 8.70711 1.29289C8.56725 1.15304 8.38907 1.0578 8.19509 1.01922C8.00111 0.98063 7.80004 1.00043 7.61732 1.07612C7.43459 1.15181 7.27841 1.27998 7.16853 1.44443C7.05865 1.60888 7 1.80222 7 2C7 2.26522 7.10536 2.51957 7.29289 2.70711C7.48043 2.89464 7.73478 3 8 3ZM8 12.3333C7.80222 12.3333 7.60888 12.392 7.44443 12.5019C7.27998 12.6117 7.15181 12.7679 7.07612 12.9506C7.00043 13.1334 6.98063 13.3344 7.01922 13.5284C7.0578 13.7224 7.15304 13.9006 7.29289 14.0404C7.43275 14.1803 7.61093 14.2755 7.80491 14.3141C7.99889 14.3527 8.19996 14.3329 8.38268 14.2572C8.56541 14.1815 8.72159 14.0534 8.83147 13.8889C8.94135 13.7245 9 13.5311 9 13.3333C9 13.0681 8.89464 12.8138 8.70711 12.6262C8.51957 12.4387 8.26522 12.3333 8 12.3333Z" fill="#0E0E0E" />
+              </svg>
+                        </div>
+                    <!-- Dropdown Menu -->
+                    <div x-cloak x-show="threeDotsForAdmin || openedWithKeyboard" x-transition x-trap="openedWithKeyboard" x-on:click.outside="threeDotsForAdmin = false, openedWithKeyboard = false" x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()" class="absolute top-11 rounded {{if !~inModal}}left-0{{else}}right-0{{/if}} bg-white p-2 flex w-fit min-w-48 flex-col overflow-hidden bg-white shadow-lg z-[999]" role="menu">
+                      {{if depth === 0}}
+                        {{if isAdmin}}
+            
+                        <div data-uid="{{:uid}}" class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Delete this post</div>
+                        {{if forumStatus === 'Published - Not flagged'}}
+                            {{if !isFeatured}}
+                            <div data-uid="{{:uid}}" class="btn-feature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Mark this post as featured</div>
+                            {{else}}
+                            <div data-uid="{{:uid}}" class="btn-unfeature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Remove featured mark</div>
+                            {{/if}}
+                            {{if commentsDisabled}}
+                            <div data-uid="{{:uid}}" class="btn-enable-comments cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Enable comments on this post</div>
+                            {{else}}
+                            <div data-uid="{{:uid}}" class="btn-disable-comments cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Disable comments on this post</div>
+                            {{/if}}
+                        {{else}}
+                          <div data-uid="{{:uid}}" class="postNowFromScheduled cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Post Now</div>
+                        {{/if}}
+                        {{else}}
+                        {{if canDelete}}
+                        <div data-uid="{{:uid}}" class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Delete this post</div>
+                        {{/if}}
+                        {{/if}}
+                      {{else}}
+                      {{if canDelete}}
+                        <div data-uid="{{:uid}}" class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">
+                          {{if depth === 1}}Delete this comment{{else}}Delete this reply{{/if}}
+                        </div>
+                      {{/if}}
+                      {{/if}}
+                    </div>
+                  </div>
+                  {{/if}}
+            </div>
+              </div>
+            
+              </script>
     <div
       class="fixed top-0 left-0 w-full max-[702px]:px-4 min-[702px]:px-[120px] py-[12px] bg-white  flex items-center justify-between z-[9999]">
     
