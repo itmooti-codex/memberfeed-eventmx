@@ -12,6 +12,10 @@ import {
   initNotificationEvents,
   refreshNotificationSubscription,
 } from "./notifications.js";
+import { initCommentHandlers } from "./features/posts/comments.js";
+import { initReactionHandlers } from "./features/posts/reactions.js";
+import { initPostModalHandlers } from "./features/posts/postModal.js";
+import { initPreviewHandlers } from "./features/posts/preview.js";
 
 // Helpers used by JsRender templates. These are normally added in main.js
 // but notifications-only.js runs on its own page without main.js, so we
@@ -54,6 +58,10 @@ function initNotificationsOnly(contactId) {
   getNotificationPreferences(contactId);
   connectNotification();
   initNotificationEvents();
+  initCommentHandlers();
+  initReactionHandlers();
+  initPostModalHandlers();
+  initPreviewHandlers();
   refreshNotificationSubscription();
 }
 

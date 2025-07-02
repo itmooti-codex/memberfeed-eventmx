@@ -8,9 +8,23 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.css" />
+  <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
+  <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+  <link href="https://unpkg.com/filepond-plugin-media-preview/dist/filepond-plugin-media-preview.css" rel="stylesheet" />
+  <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.min.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-media-preview/dist/filepond-plugin-media-preview.js"></script>
+  <script src="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.js"></script>
+  <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsrender/jsrender.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.2/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.min.js"></script>
   <script type="module" src="../src/initAlpine.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -775,6 +789,21 @@
     setGlobals(40, GLOBAL_PAGE_TAG, GLOBAL_AUTHOR_DISPLAY_NAME);
   </script>
   <script type="module" src="../src/notifications-only.js"></script>
+  <script src="https://unpkg.com/mic-recorder-to-mp3@2.2.1/dist/index.min.js"></script>
+
+  <div id="toast-wrapper" class="toast-wrapper !z-[999999999]"></div>
+
+  <div id="file-preview-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[9999999999]">
+    <div class="modal-content bg-white p-4 m-4 rounded relative max-w-full max-h-full">
+      <div id="preview-container" class="max-h-[80vh] overflow-auto"></div>
+    </div>
+    <a id="download-preview" href="#" download class="absolute top-2 left-2 cursor-pointer">
+      <i class="fa-solid fa-download text-white text-2xl"></i>
+    </a>
+    <div id="close-file-preview" class="absolute top-2 cursor-pointer right-2 !p-0">
+      <i class="fa-solid fa-xmark text-white text-2xl"></i>
+    </div>
+  </div>
 </body>
 
 </html>
