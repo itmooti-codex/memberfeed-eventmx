@@ -80,8 +80,8 @@ Configuration values are read in `src/config.js` from `src/credentials.js` or fr
 ### Fields
 
 - **API_KEY** – GraphQL API key used for both HTTP and WebSocket requests. Obtain this from your Ontraport account or whichever backend you use.
-- **AWS_PARAM** – Base64 encoded `awsParam` string required to request a pre-signed S3 upload URL. On an Ontraport page you can read this value from `window.awsParam`. The helper functions `decodeAwsParam()` and `encodeAwsParam()` in `src/utils/handleFile.js` illustrate how to work with it.
-- **AWS_PARAM_URL** – Endpoint that receives the `awsParam` and returns S3 upload parameters. This is usually `https://<your-domain>/s/aws` when using Ontraport.
+- **PARAM** – Base64 encoded `awsParam` string required to request a pre-signed S3 upload URL. On an Ontraport page you can read this value from `window.awsParam`. The helper functions `decodeAwsParam()` and `encodeAwsParam()` in `src/utils/handleFile.js` illustrate how to work with it.
+- **PARAM_URL** – Endpoint that receives the `awsParam` and returns S3 upload parameters. This is usually `https://<your-domain>/s/aws` when using Ontraport.
 - **HTTP_ENDPOINT** – URL of the GraphQL HTTP endpoint.
 - **WS_ENDPOINT** – GraphQL WebSocket endpoint for real-time updates. Typically the same host as `HTTP_ENDPOINT` using `wss://` and appending `?apiKey=YOUR_API_KEY`.
 

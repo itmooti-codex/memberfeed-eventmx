@@ -13,8 +13,8 @@ export const env =
 export const cfg = (typeof window !== "undefined" && window.APP_CONFIG) || {};
 
 export const API_KEY = cfg.API_KEY || env.API_KEY || "";
-export const awsParam = cfg.AWS_PARAM || env.AWS_PARAM || "";
-export const awsParamUrl = cfg.AWS_PARAM_URL || env.AWS_PARAM_URL || "";
+export const awsParam = cfg.PARAM || env.PARAM || "";
+export const awsParamUrl = cfg.PARAM_URL || env.PARAM_URL || "";
 export const HTTP_ENDPOINT =
   cfg.HTTP_ENDPOINT ||
   env.HTTP_ENDPOINT ||
