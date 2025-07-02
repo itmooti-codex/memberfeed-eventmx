@@ -17,6 +17,7 @@ import { initCommentHandlers } from "./features/posts/comments.js";
 import { initReactionHandlers } from "./features/posts/reactions.js";
 import { initPostModalHandlers } from "./features/posts/postModal.js";
 import { initPreviewHandlers } from "./features/posts/preview.js";
+import { initModerationHandlers } from "./features/posts/moderation.js";
 import { updateCurrentUserUI } from "./ui/user.js";
 import { initEmojiHandlers } from "./ui/emoji.js";
 import { initGifPicker } from "./ui/gif.js";
@@ -90,6 +91,7 @@ function initNotificationsOnly(contactId) {
   initGifPicker();
   initCommentHandlers();
   initReactionHandlers();
+  initModerationHandlers();
   initPostModalHandlers();
   initPreviewHandlers();
   refreshNotificationSubscription();

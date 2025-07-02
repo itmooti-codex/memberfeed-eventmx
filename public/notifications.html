@@ -774,6 +774,21 @@
   <div id="notificationContainerPage" class="flex flex-col gap-2"></div>
   <div class="text-gray-500 text-sm p-4 hidden" id="noNotificationPage">No notifications</div>
 
+  <!-- Delete confirmation modal -->
+  <div id="delete-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[9999999999]">
+    <div class="bg-white p-4 rounded shadow-lg w-[90%] max-w-sm">
+      <h2 id="delete-modal-title" class="text-lg mb-4"></h2>
+      <div class="flex justify-end gap-2">
+        <button id="delete-confirm" class="!bg-[var(--grey-100)] hover:!bg-[var(--color-primary)] text-white px-4 py-1 rounded">
+          Delete
+        </button>
+        <button id="delete-cancel" class="bg-gray-300 px-4 py-1 rounded">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script id="notificationTemplate" type="text/x-jsrender">
     <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}" data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" data-targetid="{{:Parent_Forum_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
       <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
