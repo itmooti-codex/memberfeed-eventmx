@@ -125,10 +125,10 @@
                                             </div> -->
     
                 <div x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
-                                                          const hideEls = document.querySelectorAll('.read');
-                                                          const unreadEls = document.querySelectorAll('.unread');
-                                                          const noNotif = document.getElementById('noNotification');
                                                           const mainNotificationContainer = document.getElementById('notificationContainerSocket');
+                                                          const hideEls = mainNotificationContainer.querySelectorAll('.read');
+                                                          const unreadEls = mainNotificationContainer.querySelectorAll('.unread');
+                                                          const noNotif = document.getElementById('noNotification');
                                                       
                                                           hideEls.forEach(el => el.classList.toggle('hidden', value === 'unread'));
                                                       
@@ -159,6 +159,46 @@
                 </div>
     
             </div>
+
+            <div class="flex items-center justify-between mb-3 flex-row-reverse">
+                <button id="markAllNotificationAsReadPage" x-tooltip="'Mark all as read'"
+                    class="text-[var(--color-black)] p3 font-medium">
+                    Mark all as read
+                </button>
+                <div x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
+                                                          const pageContainer = document.getElementById('notificationContainerPage');
+                                                          const hideEls = pageContainer.querySelectorAll('.read');
+                                                          const unreadEls = pageContainer.querySelectorAll('.unread');
+                                                          const noNotif = document.getElementById('noNotificationPage');
+
+                                                          hideEls.forEach(el => el.classList.toggle('hidden', value === 'unread'));
+
+                                                          if (value === 'unread' && unreadEls.length === 0 && noNotif) {
+                                                            noNotif.classList.remove('hidden');
+                                                            pageContainer.classList.add('hidden');
+                                                          } else if (noNotif) {
+                                                            pageContainer.classList.remove('hidden');
+                                                            noNotif.classList.add('hidden');
+                                                          }
+                                                      })">
+                    <div class="flex items-center gap-x-2 text-[var(--color-black)] p3 font-medium">
+                        <button :class="selected === 'all'
+                                                              ? 'py-1 px-2 rounded text-[var(--color-primary)] bg-[var(--color-primary-shade)]'
+                                                              : 'py-1 px-2 rounded text-[var(--dark-color)]'"
+                            @click="selected = 'all'">
+                            All
+                        </button>
+
+                        <button :class="selected === 'unread'
+                                                              ? 'py-1 px-2 rounded text-[var(--color-primary)] bg-[var(--color-primary-shade)]'
+                                                              : 'py-1 px-2 rounded text-[var(--dark-color)]'"
+                            @click="selected = 'unread'">
+                            Unread
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div>
                 <div id="notificationContainerPage"
                     class="flex flex-col gap-2 max-h-[350px] min-h-[100px] h-auto overflow-y-auto"></div>

@@ -186,15 +186,25 @@ export function initNotificationEvents() {
       }
     }
 
-    const markAll = e.target.id === "markAllNotificationAsRead";
+    const markAllTop = e.target.id === "markAllNotificationAsRead";
+    const markAllPage = e.target.id === "markAllNotificationAsReadPage";
+    const markAll = markAllTop || markAllPage;
+
+    let targetContainers = [];
+    if (markAllTop) {
+      const c = document.getElementById("notificationContainerSocket");
+      if (c) targetContainers.push(c);
+    } else if (markAllPage) {
+      const c = document.getElementById("notificationContainerPage");
+      if (c) targetContainers.push(c);
+    }
 
     let ids = [];
 
     if (markAll) {
       console.log("Marking all notifications as read");
-      const containers = getNotificationContainers();
       const elements = [];
-      containers.forEach((c) => {
+      targetContainers.forEach((c) => {
         elements.push(...c.querySelectorAll("[data-announcement].unread"));
       });
       ids = elements.map((el) => el.getAttribute("data-announcement"));
@@ -225,14 +235,13 @@ export function initNotificationEvents() {
     `;
 
     try {
-      if (markAll) {
+      if (markAllTop) {
         $(".notificationsLoader").removeClass("hidden").addClass("flex");
       }
       await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
 
       if (markAll) {
-        const containers = getNotificationContainers();
-        containers.forEach((c) => {
+        targetContainers.forEach((c) => {
           c.querySelectorAll("[data-announcement].unread").forEach((el) => {
             el.classList.remove("unread");
             el.classList.add("read");
@@ -249,7 +258,7 @@ export function initNotificationEvents() {
     } catch (error) {
       console.error("Error marking announcement(s) as read:", error);
     } finally {
-      if (markAll) {
+      if (markAllTop) {
         $(".notificationsLoader").removeClass("flex").addClass("hidden");
       }
     }
