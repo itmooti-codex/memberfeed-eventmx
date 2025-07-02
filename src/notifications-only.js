@@ -17,6 +17,8 @@ import { initReactionHandlers } from "./features/posts/reactions.js";
 import { initPostModalHandlers } from "./features/posts/postModal.js";
 import { initPreviewHandlers } from "./features/posts/preview.js";
 import { updateCurrentUserUI } from "./ui/user.js";
+import { initEmojiHandlers } from "./ui/emoji.js";
+import { initGifPicker } from "./ui/gif.js";
 
 // Helpers used by JsRender templates. These are normally added in main.js
 // but notifications-only.js runs on its own page without main.js, so we
@@ -77,6 +79,8 @@ function initNotificationsOnly(contactId) {
   getNotificationPreferences(contactId);
   connectNotification();
   initNotificationEvents();
+  initEmojiHandlers();
+  initGifPicker();
   initCommentHandlers();
   initReactionHandlers();
   initPostModalHandlers();
