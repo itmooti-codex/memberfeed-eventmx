@@ -52,6 +52,5 @@ Desktop.ini
 *.swo
 *.tmp
 *.temp
-src/config.js
-src/credentials.js
+src/keys.js
 .env

@@ -9,8 +9,10 @@
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.css" />
   <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
-  <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
-  <link href="https://unpkg.com/filepond-plugin-media-preview/dist/filepond-plugin-media-preview.css" rel="stylesheet" />
+  <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+    rel="stylesheet" />
+  <link href="https://unpkg.com/filepond-plugin-media-preview/dist/filepond-plugin-media-preview.css"
+    rel="stylesheet" />
   <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -29,6 +31,7 @@
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.2/dist/purify.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="../src/keys.js"></script>
 </head>
 
 <body>
@@ -38,7 +41,7 @@
     <div class="loading-state z-[9999999999]">
       <div class="loading"></div>
     </div>
-  
+
     <!--Modal for custom date and time end  -->
     <!-- Modal For Post starts -->
     <div x-cloak x-show="modalForPostOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalForPostOpen"
@@ -53,19 +56,19 @@
         <div id="modalForumRoot" class="flex flex-col gap-1"></div>
       </div>
       <!-- Dialog Footer -->
-  
+
     </div>
-  
-  
+
+
     <div
       class="fixed top-0 left-0 w-full max-[702px]:px-4 min-[702px]:px-[120px] py-[12px] bg-white  flex items-center justify-between z-[9999]">
-  
+
       <div clas="brand-main">
         <div class="text-2xl font-bold text-[var(--color-primary)]">
           <a href="#topOfForum" class="hover:text-[var(--color-primary-shade)]">IT MOOTI</a>
         </div>
       </div>
-  
+
       <div class="flex items-center gap-10">
         <div class="relative">
           <div @click="showNotifications = !showNotifications"
@@ -75,7 +78,7 @@
                 d="M13.0758 19.2308C13.0758 19.4348 12.9948 19.6304 12.8505 19.7747C12.7062 19.919 12.5106 20 12.3066 20H6.15273C5.94872 20 5.75306 19.919 5.6088 19.7747C5.46455 19.6304 5.3835 19.4348 5.3835 19.2308C5.3835 19.0268 5.46455 18.8311 5.6088 18.6868C5.75306 18.5426 5.94872 18.4615 6.15273 18.4615H12.3066C12.5106 18.4615 12.7062 18.5426 12.8505 18.6868C12.9948 18.8311 13.0758 19.0268 13.0758 19.2308ZM18.2498 14.6096C17.7152 13.6904 16.922 11.0894 16.922 7.69231C16.922 5.65218 16.1115 3.69561 14.6689 2.25302C13.2263 0.810437 11.2698 0 9.22966 0C7.18953 0 5.23296 0.810437 3.79037 2.25302C2.34778 3.69561 1.53735 5.65218 1.53735 7.69231C1.53735 11.0904 0.743116 13.6904 0.209462 14.6096C0.0731841 14.8433 0.000937784 15.1088 9.06823e-06 15.3793C-0.000919647 15.6499 0.0695022 15.9158 0.204173 16.1505C0.338843 16.3851 0.533 16.5801 0.767064 16.7157C1.00113 16.8514 1.26682 16.9229 1.53735 16.9231H16.922C17.1924 16.9227 17.458 16.8511 17.6919 16.7153C17.9258 16.5796 18.1199 16.3847 18.2544 16.1501C18.389 15.9155 18.4593 15.6495 18.4583 15.3791C18.4574 15.1087 18.3851 14.8432 18.2489 14.6096H18.2498Z"
                 fill="#737373" />
             </svg>
-  
+
           </div>
           <div x-data="{
                               hasUnread: false,
@@ -98,11 +101,12 @@
               <span class="relative inline-flex size-2 rounded-full bg-red-500"></span>
             </span>
           </div>
-  
+
           <!-- Notification Panel -->
           <div x-show="showNotifications" @click.outside="showNotifications = false" x-transition
             class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-[50000] p-4 max-[702px]:fixed max-[702px]:w-full">
-            <div class="absolute notificationsLoader hidden inset-0 bg-[#00000095] z-10 items-center justify-center flex">
+            <div
+              class="absolute notificationsLoader hidden inset-0 bg-[#00000095] z-10 items-center justify-center flex">
               <div class="h-8 w-8 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
               </div>
             </div>
@@ -116,8 +120,8 @@
                   </svg>
                 </div>
                 <h3 class="h3">Notifications</h3>
-  
-  
+
+
               </div>
               <div class="flex items-center gap-3 text-gray-500">
                 <button @click="openSettings=true;showNotifications=false" x-tooltip="'Settings'"
@@ -126,13 +130,13 @@
                 </button>
               </div>
             </div>
-  
+
             <div class="flex items-center justify-between mb-3 flex-row-reverse ">
               <button id="markAllNotificationAsRead" x-tooltip="'Mark all as read'"
                 class="text-[var(--color-black)] p3 font-medium">
                 Mark all as read
               </button>
-  
+
               <div id="notificationDropdownFilter" x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
       const mainNotificationContainer = document.getElementById('notificationContainerSocket');
       const hideEls = mainNotificationContainer.querySelectorAll('.read');
@@ -149,7 +153,7 @@
                                                                                         noNotif.classList.add('hidden');
                                                                                       }
                                                                                   })">
-  
+
                 <div class="flex items-center gap-x-2 text-[var(--color-black)] p3 font-medium">
                   <button
                     :class="selected === 'all' 
@@ -158,7 +162,7 @@
                     @click="selected = 'all'">
                     All
                   </button>
-  
+
                   <button
                     :class="selected === 'unread' 
                                                                                                   ? 'py-1 px-2 rounded text-[var(--color-primary)] bg-[var(--color-primary-shade)]' 
@@ -168,7 +172,7 @@
                   </button>
                 </div>
               </div>
-  
+
             </div>
             <div>
               <div id="notificationContainerSocket"
@@ -178,7 +182,7 @@
                 No notifications
               </div>
             </div>
-  
+
             <script id="notificationTemplate" type="text/x-jsrender">
                                        <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" data-targetid="{{:Parent_Forum_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
                                         <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
@@ -189,15 +193,16 @@
                                         </div>
                                       </div>
                                     </script>
-  
+
             <div class="mt-2 flex justify-center">
-              <a href="notifications.html" x-tooltip="'View all'" class="text-[var(--color-primary)] hover:text-blue-800 p3">
+              <a href="notifications.html" x-tooltip="'View all'"
+                class="text-[var(--color-primary)] hover:text-blue-800 p3">
                 View All
                 <i class="fa-solid fa-arrow-right pl-2"></i>
               </a>
             </div>
           </div>
-  
+
           <!-- Settings Panel -->
           <div id="notification-Settings" x-show="openSettings" x-transition
             class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-50 p-4">
@@ -207,7 +212,7 @@
                 <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
-  
+
             <div class="space-y-3 text-sm text-gray-800">
               <div class="space-y-3 text-sm text-gray-800" id="notificationOptionsContainer">
               </div>
@@ -224,8 +229,7 @@
           @click.away="open = false">
           <div @click="open = !open" class=" inline-flex items-center justify-start gap-3 rounded px-3 py-2 ">
             <div class="size-[30px] shrink-0 relative">
-              <img class="size-full rounded-full avatar-photo border-[1px] border-[var(--color-primary)]"
-                src=""
+              <img class="size-full rounded-full avatar-photo border-[1px] border-[var(--color-primary)]" src=""
                 alt="" />
               <div class="absolute bottom-0 -right-[8px]">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -235,11 +239,11 @@
                     d="M11.2446 6.85106L8.21446 9.88121C8.18632 9.90939 8.1529 9.93174 8.11612 9.94699C8.07933 9.96223 8.0399 9.97008 8.00008 9.97008C7.96026 9.97008 7.92083 9.96223 7.88404 9.94699C7.84726 9.93174 7.81384 9.90939 7.7857 9.88121L4.75555 6.85106C4.69869 6.7942 4.66675 6.71709 4.66675 6.63668C4.66675 6.55627 4.69869 6.47915 4.75555 6.4223C4.81241 6.36544 4.88952 6.3335 4.96993 6.3335C5.05034 6.3335 5.12746 6.36544 5.18431 6.4223L8.00008 9.23844L10.8158 6.4223C10.844 6.39414 10.8774 6.37181 10.9142 6.35657C10.951 6.34134 10.9904 6.3335 11.0302 6.3335C11.07 6.3335 11.1095 6.34134 11.1463 6.35657C11.183 6.37181 11.2165 6.39414 11.2446 6.4223C11.2728 6.45045 11.2951 6.48387 11.3103 6.52066C11.3256 6.55744 11.3334 6.59686 11.3334 6.63668C11.3334 6.67649 11.3256 6.71592 11.3103 6.7527C11.2951 6.78949 11.2728 6.82291 11.2446 6.85106Z"
                     fill="#737373" />
                 </svg>
-  
+
               </div>
             </div>
           </div>
-  
+
           <div x-show="open" @click.away="open = false"
             class=" border-1-[#ccc] list-style-none absolute top-[100%] right-0 z-[10] mr-[4px] w-fit rounded border bg-[#ffffff] p-2 shadow-lg"
             x-transition>
@@ -248,9 +252,7 @@
               :class="{ 'active': selected === 'Profile' }" data-sort="Profile"
               @click="selected = 'Profile'; open = false">
               <div class="size-[25px] shrink-0 relative">
-                <img class="size-full rounded-full avatar-photo border-[1px] border-[var(--grey-200)]"
-                  src=""
-                  alt="" />
+                <img class="size-full rounded-full avatar-photo border-[1px] border-[var(--grey-200)]" src="" alt="" />
               </div>
               <div class="flex flex-col">
                 <div class="h3">Profile</div>
@@ -282,11 +284,11 @@
             </div>
           </div>
         </div>
-  
+
       </div>
     </div>
-  
-  
+
+
     <!--Modal for custom date and time start  -->
     <div x-cloak x-show="modalForCustomDateTime" x-transition.opacity.duration.200ms
       x-trap.inert.noscroll="modalForCustomDateTime" x-on:keydown.esc.window="modalForCustomDateTime = false"
@@ -321,7 +323,7 @@
           </p>
         </div>
         <!-- Dialog Footer -->
-  
+
         <div @click="async () => {
                                     const customPickerModal = document.querySelector('.customPickerModal');
                                     customPickerModal.classList.add('opacity-0', 'pointer-events-none');
@@ -345,9 +347,9 @@
         </div>
       </div>
     </div>
-  
+
     <!--Modal for custom date and time end  -->
-  
+
     <div x-data="{modalToSelectUser: true}"
       x-init="$watch('modalToSelectUser', v => v ? window.disableBodyScroll() : window.enableBodyScroll())"
       class="fixed bottom-[4rem] right-[1rem] z-[99999]">
@@ -366,8 +368,7 @@
           class="flex max-w-lg flex-col gap-4 overflow-hidden rounded-radius bg-white rounded">
           <!-- Dialog Header -->
           <div class="flex items-center justify-between bg-surface-alt/60 p-4 dark:bg-surface-dark/20">
-            <div id="defaultModalTitle"
-              class="h3">
+            <div id="defaultModalTitle" class="h3">
               Select Profile
             </div>
           </div>
@@ -392,15 +393,16 @@
                 </div>
               </div>
             </div>
-            <div id="adminContacts" x-show="activeUserTab==='admins'" class="flex h-[100px] items-center justify-center">
+            <div id="adminContacts" x-show="activeUserTab==='admins'"
+              class="flex h-[100px] items-center justify-center">
             </div>
           </div>
         </div>
       </div>
     </div>
-  
+
     <div id="topOfForum"></div>
-  
+
     <div x-data="{ selectedFilterTab: 'allPosts' }" class="w-full mt-[60px] mb-6">
       <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()"
         class="flex gap-2 overflow-x-auto max-[702px]:mt-4" role="tablist" aria-label="tab options">
@@ -416,7 +418,7 @@
               d="M14.1338 7.73308V14.1333C14.1338 14.2748 14.0776 14.4104 13.9776 14.5105C13.8776 14.6105 13.7419 14.6667 13.6005 14.6667H9.86699C9.72554 14.6667 9.58988 14.6105 9.48985 14.5105C9.38983 14.4104 9.33364 14.2748 9.33364 14.1333V10.6665C9.33364 10.5958 9.30554 10.528 9.25553 10.478C9.20552 10.4279 9.13769 10.3998 9.06696 10.3998H6.4002C6.32947 10.3998 6.26164 10.4279 6.21163 10.478C6.16162 10.528 6.13352 10.5958 6.13352 10.6665V14.1333C6.13352 14.2748 6.07733 14.4104 5.97731 14.5105C5.87728 14.6105 5.74162 14.6667 5.60017 14.6667H1.8667C1.72524 14.6667 1.58958 14.6105 1.48956 14.5105C1.38954 14.4104 1.33334 14.2748 1.33334 14.1333V7.73308C1.33347 7.45022 1.44595 7.179 1.64602 6.97905L6.97955 1.64552C7.17958 1.44562 7.45079 1.33334 7.73358 1.33334C8.01637 1.33334 8.28758 1.44562 8.48761 1.64552L13.8211 6.97905C14.0212 7.179 14.1337 7.45022 14.1338 7.73308Z"
               fill="#737373" />
           </svg>
-  
+
           <span class="max-[702px]:hidden">All</span>
         </div>
         <div x-on:click="selectedFilterTab = 'featuredPost'" data-filter="Featured"
@@ -465,8 +467,8 @@
           x-bind:aria-selected="selectedFilterTab === 'scheduledPost'"
           x-bind:tabindex="selectedFilterTab === 'scheduledPost' ? '0' : '-1'"
           x-bind:class="selectedFilterTab === 'scheduledPost' ?  'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]' : 'hover:border-b-2 hover:border-b-[var(--color-primary)] hover:text-[var(--color-primary)]'"
-          class="group tabsForAdmin filter-btn flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm" type="div"
-          role="tab" aria-controls="tabpanelscheduledPost">
+          class="group tabsForAdmin filter-btn flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm"
+          type="div" role="tab" aria-controls="tabpanelscheduledPost">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path :class="selectedFilterTab === 'scheduledPost' ? 'fill-[var(--color-primary)]' : 'fill-[#737373]'"
               class="group-hover:fill-[var(--color-primary)]"
@@ -475,15 +477,15 @@
           </svg>
           <span class="max-[702px]:hidden">Scheduled</span>
         </div>
-  
+
       </div>
     </div>
-  
+
     <div onclick="document.getElementById('topOfForum').scrollIntoView({ behavior: 'smooth' })"
       class="p-3 bg-[var(--color-primary)] flex items-center justify-center cursor-pointer fixed bottom-[1rem] right-[1rem] max-[768px]:hidden z-[99]">
       <i class="fa-solid fa-arrow-up text-white"></i>
     </div>
-  
+
     <div
       class="inline-flex flex-col items-start justify-center gap-3 self-stretch overflow-hidden rounded bg-white p-4 cursor-pointer max-[702px]:mx-2">
       <div class="inline-flex items-center justify-start gap-2 self-stretch" id="create-post-trigger">
@@ -493,7 +495,7 @@
             src="https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA"
             alt="avatar" class="size-full object-cover  rounded-full ml-auto" />
         </div>
-  
+
         <div class="flex flex-1 items-center justify-start gap-2 rounded-xl bg-[var(--grey-300)] px-3 py-2">
           <div class="justify-start text-center p2 text-[var(--color-black)]">What’s on
             your mind <span id="current-user-name"></span> ?</div>
@@ -511,7 +513,7 @@
                 d="M8.24406 9.66666C9.64138 9.66666 10.7738 8.54761 10.7738 7.16666V3.83333C10.7738 2.45238 9.64138 1.33333 8.24406 1.33333C6.84674 1.33333 5.7143 2.45238 5.7143 3.83333V7.16666C5.7143 8.54761 6.84674 9.66666 8.24406 9.66666ZM13.1548 7.1369C13.1548 7.07142 13.1012 7.01785 13.0357 7.01785H12.1429C12.0774 7.01785 12.0238 7.07142 12.0238 7.1369C12.0238 9.2247 10.3319 10.9167 8.24406 10.9167C6.15626 10.9167 4.4643 9.2247 4.4643 7.1369C4.4643 7.07142 4.41072 7.01785 4.34525 7.01785H3.45239C3.38691 7.01785 3.33334 7.07142 3.33334 7.1369C3.33334 9.64732 5.21727 11.7187 7.64882 12.0119V13.5357H5.48662C5.28275 13.5357 5.11906 13.7485 5.11906 14.0119V14.5476C5.11906 14.6131 5.16072 14.6667 5.21132 14.6667H11.2768C11.3274 14.6667 11.3691 14.6131 11.3691 14.5476V14.0119C11.3691 13.7485 11.2054 13.5357 11.0015 13.5357H8.77977V12.0193C11.2396 11.7515 13.1548 9.66815 13.1548 7.1369Z"
                 fill="#0E0E0E" />
             </svg>
-  
+
           </div>
           <div class="justify-start text-center p3 group-hover:text-white transition-all">Start
             Recording</div>
@@ -525,14 +527,14 @@
                 d="M14.6665 9.66683V14.1111C14.6665 14.2585 14.6079 14.3998 14.5037 14.5039C14.3996 14.6081 14.2583 14.6667 14.1109 14.6667H1.88909C1.74176 14.6667 1.60045 14.6081 1.49627 14.5039C1.39209 14.3998 1.33356 14.2585 1.33356 14.1111V9.66683C1.33356 9.51949 1.39209 9.37818 1.49627 9.274C1.60045 9.16982 1.74176 9.11129 1.88909 9.11129C2.03643 9.11129 2.17774 9.16982 2.28192 9.274C2.3861 9.37818 2.44463 9.51949 2.44463 9.66683V13.5556H13.5554V9.66683C13.5554 9.51949 13.6139 9.37818 13.7181 9.274C13.8223 9.16982 13.9636 9.11129 14.1109 9.11129C14.2583 9.11129 14.3996 9.16982 14.5037 9.274C14.6079 9.37818 14.6665 9.51949 14.6665 9.66683ZM5.61536 5.06003L7.44447 3.23023V9.66683C7.44447 9.81416 7.503 9.95547 7.60718 10.0597C7.71136 10.1638 7.85267 10.2224 8.00001 10.2224C8.14734 10.2224 8.28865 10.1638 8.39283 10.0597C8.49701 9.95547 8.55554 9.81416 8.55554 9.66683V3.23023L10.3846 5.06003C10.4889 5.16427 10.6303 5.22284 10.7777 5.22284C10.9251 5.22284 11.0665 5.16427 11.1707 5.06003C11.275 4.95579 11.3335 4.81441 11.3335 4.66699C11.3335 4.51957 11.275 4.37819 11.1707 4.27395L8.39305 1.49626C8.34145 1.44461 8.28018 1.40363 8.21274 1.37568C8.1453 1.34772 8.07301 1.33333 8.00001 1.33333C7.927 1.33333 7.85471 1.34772 7.78727 1.37568C7.71983 1.40363 7.65856 1.44461 7.60696 1.49626L4.82928 4.27395C4.72503 4.37819 4.66647 4.51957 4.66647 4.66699C4.66647 4.81441 4.72503 4.95579 4.82928 5.06003C4.93352 5.16427 5.0749 5.22284 5.22232 5.22284C5.36974 5.22284 5.51112 5.16427 5.61536 5.06003Z"
                 fill="#0E0E0E" />
             </svg>
-  
+
           </div>
           <div class="justify-start text-center p3 group-hover:text-white transition-all">Upload File
           </div>
         </div>
       </div>
     </div>
-  
+
     <div id="create-post-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[99999]">
       <div
         class="bg-white p-4 rounded shadow-lg w-[90%] flex flex-col gap-4 max-w-[794px] relative createPostMainModal max-h-[90vh] overflow-y-auto">
@@ -580,7 +582,7 @@
                   d="M13.9 2.6C13.9 2.75913 13.8368 2.91174 13.7243 3.02426C13.6117 3.13679 13.4591 3.2 13.3 3.2H10.7328L7.53251 12.8H9.70001C9.85914 12.8 10.0117 12.8632 10.1243 12.9757C10.2368 13.0883 10.3 13.2409 10.3 13.4C10.3 13.5591 10.2368 13.7117 10.1243 13.8243C10.0117 13.9368 9.85914 14 9.70001 14H3.70001C3.54088 14 3.38826 13.9368 3.27574 13.8243C3.16322 13.7117 3.10001 13.5591 3.10001 13.4C3.10001 13.2409 3.16322 13.0883 3.27574 12.9757C3.38826 12.8632 3.54088 12.8 3.70001 12.8H6.26726L9.46751 3.2H7.30001C7.14088 3.2 6.98826 3.13679 6.87574 3.02426C6.76322 2.91174 6.70001 2.75913 6.70001 2.6C6.70001 2.44087 6.76322 2.28826 6.87574 2.17574C6.98826 2.06321 7.14088 2 7.30001 2H13.3C13.4591 2 13.6117 2.06321 13.7243 2.17574C13.8368 2.28826 13.9 2.44087 13.9 2.6Z"
                   fill="#737373" />
               </svg>
-  
+
             </button>
             <button
               class="flex items-center justify-start gap-2 rounded bg-[var(--grey-300)] hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
@@ -590,7 +592,7 @@
                   d="M13.1957 13.4783C13.1957 13.6166 13.1407 13.7493 13.0428 13.8472C12.945 13.945 12.8123 14 12.6739 14H4.32609C4.18772 14 4.05501 13.945 3.95717 13.8472C3.85932 13.7493 3.80435 13.6166 3.80435 13.4783C3.80435 13.3399 3.85932 13.2072 3.95717 13.1093C4.05501 13.0115 4.18772 12.9565 4.32609 12.9565H12.6739C12.8123 12.9565 12.945 13.0115 13.0428 13.1093C13.1407 13.2072 13.1957 13.3399 13.1957 13.4783ZM8.5 11.913C9.60662 11.9118 10.6676 11.4717 11.4501 10.6892C12.2326 9.9067 12.6727 8.84575 12.6739 7.73913V2.52174C12.6739 2.38337 12.6189 2.25066 12.5211 2.15281C12.4233 2.05497 12.2906 2 12.1522 2C12.0138 2 11.8811 2.05497 11.7833 2.15281C11.6854 2.25066 11.6304 2.38337 11.6304 2.52174V7.73913C11.6304 8.56937 11.3006 9.36561 10.7136 9.95268C10.1265 10.5398 9.33025 10.8696 8.5 10.8696C7.66976 10.8696 6.87352 10.5398 6.28645 9.95268C5.69938 9.36561 5.36957 8.56937 5.36957 7.73913V2.52174C5.36957 2.38337 5.3146 2.25066 5.21676 2.15281C5.11891 2.05497 4.9862 2 4.84783 2C4.70946 2 4.57675 2.05497 4.4789 2.15281C4.38106 2.25066 4.32609 2.38337 4.32609 2.52174V7.73913C4.3273 8.84575 4.76744 9.9067 5.54994 10.6892C6.33244 11.4717 7.39338 11.9118 8.5 11.913Z"
                   fill="#737373" />
               </svg>
-  
+
             </button>
             <button
               class="flex items-center justify-start gap-2 rounded bg-[var(--grey-300)] hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1"
@@ -622,28 +624,29 @@
                 <span class="cursor-pointer px-1 hover:bg-[var(--color-primary)]">🚀</span>
                 <span class="cursor-pointer px-1 hover:bg-[var(--color-primary)]">🥳</span>
               </div>
-            <div class="gif-toggle flex items-center justify-start gap-2 rounded bg-[var(--grey-300)] hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M7.58335 11V6H8.83335V11H7.58335ZM3.00002 11C2.75002 11 2.54863 10.9133 2.39585 10.74C2.24308 10.5667 2.16669 10.3756 2.16669 10.1667V6.83333C2.16669 6.625 2.24308 6.43417 2.39585 6.26083C2.54863 6.0875 2.75002 6.00056 3.00002 6H5.50002C5.75002 6 5.95141 6.08694 6.10419 6.26083C6.25696 6.43472 6.33335 6.62556 6.33335 6.83333V7.25H3.41669V9.75H5.08335V8.5H6.33335V10.1667C6.33335 10.375 6.25696 10.5661 6.10419 10.74C5.95141 10.9139 5.75002 11.0006 5.50002 11H3.00002ZM10.0833 11V6H13.8333V7.25H11.3333V8.08333H13V9.33333H11.3333V11H10.0833Z"
-                  fill="#737373" />
-              </svg>
-            </div>
+              <div
+                class="gif-toggle flex items-center justify-start gap-2 rounded bg-[var(--grey-300)] hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M7.58335 11V6H8.83335V11H7.58335ZM3.00002 11C2.75002 11 2.54863 10.9133 2.39585 10.74C2.24308 10.5667 2.16669 10.3756 2.16669 10.1667V6.83333C2.16669 6.625 2.24308 6.43417 2.39585 6.26083C2.54863 6.0875 2.75002 6.00056 3.00002 6H5.50002C5.75002 6 5.95141 6.08694 6.10419 6.26083C6.25696 6.43472 6.33335 6.62556 6.33335 6.83333V7.25H3.41669V9.75H5.08335V8.5H6.33335V10.1667C6.33335 10.375 6.25696 10.5661 6.10419 10.74C5.95141 10.9139 5.75002 11.0006 5.50002 11H3.00002ZM10.0833 11V6H13.8333V7.25H11.3333V8.08333H13V9.33333H11.3333V11H10.0833Z"
+                    fill="#737373" />
+                </svg>
+              </div>
             </div>
           </div>
           <!-- Toolbar Ends -->
           <div
             class="flex min-h-32 transtion-all border-[1px] hover:border-[var(--color-primary)] resize-y flex-col items-start justify-center gap-4 self-stretch rounded-xl bg-[var(--grey-300)] px-3 py-2 focus-within:border focus-within:border-[var(--color-primary)]">
-  
+
             <div contenteditable="true" id="post-editor"
               class="flex-1 justify-start self-stretch p2 outline-none editor resize-y">
-  
+
             </div>
-  
+
           </div>
           <div class="upload-section flex flex-col gap-2">
             <div class="flex item-center gap-4">
-  
+
               <div class="flex items-center gap-4 w-full" id="dropArea">
                 <div
                   @click="($event) => $event.target.closest('.upload-section')?.querySelector('.filepond--drop-label')?.click()"
@@ -653,7 +656,7 @@
                       d="M29.8329 19.3337V28.2223C29.8329 28.517 29.7158 28.7996 29.5075 29.008C29.2991 29.2164 29.0165 29.3334 28.7218 29.3334H4.27819C3.98351 29.3334 3.70091 29.2164 3.49254 29.008C3.28417 28.7996 3.16711 28.517 3.16711 28.2223V19.3337C3.16711 19.0391 3.28417 18.7565 3.49254 18.5481C3.70091 18.3397 3.98351 18.2227 4.27819 18.2227C4.57286 18.2227 4.85547 18.3397 5.06384 18.5481C5.2722 18.7565 5.38926 19.0391 5.38926 19.3337V27.1113H27.6108V19.3337C27.6108 19.0391 27.7278 18.7565 27.9362 18.5481C28.1446 18.3397 28.4272 18.2227 28.7218 18.2227C29.0165 18.2227 29.2991 18.3397 29.5075 18.5481C29.7158 18.7565 29.8329 19.0391 29.8329 19.3337ZM11.7307 10.1202L15.3889 6.46055V19.3337C15.3889 19.6284 15.506 19.911 15.7144 20.1194C15.9227 20.3278 16.2053 20.4448 16.5 20.4448C16.7947 20.4448 17.0773 20.3278 17.2857 20.1194C17.494 19.911 17.6111 19.6284 17.6111 19.3337V6.46055L21.2693 10.1202C21.4778 10.3286 21.7605 10.4458 22.0554 10.4458C22.3502 10.4458 22.633 10.3286 22.8415 10.1202C23.05 9.91167 23.1671 9.62891 23.1671 9.33407C23.1671 9.03923 23.05 8.75647 22.8415 8.54798L17.2861 2.99261C17.1829 2.88931 17.0604 2.80736 16.9255 2.75144C16.7906 2.69553 16.646 2.66675 16.5 2.66675C16.354 2.66675 16.2094 2.69553 16.0745 2.75144C15.9397 2.80736 15.8171 2.88931 15.7139 2.99261L10.1586 8.54798C9.95007 8.75647 9.83294 9.03923 9.83294 9.33407C9.83294 9.62891 9.95007 9.91167 10.1586 10.1202C10.367 10.3286 10.6498 10.4458 10.9446 10.4458C11.2395 10.4458 11.5222 10.3286 11.7307 10.1202Z"
                       fill="#737373" />
                   </svg>
-  
+
                   <div class="justify-start text-center p3 text-balck">Upload
                     File
                   </div>
@@ -696,7 +699,7 @@
             </div>
             <div class="text-[var(--color-grey)] p-3">Feature this post</div>
           </div>
-  
+
           <div class="flex items-center gap-3 ml-auto">
             <div class="relative cursor-pointer inline-block text-left hidden" id="adminSchedulePostButton">
               <!-- Trigger Button -->
@@ -711,7 +714,7 @@
                 <div class="justify-start text-center p3 text-white text-nowrap">Post Later
                 </div>
               </div>
-  
+
               <!-- Dropdown -->
               <div x-show="openScheduleDatePicker" @click.outside="openScheduleDatePicker = false"
                 class="absolute mt-2 bottom-[2rem] right-0 max-[702px]:-right-[50%] w-64 bg-white shadow-lg rounded border p-2 z-50"
@@ -728,7 +731,7 @@
                                   openScheduleDatePicker = false;
                                   createForumToSubmit('0','Post','post-form');
                               ">Tomorrow 9:00 am</div>
-  
+
                   <div class="cursor-pointer hover:bg-[var(--color-primary-shade)] rounded p-2 p3 text-black"
                     data-sort="Latest" @click="
                                       const now = new Date();
@@ -745,7 +748,7 @@
                   <div class="cursor-pointer hover:bg-[var(--color-primary-shade)] rounded p-2 p3 text-black"
                     data-sort="Latest" @click="modalForCustomDateTime=true">Custom Time</div>
                 </div>
-  
+
               </div>
             </div>
             <div class="flex items-center justify-end gap-3  cursor-pointer" id="submitForumPost"
@@ -763,14 +766,16 @@
             </div>
           </div>
         </div>
-  
-        <div class="absolute postingLoader hidden inset-0 size-full bg-[#00000095] items-center justify-center flex-col">
-          <div class="h-10 w-10 animate-spin rounded-full border-2 border-solid border-white border-t-transparent"></div>
+
+        <div
+          class="absolute postingLoader hidden inset-0 size-full bg-[#00000095] items-center justify-center flex-col">
+          <div class="h-10 w-10 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
+          </div>
           <div class="text-white">Posting...</div>
         </div>
       </div>
     </div>
-  
+
     <div id="post-filters"
       class=" post-filters max-[702px]:px-2 max-[702px]:flex-col max-[702px]:items-start gap-2 w-full bg-transparent p-[24px_0_16px_0] flex items-center">
       <div class="flex-1 search-wrapper w-full  relative">
@@ -786,7 +791,8 @@
         <div class="flex items-center gap-4">
           <div x-data="{ open: false, selected: 'Latest' }" class="sort-filter relative cursor-pointer"
             :class="{ 'open': open }" @click.away="open = false">
-            <div id="sort-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
+            <div id="sort-filter-btn" @click="open = !open"
+              :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
               class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
               <div class="text-center justify-start p2 text-black" x-text="selected"></div>
               <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
@@ -796,7 +802,7 @@
                   fill="#0E0E0E" />
               </svg>
             </div>
-  
+
             <ul id="sort-filter-menu" x-show="open" @click.away="open = false"
               class="sort-filter-menu absolute top-[100%] right-0 bg-[#ffffff] border rounded border-1-[#ccc] shadow-lg p-2 list-style-none mr-[4px] w-fit z-[10]"
               x-transition>
@@ -814,11 +820,12 @@
               </li>
             </ul>
           </div>
-  
-  
+
+
           <div x-data="{ open: false, selected: 'All' }" :class="{ 'open': open }" @click.away="open = false"
             class="file-filter relative cursor-pointer">
-            <div id="file-filter-btn" @click="open = !open" :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
+            <div id="file-filter-btn" @click="open = !open"
+              :class="open ? 'bg-[var(--color-primary-shade)]' : 'bg-white'"
               class="filter-btn px-3 py-2 rounded outline outline-1 outline-offset-[-1px] outline-zinc-300 inline-flex justify-start items-center gap-3">
               <span x-text="selected" class="p2  text-black"></span>
               <svg :class="open ? 'rotate-180' : ''" class="transition-transform duration-300" width="12" height="12"
@@ -828,7 +835,7 @@
                   fill="#0E0E0E" />
               </svg>
             </div>
-  
+
             <ul id="file-filter-menu" x-show="open" @click.away="open = false"
               class="file-filter-menu rounded absolute top-[100%] right-0 bg-[#ffffff] shadow-lg p-2 border border-1-[#ccc] list-style-none min-w-[6em] z-[10]"
               x-transition>
@@ -844,11 +851,11 @@
                 @click="selected = 'File'; open = false">File</li>
             </ul>
           </div>
-  
+
         </div>
       </div>
     </div>
-  
+
     <div class="tabs mb-4 hidden" id="tabsForAdmin">
       <button id="publishedTab" class="px-4 py-2 bg-[var(--color-primary)] text-white mr-2">
         Published
@@ -857,7 +864,7 @@
         Scheduled
       </button>
     </div>
-  
+
     <div id="skeleton-loader" class="w-full">
       <div class="skeleton-item flex gap-4 p-4 mb-4 bg-white rounded shadow">
         <div class="skeleton-avatar"></div>
@@ -884,9 +891,9 @@
         </div>
       </div>
     </div>
-  
+
     <div id="forum-root" class="w-full flex flex-col gap-4"></div>
-  
+
     <!-- Delete confirmation modal -->
     <div id="delete-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[9999999999]">
       <div class="bg-white p-4 rounded shadow-lg w-[90%] max-w-sm">
@@ -902,7 +909,7 @@
         </div>
       </div>
     </div>
-  
+
     <script id="tmpl-post" type="text/x-jsrender">
             {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
       {{if fileType === 'Image' && ~inModal}}<div class="flex max-[702px]:h-screen bg-black items-start  min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
@@ -1206,8 +1213,8 @@
               
               {{/if}}
     </script>
-  
-  
+
+
     <script id="tmpl-comment" type="text/x-jsrender">
     <div class="item {{if depth ===1}}mb-6{{else depth > 1}} mb-4 {{else}}{{/if}}
     {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
@@ -1377,13 +1384,15 @@
     </div>
   
     </script>
+
     <script src="https://unpkg.com/mic-recorder-to-mp3@2.2.1/dist/index.min.js"></script>
-  
+
     <script type="module" src="../src/main.js"></script>
-  
+
     <div id="toast-wrapper" class="toast-wrapper !z-[999999999]"></div>
-  
-    <div id="file-preview-modal" class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[9999999999]">
+
+    <div id="file-preview-modal"
+      class="hidden fixed inset-0 bg-black/75 flex items-center justify-center z-[9999999999]">
       <div class="modal-content bg-white p-4 m-4 rounded relative max-w-full max-h-full">
         <div id="preview-container" class="max-h-[80vh] overflow-auto"></div>
       </div>
@@ -1394,19 +1403,19 @@
         <i class="fa-solid fa-xmark text-white text-2xl"></i>
       </div>
     </div>
-  
+
     <div class="!hidden">
-  
-  
+
+
       <div class=" flex bg-black  items-start gap-8 min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">
-  
+
         <div class=" flex-[3] flex items-center h-[90vh] justify-center max-[702px]:hidden">
-  
+
           <img src="" style="width:100%;height:300px;object-fit:contain;" alt="preview" />
-  
+
         </div>
-  
-  
+
+
         <div
           class=" w-full flex-[2] min-[702px]:h-[90vh] max-[702px]:h-full !rounded-none overflow-y-auto overflow-auto min-[855px]:w-[855px] max-[855px]:w-full min-[702px]:max-h-[80vh] max-[702px]:h-screen {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded '}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_  {{if depth === 1 && children.length}}has-replies {{if depth === 1 && isCollapsed}}is-collapsed"
           data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-forumStatus="{{:forumStatus}}">
@@ -1431,13 +1440,13 @@
                   </div>
                   {{else}}
                   <span class="timestamp text-sm text-[#65676b]">{{:timeAgo}}</span>
-  
+
                 </div>
                 {{if isFeatured}}
                 <i class="fa-solid fa-star text-yellow-500 ml-2" title="Featured"></i>
-  
+
               </div>
-  
+
             </div>
             {{if ~inModal && depth === 0}}
             <div x-on:click="modalForPostOpen = false"
@@ -1448,7 +1457,7 @@
                   fill="#0E0E0E"></path>
               </svg>
             </div>
-  
+
             {{if canDelete && (!~inModal || depth > 0)}}
             <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit"
               x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
@@ -1471,7 +1480,7 @@
                 role="menu">
                 {{if depth === 0}}
                 {{if isAdmin}}
-  
+
                 <div data-uid="{{:uid}}"
                   class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
                   role="menuitem">Delete this post</div>
@@ -1484,7 +1493,7 @@
                 <div data-uid="{{:uid}}"
                   class="btn-unfeature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
                   role="menuitem">Remove featured mark</div>
-  
+
                 {{if commentsDisabled}}
                 <div data-uid="{{:uid}}"
                   class="btn-enable-comments cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
@@ -1493,19 +1502,19 @@
                 <div data-uid="{{:uid}}"
                   class="btn-disable-comments cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
                   role="menuitem">Disable comments on this post</div>
-  
+
                 {{else}}
                 <div data-uid="{{:uid}}"
                   class="postNowFromScheduled cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
                   role="menuitem">Post Now</div>
-  
+
                 {{else}}
                 {{if canDelete}}
                 <div data-uid="{{:uid}}"
                   class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
                   role="menuitem">Delete this post</div>
-  
-  
+
+
                 {{else}}
                 {{if canDelete}}
                 <div data-uid="{{:uid}}"
@@ -1513,24 +1522,24 @@
                   role="menuitem">
                   {{if depth === 1}}Delete this comment{{else}}Delete this reply
                 </div>
-  
-  
+
+
               </div>
             </div>
-  
-  
+
+
           </div>
-          {{if content !='' }} <div class="content p2 {{if forumStatus != " Published - Not flagged" && !fileContent}}mb-4
-            {{if depth===0 }} px-4 ">{{:content}}</div>
+          {{if content !='' }} <div class="content p2 {{if forumStatus != " Published - Not flagged" &&
+            !fileContent}}mb-4 {{if depth===0 }} px-4 ">{{:content}}</div>
                     {{if fileContent || fileContentComment}}
-                    <div class=" file-preview {{if forumStatus !="Published - Not flagged" }}mb-4 {{if fileType==="Audio"
-            }}bg-[var(--grey-300)] p-3 mx-4 rounded {{if fileType==="File" }}mx-4 ">
+                    <div class=" file-preview {{if forumStatus !="Published - Not flagged" }}mb-4 {{if
+            fileType==="Audio" }}bg-[var(--grey-300)] p-3 mx-4 rounded {{if fileType==="File" }}mx-4 ">
                         {{if fileType === " Audio" && depth===0}} <div
             class="h2 text-black mb-4 max-[702px]:line-clamp-1">
             {{:fileContentName}}</div>
-  
+
           {{if depth === 0 && fileContent}}
-  
+
           {{if fileType === "Image"}}
           <img class="{{if ~inModal}}min-[702px]:hidden max-[702px]:block {{if imageOrientation ===" portrait"}}
             object-contain size-full {{else}} w-full h-full object-cover" alt="preview" />
@@ -1563,17 +1572,17 @@
             </div>
           </a>
           {{/if}}
-  
+
           {{/if}}
           {{if depth > 0 && fileContentComment}}
           {{if fileType === "Image"}}
-  
+
           {{else fileType === "Audio"}}
           <label for="audio-player">{{:fileContentCommentName}}</label>
-  
-  
+
+
           {{else fileType === "Video"}}
-  
+
           {{else}}
           <a class="flex w-full flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
             <div class="inline-flex items-center justify-start gap-2 self-stretch rounded-xl">
@@ -1641,7 +1650,7 @@
             </svg>
             <div class="p3">Like</div>
           </div>
-  
+
           {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
           <div
             class="flex {{if ~inModal}}btn-comment{{else}}openPostModal{{/if}} flex-1 items-center justify-center gap-2 cursor-pointer group"
@@ -1695,19 +1704,19 @@
       </div>
       {{if fileType === 'Image' && ~inModal}}
     </div>{{/if}}
-  
+
     {{/if}}
-  
-  
-  
-  
+
+
+
+
     <div
       class="item {{if depth ===1}}mb-6{{else depth > 1}} mb-4 {{else}}{{/if}}
         {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
       data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-forumStatus="{{:forumStatus}}">
       <div class=" flex w-full items-start gap-2">
         <div class="size-6 rounded-full shrink-0  border border-zinc-300  {{if depth===1}}mainComment{{/if}}">
-  
+
         </div>
         <div class="flex w-full flex-col gap-4">
           <div class="commentBodyn flex w-full flex-col gap-2">
@@ -1775,7 +1784,8 @@
                       {{:upvotes}}</div>
                   </div>
                 </div>
-                <div class="flex h-4 w-[2px] items-center justify-center border-1 border-red-500 bg-[var(--color-grey)]">
+                <div
+                  class="flex h-4 w-[2px] items-center justify-center border-1 border-red-500 bg-[var(--color-grey)]">
                 </div>
                 <div class="p3 openreplyOnCommentButton cursor-pointer justify-start text-[var(--color-grey)]
                       {{if ~inModal}}btn-comment{{else}}openPostModal{{/if}} " data-uid="{{:uid}}" data-id="{{:id}}"
@@ -1787,10 +1797,10 @@
             
                 </div> -->
           {{!-- Toggle replies ribbon below comment --}}
-  
+
           {{if children.length && !isCollapsed}}
           <div data-reply="{{:uid}}" class="children visible  flex flex-col gap-3">
-  
+
             {{!-- Render child comments --}}
             {{for children}}
             {{include tmpl="#tmpl-comment"/}}
@@ -1813,15 +1823,16 @@
           </div>
           {{/if}}
         </div>
-  
-  
+
+
         {{if canDelete && (!~inModal || depth > 0)}}
         <div x-data="{ threeDotsForAdmin: false, openedWithKeyboard: false }" class="relative w-fit"
           x-on:keydown.esc.window="threeDotsForAdmin = false, openedWithKeyboard = false">
           <!-- Toggle Button -->
           <div x-on:click="threeDotsForAdmin = ! threeDotsForAdmin" aria-haspopup="true"
-            x-on:keydown.space.prevent="openedWithKeyboard = true" x-on:keydown.enter.prevent="openedWithKeyboard = true"
-            class="cursor-pointer" x-on:keydown.down.prevent="openedWithKeyboard = true">
+            x-on:keydown.space.prevent="openedWithKeyboard = true"
+            x-on:keydown.enter.prevent="openedWithKeyboard = true" class="cursor-pointer"
+            x-on:keydown.down.prevent="openedWithKeyboard = true">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M9 7.66667C9 7.86445 8.94135 8.05779 8.83147 8.22224C8.72159 8.38669 8.56541 8.51486 8.38268 8.59055C8.19996 8.66623 7.99889 8.68604 7.80491 8.64745C7.61093 8.60887 7.43275 8.51363 7.29289 8.37377C7.15304 8.23392 7.0578 8.05574 7.01922 7.86176C6.98063 7.66778 7.00043 7.46671 7.07612 7.28398C7.15181 7.10126 7.27998 6.94508 7.44443 6.8352C7.60888 6.72532 7.80222 6.66667 8 6.66667C8.26522 6.66667 8.51957 6.77202 8.70711 6.95956C8.89464 7.1471 9 7.40145 9 7.66667ZM8 3C8.19778 3 8.39112 2.94135 8.55557 2.83147C8.72002 2.72159 8.84819 2.56541 8.92388 2.38268C8.99957 2.19996 9.01937 1.99889 8.98079 1.80491C8.9422 1.61093 8.84696 1.43275 8.70711 1.29289C8.56725 1.15304 8.38907 1.0578 8.19509 1.01922C8.00111 0.98063 7.80004 1.00043 7.61732 1.07612C7.43459 1.15181 7.27841 1.27998 7.16853 1.44443C7.05865 1.60888 7 1.80222 7 2C7 2.26522 7.10536 2.51957 7.29289 2.70711C7.48043 2.89464 7.73478 3 8 3ZM8 12.3333C7.80222 12.3333 7.60888 12.392 7.44443 12.5019C7.27998 12.6117 7.15181 12.7679 7.07612 12.9506C7.00043 13.1334 6.98063 13.3344 7.01922 13.5284C7.0578 13.7224 7.15304 13.9006 7.29289 14.0404C7.43275 14.1803 7.61093 14.2755 7.80491 14.3141C7.99889 14.3527 8.19996 14.3329 8.38268 14.2572C8.56541 14.1815 8.72159 14.0534 8.83147 13.8889C8.94135 13.7245 9 13.5311 9 13.3333C9 13.0681 8.89464 12.8138 8.70711 12.6262C8.51957 12.4387 8.26522 12.3333 8 12.3333Z"
@@ -1836,7 +1847,7 @@
             role="menu">
             {{if depth === 0}}
             {{if isAdmin}}
-  
+
             <div data-uid="{{:uid}}"
               class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
               role="menuitem">Delete this post</div>
@@ -1885,8 +1896,9 @@
         {{/if}}
       </div>
     </div>
-  
+
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
@@ -1903,7 +1915,7 @@
 
 
   </script>
-  
+
   </div>
 
 </body>
