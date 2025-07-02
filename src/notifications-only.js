@@ -1,7 +1,11 @@
 import { notificationStore, GLOBAL_AUTHOR_ID } from "./config.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { GET__CONTACTS_NOTIFICATION_PREFERENCEE } from "./api/queries.js";
-import { renderNotificationToggles } from "./ui/notificationPreference.js";
+import {
+  renderNotificationToggles,
+  toggleAllOff,
+  toggleOption,
+} from "./ui/notificationPreference.js";
 import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
 import {
   connectNotification,
@@ -57,5 +61,7 @@ function initNotificationsOnly(contactId) {
 window.addEventListener("DOMContentLoaded", () => {
   window.disableBodyScroll = disableBodyScroll;
   window.enableBodyScroll = enableBodyScroll;
+  window.toggleAllOff = toggleAllOff;
+  window.toggleOption = toggleOption;
   initNotificationsOnly(GLOBAL_AUTHOR_ID);
 });
