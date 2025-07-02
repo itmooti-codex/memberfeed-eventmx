@@ -11,8 +11,8 @@ export const tribute = new Tribute({
          </div>`,
         selectTemplate: (item) =>
           `<span contenteditable="false" class="mention"  data-mention-id="${item.original.value}">
-           @${item.original.key}
-         </span>&nbsp;`,
+           ${item.original.key}
+         </span> ;`,
         values: [],
       },
     ],
