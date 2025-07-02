@@ -26,7 +26,7 @@ export function refreshNotificationSubscription() {
     !state.notificationSocket ||
     state.notificationSocket.readyState !== WebSocket.OPEN
   ) {
-console.log("Notification socket is not open, cannot refresh subscription.");
+    console.log("Notification socket is not open, cannot refresh subscription.");
     return;
   }
 
@@ -121,7 +121,9 @@ export function connectNotification() {
         container.innerHTML = "";
 
         if (!notifications || (Array.isArray(notifications) && notifications.length === 0)) {
-          container.innerHTML = `<div class="text-gray-500 text-sm p-4">No notifications</div>`;
+          container.innerHTML = `<div class="text-gray-500 text-sm p-4">
+          <img src="https://files.ontraport.com/media/4f5adef807a84d569b0bf6743a268746.phprrasoq?Expires=4905043225&Signature=NP9brHRE8f0BLfizRjPCy-6e~WXpIeawbrbNE8TqYDku8jiOL3NvAbUuA8THfU7-Rt~YtIOnCaEAoGdJoR-dx5bAnLKVucgpFgIt3mOhNwMi~LBOxB8RRDHgqobq2oBjo73U~qQqIV~u7I8YzGNo~rJlEDPRqWDyYxcAveh-pECCmXingqIY7rF9fa9d8jOfjNPsW~gsT3L7D1bm~1SX-95xpLHSun6ucLw0yu8amQtEu2FAeAlpNXl4OHLZgBG32LN2RWvTlAevuiuPq8Qhi5uSZYBD91tTNNQupK186cRLxqVLMwg6s0v0LVuGia7kW9DYKgiV4S9Py~9dwY6OIA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA" class="size-1/2 mx-auto shrink-0"/>
+</div>`;
           continue;
         }
 
