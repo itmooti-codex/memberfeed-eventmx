@@ -595,7 +595,7 @@
               Mark all as read
             </button>
 
-            <div x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
+            <div id="notificationDropdownFilter" x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
           const mainNotificationContainer = document.getElementById('notificationContainerSocket');
           const hideEls = mainNotificationContainer.querySelectorAll('.read');
           const unreadEls = mainNotificationContainer.querySelectorAll('.unread');
@@ -748,7 +748,7 @@
     <button id="markAllNotificationAsReadPage" x-tooltip="'Mark all as read'" class="text-[var(--color-black)] p3 font-medium">
       Mark all as read
     </button>
-    <div x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
+    <div id="notificationPageFilter" x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
       const pageContainer = document.getElementById('notificationContainerPage');
       const hideEls = pageContainer.querySelectorAll('.read');
       const unreadEls = pageContainer.querySelectorAll('.unread');

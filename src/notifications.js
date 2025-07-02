@@ -21,6 +21,38 @@ function getNotificationContainers() {
   );
 }
 
+function applyNotificationFilters() {
+  const configs = [
+    {
+      container: document.getElementById("notificationContainerSocket"),
+      noNotif: document.getElementById("noNotification"),
+      filter: document.getElementById("notificationDropdownFilter"),
+    },
+    {
+      container: document.getElementById("notificationContainerPage"),
+      noNotif: document.getElementById("noNotificationPage"),
+      filter: document.getElementById("notificationPageFilter"),
+    },
+  ];
+
+  configs.forEach((cfg) => {
+    if (!cfg.container) return;
+    const selected = cfg.filter?.__x?.$data?.selected || "all";
+    cfg.container
+      .querySelectorAll(".read")
+      .forEach((el) => el.classList.toggle("hidden", selected === "unread"));
+
+    const unreadEls = cfg.container.querySelectorAll(".unread");
+    if (selected === "unread" && unreadEls.length === 0) {
+      cfg.noNotif?.classList.remove("hidden");
+      cfg.container.classList.add("hidden");
+    } else {
+      cfg.noNotif?.classList.add("hidden");
+      cfg.container.classList.remove("hidden");
+    }
+  });
+}
+
 export function refreshNotificationSubscription() {
   if (
     !state.notificationSocket ||
@@ -139,6 +171,8 @@ export function connectNotification() {
           container.insertAdjacentHTML("beforeend", html);
         }
       }
+
+      applyNotificationFilters();
     } else if (msg.type === "GQL_ERROR") {
       console.error("Notification subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
@@ -257,6 +291,7 @@ export function initNotificationEvents() {
           }
         });
       }
+      applyNotificationFilters();
     } catch (error) {
       console.error("Error marking announcement(s) as read:", error);
     } finally {
