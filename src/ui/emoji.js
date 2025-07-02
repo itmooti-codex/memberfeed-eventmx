@@ -92,7 +92,11 @@ export const toolbarDesign = `
               <span class="cursor-pointer px-1 hover:bg-[var(--color-primary)]">🚀</span>
               <span class="cursor-pointer px-1 hover:bg-[var(--color-primary)]">🥳</span>
             </div>
-          <button class="gif-toggle flex items-center justify-start !border-none gap-2 rounded !bg-transparent hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]">GIF</button>
+          <button class="gif-toggle flex items-center justify-start !border-none gap-2 rounded !bg-transparent hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.58366 11V6H8.83366V11H7.58366ZM3.00033 11C2.75033 11 2.54894 10.9133 2.39616 10.74C2.24338 10.5667 2.16699 10.3756 2.16699 10.1667V6.83333C2.16699 6.625 2.24338 6.43417 2.39616 6.26083C2.54894 6.0875 2.75033 6.00056 3.00033 6H5.50032C5.75032 6 5.95171 6.08694 6.10449 6.26083C6.25727 6.43472 6.33366 6.62556 6.33366 6.83333V7.25H3.41699V9.75H5.08366V8.5H6.33366V10.1667C6.33366 10.375 6.25727 10.5661 6.10449 10.74C5.95171 10.9139 5.75032 11.0006 5.50032 11H3.00033ZM10.0837 11V6H13.8337V7.25H11.3337V8.08333H13.0003V9.33333H11.3337V11H10.0837Z" fill="#737373"/>
+          </svg>
+          </button>
           </div>
         </div>
 `;
@@ -101,7 +105,7 @@ export const micIcon = `
                   <path d="M16.9881 19.3334C19.7828 19.3334 22.0476 17.0953 22.0476 14.3334V7.66675C22.0476 4.90484 19.7828 2.66675 16.9881 2.66675C14.1935 2.66675 11.9286 4.90484 11.9286 7.66675V14.3334C11.9286 17.0953 14.1935 19.3334 16.9881 19.3334ZM26.8095 14.2739C26.8095 14.1429 26.7024 14.0358 26.5714 14.0358H24.7857C24.6548 14.0358 24.5476 14.1429 24.5476 14.2739C24.5476 18.4495 21.1637 21.8334 16.9881 21.8334C12.8125 21.8334 9.42859 18.4495 9.42859 14.2739C9.42859 14.1429 9.32145 14.0358 9.1905 14.0358H7.40478C7.27383 14.0358 7.16669 14.1429 7.16669 14.2739C7.16669 19.2947 10.9345 23.4376 15.7976 24.0239V27.0715H11.4732C11.0655 27.0715 10.7381 27.4971 10.7381 28.0239V29.0953C10.7381 29.2263 10.8214 29.3334 10.9226 29.3334H23.0536C23.1548 29.3334 23.2381 29.2263 23.2381 29.0953V28.0239C23.2381 27.4971 22.9107 27.0715 22.503 27.0715H18.0595V24.0388C22.9792 23.5031 26.8095 19.3364 26.8095 14.2739Z" fill="#737373"></path>
                 </svg>
 `;
-export const downCevron=`
+export const downCevron = `
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M14.4891 5.70164L8.42881 11.7619C8.37252 11.8183 8.30568 11.863 8.23211 11.8935C8.15854 11.924 8.07968 11.9397 8.00004 11.9397C7.9204 11.9397 7.84154 11.924 7.76797 11.8935C7.6944 11.863 7.62756 11.8183 7.57127 11.7619L1.51097 5.70164C1.39726 5.58792 1.33337 5.43369 1.33337 5.27287C1.33337 5.11205 1.39726 4.95782 1.51097 4.8441C1.62469 4.73039 1.77892 4.6665 1.93974 4.6665C2.10056 4.6665 2.25479 4.73039 2.36851 4.8441L8.00004 10.4764L13.6316 4.8441C13.6879 4.7878 13.7547 4.74313 13.8283 4.71266C13.9019 4.68219 13.9807 4.6665 14.0603 4.6665C14.14 4.6665 14.2188 4.68219 14.2924 4.71266C14.366 4.74313 14.4328 4.7878 14.4891 4.8441C14.5454 4.90041 14.5901 4.96726 14.6205 5.04082C14.651 5.11439 14.6667 5.19324 14.6667 5.27287C14.6667 5.3525 14.651 5.43135 14.6205 5.50492C14.5901 5.57849 14.5454 5.64533 14.4891 5.70164Z"
@@ -114,16 +118,27 @@ export function initEmojiHandlers() {
   $(document).on('keyup mouseup input', '.editor', function () {
     saveSelection();
   });
+
   $(document).on('click', '.emoji-toggle', function (e) {
     e.stopPropagation();
     const picker = $(this).siblings('.emoji-picker');
-    $('.emoji-picker').not(picker).addClass('hidden');
-    picker.toggleClass('hidden');
+
+    // hide any other open pickers
+    $('.emoji-picker')
+      .not(picker)
+      .removeClass('flex')
+      .addClass('hidden');
+
+    // toggle this picker between hidden and flex
+    picker.toggleClass('hidden flex');
   });
 
   $(document).on('click', function (e) {
     if (!$(e.target).closest('.emoji-picker, .emoji-toggle').length) {
-      $('.emoji-picker').addClass('hidden');
+      // clicking outside: hide all
+      $('.emoji-picker')
+        .removeClass('flex')
+        .addClass('hidden');
     }
   });
 
