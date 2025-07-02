@@ -543,7 +543,7 @@ button:not(.file-preview button):hover {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 10px solid #ddd;
+  border: 2px solid #ddd;
   border-top-color: orange;
   animation: loading 1s linear infinite;
 }
