@@ -122,7 +122,7 @@ style.textContent = `
         border-radius: 0 0 0 12px;
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(style); 
 
 // Call this on DOMContentLoaded or as needed
 window.addEventListener("DOMContentLoaded", () => {
