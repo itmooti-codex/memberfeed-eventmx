@@ -89,7 +89,7 @@ export function initGifPicker() {
     const $toggle = $(this);
     console.log('GIF toggle clicked:', $toggle);
     let actualInput;
-    if (document.querySelector('#create-post-modal').classList.contains('show')) {
+    if (document.querySelector('#create-post-modal')?.classList.contains('show')) {
       const wrapper = document.querySelector('#create-post-modal');
       actualInput = wrapper.querySelector('#file-input');
     } else {
