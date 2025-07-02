@@ -1,4 +1,4 @@
-import { state } from "../../config.js";
+import { state, DEFAULT_AVATAR } from "../../config.js";
 import { findNode } from "../../ui/render.js";
 import { toolbarDesign } from "../../ui/emoji.js";
 import { moveCursorToEnd } from "../../utils/caret.js";
@@ -12,7 +12,7 @@ export function initCommentHandlers() {
   $(document).on("click.btnComment", ".btn-comment", function (e) {
     e.stopPropagation();
     // const uid = $(this).data("uid");
-    let commentingUser =state.currentUser.profile_image;
+    let commentingUser = state.currentUser?.profile_image || DEFAULT_AVATAR;
     let uid = $(this).attr("data-uid");
     const container = $(this).closest(".item");
     const existing = container.children(".upload-section");
