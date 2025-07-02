@@ -150,25 +150,6 @@ window.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("subscriberContacts") || document.getElementById("adminContacts")) {
     loadModalContacts();
   }
-  // //  Remove OP watermark
-  // setTimeout(() => {
-  //   const el = document.querySelector('body > div:nth-child(1)');
-  //   if (el) {
-  //     el.classList.add("all-unset");
-  //     el.classList.add('!hidden');
-  //   }
-  // }, 2000);
-  // // Loader
-  // setTimeout(() => {
-  //   const loader = document.querySelector('.loading-state');
-  //   if (loader) {
-  //     loader.style.transition = 'opacity 0.5s ease';
-  //     loader.style.opacity = '0';
-  //     setTimeout(() => {
-  //       loader.style.display = 'none';
-  //     }, 500);
-  //   }
-  // }, 1000);
 });
 
 $.views.helpers({
