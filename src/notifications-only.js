@@ -1,6 +1,7 @@
 import { notificationStore, GLOBAL_AUTHOR_ID, state, DEFAULT_AVATAR } from "./config.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { GET__CONTACTS_NOTIFICATION_PREFERENCEE, FETCH_CONTACTS_QUERY } from "./api/queries.js";
+import { tribute } from "./utils/tribute.js";
 import {
   renderNotificationToggles,
   toggleAllOff,
@@ -56,10 +57,16 @@ function getNotificationPreferences(contactId) {
     });
 }
 
-function fetchCurrentUser(contactId) {
+function fetchContactsAndCurrentUser(contactId) {
   return fetchGraphQL(FETCH_CONTACTS_QUERY)
     .then((res) => {
       const contacts = res?.data?.calcContacts || [];
+      state.allContacts = contacts.map((c) => c.Contact_ID);
+      tribute.collection[0].values = contacts.map((c) => ({
+        key: c.Display_Name || "Anonymous",
+        value: c.Contact_ID,
+        image: c.Profile_Image || DEFAULT_AVATAR,
+      }));
       const current = contacts.find((c) => c.Contact_ID === contactId);
       if (current) {
         state.currentUser = {
@@ -123,7 +130,7 @@ window.addEventListener("DOMContentLoaded", () => {
   window.enableBodyScroll = enableBodyScroll;
   window.toggleAllOff = toggleAllOff;
   window.toggleOption = toggleOption;
-  fetchCurrentUser(GLOBAL_AUTHOR_ID).then(() => {
+  fetchContactsAndCurrentUser(GLOBAL_AUTHOR_ID).then(() => {
     updateLines();
   });
   initNotificationsOnly(GLOBAL_AUTHOR_ID);
