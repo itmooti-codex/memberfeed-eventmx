@@ -133,7 +133,7 @@
                 Mark all as read
               </button>
   
-              <div x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
+              <div id="notificationDropdownFilter" x-data="{ selected: 'all' }" x-init="$watch('selected', value => {
       const mainNotificationContainer = document.getElementById('notificationContainerSocket');
       const hideEls = mainNotificationContainer.querySelectorAll('.read');
       const unreadEls = mainNotificationContainer.querySelectorAll('.unread');
