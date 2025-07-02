@@ -39,6 +39,7 @@ export let GLOBAL_AUTHOR_DISPLAY_NAME = "Eduflow Pro";
 export let GLOBAL_PAGE_TAG ="Demo_Forum";
 export function setGlobals(authorId, pageTag, displayName) {
   GLOBAL_AUTHOR_ID = Number(authorId);
+  GLOBAL_PAGE_TAG = pageTag;
   GLOBAL_AUTHOR_DISPLAY_NAME = displayName;
 }
 export const DEFAULT_AVATAR =
