@@ -1,6 +1,6 @@
-import { notificationStore, GLOBAL_AUTHOR_ID } from "./config.js";
+import { notificationStore, GLOBAL_AUTHOR_ID, state, DEFAULT_AVATAR } from "./config.js";
 import { fetchGraphQL } from "./api/fetch.js";
-import { GET__CONTACTS_NOTIFICATION_PREFERENCEE } from "./api/queries.js";
+import { GET__CONTACTS_NOTIFICATION_PREFERENCEE, FETCH_CONTACTS_QUERY } from "./api/queries.js";
 import {
   renderNotificationToggles,
   toggleAllOff,
@@ -16,6 +16,7 @@ import { initCommentHandlers } from "./features/posts/comments.js";
 import { initReactionHandlers } from "./features/posts/reactions.js";
 import { initPostModalHandlers } from "./features/posts/postModal.js";
 import { initPreviewHandlers } from "./features/posts/preview.js";
+import { updateCurrentUserUI } from "./ui/user.js";
 
 // Helpers used by JsRender templates. These are normally added in main.js
 // but notifications-only.js runs on its own page without main.js, so we
@@ -53,6 +54,24 @@ function getNotificationPreferences(contactId) {
     });
 }
 
+function fetchCurrentUser(contactId) {
+  return fetchGraphQL(FETCH_CONTACTS_QUERY)
+    .then((res) => {
+      const contacts = res?.data?.calcContacts || [];
+      const current = contacts.find((c) => c.Contact_ID === contactId);
+      if (current) {
+        state.currentUser = {
+          display_name: current.Display_Name || "Anonymous",
+          profile_image: current.Profile_Image || DEFAULT_AVATAR,
+        };
+        updateCurrentUserUI(state);
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to fetch contacts", err);
+    });
+}
+
 // Initialize notifications only
 function initNotificationsOnly(contactId) {
   getNotificationPreferences(contactId);
@@ -65,11 +84,45 @@ function initNotificationsOnly(contactId) {
   refreshNotificationSubscription();
 }
 
+function updateLines() {
+  const comments = document.querySelectorAll('.mainComment');
+  comments.forEach((comment) => {
+    const container = comment.closest('.commentContainer');
+    const ribbon = container?.querySelector('.ribbonForOpeningReplies');
+    if (ribbon && ribbon.classList.contains('ribbonForOpeningReplies')) {
+      const commentRect = comment.getBoundingClientRect();
+      const ribbonRect = ribbon.getBoundingClientRect();
+      const verticalDistance =
+        ribbonRect.top + ribbonRect.height / 2 - commentRect.bottom;
+      comment.style.setProperty('--line-height', `${verticalDistance}px`);
+      comment.classList.add('line-ready');
+    }
+  });
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    .mainComment.line-ready::after {
+        height: var(--line-height);
+        width:16px;
+        border-left: 1px solid var(--grey-200);
+        border-bottom: 1px solid var(--grey-200);
+        box-sizing: border-box;
+        border-radius: 0 0 0 12px;
+    }
+`;
+document.head.appendChild(style);
+
 // Call this on DOMContentLoaded or as needed
 window.addEventListener("DOMContentLoaded", () => {
   window.disableBodyScroll = disableBodyScroll;
   window.enableBodyScroll = enableBodyScroll;
   window.toggleAllOff = toggleAllOff;
   window.toggleOption = toggleOption;
+  fetchCurrentUser(GLOBAL_AUTHOR_ID).then(() => {
+    updateLines();
+  });
   initNotificationsOnly(GLOBAL_AUTHOR_ID);
+  const observer = new MutationObserver(() => updateLines());
+  observer.observe(document.body, { childList: true, subtree: true });
 });
