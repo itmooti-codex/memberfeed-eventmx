@@ -38,44 +38,43 @@ query calcContacts {
 `;
 
 export const CREATE_FORUM_POST_MUTATION = `
-mutation createForumPost($payload: ForumPostCreateInput = null) {
-  createForumPost(payload: $payload) {
-    id 
-    unique_id 
-    author_id 
-     Author{
-      display_name
-    }
-    published_date
-    created_at
-    disable_new_comments
-    featured_forum
-    file_content
-    file_type
-    file_name
-    file_link
-    file_size
-    image_orientation
-    copy
-    forum_status
-    depth
-    forum_type 
-    formatted_json 
-    parent_forum_id 
-    Parent_Forum{
+  mutation createFeed($payload: FeedCreateInput = null) {
+    createFeed(payload: $payload) {
+      id
+      unique_id
       author_id
-    }
-    forum_tag
-    Mentioned_Contacts_Data{
-      mentioned_contact_id
+      Author{
+        display_name
+      }
+      published_date
+      created_at
+      disable_new_comments
+      featured_forum: featured_feed
+      file_content
+      file_type
+      file_name
+      file_link
+      file_size
+      image_orientation
+      copy: feed_copy
+      forum_status: feed_status
+      depth
+      forum_type: feed_type
+      parent_forum_id: parent_feed_id
+      Parent_Forum: Parent_Feed{
+        author_id
+      }
+      forum_tag: feed_tag
+      Mentioned_Contacts_Data{
+        mentioned_contact_id
+      }
     }
   }
-}
 `;
 
 export const DELETE_FORUM_POST_MUTATION = `
-  mutation deleteForumPost($id: EduflowproForumPostID) {
-    deleteForumPost(query: [{ where: { id: $id } }]) {
+  mutation deleteFeed($id: EventmxFeedID) {
+    deleteFeed(query: [{ where: { id: $id } }]) {
       id
     }
   }
