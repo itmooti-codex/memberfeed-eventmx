@@ -53,7 +53,7 @@ export function renderNotificationToggles(data) {
           <input type="checkbox" class="absolute h-full w-full opacity-0 cursor-pointer"
             ${value ? 'checked' : ''}
             ${disabledAttr}
-            onclick="toggleOption('${opt.key}', this.checked)">
+            onclick="console.log('Clicked on ${opt.label}');toggleOption('${opt.key}', this.checked)">
         </div>
       </div>
     `);
