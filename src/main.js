@@ -115,12 +115,15 @@ function startApp(tagName, contactId, displayName) {
       } else if (hasForumRoot) {
         const el = document.getElementById("forum-root");
         document.getElementById("skeleton-loader")?.remove();
-        el.replaceChildren(
-          Object.assign(document.createElement("div"), {
-            className: "text-center text-gray-500 h2",
-            textContent: "No posts found.",
-          })
-        );
+        el.innerHTML = `
+    <div class="flex items-center justify-center">
+      <img
+        src="https://files.ontraport.com/media/a0035d45f3d546fbaea5b859bb0c422d.phpjnymep?Expires=4904265367&Signature=…"
+        class="size-full object-contain"
+        alt="No posts found"
+      >
+    </div>
+  `;
       }
     })
     .catch((err) => {
