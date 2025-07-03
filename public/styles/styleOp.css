@@ -91,6 +91,7 @@ input {
   height: unset !important;
   width: 100% !important;
   margin: 0 !important;
+  pointer-events: auto !important;
 }
 
 .h1 {
