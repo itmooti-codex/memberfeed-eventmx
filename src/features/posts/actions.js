@@ -45,15 +45,12 @@ function formatFileSize(bytes) {
   }
   return `${Math.ceil(bytes / 1024)}kb`;
 }
-
 export async function createForumToSubmit(
   depthOfForum,
   forumType,
   formElementId,
   uidParam,
 ) {
-  let featuredToggler = document.querySelector('.featurePostBtnForAdmin');
-  let isFeaturedPostForAdmin = featuredToggler.getAttribute('data-featured-value') || 'false';
   depthOfForum = Number(depthOfForum);
   const computedType =
     depthOfForum === 0 ? "Post" : depthOfForum === 1 ? "Comment" : "Reply";
@@ -110,7 +107,8 @@ export async function createForumToSubmit(
       forumStatusForPayload = "Scheduled";
     }
   }
-
+  let featuredToggler = document.querySelector('.featurePostBtnForAdmin');
+    let isFeaturedPostForAdmin = featuredToggler?.getAttribute('data-featured-value') || 'false';
   const payload = {
     author_id: GLOBAL_AUTHOR_ID,
     featured_forum: isFeaturedPostForAdmin,
