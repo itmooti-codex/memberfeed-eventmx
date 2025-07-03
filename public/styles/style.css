@@ -355,8 +355,8 @@ button:not(.file-preview button):hover {
 
 .toast {
   opacity: 0;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
+  background: var(--success-300);
+  color: var(--success-100);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: opacity 0.3s;
