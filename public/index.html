@@ -467,7 +467,7 @@
           x-bind:aria-selected="selectedFilterTab === 'scheduledPost'"
           x-bind:tabindex="selectedFilterTab === 'scheduledPost' ? '0' : '-1'"
           x-bind:class="selectedFilterTab === 'scheduledPost' ?  'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]' : 'hover:border-b-2 hover:border-b-[var(--color-primary)] hover:text-[var(--color-primary)]'"
-          class="group tabsForAdmin filter-btn flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm"
+          class="group tabsForAdmin filter-btn flex h-min cursor-pointer items-center gap-2 px-4 py-2 text-sm hidden"
           type="div" role="tab" aria-controls="tabpanelscheduledPost">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path :class="selectedFilterTab === 'scheduledPost' ? 'fill-[var(--color-primary)]' : 'fill-[#737373]'"
@@ -681,7 +681,7 @@
         </div>
         <div
           class="flex items-center justify-between w-full max-[702px]:items-start max-[702px]:gap-2 max-[702px]:flex-col">
-          <div class="flex items-center gap-2 featurePostBtnForAdmin" x-data="{ featurePostToggler: false }"
+          <div class="flex items-center gap-2 featurePostBtnForAdmin hidden" x-data="{ featurePostToggler: false }"
             :data-featured-value="featurePostToggler">
             <div class="flex items-center justify-center">
               <div class="relative h-4 w-8 rounded-full transition duration-200 ease-linear" :class="featurePostToggler 

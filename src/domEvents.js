@@ -19,12 +19,12 @@ function renderContacts(list, containerId) {
       @click="${isAdmin
           ? `
             document.getElementById('adminSchedulePostButton').classList.remove('hidden');
-            document.querySelector('.tabsForAdmin').classList.remove('hidden');
+            document.getElementById('scheduledTabForAdmin').classList.remove('hidden');
             document.querySelector('.featurePostBtnForAdmin').classList.remove('hidden');
           `
           : `
             document.getElementById('adminSchedulePostButton').classList.add('hidden');
-            document.querySelector('.tabsForAdmin').classList.add('hidden');
+            document.getElementById('scheduledTabForAdmin').classList.add('hidden');
             document.querySelector('.featurePostBtnForAdmin').classList.add('hidden');
           `
         }
