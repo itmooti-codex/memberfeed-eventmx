@@ -273,6 +273,9 @@ export function initNotificationEvents() {
     try {
       if (markAllTop) {
         $(".notificationsLoader").removeClass("hidden").addClass("flex");
+        $(".topNavAllNotification")?.click();
+      } else if (markAllPage){
+        $("#allNotificationInPage")?.click();
       }
       await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
 
