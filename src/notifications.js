@@ -241,16 +241,16 @@ export function initNotificationEvents() {
       console.log("Marking all notifications as read");
       const elements = [];
       targetContainers.forEach((c) => {
-        elements.push(...c.querySelectorAll("[data-announcement].unread"));
+        elements.push(...c.querySelectorAll("[data-notification].unread"));
       });
-      ids = elements.map((el) => el.getAttribute("data-announcement"));
+      ids = elements.map((el) => el.getAttribute("data-notification"));
     } else {
       const unreadElements = document.querySelectorAll(".unread");
       for (const el of unreadElements) {
         if (el.contains(e.target)) {
-          const announcementId = el.getAttribute("data-announcement");
-          if (!announcementId) return;
-          ids = [announcementId];
+          const notificationId = el.getAttribute("data-notification");
+          if (!notificationId) return;
+          ids = [notificationId];
           break;
         }
       }
@@ -262,9 +262,9 @@ export function initNotificationEvents() {
       payload: { is_read: true },
     };
 
-    const UPDATE_ANNOUNCEMENT = `
-      mutation updateAnnouncements($payload: AnnouncementUpdateInput = null) {
-        updateAnnouncements(query: [{ whereIn: { id: [${ids.join(",")}] } }], payload: $payload) {
+    const UPDATE_NOTIFICATION = `
+      mutation updateNotifications($payload: NotificationUpdateInput = null) {
+        updateNotifications(query: [{ whereIn: { id: [${ids.join(",")}] } }], payload: $payload) {
           is_read
         }
       }
@@ -277,18 +277,18 @@ export function initNotificationEvents() {
       } else if (markAllPage){
         $("#allNotificationInPage")?.click();
       }
-      await fetchGraphQL(UPDATE_ANNOUNCEMENT, variables, UPDATE_ANNOUNCEMENT);
+      await fetchGraphQL(UPDATE_NOTIFICATION, variables, UPDATE_NOTIFICATION);
 
       if (markAll) {
         targetContainers.forEach((c) => {
-          c.querySelectorAll("[data-announcement].unread").forEach((el) => {
+          c.querySelectorAll("[data-notification].unread").forEach((el) => {
             el.classList.remove("unread");
             el.classList.add("read");
           });
         });
       } else {
         document.querySelectorAll(".unread").forEach((el) => {
-          if (ids.includes(el.getAttribute("data-announcement"))) {
+          if (ids.includes(el.getAttribute("data-notification"))) {
             el.classList.remove("unread");
             el.classList.add("read");
           }
@@ -296,7 +296,7 @@ export function initNotificationEvents() {
       }
       applyNotificationFilters();
     } catch (error) {
-      console.error("Error marking announcement(s) as read:", error);
+      console.error("Error marking notification(s) as read:", error);
     } finally {
       if (markAllTop) {
         $(".notificationsLoader").removeClass("flex").addClass("hidden");
