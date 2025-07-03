@@ -67,6 +67,16 @@ export async function loadModalContacts() {
         c.Display_Name?.replace(/'/g, "\\'") || "Anonymous",
         c.Profile_Image || DEFAULT_AVATAR
       );
+      const isAdmin = c.TagName === `${GLOBAL_PAGE_TAG}_Admin`;
+      if (isAdmin) {
+        document.getElementById('adminSchedulePostButton').classList.remove('hidden');
+        document.getElementById('scheduledTabForAdmin').classList.remove('hidden');
+        document.querySelector('.featurePostBtnForAdmin').classList.remove('hidden');
+      } else {
+        document.getElementById('adminSchedulePostButton').classList.add('hidden');
+        document.getElementById('scheduledTabForAdmin').classList.add('hidden');
+        document.querySelector('.featurePostBtnForAdmin').classList.add('hidden');
+      }
       const modalRoot = document.querySelector('[x-data*="modalToSelectUser"]');
       modalRoot?.classList.add("hidden");
       enableBodyScroll();
