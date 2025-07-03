@@ -146,7 +146,7 @@ export function connectNotification() {
       msg.id === NOTIF_SUB_ID &&
       msg.payload?.data
     ) {
-      const notifications = msg.payload.data.subscribeToAnnouncements;
+      const notifications = msg.payload.data.subscribeToNotifications;
       const notifContainers = getNotificationContainers();
 
       for (const container of notifContainers) {

@@ -115,7 +115,6 @@ const DELETED_MODAL_HTML = `
 function normalize(node, list) {
   const {
     Author_ID,
-    Formatted_Json,
     Date_Added,
     Published_Date,
     Disable_New_Comments,
@@ -132,7 +131,7 @@ function normalize(node, list) {
     Author,
     Bookmarking_Contacts_Data,
     Feed_Reactors_Data,
-    FeedPosts,
+    Feeds,
     file_name,
     file_link,
     file_size,
@@ -140,7 +139,6 @@ function normalize(node, list) {
   } = node;
   list.push({
     author_id: Author_ID,
-    formatted_json: Formatted_Json,
     created_at: Date_Added,
     published_date: Published_Date,
     disable_new_comments: Disable_New_Comments,
@@ -162,8 +160,8 @@ function normalize(node, list) {
     Bookmarking_Contacts_Data,
     Feed_Reactors_Data,
   });
-  if (Array.isArray(FeedPosts)) {
-    FeedPosts.forEach((child) => normalize(child, list));
+  if (Array.isArray(Feeds)) {
+    Feeds.forEach((child) => normalize(child, list));
   }
 }
 
@@ -243,7 +241,7 @@ export function openPostModalById(postId, author = "", highlight = null, openFor
           state.ignoreNextModalUpdate = false;
           return;
         }
-        const data = msg.payload.data.subscribeToFeedPost;
+        const data = msg.payload.data.subscribeToFeed;
         if (!data) {
           console.log("Post not found or deleted");
           if (container) {

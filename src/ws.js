@@ -81,7 +81,7 @@ export function connect() {
       msg.id === SUB_ID &&
       msg.payload?.data
     ) {
-      const incoming = msg.payload.data.subscribeToFeedPosts ?? [];
+      const incoming = msg.payload.data.subscribeToFeeds ?? [];
       state.rawItems = mergeLists(state.rawItems, incoming);
       state.postsStore = buildTree(state.postsStore, state.rawItems);
       state.initialPostsLoaded = true;

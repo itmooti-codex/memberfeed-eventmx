@@ -130,7 +130,7 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     imageOrientation: raw.image_orientation || "no ",
     fileContentComment: depth > 0 ? fileContent : null,
     fileContentCommentName: depth > 0 ? fileName : "",
-    totalCommentAndReplies: (raw.FeedPosts ? raw.FeedPosts.length : 0) + (raw.FeedPosts?.reduce((sum, item) => sum + (item.FeedPosts?.length || 0), 0) || 0)
+    totalCommentAndReplies: (raw.Feeds ? raw.Feeds.length : 0) + (raw.Feeds?.reduce((sum, item) => sum + (item.Feeds?.length || 0), 0) || 0)
 
   };
 }

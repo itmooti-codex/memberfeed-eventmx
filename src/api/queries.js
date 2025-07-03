@@ -56,8 +56,8 @@ export const CREATE_FEED_POST_MUTATION = `
       file_link
       file_size
       image_orientation
-      copy: feed_copy
-      feed_status: feed_status
+      feed_copy 
+      feed_status
       depth
       feed_type: feed_type
       parent_feed_id: parent_feed_id
@@ -81,7 +81,7 @@ export const DELETE_FEED_POST_MUTATION = `
 `;
 
 export const UPDATE_FEED_POST_MUTATION = `
-mutation updateFeedPost($id: EventmxFeedPostID, $payload: FeedPostUpdateInput = null) {
+mutation updateFeedPost($id: EventmxFeedID, $payload: FeedPostUpdateInput = null) {
   updateFeedPost(query: [{ where: { id: $id } }], payload: $payload) {
     featured_feed
     disable_new_comments
@@ -94,7 +94,6 @@ const SUBSCRIBE_FEED_POSTS_FIELDS = `
         display_name
         profile_image
       }
-      formatted_json
       created_at
       published_date
       disable_new_comments
@@ -106,15 +105,15 @@ const SUBSCRIBE_FEED_POSTS_FIELDS = `
       file_size
       image_orientation
       id
-      copy
+      copy: feed_copy
       feed_status
       unique_id
       depth
-      FeedPosts {
-            id
-            FeedPosts {
-            id
-      }
+      Feeds {
+          id
+            Feeds {
+              id
+        }
       }
       feed_type
       parent_feed_id
@@ -146,8 +145,8 @@ export function SUBSCRIBE_FEED_POSTS(isAdmin = false) {
     ? '{ orWhere: { feed_status: "Scheduled" } }'
     : "";
   return `
-  subscription subscribeToFeedPosts($feed_tag: TextScalar) {
-    subscribeToFeedPosts(
+  subscription subscribeToFeeds($feed_tag: TextScalar) {
+    subscribeToFeeds(
       query: [
              {
         whereGroup: [
@@ -343,11 +342,11 @@ export function GET_NOTIFICATIONS() {
   }
 
   return `
-  subscription subscribeToAnnouncements(
+  subscription subscribeToNotifications(
     $author_id: EventmxContactID 
     $notified_contact_id: EventmxContactID 
   ) {
-    subscribeToAnnouncements(
+    subscribeToNotifications(
       query: [
         {
           where: {
@@ -422,7 +421,7 @@ export function GET_NOTIFICATIONS() {
       Parent_Feed_ID: parent_feed_id
       Notified_Contact_ID: notified_contact_id
       Parent_Feed {
-        copy 
+        copy: feed_copy 
         published_date
       }
     }
@@ -457,15 +456,14 @@ mutation updateContact(
 }
 `;
 export const GET_SINGLE_POST_SUBSCRIPTION = `
-subscription subscribeToFeedPost(
-  $id: EventmxFeedPostID
+subscription subscribeToFeed(
+  $id: EventmxFeedID
 ) {
-  subscribeToFeedPost(
+  subscribeToFeed(
     query: [{ where: { id: $id } }]
     orderBy: [{ path: ["published_date"], type: desc }]
   ) {
     Author_ID: author_id
-    Formatted_Json: formatted_json
     Date_Added: created_at
     Published_Date: published_date
     Disable_New_Comments: disable_new_comments
@@ -477,7 +475,7 @@ subscription subscribeToFeedPost(
     file_size
     image_orientation
     ID: id
-    Copy: copy
+    Copy: feed_copy
     Feed_Status: feed_status
     Unique_ID: unique_id
     Depth: depth
@@ -505,9 +503,8 @@ subscription subscribeToFeedPost(
         last_name
       }
     }
-    FeedPosts {
+    Feeds {
       Author_ID: author_id
-      Formatted_Json: formatted_json
       Date_Added: created_at
       Published_Date: published_date
       Disable_New_Comments: disable_new_comments
@@ -519,7 +516,7 @@ subscription subscribeToFeedPost(
       file_size
       image_orientation
       ID: id
-      Copy: copy
+      Copy: feed_copy
       Feed_Status: feed_status
       Unique_ID: unique_id
       Depth: depth
@@ -547,9 +544,8 @@ subscription subscribeToFeedPost(
           last_name
         }
       }
-      FeedPosts {
+      Feeds {
         Author_ID: author_id
-        Formatted_Json: formatted_json
         Date_Added: created_at
         Published_Date: published_date
         Disable_New_Comments: disable_new_comments
@@ -561,7 +557,7 @@ subscription subscribeToFeedPost(
         file_size
         image_orientation
         ID: id
-        Copy: copy
+        Copy: feed_copy
         Feed_Status: feed_status
         Unique_ID: unique_id
         Depth: depth

@@ -96,12 +96,12 @@ export async function createFeedToSubmit(
     }
   }
   let publishedDatePayload = Date.now();
-  let feedStatusForPayload = "Published - Not flagged";
+  let feedStatusForPayload = "Published - Not Flagged";
   const scheduledDateUnix = document.getElementById('scheduledDateContainer');
   if (feedType === "Post" && scheduledDateUnix) {
     if (scheduledDateUnix.innerText.trim() === '') {
       publishedDatePayload = Date.now();
-      feedStatusForPayload = "Published - Not flagged";
+      feedStatusForPayload = "Published - Not Flagged";
     } else {
       publishedDatePayload = scheduledDateUnix.innerText.trim();
       feedStatusForPayload = "Scheduled";
@@ -115,7 +115,7 @@ export async function createFeedToSubmit(
     Author: {
       display_name: GLOBAL_AUTHOR_DISPLAY_NAME,
     },
-    copy: processContent(htmlContent),
+    feed_copy: processContent(htmlContent),
     published_date: publishedDatePayload,
     depth: depthOfFeed,
     Mentioned_Contacts_Data: [],
