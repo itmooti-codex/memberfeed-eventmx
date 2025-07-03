@@ -15,7 +15,7 @@ import { updateCurrentUserUI } from "./ui/user.js";
 import { connect, terminateAndClose, initWebSocketHandlers, setContactIncludedInTag } from "./ws.js";
 import { connectNotification, initNotificationEvents } from "./notifications.js";
 import { setupCreatePostModal, loadModalContacts, initScheduledPostHandler } from "./domEvents.js";
-import { createForumToSubmit } from "./features/posts/actions.js";
+import { createFeedToSubmit } from "./features/posts/actions.js";
 import { renderNotificationToggles } from "./ui/notificationPreference.js";
 import { toggleAllOff, toggleOption } from "./ui/notificationPreference.js";
 import { showToast } from "./ui/toast.js";
@@ -23,7 +23,7 @@ import { refreshNotificationSubscription } from "./notifications.js";
 import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
 export let notificationPreferences = null;
 Alpine.start();
-window.createForumToSubmit = createForumToSubmit;
+window.createFeedToSubmit = createFeedToSubmit;
 window.toggleAllOff = toggleAllOff;
 window.toggleOption = toggleOption;
 window.state = state;
@@ -58,7 +58,7 @@ function startApp(tagName, contactId, displayName) {
   }
 
   const postEditor = document.getElementById("post-editor");
-  const hasForumRoot = document.getElementById("forum-root");
+  const hasFeedRoot = document.getElementById("feed-root");
   const hasNotifContainer = document.getElementById("notificationContainerSocket");
   const hasNotifOptions = document.getElementById("notificationOptionsContainer");
 
@@ -89,7 +89,7 @@ function startApp(tagName, contactId, displayName) {
   if (hasNotifContainer || hasNotifOptions) {
     getNotificationPreferences(contactId);
   }
-  if (hasForumRoot) {
+  if (hasFeedRoot) {
     initPosts();
     initFilePond();
     initEmojiHandlers();
@@ -106,14 +106,14 @@ function startApp(tagName, contactId, displayName) {
       const result = res?.data?.calcContacts;
       if (Array.isArray(result) && result.length > 0) {
         setContactIncludedInTag(true);
-        if (hasForumRoot) {
+        if (hasFeedRoot) {
           connect();
         }
         if (hasNotifContainer) {
           connectNotification();
         }
-      } else if (hasForumRoot) {
-        const el = document.getElementById("forum-root");
+      } else if (hasFeedRoot) {
+        const el = document.getElementById("feed-root");
         document.getElementById("skeleton-loader")?.remove();
         el.innerHTML = `
     <div class="flex items-center justify-center">
@@ -132,7 +132,7 @@ function startApp(tagName, contactId, displayName) {
 }
 
 
-async function loadSelectedUserForum(tagName, contactId, displayName, profileImage) {
+async function loadSelectedUserFeed(tagName, contactId, displayName, profileImage) {
   if (displayName || profileImage) {
     state.currentUser = {
       display_name: displayName || "Anonymous",
@@ -143,7 +143,7 @@ async function loadSelectedUserForum(tagName, contactId, displayName, profileIma
   startApp(tagName, contactId, displayName);
 }
 
-window.loadSelectedUserForum = loadSelectedUserForum;
+window.loadSelectedUserFeed = loadSelectedUserFeed;
 
 initWebSocketHandlers();
 initNotificationEvents();

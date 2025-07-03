@@ -205,10 +205,10 @@ export function initNotificationEvents() {
   document.addEventListener("click", async (e) => {
     const notifEl = e.target.closest(".notification");
     if (notifEl) {
-      const forumId = notifEl.getAttribute("data-parentforumid");
+      const feedId = notifEl.getAttribute("data-parentfeedid");
       const targetId = notifEl.getAttribute("data-targetid");
       const notifType = notifEl.getAttribute("data-notiftype") || "";
-      if (forumId) {
+      if (feedId) {
         try {
           const body = document.querySelector("body");
           if (body && body.__x && body.__x.$data) {
@@ -218,7 +218,7 @@ export function initNotificationEvents() {
           console.error("Failed to hide notifications modal");
         }
         const highlight = /Comment|Reply/.test(notifType) ? targetId : null;
-        openPostModalById(forumId, "", highlight, false);
+        openPostModalById(feedId, "", highlight, false);
       }
     }
 

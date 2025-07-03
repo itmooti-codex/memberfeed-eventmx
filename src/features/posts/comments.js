@@ -23,7 +23,7 @@ export function initCommentHandlers() {
     }
 
     $(".comment-form").remove();
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid);
     if (!node) {
@@ -57,7 +57,7 @@ export function initCommentHandlers() {
     <div class="flex w-full items-center justify-between">
     ${toolbarDesign}
     <div class="flex items-center gap-2">
-      <div class="ml-auto flex cursor-pointer items-center justify-end gap-3" id="submitForumPost" onclick="createForumToSubmit('${nextDepth}','${nextType}','comment-form','${uid}');">
+      <div class="ml-auto flex cursor-pointer items-center justify-end gap-3" id="submitFeedPost" onclick="createFeedToSubmit('${nextDepth}','${nextType}','comment-form','${uid}');">
         <div class="group flex items-center justify-start gap-2 rounded bg-[var(--grey-100)] px-3 py-2 transition-all hover:bg-[var(--color-primary)]">
           <div class="p3 justify-start text-center text-white max-[702px]:hidden !text-nowrap">Post</div>
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -104,7 +104,7 @@ export function initCommentHandlers() {
   $(document).on("click.toggleReplies", ".toggle-replies", function (e) {
     e.stopPropagation();
     const uid = $(this).data("uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid);
     if (!node) {

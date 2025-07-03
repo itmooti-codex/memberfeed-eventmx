@@ -28,7 +28,7 @@ function renderContacts(list, containerId) {
             document.querySelector('.featurePostBtnForAdmin').classList.add('hidden');
           `
         }
-      loadSelectedUserForum('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}');
+      loadSelectedUserFeed('${c.TagName}','${c.Contact_ID}','${c.Display_Name?.replace(/'/g, "\\'") || "Anonymous"}','${c.Profile_Image || DEFAULT_AVATAR}');
       modalToSelectUser=false;"
       class="cursor-pointer flex items-center flex-col "
     >
@@ -61,7 +61,7 @@ export async function loadModalContacts() {
 
     if (allContacts.length === 1) {
       const c = allContacts[0];
-      window.loadSelectedUserForum(
+      window.loadSelectedUserFeed(
         c.TagName,
         c.Contact_ID,
         c.Display_Name?.replace(/'/g, "\\'") || "Anonymous",
@@ -169,7 +169,7 @@ export function initScheduledPostHandler() {
     const variables = {
       unique_id: uid,
       payload: {
-        forum_status: "Published - Not flagged"
+        feed_status: "Published - Not flagged"
       }
     };
 

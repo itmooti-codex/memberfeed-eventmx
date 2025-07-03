@@ -37,8 +37,8 @@ export function buildTree(existingPosts, rawItems) {
 
   const rawRoots = [];
   rawById.forEach((raw) => {
-    if (raw.parent_forum_id && rawById.has(raw.parent_forum_id)) {
-      rawById.get(raw.parent_forum_id)._children.push(raw);
+    if (raw.parent_feed_id && rawById.has(raw.parent_feed_id)) {
+      rawById.get(raw.parent_feed_id)._children.push(raw);
     } else {
       rawRoots.push(raw);
     }
@@ -79,9 +79,9 @@ export function buildTree(existingPosts, rawItems) {
 export function mapItem(raw, depth = 0, isDisabled = false) {
   const createdAt = parseDate(raw.published_date || raw.created_at);
 
-  const reactors = safeArray(raw.Forum_Reactors_Data);
+  const reactors = safeArray(raw.Feed_Reactors_Data);
   const userReaction = reactors.find(
-    (r) => r.Forum_Reactor?.id === GLOBAL_AUTHOR_ID
+    (r) => r.Feed_Reactor?.id === GLOBAL_AUTHOR_ID
   );
 
   const bookmarks = safeArray(raw.Bookmarking_Contacts_Data);
@@ -104,9 +104,9 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     isAdmin: state.userRole === "admin",
     depth,
     sheduledDate: raw.published_date || null,
-    forumStatus: raw.forum_status,
-    forumType:
-      raw.forum_type ||
+    feedStatus: raw.feed_status,
+    feedType:
+      raw.feed_type ||
       (depth === 0 ? "Post" : depth === 1 ? "Comment" : "Reply"),
     authorName: raw.Author?.display_name || "Anonymous",
     authorImage: raw.Author?.profile_image || DEFAULT_AVATAR,
@@ -120,8 +120,8 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     bookmarkRecordId: userBookmark?.id || null,
     children: [],
     isCollapsed: true,
-    parentId: raw.parent_forum_id,
-    isFeatured: raw.featured_forum === true,
+    parentId: raw.parent_feed_id,
+    isFeatured: raw.featured_feed === true,
     commentsDisabled: isDisabled,
     fileType: raw.file_type || "None",
     fileContent: depth === 0 ? fileContent : "",
@@ -130,7 +130,7 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     imageOrientation: raw.image_orientation || "no ",
     fileContentComment: depth > 0 ? fileContent : null,
     fileContentCommentName: depth > 0 ? fileName : "",
-    totalCommentAndReplies: (raw.ForumPosts ? raw.ForumPosts.length : 0) + (raw.ForumPosts?.reduce((sum, item) => sum + (item.ForumPosts?.length || 0), 0) || 0)
+    totalCommentAndReplies: (raw.FeedPosts ? raw.FeedPosts.length : 0) + (raw.FeedPosts?.reduce((sum, item) => sum + (item.FeedPosts?.length || 0), 0) || 0)
 
   };
 }
