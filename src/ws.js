@@ -96,7 +96,6 @@ export function connect() {
         if (uid) {
           frames[uid] = el.plyr;
         }else{
-          console.log("No UID found for player element", el);
         }
       });
       requestAnimationFrame(setupPlyr);
