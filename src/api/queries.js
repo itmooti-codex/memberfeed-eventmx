@@ -1,8 +1,4 @@
-import {
-  subscriberContactsForModal,
-  adminContactsForModal,
-  GLOBAL_AUTHOR_ID,
-} from "../config.js";
+import { userContactIds, GLOBAL_AUTHOR_ID } from "../config.js";
 import { GLOBAL_PAGE_TAG } from "../config.js";
 import { notificationStore } from "../config.js";
 
@@ -238,25 +234,11 @@ query calcContacts($id: EduflowproContactID, $name: TextScalar) {
 }
 `;
 
-export const GET_SUBSCRIBER_CONTACTS_FOR_MODAL = `
+export const GET_CONTACTS_FOR_MODAL = `
 query calcContacts {
   calcContacts(
     query: [
-      { whereIn: { id: [${subscriberContactsForModal}], _OPERATOR_: in } }
-    ]
-  ) {
-    Display_Name: field(arg: ["display_name"])
-    Profile_Image: field(arg: ["profile_image"])
-    TagName: field(arg: ["TagsData", "Tag", "name"])
-    Contact_ID: field(arg: ["id"])
-  }
-}`;
-
-export const GET_ADMIN_CONTACTS_FOR_MODAL = `
-query calcContacts {
-  calcContacts(
-    query: [
-      { whereIn: { id: [${adminContactsForModal}], _OPERATOR_: in } }
+      { whereIn: { id: [${userContactIds}], _OPERATOR_: in } }
     ]
   ) {
     Display_Name: field(arg: ["display_name"])

@@ -1,13 +1,10 @@
 import { DEFAULT_AVATAR } from "./config.js";
-import {
-  GET_SUBSCRIBER_CONTACTS_FOR_MODAL,
-  GET_ADMIN_CONTACTS_FOR_MODAL,
-  UPDATE_SCHEDULED_TO_POST
-} from "./api/queries.js";
+import { GET_CONTACTS_FOR_MODAL, UPDATE_SCHEDULED_TO_POST } from "./api/queries.js";
 import { fetchGraphQL } from "./api/fetch.js";
 import { showToast } from "./ui/toast.js";
 import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
 import { setPendingFile, setFileTypeCheck } from "./features/uploads/handlers.js";
+import { GLOBAL_PAGE_TAG } from "./config.js";
 
 function renderContacts(list, containerId) {
   const container = document.getElementById(containerId);
@@ -50,18 +47,18 @@ function renderContacts(list, containerId) {
 
 export async function loadModalContacts() {
   try {
-    const [subRes, adminRes] = await Promise.all([
-      fetchGraphQL(GET_SUBSCRIBER_CONTACTS_FOR_MODAL),
-      fetchGraphQL(GET_ADMIN_CONTACTS_FOR_MODAL)
-    ]);
-
-    const subscriberContacts = subRes?.data?.calcContacts || [];
-    const adminContacts = adminRes?.data?.calcContacts || [];
+    const res = await fetchGraphQL(GET_CONTACTS_FOR_MODAL);
+    const allContacts = res?.data?.calcContacts || [];
+    const subscriberContacts = allContacts.filter(
+      (c) => c.TagName === `${GLOBAL_PAGE_TAG}_Subscriber`
+    );
+    const adminContacts = allContacts.filter(
+      (c) => c.TagName === `${GLOBAL_PAGE_TAG}_Admin`
+    );
 
     renderContacts(subscriberContacts, "subscriberContacts");
     renderContacts(adminContacts, "adminContacts");
 
-    const allContacts = [...subscriberContacts, ...adminContacts];
     if (allContacts.length === 1) {
       const c = allContacts[0];
       window.loadSelectedUserForum(
