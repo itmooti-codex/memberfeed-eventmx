@@ -116,8 +116,8 @@ function startApp(tagName, contactId, displayName) {
         const el = document.getElementById("forum-root");
         document.getElementById("skeleton-loader")?.remove();
         el.replaceChildren(
-          Object.assign(document.createElement("h2"), {
-            className: "text-center text-gray-500",
+          Object.assign(document.createElement("div"), {
+            className: "text-center text-gray-500 h2",
             textContent: "No posts found.",
           })
         );
