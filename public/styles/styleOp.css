@@ -37,7 +37,7 @@
   margin: auto !important;
   padding: 1.5rem !important;
 }
-#notification-Settings input {
+input[type="checkbox"] {
   pointer-events: auto !important;
 }
 .tribute-container {
