@@ -23,7 +23,7 @@ export function applyFilterAndRender() {
       items = items.filter((p) => p.hasBookmarked);
       break;
     case "scheduledPost":
-      items = items.filter((p) => p.forumStatus ==="Scheduled");
+      items = items.filter((p) => p.feedStatus ==="Scheduled");
       break;
   }
   if (state.currentFileFilter !== "All") {
@@ -60,7 +60,7 @@ export function applyFilterAndRender() {
     const score = (p) => (p.upvotes || 0) + (Array.isArray(p.children) ? p.children.length : 0);
     items = items.slice().sort((a, b) => score(b) - score(a));
   }
-  const $container = $("#forum-root");
+  const $container = $("#feed-root");
   if (items.length === 0) {
     $container.html(
       `
@@ -170,8 +170,8 @@ searchInput.addEventListener("input", (e) => {
       searchIcon.classList.remove("hidden");
     }
     applyFilterAndRender();
-    removeHighlights(document.getElementById("forum-root"));
-    if (q) highlightMatches(document.getElementById("forum-root"), q);
+    removeHighlights(document.getElementById("feed-root"));
+    if (q) highlightMatches(document.getElementById("feed-root"), q);
   }, 300);
 });
 
@@ -181,7 +181,7 @@ clearIcon.addEventListener("click", () => {
   searchIcon.classList.remove("hidden");
   state.currentSearchTerm = "";
   applyFilterAndRender();
-  removeHighlights(document.getElementById("forum-root"));
+  removeHighlights(document.getElementById("feed-root"));
 });
 }
 

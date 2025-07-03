@@ -1,7 +1,7 @@
 import { fetchGraphQL } from "../../api/fetch.js";
 import {
-  DELETE_FORUM_POST_MUTATION,
-  UPDATE_FORUM_POST_MUTATION,
+  DELETE_FEED_POST_MUTATION,
+  UPDATE_FEED_POST_MUTATION,
 } from "../../api/queries.js";
 import { state } from "../../config.js";
 import { findNode } from "../../ui/render.js";
@@ -31,7 +31,7 @@ export function initModerationHandlers() {
   $(document).on("click", ".btn-delete", function () {
     // const uid = $(this).data("uid");
     const uid = $(this).attr("data-uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     pendingDelete = { uid, inModal };
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid) || findNode(state.postsStore, uid);
@@ -68,7 +68,7 @@ export function initModerationHandlers() {
       return;
     }
 
-    fetchGraphQL(DELETE_FORUM_POST_MUTATION, { id: node.id })
+    fetchGraphQL(DELETE_FEED_POST_MUTATION, { id: node.id })
       .then(() => {
         removeNode(state.postsStore, uid);
         removeNode(getModalTree(), uid);
@@ -94,21 +94,21 @@ export function initModerationHandlers() {
   // FEATURE
   $(document).on("click", ".btn-feature", async function () {
     const uid = $(this).attr("data-uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     const nodeMain = findNode(state.postsStore, uid);
     const nodeModal = findNode(getModalTree(), uid);
     const node = nodeMain || nodeModal;
     if (!node) return;
     $(this).addClass("state-disabled");
     try {
-      await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
+      await fetchGraphQL(UPDATE_FEED_POST_MUTATION, {
         id: node.id,
-        payload: { featured_forum: true },
+        payload: { featured_feed: true },
       });
       if (nodeMain) nodeMain.isFeatured = true;
       if (nodeModal && nodeModal !== nodeMain) nodeModal.isFeatured = true;
       const rawItem = findRawById(state.rawItems, node.id);
-      if (rawItem) rawItem.featured_forum = true;
+      if (rawItem) rawItem.featured_feed = true;
       applyFilterAndRender();
       if (inModal) {
         rerenderModal();
@@ -125,21 +125,21 @@ export function initModerationHandlers() {
   // UNFEATURE
   $(document).on("click", ".btn-unfeature", async function () {
     const uid = $(this).attr("data-uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     const nodeMain = findNode(state.postsStore, uid);
     const nodeModal = findNode(getModalTree(), uid);
     const node = nodeMain || nodeModal;
     if (!node) return;
     $(this).addClass("state-disabled");
     try {
-      await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
+      await fetchGraphQL(UPDATE_FEED_POST_MUTATION, {
         id: node.id,
-        payload: { featured_forum: false },
+        payload: { featured_feed: false },
       });
       if (nodeMain) nodeMain.isFeatured = false;
       if (nodeModal && nodeModal !== nodeMain) nodeModal.isFeatured = false;
       const rawItem = findRawById(state.rawItems, node.id);
-      if (rawItem) rawItem.featured_forum = false;
+      if (rawItem) rawItem.featured_feed = false;
       applyFilterAndRender();
       if (inModal) {
         rerenderModal();
@@ -156,7 +156,7 @@ export function initModerationHandlers() {
   // DISABLE COMMENTS
   $(document).on("click", ".btn-disable-comments", async function () {
     const uid = $(this).attr("data-uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     const nodeMain = findNode(state.postsStore, uid);
     const nodeModal = findNode(getModalTree(), uid);
     const node = nodeMain || nodeModal;
@@ -169,7 +169,7 @@ export function initModerationHandlers() {
       }
     };
     try {
-      await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
+      await fetchGraphQL(UPDATE_FEED_POST_MUTATION, {
         id: node.id,
         payload: { disable_new_comments: true },
       });
@@ -193,7 +193,7 @@ export function initModerationHandlers() {
   // ENABLE COMMENTS
   $(document).on("click", ".btn-enable-comments", async function () {
     const uid = $(this).attr("data-uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     const nodeMain = findNode(state.postsStore, uid);
     const nodeModal = findNode(getModalTree(), uid);
     const node = nodeMain || nodeModal;
@@ -206,7 +206,7 @@ export function initModerationHandlers() {
       }
     };
     try {
-      await fetchGraphQL(UPDATE_FORUM_POST_MUTATION, {
+      await fetchGraphQL(UPDATE_FEED_POST_MUTATION, {
         id: node.id,
         payload: { disable_new_comments: false },
       });

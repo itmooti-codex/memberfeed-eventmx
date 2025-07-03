@@ -39,14 +39,14 @@
       x-transition:enter-start="opacity-0 scale-50" x-transition:enter-end="opacity-100 scale-100"
       class="customPickerModal rounded-radius flex   max-[702px]:overflow-y-auto flex-col gap-4 min-[702px]:overflow-hidden rounded bg-white max-[702px]:w-full">
       <!-- Dialog Header -->
-      <div id="modalForumRoot" class="flex flex-col gap-1"></div>
+      <div id="modalFeedRoot" class="flex flex-col gap-1"></div>
     </div>
     <!-- Dialog Footer -->
 
   </div>
 
   <script id="tmpl-post" type="text/x-jsrender">
-                      {{if (forumType === 'Post' || forumType === 'Reply' || forumType === 'Comment') && (forumStatus === 'Published - Not flagged' || (forumStatus === 'Scheduled' && isAdmin))}}
+                      {{if (feedType === 'Post' || feedType === 'Reply' || feedType === 'Comment') && (feedStatus === 'Published - Not flagged' || (feedStatus === 'Scheduled' && isAdmin))}}
                 {{if fileType === 'Image' && ~inModal}}<div class="flex max-[702px]:h-screen bg-black items-start  min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
             {{if fileType === 'Image' && ~inModal}}
             {{if fileContent || fileContentComment}}
@@ -58,7 +58,7 @@
             {{/if}}
             {{/if}}
             <div class="{{if fileType === 'Image' && ~inModal}} w-full flex-[2] min-[702px]:h-[90vh] max-[702px]:h-full !rounded-none overflow-y-auto {{/if}}item {{if fileType != "Image" && ~inModal}} overflow-auto min-[855px]:w-[855px] max-[855px]:w-full min-[702px]:max-h-[80vh] max-[702px]:h-screen{{/if}} {{:depth >0 ? 'rounded-[0_4px_4px_4px] p-[0_16px] mb-3' : 'rounded '}} bg-white flex flex-col gap-[14px]  relative {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
-              data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-forumStatus="{{:forumStatus}}">
+              data-uid="{{:uid}}" data-id="{{:id}}" data-depth="{{:depth}}" data-feedStatus="{{:feedStatus}}">
               <div class="flex items-start justify-between w-full{{if depth === 0 }} px-4 pt-4{{/if}}">
                   <div class="author flex items-center mb-2">
                       <img class="avatar w-[40px] shrink-0 h-[40px] bg-[#ccc] rounded-full mr-[12px]" src="{{:authorImage}}"
@@ -67,7 +67,7 @@
                       <div class="info flex items-start gap-2">
                           <div class="flex flex-col items-start">
                               <span class="name font-bold">{{:authorName}}</span>
-                              {{if forumStatus==='Scheduled'}}
+                              {{if feedStatus==='Scheduled'}}
                               <div class="flex items-center gap-1">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                       <path
@@ -125,7 +125,7 @@
                           <div data-uid="{{:uid}}"
                               class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
                               role="menuitem">Delete this post</div>
-                          {{if forumStatus === 'Published - Not flagged'}}
+                          {{if feedStatus === 'Published - Not flagged'}}
                           {{if !isFeatured}}
                           <div data-uid="{{:uid}}"
                               class="btn-feature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
@@ -170,9 +170,9 @@
                   {{/if}}
             
               </div>
-              {{if content !='' }} <div class="content p2 {{if forumStatus != "Published - Not flagged" && !fileContent}}mb-4{{/if}} {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
+              {{if content !='' }} <div class="content p2 {{if feedStatus != "Published - Not flagged" && !fileContent}}mb-4{{/if}} {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
               {{if fileContent || fileContentComment}}
-              <div class="file-preview {{if forumStatus != "Published - Not flagged"}}mb-4{{/if}} {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 mx-4  rounded{{/if}} {{if fileType ==="File"}}mx-4{{/if}} ">
+              <div class="file-preview {{if feedStatus != "Published - Not flagged"}}mb-4{{/if}} {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 mx-4  rounded{{/if}} {{if fileType ==="File"}}mx-4{{/if}} ">
                   {{if fileType === "Audio" && depth === 0}}
                   <div class="h2 text-black mb-4 max-[702px]:line-clamp-1">{{:fileContentName}}</div>
                   {{/if}}
@@ -253,7 +253,7 @@
                   {{/if}}
               </div>
               {{/if}}
-              {{if forumStatus === "Published - Not flagged"}}
+              {{if feedStatus === "Published - Not flagged"}}
               <div class=" flex items-center gap-4 {{if depth === 0 }} px-4{{/if}}">
                   <div class="flex items-end justify-end gap-2 ">
                       <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -263,7 +263,7 @@
                       </svg>
                       <div class="p3 text-[var(--color-black)]">{{:upvotes}}</div>
                   </div>
-                  {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
+                  {{if !commentsDisabled && feedStatus !== 'Scheduled'}}
                   <div class="flex items-end justify-end gap-2 {{if depth === 1}}cursor-pointer toggle-replies{{/if}}" {{if
                       depth===1}}data-uid="{{:uid}}" {{/if}}>
                       <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -284,7 +284,7 @@
                   {{/if}}
               </div>
               {{/if}}
-              {{if forumStatus === 'Published - Not flagged'}}
+              {{if feedStatus === 'Published - Not flagged'}}
               <div class="flex items-center gap-4 border-t border-[var(--grey-200)] {{if depth === 0 }} mx-4 p-4{{/if}} actions">
                   <div class="flex flex-1 items-center justify-center gap-2 cursor-pointer btn-like {{:hasUpvoted ? ' liked' : ''}}"
                       data-uid="{{:uid}}">
@@ -296,7 +296,7 @@
                       <div class="p3">Like</div>
                   </div>
             
-                  {{if !commentsDisabled && forumStatus !== 'Scheduled'}}
+                  {{if !commentsDisabled && feedStatus !== 'Scheduled'}}
                   <div class="flex {{if ~inModal}}btn-comment{{else}}openPostModal{{/if}} flex-1 items-center justify-center gap-2 cursor-pointer group"
                       data-uid="{{:uid}}" data-id="{{:id}}" data-author="{{:authorName}}" {{if !~inModal}}
                       @click="modalForPostOpen=true" {{/if}}>
@@ -356,7 +356,7 @@
             data-uid="{{:uid}}"
                           data-id="{{:id}}"
                           data-depth="{{:depth}}"
-                          data-forumStatus="{{:forumStatus}}">
+                          data-feedStatus="{{:feedStatus}}">
                 <div class=" flex w-full items-start gap-2"
             >
             <div class="size-6 rounded-full shrink-0  border border-zinc-300  {{if depth===1}}mainComment{{/if}}">
@@ -372,7 +372,7 @@
                   <div class="flex flex-col items-start justify-center gap-0.5">
                     <div class="h3 commenterName justify-start text-center font-['Inter'] text-black">{{:authorName}}</div>
                     <div class="p3 commentedTime justify-start text-center font-['Inter'] text-black">
-                        {{if forumStatus==='Scheduled'}}
+                        {{if feedStatus==='Scheduled'}}
                                     <div class="flex items-center gap-1">
                                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                             <path d="M9 20H6C4.93913 20 3.92172 19.5786 3.17157 18.8284C2.42143 18.0783 2 17.0609 2 16V7C2 5.93913 2.42143 4.92172 3.17157 4.17157C3.92172 3.42143 4.93913 3 6 3H17C18.0609 3 19.0783 3.42143 19.8284 4.17157C20.5786 4.92172 21 5.93913 21 7V10M8 2V4M15 2V4M2 8H21M18.5 15.643L17 17.143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -486,7 +486,7 @@
                         {{if isAdmin}}
             
                         <div data-uid="{{:uid}}" class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Delete this post</div>
-                        {{if forumStatus === 'Published - Not flagged'}}
+                        {{if feedStatus === 'Published - Not flagged'}}
                             {{if !isFeatured}}
                             <div data-uid="{{:uid}}" class="btn-feature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Mark this post as featured</div>
                             {{else}}
@@ -524,7 +524,7 @@
 
     <div clas="brand-main">
       <div class="text-2xl font-bold text-[var(--color-primary)]">
-        <a href="#topOfForum" class="hover:text-[var(--color-primary-shade)]">IT MOOTI</a>
+        <a href="#topOfFeed" class="hover:text-[var(--color-primary-shade)]">IT MOOTI</a>
       </div>
     </div>
 
@@ -642,11 +642,11 @@
           </div>
 
           <script id="notificationTemplate" type="text/x-jsrender">
-                                           <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" data-targetid="{{:Parent_Forum_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
+                                           <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentFeedid="{{:Parent_Feed_If_Not_A_Post || Parent_Feed_ID}}" data-targetid="{{:Parent_Feed_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
                                             <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
                                             <div class="flex-1">
                                               <div class="p3 text-[var(--color-black)]">{{:Title}}</div>
-                                              <div class="p3 text-[var(--color-grey)]">{{:~formatDate(Parent_Forum && Parent_Forum.published_date)}}</div>
+                                              <div class="p3 text-[var(--color-grey)]">{{:~formatDate(Parent_Feed && Parent_Feed.published_date)}}</div>
                                             </div>
                                           </div>
                                         </script>
@@ -790,11 +790,11 @@
   </div>
 
   <script id="notificationTemplate" type="text/x-jsrender">
-    <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}" data-parentForumid="{{:Parent_Forum_If_Not_A_Post || Parent_Forum_ID}}" data-targetid="{{:Parent_Forum_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
+    <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}" data-parentFeedid="{{:Parent_Feed_If_Not_A_Post || Parent_Feed_ID}}" data-targetid="{{:Parent_Feed_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
       <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
       <div class="flex-1">
         <div class="p3 text-[var(--color-black)]">{{:Title}}</div>
-        <div class="p3 text-[var(--color-grey)]">{{:~formatDate(Parent_Forum && Parent_Forum.published_date)}}</div>
+        <div class="p3 text-[var(--color-grey)]">{{:~formatDate(Parent_Feed && Parent_Feed.published_date)}}</div>
       </div>
     </div>
   </script>

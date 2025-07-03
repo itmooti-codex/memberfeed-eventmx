@@ -29,17 +29,17 @@ if (typeof window !== "undefined") {
   window.awsParamUrl = awsParamUrl;
 }
 export const PROTOCOL = "vitalstats";
-export const SUB_ID = "forum-subscription";
+export const SUB_ID = "feed-subscription";
 export const NOTIF_SUB_ID = "notification-subscription";
 export const KEEPALIVE_MS = 80000;
 export const MAX_BACKOFF = 30000;
 export const INACTIVITY_MS = 10 * 60 * 1000; 
 export let GLOBAL_AUTHOR_ID = '';
-export let GLOBAL_AUTHOR_DISPLAY_NAME = "Eduflow Pro";
-export let GLOBAL_PAGE_TAG ="Demo_Forum";
+export let GLOBAL_AUTHOR_DISPLAY_NAME = "Eventmx";
+export let GLOBAL_PAGE_TAG ="Demo_Feed";
 export function setGlobals(authorId, pageTag, displayName) {
   GLOBAL_AUTHOR_ID = Number(authorId);
-  GLOBAL_PAGE_TAG = "Demo_Forum";
+  GLOBAL_PAGE_TAG = "Demo_Feed";
   GLOBAL_AUTHOR_DISPLAY_NAME = displayName;
 }
 export const DEFAULT_AVATAR =
@@ -79,4 +79,4 @@ export const clearIcon = document.querySelector(".clearIcon");
 export const searchIcon = document.querySelector(".searchIcon");
 // Combined list of contact IDs used when selecting a user from the modal.
 
-export const userContactIds = [forumUserContactId];
+export const userContactIds = [feedUserContactId];

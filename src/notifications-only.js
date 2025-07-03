@@ -2,7 +2,7 @@ import { notificationStore, GLOBAL_AUTHOR_ID, state, DEFAULT_AVATAR } from "./co
 import { fetchGraphQL } from "./api/fetch.js";
 import { GET__CONTACTS_NOTIFICATION_PREFERENCEE, FETCH_CONTACTS_QUERY } from "./api/queries.js";
 import { tribute } from "./utils/tribute.js";
-import { createForumToSubmit } from "./features/posts/actions.js";
+import { createFeedToSubmit } from "./features/posts/actions.js";
 import {
   renderNotificationToggles,
   toggleAllOff,
@@ -133,7 +133,7 @@ window.addEventListener("DOMContentLoaded", () => {
   window.enableBodyScroll = enableBodyScroll;
   window.toggleAllOff = toggleAllOff;
   window.toggleOption = toggleOption;
-  window.createForumToSubmit = createForumToSubmit;
+  window.createFeedToSubmit = createFeedToSubmit;
   fetchContactsAndCurrentUser(GLOBAL_AUTHOR_ID).then(() => {
     updateLines();
   });

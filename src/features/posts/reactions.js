@@ -18,7 +18,7 @@ export function initReactionHandlers() {
     e.preventDefault();
     e.stopPropagation();
     const uid = $(this).attr("data-uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid);
     if (!node) {
@@ -35,7 +35,7 @@ export function initReactionHandlers() {
         }
         const rawItem = findRawById(state.rawItems, node.id);
         if (rawItem) {
-          rawItem.Forum_Reactors_Data = safeArray(rawItem.Forum_Reactors_Data).filter((u) => u.id !== node.voteRecordId);
+          rawItem.Feed_Reactors_Data = safeArray(rawItem.Feed_Reactors_Data).filter((u) => u.id !== node.voteRecordId);
         }
         node.upvotes--;
         node.hasUpvoted = false;
@@ -43,19 +43,19 @@ export function initReactionHandlers() {
         toastMsg = "Vote removed";
       } else {
         const payload = {
-          forum_reactor_id: GLOBAL_AUTHOR_ID,
-          reacted_to_forum_id: node.id,
+          feed_reactor_id: GLOBAL_AUTHOR_ID,
+          reacted_to_feed_id: node.id,
         };
         const res = await fetchGraphQL(CREATE_REACTION_MUTATION, { payload });
-        const newId = res.data.createOForumReactorReactedtoForum?.id;
+        const newId = res.data.createOFeedReactorReactedtoFeed?.id;
         const rawItem = findRawById(state.rawItems, node.id);
         if (rawItem) {
-          rawItem.Forum_Reactors_Data = [
-            ...safeArray(rawItem.Forum_Reactors_Data),
+          rawItem.Feed_Reactors_Data = [
+            ...safeArray(rawItem.Feed_Reactors_Data),
             {
               id: newId,
-              reacted_to_forum_id: node.id,
-              Forum_Reactor: { id: GLOBAL_AUTHOR_ID },
+              reacted_to_feed_id: node.id,
+              Feed_Reactor: { id: GLOBAL_AUTHOR_ID },
             },
           ];
         }
@@ -80,7 +80,7 @@ export function initReactionHandlers() {
     e.preventDefault();
     e.stopPropagation();
     const uid = $(this).attr("data-uid");
-    const inModal = $(this).closest("#modalForumRoot").length > 0;
+    const inModal = $(this).closest("#modalFeedRoot").length > 0;
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid);
     if (!node) {
@@ -105,7 +105,7 @@ export function initReactionHandlers() {
       } else {
         const payload = {
           bookmarking_contact_id: GLOBAL_AUTHOR_ID,
-          bookmarked_forum_id: node.id,
+          bookmarked_feed_id: node.id,
         };
         const res = await fetchGraphQL(CREATE_BOOKMARK_MUTATION, { payload });
         const rawItem = findRawById(state.rawItems, node.id);
@@ -113,14 +113,14 @@ export function initReactionHandlers() {
           rawItem.Bookmarking_Contacts_Data = [
             ...safeArray(rawItem.Bookmarking_Contacts_Data),
             {
-              id: res.data.createOBookmarkingContactBookmarkedForum.id,
-              bookmarked_forum_id: node.id,
+              id: res.data.createOBookmarkingContactBookmarkedFeed.id,
+              bookmarked_feed_id: node.id,
               Bookmarking_Contact: { id: GLOBAL_AUTHOR_ID },
             },
           ];
         }
         node.hasBookmarked = true;
-        node.bookmarkRecordId = res.data.createOBookmarkingContactBookmarkedForum.id;
+        node.bookmarkRecordId = res.data.createOBookmarkingContactBookmarkedFeed.id;
         toastMsg = "Bookmarked";
       }
     } catch (err) {

@@ -2,27 +2,27 @@ import { fetchGraphQL } from "../../api/fetch.js";
 import { CREATE_NOTIFICATION } from "../../api/queries.js";
 import { state } from "../../config.js";
 
-// export async function sendNotificationsAfterPost(forumData) {
-export async function sendNotificationsAfterPost(forumData, rootForumId = null) {
-  if (!forumData || !forumData.id || !Array.isArray(state.allContacts)) return;
+// export async function sendNotificationsAfterPost(feedData) {
+export async function sendNotificationsAfterPost(feedData, rootFeedId = null) {
+  if (!feedData || !feedData.id || !Array.isArray(state.allContacts)) return;
   const {
     id,
-    parent_forum_id,
-    forum_type,
+    parent_feed_id,
+    feed_type,
     copy,
     Author,
-    Parent_Forum,
-  } = forumData;
-  console.log('forumData', forumData);
-  const type = forum_type || "Post";
+    Parent_Feed,
+  } = feedData;
+  console.log('feedData', feedData);
+  const type = feed_type || "Post";
   const isPost = type === "Post";
   const mentionedIds = Array.from(copy.matchAll(/data-mention-id=['"](\d+)['"]/g)).map(m => Number(m[1]));
   const postAuthorName = Author?.display_name || "Someone";
-  const parentForumAuthorId = Parent_Forum?.author_id || null;
+  const parentFeedAuthorId = Parent_Feed?.author_id || null;
 
   const payload = state.allContacts.map(contactId => {
     const isMentioned = mentionedIds.includes(contactId);
-    const isParentOwner = contactId === parentForumAuthorId;
+    const isParentOwner = contactId === parentFeedAuthorId;
     const isSelfMention = isMentioned && isParentOwner;
 
     let title = `${postAuthorName} created a ${type.toLowerCase()}.`;
@@ -44,12 +44,12 @@ export async function sendNotificationsAfterPost(forumData, rootForumId = null) 
         ? `${postAuthorName} commented on your post.`
         : `${postAuthorName} replied to your comment.`;
     }
-    const parentForumForNotification = rootForumId ?? parent_forum_id;
+    const parentFeedForNotification = rootFeedId ?? parent_feed_id;
     return {
       notified_contact_id: contactId,
-      parent_forum_id: id,
-      // ...(isPost ? {} : { parent_forum_if_not_a_post: parent_forum_id }),
-      ...(isPost ? {} : { parent_forum_if_not_a_post: parentForumForNotification }),
+      parent_feed_id: id,
+      // ...(isPost ? {} : { parent_feed_if_not_a_post: parent_feed_id }),
+      ...(isPost ? {} : { parent_feed_if_not_a_post: parentFeedForNotification }),
       notification_type,
       title,
     };

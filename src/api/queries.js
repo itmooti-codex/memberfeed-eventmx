@@ -37,7 +37,7 @@ query calcContacts {
 
 `;
 
-export const CREATE_FORUM_POST_MUTATION = `
+export const CREATE_FEED_POST_MUTATION = `
   mutation createFeed($payload: FeedCreateInput = null) {
     createFeed(payload: $payload) {
       id
@@ -49,7 +49,7 @@ export const CREATE_FORUM_POST_MUTATION = `
       published_date
       created_at
       disable_new_comments
-      featured_forum: featured_feed
+      featured_feed: featured_feed
       file_content
       file_type
       file_name
@@ -57,14 +57,14 @@ export const CREATE_FORUM_POST_MUTATION = `
       file_size
       image_orientation
       copy: feed_copy
-      forum_status: feed_status
+      feed_status: feed_status
       depth
-      forum_type: feed_type
-      parent_forum_id: parent_feed_id
-      Parent_Forum: Parent_Feed{
+      feed_type: feed_type
+      parent_feed_id: parent_feed_id
+      Parent_Feed: Parent_Feed{
         author_id
       }
-      forum_tag: feed_tag
+      feed_tag: feed_tag
       Mentioned_Contacts_Data{
         mentioned_contact_id
       }
@@ -72,7 +72,7 @@ export const CREATE_FORUM_POST_MUTATION = `
   }
 `;
 
-export const DELETE_FORUM_POST_MUTATION = `
+export const DELETE_FEED_POST_MUTATION = `
   mutation deleteFeed($id: EventmxFeedID) {
     deleteFeed(query: [{ where: { id: $id } }]) {
       id
@@ -80,15 +80,15 @@ export const DELETE_FORUM_POST_MUTATION = `
   }
 `;
 
-export const UPDATE_FORUM_POST_MUTATION = `
-mutation updateForumPost($id: EduflowproForumPostID, $payload: ForumPostUpdateInput = null) {
-  updateForumPost(query: [{ where: { id: $id } }], payload: $payload) {
-    featured_forum
+export const UPDATE_FEED_POST_MUTATION = `
+mutation updateFeedPost($id: EventmxFeedPostID, $payload: FeedPostUpdateInput = null) {
+  updateFeedPost(query: [{ where: { id: $id } }], payload: $payload) {
+    featured_feed
     disable_new_comments
   }
 }`;
 
-const SUBSCRIBE_FORUM_POSTS_FIELDS = `
+const SUBSCRIBE_FEED_POSTS_FIELDS = `
       author_id
       Author {
         display_name
@@ -98,7 +98,7 @@ const SUBSCRIBE_FORUM_POSTS_FIELDS = `
       created_at
       published_date
       disable_new_comments
-      featured_forum
+      featured_feed
       file_content
       file_type
       file_name
@@ -107,17 +107,17 @@ const SUBSCRIBE_FORUM_POSTS_FIELDS = `
       image_orientation
       id
       copy
-      forum_status
+      feed_status
       unique_id
       depth
-      ForumPosts {
+      FeedPosts {
             id
-            ForumPosts {
+            FeedPosts {
             id
       }
       }
-      forum_type
-      parent_forum_id
+      feed_type
+      parent_feed_id
       Bookmarking_Contacts_Data{
         id
         Bookmarking_Contact{
@@ -125,67 +125,67 @@ const SUBSCRIBE_FORUM_POSTS_FIELDS = `
           first_name
           last_name
         }
-        bookmarked_forum_id
+        bookmarked_feed_id
       }
-      Forum_Reactors_Data{
+      Feed_Reactors_Data{
         id
-        Forum_Reactor{
+        Feed_Reactor{
           id
           first_name
           last_name
         }
-        reacted_to_forum_id
+        reacted_to_feed_id
       }
 `;
 
-export function SUBSCRIBE_FORUM_POSTS(isAdmin = false) {
+export function SUBSCRIBE_FEED_POSTS(isAdmin = false) {
   const extraStatusFilter = isAdmin
     ? ""
-    : `{ andWhere: { forum_status: \"Published - Not flagged\" } }`;
+    : `{ andWhere: { feed_status: \"Published - Not flagged\" } }`;
   const scheduledFilter = isAdmin
-    ? '{ orWhere: { forum_status: "Scheduled" } }'
+    ? '{ orWhere: { feed_status: "Scheduled" } }'
     : "";
   return `
-  subscription subscribeToForumPosts($forum_tag: TextScalar) {
-    subscribeToForumPosts(
+  subscription subscribeToFeedPosts($feed_tag: TextScalar) {
+    subscribeToFeedPosts(
       query: [
              {
         whereGroup: [
           {
             where: {
-              forum_status: "Published - Not flagged"
+              feed_status: "Published - Not flagged"
             }
           }
           ${scheduledFilter}
         ]
       }
       ${extraStatusFilter}
-        { andWhere: { forum_tag: $forum_tag } }
-        { andWhere: { forum_type: "Post" } }
+        { andWhere: { feed_tag: $feed_tag } }
+        { andWhere: { feed_type: "Post" } }
       ]
       orderBy: [{ path: ["published_date"], type: desc }]
     ) {
-${SUBSCRIBE_FORUM_POSTS_FIELDS}
+${SUBSCRIBE_FEED_POSTS_FIELDS}
     }
   }
 `;
 }
 
 export const CREATE_BOOKMARK_MUTATION = `
-mutation createOBookmarkingContactBookmarkedForum($payload: OBookmarkingContactBookmarkedForumCreateInput = null) {
-  createOBookmarkingContactBookmarkedForum(payload: $payload) {
+mutation createOBookmarkingContactBookmarkedFeed($payload: OBookmarkingContactBookmarkedFeedCreateInput = null) {
+  createOBookmarkingContactBookmarkedFeed(payload: $payload) {
     id
-    bookmarked_forum_id
+    bookmarked_feed_id
     bookmarking_contact_id
   }
 }
 `;
 
 export const DELETE_BOOKMARK_MUTATION = `
-mutation deleteOBookmarkingContactBookmarkedForum(
-  $id: EduflowproOBookmarkingContactBookmarkedForumID
+mutation deleteOBookmarkingContactBookmarkedFeed(
+  $id: EventmxOBookmarkingContactBookmarkedFeedID
 ) {
-  deleteOBookmarkingContactBookmarkedForum(
+  deleteOBookmarkingContactBookmarkedFeed(
     query: [{ where: { id: $id } }]
   ) {
     id
@@ -195,27 +195,27 @@ mutation deleteOBookmarkingContactBookmarkedForum(
 `;
 
 export const CREATE_REACTION_MUTATION = `
-mutation createOForumReactorReactedtoForum($payload: OForumReactorReactedtoForumCreateInput = null) {
-  createOForumReactorReactedtoForum(payload: $payload) {
+mutation createOFeedReactorReactedtoFeed($payload: OFeedReactorReactedtoFeedCreateInput = null) {
+  createOFeedReactorReactedtoFeed(payload: $payload) {
     id
-    forum_reactor_id
-    reacted_to_forum_id
+    feed_reactor_id
+    reacted_to_feed_id
   }
 }
 `;
 
 export const DELETE_REACTION_MUTATION = `
-mutation deleteOForumReactorReactedtoForum(
-  $id: EduflowproOForumReactorReactedtoForumID
+mutation deleteOFeedReactorReactedtoFeed(
+  $id: EventmxOFeedReactorReactedtoFeedID
 ) {
-  deleteOForumReactorReactedtoForum(query: [{ where: { id: $id } }]) {
+  deleteOFeedReactorReactedtoFeed(query: [{ where: { id: $id } }]) {
     id
   }
 }
 `;
 
 export const GET_CONTACTS_BY_TAGS = `
-query calcContacts($id: EduflowproContactID, $name: TextScalar) {
+query calcContacts($id: EventmxContactID, $name: TextScalar) {
   calcContacts(
     query: [
       { where: { id: $id } }
@@ -248,15 +248,15 @@ query calcContacts {
 }`;
 
 export const UPDATE_SCHEDULED_TO_POST = `
-mutation updateForumPost(
+mutation updateFeedPost(
   $unique_id: StringScalar_0_8
-  $payload: ForumPostUpdateInput = null
+  $payload: FeedPostUpdateInput = null
 ) {
-  updateForumPost(
+  updateFeedPost(
     query: [{ where: { unique_id: $unique_id } }]
     payload: $payload
   ) {
-    forum_status
+    feed_status
   }
 }
 `;
@@ -266,9 +266,9 @@ mutation createAnnouncements(
   $payload: [AnnouncementCreateInput] = null
 ) {
   createAnnouncements(payload: $payload) {
-    parent_forum_id
+    parent_feed_id
     notified_contact_id
-    parent_forum_if_not_a_post
+    parent_feed_if_not_a_post
     notification_type 
     title 
   }
@@ -293,11 +293,11 @@ export function GET_NOTIFICATIONS() {
     }
     {
         andWhere: {
-          Parent_Forum: [
+          Parent_Feed: [
             {
               whereGroup: [
-                { where: { forum_type: "Comment" } }
-                { orWhere: { forum_type: "Reply" } }
+                { where: { feed_type: "Comment" } }
+                { orWhere: { feed_type: "Reply" } }
               ]
             }
           ]
@@ -305,10 +305,10 @@ export function GET_NOTIFICATIONS() {
       }
       {
         andWhere: {
-          Parent_Forum: [
+          Parent_Feed: [
             {
               where: {
-                Parent_Forum: [{ where: { author_id: ${GLOBAL_AUTHOR_ID} } }]
+                Parent_Feed: [{ where: { author_id: ${GLOBAL_AUTHOR_ID} } }]
               }
             }
           ]
@@ -330,7 +330,7 @@ export function GET_NOTIFICATIONS() {
     }
     {
       andWhere: {
-        Parent_Forum: [
+        Parent_Feed: [
           {
             where: {
               Mentioned_Contacts_Data: [{ where: { mentioned_contact_id: ${GLOBAL_AUTHOR_ID} } }]
@@ -344,14 +344,14 @@ export function GET_NOTIFICATIONS() {
 
   return `
   subscription subscribeToAnnouncements(
-    $author_id: EduflowproContactID 
-    $notified_contact_id: EduflowproContactID 
+    $author_id: EventmxContactID 
+    $notified_contact_id: EventmxContactID 
   ) {
     subscribeToAnnouncements(
       query: [
         {
           where: {
-            Parent_Forum: [
+            Parent_Feed: [
               {
                 where: {
                   author_id: $author_id
@@ -360,7 +360,7 @@ export function GET_NOTIFICATIONS() {
               }
              {
               andWhere: {
-                forum_status: "Published - Not flagged"
+                feed_status: "Published - Not flagged"
               }
             }
             ]
@@ -409,7 +409,7 @@ export function GET_NOTIFICATIONS() {
       ]
       orderBy: [
         {
-          path: ["Parent_Forum", "published_date"]
+          path: ["Parent_Feed", "published_date"]
           type: desc
         }
       ]
@@ -417,11 +417,11 @@ export function GET_NOTIFICATIONS() {
       ID: id
       Is_Read: is_read
       Title: title
-      Parent_Forum_If_Not_A_Post: parent_forum_if_not_a_post
+      Parent_Feed_If_Not_A_Post: parent_feed_if_not_a_post
       Notification_Type: notification_type
-      Parent_Forum_ID: parent_forum_id
+      Parent_Feed_ID: parent_feed_id
       Notified_Contact_ID: notified_contact_id
-      Parent_Forum {
+      Parent_Feed {
         copy 
         published_date
       }
@@ -431,7 +431,7 @@ export function GET_NOTIFICATIONS() {
 }
 
 export const GET__CONTACTS_NOTIFICATION_PREFERENCEE = `
-query getContact($id: EduflowproContactID) {
+query getContact($id: EventmxContactID) {
   getContact(query: [{ where: { id: $id } }]) {
     Turn_Off_All_Notifications: turn_off_all_notifications
     Notify_me_of_all_Posts: notify_me_of_all_posts
@@ -442,7 +442,7 @@ query getContact($id: EduflowproContactID) {
 `;
 export const UPDATE_CONTACT_NOTIFICATION_PREFERENCE = `
 mutation updateContact(
-  $id: EduflowproContactID
+  $id: EventmxContactID
   $payload: ContactUpdateInput = null
 ) {
   updateContact(
@@ -457,10 +457,10 @@ mutation updateContact(
 }
 `;
 export const GET_SINGLE_POST_SUBSCRIPTION = `
-subscription subscribeToForumPost(
-  $id: EduflowproForumPostID
+subscription subscribeToFeedPost(
+  $id: EventmxFeedPostID
 ) {
-  subscribeToForumPost(
+  subscribeToFeedPost(
     query: [{ where: { id: $id } }]
     orderBy: [{ path: ["published_date"], type: desc }]
   ) {
@@ -469,7 +469,7 @@ subscription subscribeToForumPost(
     Date_Added: created_at
     Published_Date: published_date
     Disable_New_Comments: disable_new_comments
-    Featured_Forum: featured_forum
+    Featured_Feed: featured_feed
     File_Content: file_content
     File_Type: file_type
     file_name
@@ -478,40 +478,40 @@ subscription subscribeToForumPost(
     image_orientation
     ID: id
     Copy: copy
-    Forum_Status: forum_status
+    Feed_Status: feed_status
     Unique_ID: unique_id
     Depth: depth
-    Forum_Type: forum_type
-    Parent_Forum_ID: parent_forum_id
+    Feed_Type: feed_type
+    Parent_Feed_ID: parent_feed_id
     Author {
       display_name
       profile_image
     }
     Bookmarking_Contacts_Data {
       id
-      bookmarked_forum_id
+      bookmarked_feed_id
       Bookmarking_Contact {
         id
         first_name
         last_name
       }
     }
-    Forum_Reactors_Data {
+    Feed_Reactors_Data {
       id
-      reacted_to_forum_id
-      Forum_Reactor {
+      reacted_to_feed_id
+      Feed_Reactor {
         id
         first_name
         last_name
       }
     }
-    ForumPosts {
+    FeedPosts {
       Author_ID: author_id
       Formatted_Json: formatted_json
       Date_Added: created_at
       Published_Date: published_date
       Disable_New_Comments: disable_new_comments
-      Featured_Forum: featured_forum
+      Featured_Feed: featured_feed
       File_Content: file_content
       File_Type: file_type
       file_name
@@ -520,40 +520,40 @@ subscription subscribeToForumPost(
       image_orientation
       ID: id
       Copy: copy
-      Forum_Status: forum_status
+      Feed_Status: feed_status
       Unique_ID: unique_id
       Depth: depth
-      Forum_Type: forum_type
-      Parent_Forum_ID: parent_forum_id
+      Feed_Type: feed_type
+      Parent_Feed_ID: parent_feed_id
       Author {
         display_name
         profile_image
       }
       Bookmarking_Contacts_Data {
         id
-        bookmarked_forum_id
+        bookmarked_feed_id
         Bookmarking_Contact {
           id
           first_name
           last_name
         }
       }
-      Forum_Reactors_Data {
+      Feed_Reactors_Data {
         id
-        reacted_to_forum_id
-        Forum_Reactor {
+        reacted_to_feed_id
+        Feed_Reactor {
           id
           first_name
           last_name
         }
       }
-      ForumPosts {
+      FeedPosts {
         Author_ID: author_id
         Formatted_Json: formatted_json
         Date_Added: created_at
         Published_Date: published_date
         Disable_New_Comments: disable_new_comments
-        Featured_Forum: featured_forum
+        Featured_Feed: featured_feed
         File_Content: file_content
         File_Type: file_type
         file_name
@@ -562,28 +562,28 @@ subscription subscribeToForumPost(
         image_orientation
         ID: id
         Copy: copy
-        Forum_Status: forum_status
+        Feed_Status: feed_status
         Unique_ID: unique_id
         Depth: depth
-        Forum_Type: forum_type
-        Parent_Forum_ID: parent_forum_id
+        Feed_Type: feed_type
+        Parent_Feed_ID: parent_feed_id
         Author {
           display_name
           profile_image
         }
         Bookmarking_Contacts_Data {
           id
-          bookmarked_forum_id
+          bookmarked_feed_id
           Bookmarking_Contact {
             id
             first_name
             last_name
           }
         }
-        Forum_Reactors_Data {
+        Feed_Reactors_Data {
           id
-          reacted_to_forum_id
-          Forum_Reactor {
+          reacted_to_feed_id
+          Feed_Reactor {
             id
             first_name
             last_name

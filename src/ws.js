@@ -8,7 +8,7 @@ import {
   INACTIVITY_MS,
   GLOBAL_PAGE_TAG
 } from "./config.js";
-import { SUBSCRIBE_FORUM_POSTS } from "./api/queries.js";
+import { SUBSCRIBE_FEED_POSTS } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
 import { mergeLists } from "./utils/merge.js";
 import { applyFilterAndRender } from "./features/posts/index.js";
@@ -71,8 +71,8 @@ export function connect() {
           id: SUB_ID,
           type: "GQL_START",
           payload: {
-            query: SUBSCRIBE_FORUM_POSTS(state.userRole === "admin"),
-            variables: { forum_tag: GLOBAL_PAGE_TAG }
+            query: SUBSCRIBE_FEED_POSTS(state.userRole === "admin"),
+            variables: { feed_tag: GLOBAL_PAGE_TAG }
           }
         })
       );
@@ -81,7 +81,7 @@ export function connect() {
       msg.id === SUB_ID &&
       msg.payload?.data
     ) {
-      const incoming = msg.payload.data.subscribeToForumPosts ?? [];
+      const incoming = msg.payload.data.subscribeToFeedPosts ?? [];
       state.rawItems = mergeLists(state.rawItems, incoming);
       state.postsStore = buildTree(state.postsStore, state.rawItems);
       state.initialPostsLoaded = true;

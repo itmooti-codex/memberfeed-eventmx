@@ -11,7 +11,7 @@ let highlightId = null;
 
 function scrollAndHighlight() {
   if (!highlightId) return;
-  const container = document.getElementById("modalForumRoot");
+  const container = document.getElementById("modalFeedRoot");
   const target = container?.querySelector(`[data-id="${highlightId}"]`);
   if (target) {
     target.classList.add("highlighted");
@@ -39,7 +39,7 @@ function expandPathToId(tree, id) {
   dfs(tree);
 }
 function renderModal(openForm = false) {
-  const container = document.getElementById("modalForumRoot");
+  const container = document.getElementById("modalFeedRoot");
   if (!container) return;
   const prevScroll = container.scrollTop;
   container.innerHTML = renderItems(modalTree, { inModal: true });
@@ -119,20 +119,20 @@ function normalize(node, list) {
     Date_Added,
     Published_Date,
     Disable_New_Comments,
-    Featured_Forum,
+    Featured_Feed,
     File_Content,
     File_Type,
     ID,
     Copy,
-    Forum_Status,
+    Feed_Status,
     Unique_ID,
     Depth,
-    Forum_Type,
-    Parent_Forum_ID,
+    Feed_Type,
+    Parent_Feed_ID,
     Author,
     Bookmarking_Contacts_Data,
-    Forum_Reactors_Data,
-    ForumPosts,
+    Feed_Reactors_Data,
+    FeedPosts,
     file_name,
     file_link,
     file_size,
@@ -144,7 +144,7 @@ function normalize(node, list) {
     created_at: Date_Added,
     published_date: Published_Date,
     disable_new_comments: Disable_New_Comments,
-    featured_forum: Featured_Forum,
+    featured_feed: Featured_Feed,
     file_content: File_Content,
     file_type: File_Type,
     file_name,
@@ -153,17 +153,17 @@ function normalize(node, list) {
     image_orientation,
     id: ID,
     copy: Copy,
-    forum_status: Forum_Status,
+    feed_status: Feed_Status,
     unique_id: Unique_ID,
     depth: Depth,
-    forum_type: Forum_Type,
-    parent_forum_id: Parent_Forum_ID,
+    feed_type: Feed_Type,
+    parent_feed_id: Parent_Feed_ID,
     Author,
     Bookmarking_Contacts_Data,
-    Forum_Reactors_Data,
+    Feed_Reactors_Data,
   });
-  if (Array.isArray(ForumPosts)) {
-    ForumPosts.forEach((child) => normalize(child, list));
+  if (Array.isArray(FeedPosts)) {
+    FeedPosts.forEach((child) => normalize(child, list));
   }
 }
 
@@ -192,7 +192,7 @@ export function openPostModalById(postId, author = "", highlight = null, openFor
 
   window.dispatchEvent(new CustomEvent('open-modal'));
 
-  const container = document.getElementById("modalForumRoot");
+  const container = document.getElementById("modalFeedRoot");
   if (container) {
     container.innerHTML = MODAL_SKELETON;
   }
@@ -243,7 +243,7 @@ export function openPostModalById(postId, author = "", highlight = null, openFor
           state.ignoreNextModalUpdate = false;
           return;
         }
-        const data = msg.payload.data.subscribeToForumPost;
+        const data = msg.payload.data.subscribeToFeedPost;
         if (!data) {
           console.log("Post not found or deleted");
           if (container) {

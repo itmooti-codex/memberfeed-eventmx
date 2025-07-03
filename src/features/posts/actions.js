@@ -1,5 +1,5 @@
 import { fetchGraphQL } from "../../api/fetch.js";
-import { CREATE_FORUM_POST_MUTATION } from "../../api/queries.js";
+import { CREATE_FEED_POST_MUTATION } from "../../api/queries.js";
 import {
   state,
   GLOBAL_PAGE_TAG,
@@ -45,23 +45,23 @@ function formatFileSize(bytes) {
   }
   return `${Math.ceil(bytes / 1024)}kb`;
 }
-export async function createForumToSubmit(
-  depthOfForum,
-  forumType,
+export async function createFeedToSubmit(
+  depthOfFeed,
+  feedType,
   formElementId,
   uidParam,
 ) {
-  depthOfForum = Number(depthOfForum);
+  depthOfFeed = Number(depthOfFeed);
   const computedType =
-    depthOfForum === 0 ? "Post" : depthOfForum === 1 ? "Comment" : "Reply";
-  forumType = forumType || computedType;
+    depthOfFeed === 0 ? "Post" : depthOfFeed === 1 ? "Comment" : "Reply";
+  feedType = feedType || computedType;
 
   await ensureCurrentUser();
   const formWrapper = document.querySelector(`.${formElementId}`);
   const $btn = formWrapper
-    ? $(formWrapper).find('#submitForumPost')
+    ? $(formWrapper).find('#submitFeedPost')
     : $(this);
-  const inModal = Boolean(formWrapper?.closest('#modalForumRoot'));
+  const inModal = Boolean(formWrapper?.closest('#modalFeedRoot'));
   const editor = $(`.${formElementId} .editor`);
   const htmlContent = editor.html().trim();
   if (!htmlContent && !pendingFile) {
@@ -71,7 +71,7 @@ export async function createForumToSubmit(
 
   $btn.prop("disabled", true);
   $("#upload-options").prop("disabled", true);
-  if (forumType === "Post") {
+  if (feedType === "Post") {
     $(".postingLoader").removeClass("hidden");
     $(".postingLoader").addClass("flex");
   } else {
@@ -80,54 +80,54 @@ export async function createForumToSubmit(
   
   
 
-  let parentForumId;
-  let rootForumId;
-  if (forumType !== "Post" && uidParam) {
+  let parentFeedId;
+  let rootFeedId;
+  if (feedType !== "Post" && uidParam) {
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uidParam);
     if (node) {
-      parentForumId = node.id;
-      rootForumId = node.depth === 0 ? node.id : node.parentId;
+      parentFeedId = node.id;
+      rootFeedId = node.depth === 0 ? node.id : node.parentId;
     } else {
       console.log("Parent node not found, trying to find closest item");
       const elemetnt = document.querySelector(`.commentContainer_${uidParam}`);
-      parentForumId = elemetnt ? elemetnt.getAttribute("data-id") : null;
-      rootForumId = parentForumId;
+      parentFeedId = elemetnt ? elemetnt.getAttribute("data-id") : null;
+      rootFeedId = parentFeedId;
     }
   }
   let publishedDatePayload = Date.now();
-  let forumStatusForPayload = "Published - Not flagged";
+  let feedStatusForPayload = "Published - Not flagged";
   const scheduledDateUnix = document.getElementById('scheduledDateContainer');
-  if (forumType === "Post" && scheduledDateUnix) {
+  if (feedType === "Post" && scheduledDateUnix) {
     if (scheduledDateUnix.innerText.trim() === '') {
       publishedDatePayload = Date.now();
-      forumStatusForPayload = "Published - Not flagged";
+      feedStatusForPayload = "Published - Not flagged";
     } else {
       publishedDatePayload = scheduledDateUnix.innerText.trim();
-      forumStatusForPayload = "Scheduled";
+      feedStatusForPayload = "Scheduled";
     }
   }
   let featuredToggler = document.querySelector('.featurePostBtnForAdmin');
     let isFeaturedPostForAdmin = featuredToggler?.getAttribute('data-featured-value') || 'false';
   const payload = {
     author_id: GLOBAL_AUTHOR_ID,
-    featured_forum: isFeaturedPostForAdmin,
+    featured_feed: isFeaturedPostForAdmin,
     Author: {
       display_name: GLOBAL_AUTHOR_DISPLAY_NAME,
     },
     copy: processContent(htmlContent),
     published_date: publishedDatePayload,
-    depth: depthOfForum,
+    depth: depthOfFeed,
     Mentioned_Contacts_Data: [],
-    forum_type: forumType,
-    forum_status: forumStatusForPayload,
+    feed_type: feedType,
+    feed_status: feedStatusForPayload,
   };
 
-  if (forumType === "Post") {
-    payload.forum_tag = GLOBAL_PAGE_TAG;
+  if (feedType === "Post") {
+    payload.feed_tag = GLOBAL_PAGE_TAG;
   } else {
-    payload.parent_forum_id = parentForumId || null;
-    payload.forum_tag = GLOBAL_PAGE_TAG;
+    payload.parent_feed_id = parentFeedId || null;
+    payload.feed_tag = GLOBAL_PAGE_TAG;
   }
 
   editor.find("span.mention").each(function () {
@@ -165,13 +165,13 @@ export async function createForumToSubmit(
   }
 
   try {
-    const res = await fetchGraphQL(CREATE_FORUM_POST_MUTATION, {
+    const res = await fetchGraphQL(CREATE_FEED_POST_MUTATION, {
       payload: finalPayload,
     });
-    const raw = res.data?.createForumPost;
+    const raw = res.data?.createFeedPost;
     if (raw && raw.id) {
       // await sendNotificationsAfterPost(raw);
-      await sendNotificationsAfterPost(raw, rootForumId);
+      await sendNotificationsAfterPost(raw, rootFeedId);
     }
     if (raw) {
       if (!raw.Author) {
@@ -180,9 +180,9 @@ export async function createForumToSubmit(
           profile_image: state.currentUser?.profile_image || DEFAULT_AVATAR,
         };
       }
-      const nodeDepth = Number(raw.depth ?? depthOfForum);
+      const nodeDepth = Number(raw.depth ?? depthOfFeed);
       let parentDisable = false;
-      if (forumType !== "Post" && uidParam) {
+      if (feedType !== "Post" && uidParam) {
         const parentNode = findNode(
           inModal ? getModalTree() : state.postsStore,
           uidParam,
@@ -196,9 +196,9 @@ export async function createForumToSubmit(
       );
       newNode.isCollapsed = false;
 
-      if (forumType === "Post") {
+      if (feedType === "Post") {
         state.postsStore.unshift(newNode);
-        raw.ForumComments = [];
+        raw.FeedComments = [];
         state.rawItems = mergeLists(state.rawItems, [raw]);
         state.postsStore = buildTree(state.postsStore, state.rawItems);
         applyFilterAndRender();
@@ -236,8 +236,8 @@ export async function createForumToSubmit(
         });
       }
       state.ignoreNextSocketUpdate = true;
-      showToast(forumType === "Post" ? "Post created" : "Comment added");
-      if (forumType === "Post") {
+      showToast(feedType === "Post" ? "Post created" : "Comment added");
+      if (feedType === "Post") {
         $("#create-post-modal").addClass("hidden").removeClass("show");
       } else {
         $(`.${formElementId}`).remove();
@@ -261,7 +261,7 @@ export async function createForumToSubmit(
     $("#upload-options").prop("disabled", false);
     
     
-    if (forumType === "Post") {
+    if (feedType === "Post") {
       $(".postingLoader").removeClass("flex");
       $(".postingLoader").addClass("hidden");
       document.getElementById("close-post-modal")?.click();
