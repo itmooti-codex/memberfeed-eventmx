@@ -48,23 +48,35 @@ function renderContacts(list, containerId) {
     .join("");
 }
 
-export function loadModalContacts() {
-  fetchGraphQL(GET_SUBSCRIBER_CONTACTS_FOR_MODAL)
-    .then((res) => {
-      const contacts = res?.data?.calcContacts || [];
-      renderContacts(contacts, "subscriberContacts");
-    })
-    .catch((err) => {
-      console.error("Failed to load subscriber contacts", err);
-    });
-  fetchGraphQL(GET_ADMIN_CONTACTS_FOR_MODAL)
-    .then((res) => {
-      const contacts = res?.data?.calcContacts || [];
-      renderContacts(contacts, "adminContacts");
-    })
-    .catch((err) => {
-      console.error("Failed to load admin contacts", err);
-    });
+export async function loadModalContacts() {
+  try {
+    const [subRes, adminRes] = await Promise.all([
+      fetchGraphQL(GET_SUBSCRIBER_CONTACTS_FOR_MODAL),
+      fetchGraphQL(GET_ADMIN_CONTACTS_FOR_MODAL)
+    ]);
+
+    const subscriberContacts = subRes?.data?.calcContacts || [];
+    const adminContacts = adminRes?.data?.calcContacts || [];
+
+    renderContacts(subscriberContacts, "subscriberContacts");
+    renderContacts(adminContacts, "adminContacts");
+
+    const allContacts = [...subscriberContacts, ...adminContacts];
+    if (allContacts.length === 1) {
+      const c = allContacts[0];
+      window.loadSelectedUserForum(
+        c.TagName,
+        c.Contact_ID,
+        c.Display_Name?.replace(/'/g, "\\'") || "Anonymous",
+        c.Profile_Image || DEFAULT_AVATAR
+      );
+      const modalRoot = document.querySelector('[x-data*="modalToSelectUser"]');
+      modalRoot?.classList.add("hidden");
+      enableBodyScroll();
+    }
+  } catch (err) {
+    console.error("Failed to load contacts", err);
+  }
 }
 
 function resetCreatePostModal() {
