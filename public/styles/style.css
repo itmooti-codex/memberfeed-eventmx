@@ -524,6 +524,7 @@ button:not(.file-preview button):hover {
   background-color: var(--color-primary-shade) !important;
     color: black !important;
     border-radius: 4px !important;
+    font-weight: 500 !important;
 }
 /* added below css for custom loader */
 
