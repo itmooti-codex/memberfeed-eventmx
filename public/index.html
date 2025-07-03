@@ -463,7 +463,7 @@
           </svg>
           <span class="max-[702px]:hidden">Saved Posts</span>
         </div>
-        <div x-on:click="selectedFilterTab = 'scheduledPost'" data-filter="scheduledPost"
+        <div id="scheduledTabForAdmin" x-on:click="selectedFilterTab = 'scheduledPost'" data-filter="scheduledPost"
           x-bind:aria-selected="selectedFilterTab === 'scheduledPost'"
           x-bind:tabindex="selectedFilterTab === 'scheduledPost' ? '0' : '-1'"
           x-bind:class="selectedFilterTab === 'scheduledPost' ?  'text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]' : 'hover:border-b-2 hover:border-b-[var(--color-primary)] hover:text-[var(--color-primary)]'"
