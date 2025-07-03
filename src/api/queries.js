@@ -261,10 +261,10 @@ mutation updateFeedPost(
 `;
 
 export const CREATE_NOTIFICATION = `
-mutation createAnnouncements(
-  $payload: [AnnouncementCreateInput] = null
+mutation createNotifications(
+  $payload: [NotificationCreateInput] = null
 ) {
-  createAnnouncements(payload: $payload) {
+  createNotifications(payload: $payload) {
     parent_feed_id
     notified_contact_id
     parent_feed_if_not_a_post

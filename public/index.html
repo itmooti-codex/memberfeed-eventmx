@@ -184,7 +184,7 @@
             </div>
 
             <script id="notificationTemplate" type="text/x-jsrender">
-                                       <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-announcement="{{:ID}}"  data-parentFeedid="{{:Parent_Feed_If_Not_A_Post || Parent_Feed_ID}}" data-targetid="{{:Parent_Feed_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
+                                       <div class="notification {{if Is_Read}}read{{else}}unread{{/if}} cursor-pointer flex items-start gap-3 rounded-lg p-3 hover:bg-gray-100" data-notification="{{:ID}}"  data-parentFeedid="{{:Parent_Feed_If_Not_A_Post || Parent_Feed_ID}}" data-targetid="{{:Parent_Feed_ID}}" data-notiftype="{{:Notification_Type}}" @click="modalForPostOpen=true">
                                         <i class="fa-solid fa-file-alt mt-1 text-lg text-indigo-500"></i>
                                         <div class="flex-1">
                                           <div class="p3 text-[var(--color-black)]">{{:Title}}</div>
@@ -719,7 +719,7 @@
               <div x-show="openScheduleDatePicker" @click.outside="openScheduleDatePicker = false"
                 class="absolute mt-2 bottom-[2rem] right-0 max-[702px]:-right-[50%] w-64 bg-white shadow-lg rounded border p-2 z-50"
                 x-transition>
-                <div for="datePicker" class="block h3 text-black mb-2">Schedule Announcement</div>
+                <div for="datePicker" class="block h3 text-black mb-2">Schedule Notification</div>
                 <div class="flex flex-col ">
                   <div class="cursor-pointer hover:bg-[var(--color-primary-shade)] rounded p-2 p3 text-black"
                     data-sort="Latest" @click="
