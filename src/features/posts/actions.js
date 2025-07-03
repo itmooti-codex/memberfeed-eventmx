@@ -168,7 +168,7 @@ export async function createFeedToSubmit(
     const res = await fetchGraphQL(CREATE_FEED_POST_MUTATION, {
       payload: finalPayload,
     });
-    const raw = res.data?.createFeedPost;
+    const raw = res.data?.createFeed;
     if (raw && raw.id) {
       // await sendNotificationsAfterPost(raw);
       await sendNotificationsAfterPost(raw, rootFeedId);

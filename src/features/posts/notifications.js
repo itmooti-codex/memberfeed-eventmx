@@ -4,19 +4,25 @@ import { state } from "../../config.js";
 
 // export async function sendNotificationsAfterPost(feedData) {
 export async function sendNotificationsAfterPost(feedData, rootFeedId = null) {
-  if (!feedData || !feedData.id || !Array.isArray(state.allContacts)) return;
+
+
+  if (!feedData || !feedData.id || !Array.isArray(state.allContacts)) {
+    console.log("here stopped");
+    return
+  };
   const {
     id,
     parent_feed_id,
     feed_type,
-    copy,
+    feed_copy,
     Author,
     Parent_Feed,
   } = feedData;
   console.log('feedData', feedData);
+
   const type = feed_type || "Post";
   const isPost = type === "Post";
-  const mentionedIds = Array.from(copy.matchAll(/data-mention-id=['"](\d+)['"]/g)).map(m => Number(m[1]));
+  const mentionedIds = Array.from(feed_copy.matchAll(/data-mention-id=['"](\d+)['"]/g)).map(m => Number(m[1])) || [];
   const postAuthorName = Author?.display_name || "Someone";
   const parentFeedAuthorId = Parent_Feed?.author_id || null;
 

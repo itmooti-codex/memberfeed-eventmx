@@ -140,7 +140,7 @@ const SUBSCRIBE_FEED_POSTS_FIELDS = `
 export function SUBSCRIBE_FEED_POSTS(isAdmin = false) {
   const extraStatusFilter = isAdmin
     ? ""
-    : `{ andWhere: { feed_status: \"Published - Not flagged\" } }`;
+    : `{ andWhere: { feed_status: \"Published - Not Flagged\" } }`;
   const scheduledFilter = isAdmin
     ? '{ orWhere: { feed_status: "Scheduled" } }'
     : "";
@@ -152,7 +152,7 @@ export function SUBSCRIBE_FEED_POSTS(isAdmin = false) {
         whereGroup: [
           {
             where: {
-              feed_status: "Published - Not flagged"
+              feed_status: "Published - Not Flagged"
             }
           }
           ${scheduledFilter}
@@ -359,7 +359,7 @@ export function GET_NOTIFICATIONS() {
               }
              {
               andWhere: {
-                feed_status: "Published - Not flagged"
+                feed_status: "Published - Not Flagged"
               }
             }
             ]

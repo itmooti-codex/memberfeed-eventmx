@@ -46,7 +46,7 @@
   </div>
 
   <script id="tmpl-post" type="text/x-jsrender">
-                      {{if (feedType === 'Post' || feedType === 'Reply' || feedType === 'Comment') && (feedStatus === 'Published - Not flagged' || (feedStatus === 'Scheduled' && isAdmin))}}
+                      {{if (feedType === 'Post' || feedType === 'Reply' || feedType === 'Comment') && (feedStatus === 'Published - Not Flagged' || (feedStatus === 'Scheduled' && isAdmin))}}
                 {{if fileType === 'Image' && ~inModal}}<div class="flex max-[702px]:h-screen bg-black items-start  min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
             {{if fileType === 'Image' && ~inModal}}
             {{if fileContent || fileContentComment}}
@@ -125,7 +125,7 @@
                           <div data-uid="{{:uid}}"
                               class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
                               role="menuitem">Delete this post</div>
-                          {{if feedStatus === 'Published - Not flagged'}}
+                          {{if feedStatus === 'Published - Not Flagged'}}
                           {{if !isFeatured}}
                           <div data-uid="{{:uid}}"
                               class="btn-feature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded"
@@ -170,9 +170,9 @@
                   {{/if}}
             
               </div>
-              {{if content !='' }} <div class="content p2 {{if feedStatus != "Published - Not flagged" && !fileContent}}mb-4{{/if}} {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
+              {{if content !='' }} <div class="content p2 {{if feedStatus != "Published - Not Flagged" && !fileContent}}mb-4{{/if}} {{if depth === 0 }} px-4 {{/if}} ">{{:content}}</div>{{/if}}
               {{if fileContent || fileContentComment}}
-              <div class="file-preview {{if feedStatus != "Published - Not flagged"}}mb-4{{/if}} {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 mx-4  rounded{{/if}} {{if fileType ==="File"}}mx-4{{/if}} ">
+              <div class="file-preview {{if feedStatus != "Published - Not Flagged"}}mb-4{{/if}} {{if fileType === "Audio"}}bg-[var(--grey-300)] p-3 mx-4  rounded{{/if}} {{if fileType ==="File"}}mx-4{{/if}} ">
                   {{if fileType === "Audio" && depth === 0}}
                   <div class="h2 text-black mb-4 max-[702px]:line-clamp-1">{{:fileContentName}}</div>
                   {{/if}}
@@ -253,7 +253,7 @@
                   {{/if}}
               </div>
               {{/if}}
-              {{if feedStatus === "Published - Not flagged"}}
+              {{if feedStatus === "Published - Not Flagged"}}
               <div class=" flex items-center gap-4 {{if depth === 0 }} px-4{{/if}}">
                   <div class="flex items-end justify-end gap-2 ">
                       <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -284,7 +284,7 @@
                   {{/if}}
               </div>
               {{/if}}
-              {{if feedStatus === 'Published - Not flagged'}}
+              {{if feedStatus === 'Published - Not Flagged'}}
               <div class="flex items-center gap-4 border-t border-[var(--grey-200)] {{if depth === 0 }} mx-4 p-4{{/if}} actions">
                   <div class="flex flex-1 items-center justify-center gap-2 cursor-pointer btn-like {{:hasUpvoted ? ' liked' : ''}}"
                       data-uid="{{:uid}}">
@@ -486,7 +486,7 @@
                         {{if isAdmin}}
             
                         <div data-uid="{{:uid}}" class="btn-delete cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Delete this post</div>
-                        {{if feedStatus === 'Published - Not flagged'}}
+                        {{if feedStatus === 'Published - Not Flagged'}}
                             {{if !isFeatured}}
                             <div data-uid="{{:uid}}" class="btn-feature cursor-pointer p-2 text-nowrap text-black transition-all hover:bg-[var(--color-primary-shade)] rounded" role="menuitem">Mark this post as featured</div>
                             {{else}}

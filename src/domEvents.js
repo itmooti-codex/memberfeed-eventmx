@@ -169,7 +169,7 @@ export function initScheduledPostHandler() {
     const variables = {
       unique_id: uid,
       payload: {
-        feed_status: "Published - Not flagged"
+        feed_status: "Published - Not Flagged"
       }
     };
 
