@@ -4,7 +4,7 @@ import { fetchGraphQL } from "./api/fetch.js";
 import { showToast } from "./ui/toast.js";
 import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
 import { setPendingFile, setFileTypeCheck } from "./features/uploads/handlers.js";
-import { GLOBAL_PAGE_TAG } from "./config.js";
+import { GLOBAL_PAGE_TAG } from "./tag.js";
 
 function renderContacts(list, containerId) {
   const container = document.getElementById(containerId);

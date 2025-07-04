@@ -4,6 +4,7 @@
 window.APP_CONFIG = {};
 
 import credentials from "./credentials.js";
+import { GLOBAL_PAGE_TAG } from "./tag.js";
 
 export const env =
   credentials ||
@@ -36,11 +37,12 @@ export const MAX_BACKOFF = 30000;
 export const INACTIVITY_MS = 10 * 60 * 1000; 
 export let GLOBAL_AUTHOR_ID = '';
 export let GLOBAL_AUTHOR_DISPLAY_NAME = "Eventmx";
-export let GLOBAL_PAGE_TAG = "Demo_Feed";
 //export let ACCOUNT_NAME = cfg.ACCOUNT_NAME || env.ACCOUNT_NAME || "Eventmx";
 export function setGlobals(authorId, pageTag, displayName, accountName = ACCOUNT_NAME) {
   GLOBAL_AUTHOR_ID = Number(authorId);
-  GLOBAL_PAGE_TAG = pageTag;
+  if (typeof window !== "undefined") {
+    window.GLOBAL_PAGE_TAG = pageTag;
+  }
   GLOBAL_AUTHOR_DISPLAY_NAME = displayName;
   ACCOUNT_NAME = accountName;
 }

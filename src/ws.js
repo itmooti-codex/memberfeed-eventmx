@@ -6,8 +6,8 @@ import {
   KEEPALIVE_MS,
   MAX_BACKOFF,
   INACTIVITY_MS,
-  GLOBAL_PAGE_TAG
 } from "./config.js";
+import { GLOBAL_PAGE_TAG } from "./tag.js";
 import { SUBSCRIBE_FEED_POSTS } from "./api/queries.js";
 import { buildTree } from "./ui/render.js";
 import { mergeLists } from "./utils/merge.js";
