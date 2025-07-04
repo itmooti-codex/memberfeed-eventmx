@@ -48,7 +48,7 @@ function renderContacts(list, containerId) {
 export async function loadModalContacts() {
   try {
     const res = await fetchGraphQL(GET_CONTACTS_FOR_MODAL);
-    const allContacts = res?.data?.calcContacts || [];
+    const allContacts = res?.data?.feedContacts || [];
     const subscriberContacts = allContacts.filter(
       (c) => c.TagName === `${GLOBAL_PAGE_TAG}_Subscriber`
     );

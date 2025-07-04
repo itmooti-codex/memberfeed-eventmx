@@ -62,7 +62,7 @@ function getNotificationPreferences(contactId) {
 function fetchContactsAndCurrentUser(contactId) {
   return fetchGraphQL(FETCH_CONTACTS_QUERY)
     .then((res) => {
-      const contacts = res?.data?.calcContacts || [];
+      const contacts = res?.data?.feedContacts || [];
       state.allContacts = contacts.map((c) => c.Contact_ID);
       tribute.collection[0].values = contacts.map((c) => ({
         key: c.Display_Name || "Anonymous",

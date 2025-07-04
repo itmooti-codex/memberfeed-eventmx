@@ -14,7 +14,7 @@ export async function ensureCurrentUser() {
   }
   try {
     const res = await fetchGraphQL(FETCH_CONTACTS_QUERY);
-    const contacts = res?.data?.calcContacts || [];
+    const contacts = res?.data?.feedContacts || [];
     const current = contacts.find((c) => c.Contact_ID === GLOBAL_AUTHOR_ID);
     if (current) {
       state.currentUser = {
