@@ -1,4 +1,6 @@
 ///////////////////////////////////////////////////////////////
+import { awsParam as defaultAwsParam, awsParamUrl as defaultAwsParamUrl } from "../config.js";
+
 // TYPEDEFS
 // Used for documentation
 ///////////////////////////////////////////////////////////////
@@ -177,7 +179,8 @@
  */
 export function decodeAwsParam(awsParam) {
   if (!awsParam) {
-    awsParam = window.awsParam;
+    // awsParam = window.awsParam;
+    awsParam = defaultAwsParam || window.awsParam;
   }
   // Decode base64.
   // The decoded string will look like this (serialized PHP Array):
@@ -313,10 +316,12 @@ export function createS3FileId(key, filename) {
  */
 export function getS3UploadParams(awsParam, url) {
   if (typeof awsParam !== "string") {
-    awsParam = window.awsParam;
+    // awsParam = window.awsParam;
+    awsParam = defaultAwsParam || window.awsParam;
   }
   if (typeof url !== "string") {
-    url = `//${window.location.host}/s/aws`;
+    // url = `//${window.location.host}/s/aws`;
+    url = defaultAwsParamUrl || `//${window.location.host}/s/aws`;
   }
   const formData = new FormData();
   formData.append("awsParam", JSON.stringify(awsParam));
@@ -478,12 +483,14 @@ export function uploadFiles(filesToUpload, s3Params, toSubmit) {
 export function processFileFields(toSubmit, filesToUpload, awsParamHash, awsParamUrl) {
   let awsParam;
   if (!awsParamHash) {
-    awsParam = window.awsParam;
+    // awsParam = window.awsParam;
+    awsParam = defaultAwsParam || window.awsParam;
   } else if (typeof awsParamHash === "string") {
     awsParam = encodeAwsParam(awsParamHash);
   }
-
-  return getS3UploadParams(awsParam, awsParamUrl).then((s3Params) => {
+const urlToUse = awsParamUrl || defaultAwsParamUrl;
+  return getS3UploadParams(awsParam, urlToUse).then((s3Params) => {
+  // return getS3UploadParams(awsParam, awsParamUrl).then((s3Params) => {
     if (!s3Params) {
       const e = new Error("Failed to retrieve s3Params.");
       e.failures = filesToUpload;
