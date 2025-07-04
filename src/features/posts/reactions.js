@@ -101,7 +101,7 @@ export function initReactionHandlers() {
         }
         node.hasBookmarked = false;
         node.bookmarkRecordId = null;
-        toastMsg = "Bookmark removed";
+        toastMsg = "Unsaved";
       } else {
         const payload = {
           bookmarking_contact_id: GLOBAL_AUTHOR_ID,
@@ -121,7 +121,7 @@ export function initReactionHandlers() {
         }
         node.hasBookmarked = true;
         node.bookmarkRecordId = res.data.createOBookmarkingContactBookmarkedFeed.id;
-        toastMsg = "Bookmarked";
+        toastMsg = "Saved";
       }
     } catch (err) {
       console.error("error is", err);
