@@ -389,7 +389,7 @@ button:not(.file-preview button):hover {
 /* Toast styles */
 #toast-wrapper {
   position: fixed !important;
-  top: 1rem !important;
+  top: 0.5rem !important;
   right: 1rem !important;
   z-index: 2147483648 !important;
   display: flex !important;
