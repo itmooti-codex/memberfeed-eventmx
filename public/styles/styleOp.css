@@ -45,7 +45,9 @@ input[type="checkbox"] {
   height: 150px !important;
   overflow: auto !important;
 }
-
+div:has(> br:only-child) {
+  display: none;
+}
 .all-unset {
   all: unset !important;
 }
