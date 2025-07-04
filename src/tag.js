@@ -1,4 +1,4 @@
-let GLOBAL_PAGE_TAG = "Demo_Feed";
+let GLOBAL_PAGE_TAG = classTag;
 
 if (typeof window !== "undefined") {
   Object.defineProperty(window, "GLOBAL_PAGE_TAG", {
