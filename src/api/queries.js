@@ -1,10 +1,14 @@
-import { userContactIds, GLOBAL_AUTHOR_ID } from "../config.js";
+import {
+  userContactIds,
+  GLOBAL_AUTHOR_ID,
+  ACCOUNT_NAME,
+} from "../config.js";
 import { GLOBAL_PAGE_TAG } from "../config.js";
 import { notificationStore } from "../config.js";
 
 export const FETCH_CONTACTS_QUERY = `
-query calcContacts {
-  calcContacts(
+query feedContacts {
+  feedContacts: calcContacts(
     query: [
       {
         where: {
@@ -73,7 +77,7 @@ export const CREATE_FEED_POST_MUTATION = `
 `;
 
 export const DELETE_FEED_POST_MUTATION = `
-  mutation deleteFeed($id: EventmxFeedID) {
+  mutation deleteFeed($id: ${ACCOUNT_NAME}FeedID) {
     deleteFeed(query: [{ where: { id: $id } }]) {
       id
     }
@@ -81,7 +85,7 @@ export const DELETE_FEED_POST_MUTATION = `
 `;
 
 export const UPDATE_FEED_POST_MUTATION = `
-mutation updateFeedPost($id: EventmxFeedID, $payload: FeedPostUpdateInput = null) {
+mutation updateFeedPost($id: ${ACCOUNT_NAME}FeedID, $payload: FeedPostUpdateInput = null) {
   updateFeedPost(query: [{ where: { id: $id } }], payload: $payload) {
     featured_feed
     disable_new_comments
@@ -182,7 +186,7 @@ mutation createOBookmarkingContactBookmarkedFeed($payload: OBookmarkingContactBo
 
 export const DELETE_BOOKMARK_MUTATION = `
 mutation deleteOBookmarkingContactBookmarkedFeed(
-  $id: EventmxOBookmarkingContactBookmarkedFeedID
+  $id: ${ACCOUNT_NAME}OBookmarkingContactBookmarkedFeedID
 ) {
   deleteOBookmarkingContactBookmarkedFeed(
     query: [{ where: { id: $id } }]
@@ -205,7 +209,7 @@ mutation createOFeedReactorReactedtoFeed($payload: OFeedReactorReactedtoFeedCrea
 
 export const DELETE_REACTION_MUTATION = `
 mutation deleteOFeedReactorReactedtoFeed(
-  $id: EventmxOFeedReactorReactedtoFeedID
+  $id: ${ACCOUNT_NAME}OFeedReactorReactedtoFeedID
 ) {
   deleteOFeedReactorReactedtoFeed(query: [{ where: { id: $id } }]) {
     id
@@ -214,8 +218,8 @@ mutation deleteOFeedReactorReactedtoFeed(
 `;
 
 export const GET_CONTACTS_BY_TAGS = `
-query calcContacts($id: EventmxContactID, $name: TextScalar) {
-  calcContacts(
+query feedContacts($id: ${ACCOUNT_NAME}ContactID, $name: TextScalar) {
+  feedContacts: calcContacts(
     query: [
       { where: { id: $id } }
       {
@@ -233,8 +237,8 @@ query calcContacts($id: EventmxContactID, $name: TextScalar) {
 `;
 
 export const GET_CONTACTS_FOR_MODAL = `
-query calcContacts {
-  calcContacts(
+query feedContacts {
+  feedContacts: calcContacts(
     query: [
       { whereIn: { id: [${userContactIds}], _OPERATOR_: in } }
     ]
@@ -343,8 +347,8 @@ export function GET_NOTIFICATIONS() {
 
   return `
   subscription subscribeToNotifications(
-    $author_id: EventmxContactID 
-    $notified_contact_id: EventmxContactID 
+    $author_id: ${ACCOUNT_NAME}ContactID
+    $notified_contact_id: ${ACCOUNT_NAME}ContactID
   ) {
     subscribeToNotifications(
       query: [
@@ -430,7 +434,7 @@ export function GET_NOTIFICATIONS() {
 }
 
 export const GET__CONTACTS_NOTIFICATION_PREFERENCEE = `
-query getContact($id: EventmxContactID) {
+query getContact($id: ${ACCOUNT_NAME}ContactID) {
   getContact(query: [{ where: { id: $id } }]) {
     Turn_Off_All_Notifications: turn_off_all_notifications
     Notify_me_of_all_Posts: notify_me_of_all_posts
@@ -441,7 +445,7 @@ query getContact($id: EventmxContactID) {
 `;
 export const UPDATE_CONTACT_NOTIFICATION_PREFERENCE = `
 mutation updateContact(
-  $id: EventmxContactID
+  $id: ${ACCOUNT_NAME}ContactID
   $payload: ContactUpdateInput = null
 ) {
   updateContact(
@@ -457,7 +461,7 @@ mutation updateContact(
 `;
 export const GET_SINGLE_POST_SUBSCRIPTION = `
 subscription subscribeToFeed(
-  $id: EventmxFeedID
+  $id: ${ACCOUNT_NAME}FeedID
 ) {
   subscribeToFeed(
     query: [{ where: { id: $id } }]

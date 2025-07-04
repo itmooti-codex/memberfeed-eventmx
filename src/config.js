@@ -36,11 +36,13 @@ export const MAX_BACKOFF = 30000;
 export const INACTIVITY_MS = 10 * 60 * 1000; 
 export let GLOBAL_AUTHOR_ID = '';
 export let GLOBAL_AUTHOR_DISPLAY_NAME = "Eventmx";
-export let GLOBAL_PAGE_TAG ="Demo_Feed";
-export function setGlobals(authorId, pageTag, displayName) {
+export let GLOBAL_PAGE_TAG = "Demo_Feed";
+export let ACCOUNT_NAME = cfg.ACCOUNT_NAME || env.ACCOUNT_NAME || "Eventmx";
+export function setGlobals(authorId, pageTag, displayName, accountName = ACCOUNT_NAME) {
   GLOBAL_AUTHOR_ID = Number(authorId);
-  GLOBAL_PAGE_TAG = "Demo_Feed";
+  GLOBAL_PAGE_TAG = pageTag;
   GLOBAL_AUTHOR_DISPLAY_NAME = displayName;
+  ACCOUNT_NAME = accountName;
 }
 export const DEFAULT_AVATAR =
   "https://files.ontraport.com/media/b0456fe87439430680b173369cc54cea.php03bzcx?Expires=4895186056&Signature=fw-mkSjms67rj5eIsiDF9QfHb4EAe29jfz~yn3XT0--8jLdK4OGkxWBZR9YHSh26ZAp5EHj~6g5CUUncgjztHHKU9c9ymvZYfSbPO9JGht~ZJnr2Gwmp6vsvIpYvE1pEywTeoigeyClFm1dHrS7VakQk9uYac4Sw0suU4MpRGYQPFB6w3HUw-eO5TvaOLabtuSlgdyGRie6Ve0R7kzU76uXDvlhhWGMZ7alNCTdS7txSgUOT8oL9pJP832UsasK4~M~Na0ku1oY-8a7GcvvVv6j7yE0V0COB9OP0FbC8z7eSdZ8r7avFK~f9Wl0SEfS6MkPQR2YwWjr55bbJJhZnZA__&Key-Pair-Id=APKAJVAAMVW6XQYWSTNA";

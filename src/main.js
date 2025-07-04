@@ -67,7 +67,7 @@ function startApp(tagName, contactId, displayName) {
   }
   fetchGraphQL(FETCH_CONTACTS_QUERY)
     .then((res) => {
-      const contacts = res.data.calcContacts;
+      const contacts = res.data.feedContacts;
       state.allContacts = contacts.map((c) => c.Contact_ID);
       tribute.collection[0].values = contacts.map((c) => ({
         key: c.Display_Name || "Anonymous",
@@ -103,7 +103,7 @@ function startApp(tagName, contactId, displayName) {
     name: contactTagForQuery,
   })
     .then((res) => {
-      const result = res?.data?.calcContacts;
+      const result = res?.data?.feedContacts;
       if (Array.isArray(result) && result.length > 0) {
         setContactIncludedInTag(true);
         if (hasFeedRoot) {
