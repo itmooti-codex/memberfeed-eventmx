@@ -82,17 +82,20 @@ export async function createFeedToSubmit(
 
   let parentFeedId;
   let rootFeedId;
+  let parentFeedTag;
   if (feedType !== "Post" && uidParam) {
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uidParam);
     if (node) {
       parentFeedId = node.id;
       rootFeedId = node.depth === 0 ? node.id : node.parentId;
+      parentFeedTag = node.feedTag;
     } else {
       console.log("Parent node not found, trying to find closest item");
       const elemetnt = document.querySelector(`.commentContainer_${uidParam}`);
       parentFeedId = elemetnt ? elemetnt.getAttribute("data-id") : null;
       rootFeedId = parentFeedId;
+      parentFeedTag = GLOBAL_PAGE_TAG;
     }
   }
   let publishedDatePayload = Date.now();
@@ -127,7 +130,7 @@ export async function createFeedToSubmit(
     payload.feed_tag = GLOBAL_PAGE_TAG;
   } else {
     payload.parent_feed_id = parentFeedId || null;
-    payload.feed_tag = GLOBAL_PAGE_TAG;
+    payload.feed_tag = parentFeedTag || GLOBAL_PAGE_TAG;
   }
 
   editor.find("span.mention").each(function () {

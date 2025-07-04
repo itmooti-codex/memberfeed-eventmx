@@ -19,6 +19,7 @@ function parseFileField(val) {
 
 
 import { GLOBAL_AUTHOR_ID, DEFAULT_AVATAR, state } from "../config.js";
+import { GLOBAL_PAGE_TAG } from "../tag.js";
 
 export function buildTree(existingPosts, rawItems) {
   (function gather(arr) {
@@ -130,8 +131,8 @@ export function mapItem(raw, depth = 0, isDisabled = false) {
     imageOrientation: raw.image_orientation || "no ",
     fileContentComment: depth > 0 ? fileContent : null,
     fileContentCommentName: depth > 0 ? fileName : "",
-    totalCommentAndReplies: (raw.Feeds ? raw.Feeds.length : 0) + (raw.Feeds?.reduce((sum, item) => sum + (item.Feeds?.length || 0), 0) || 0)
-
+    totalCommentAndReplies: (raw.Feeds ? raw.Feeds.length : 0) + (raw.Feeds?.reduce((sum, item) => sum + (item.Feeds?.length || 0), 0) || 0),
+    feedTag: raw.feed_tag || GLOBAL_PAGE_TAG
   };
 }
 

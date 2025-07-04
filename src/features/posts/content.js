@@ -12,7 +12,7 @@ export function processContent(rawHtml) {
   };
 
   const renderPreview = (platform, fullUrl) => `
-    <a href="${fullUrl}" target="_blank" class="flex flex-col items-start justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
+    <a href="${fullUrl}" target="_blank" class="flex flex-col items-start mb-4 justify-center gap-4 self-stretch rounded bg-zinc-100 p-2">
       <div class="flex items-center justify-start gap-2 self-stretch rounded-xl">
         <div class="flex flex-1 flex-col items-start justify-center gap-1">
           <div class="font-['Inter'] text-xs leading-none font-medium text-stone-950 max-[702px]:line-clamp-1">${platform}</div>
@@ -77,5 +77,5 @@ export function processContent(rawHtml) {
 
   Array.from(doc.body.childNodes).forEach(replaceUrls);
 
-  return `<div class="flex flex-col gap-2">${doc.body.innerHTML}</div>`;
+  return `${doc.body.innerHTML}`;
 }
