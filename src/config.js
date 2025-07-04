@@ -26,8 +26,14 @@ export const WS_ENDPOINT =
   "";
 
 if (typeof window !== "undefined") {
-  window.awsParam = awsParam;
-  window.awsParamUrl = awsParamUrl;
+  // window.awsParam = awsParam;
+  // window.awsParamUrl = awsParamUrl;
+   if (typeof window.awsParam === "undefined") {
+    window.awsParam = awsParam;
+  }
+  if (typeof window.awsParamUrl === "undefined") {
+    window.awsParamUrl = awsParamUrl;
+  }
 }
 export const PROTOCOL = "vitalstats";
 export const SUB_ID = "feed-subscription";
