@@ -147,8 +147,8 @@ export async function createFeedToSubmit(
     await processFileFields(
       toSubmitFields,
       fileFields,
-      // awsParam,
-      // awsParamUrl,
+      awsParam,
+      awsParamUrl,
     );
     let fileData =
       typeof toSubmitFields.file_content === 'string'
