@@ -2,11 +2,11 @@ import { fetchGraphQL } from "../../api/fetch.js";
 import { CREATE_FEED_POST_MUTATION } from "../../api/queries.js";
 import {
   state,
-  GLOBAL_PAGE_TAG,
   GLOBAL_AUTHOR_ID,
   GLOBAL_AUTHOR_DISPLAY_NAME,
   DEFAULT_AVATAR,
 } from "../../config.js";
+import { GLOBAL_PAGE_TAG } from "../../tag.js";
 import { findNode, buildTree, mapItem } from "../../ui/render.js";
 import {
   pendingFile,

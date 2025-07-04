@@ -2,7 +2,7 @@ import {
   userContactIds,
   GLOBAL_AUTHOR_ID,
 } from "../config.js";
-import { GLOBAL_PAGE_TAG } from "../config.js";
+import { GLOBAL_PAGE_TAG } from "../tag.js";
 import { notificationStore } from "../config.js";
 
 export const FETCH_CONTACTS_QUERY = `
