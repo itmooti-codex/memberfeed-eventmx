@@ -48,6 +48,9 @@ function startApp(tagName, contactId, displayName) {
   terminateAndClose();
   setContactIncludedInTag(false);
   setGlobals(contactId, tagName, displayName);
+
+  const baseTag = tagName?.replace(/_(Subscriber|Admin)$/, "");
+  setGlobals(contactId, baseTag, displayName);
   const pageTag = GLOBAL_PAGE_TAG;
   let contactTagForQuery = "";
   const contactTag = tagName;

@@ -1,7 +1,6 @@
 import {
   userContactIds,
   GLOBAL_AUTHOR_ID,
-  ACCOUNT_NAME,
 } from "../config.js";
 import { GLOBAL_PAGE_TAG } from "../config.js";
 import { notificationStore } from "../config.js";
