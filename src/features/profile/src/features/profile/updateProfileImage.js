@@ -18,7 +18,7 @@ export async function updateProfileImage(file) {
     const toSubmit = {};
     await processFileFields(
         toSubmit,
-        [{ fieldName: 'profile_image', file }],
+        file,
         awsParam,
         awsParamUrl,
     );
