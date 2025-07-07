@@ -1,3 +1,5 @@
+import { restoreSelection, saveSelection } from './caret.js';
+
 export function initRichText() {
   $(document).on('click', '.toolbar button', function (e) {
     e.preventDefault();
@@ -7,6 +9,7 @@ export function initRichText() {
       .find('.editor')[0];
     if (!editor) return;
     editor.focus();
+    restoreSelection(editor);
     if (cmd === 'link') {
       let url = prompt('Enter URL');
       if (url) {
@@ -19,6 +22,7 @@ export function initRichText() {
     } else {
       applyFormat(cmd, editor);
       updateToolbar(editor);
+      saveSelection();
     }
   });
 }
