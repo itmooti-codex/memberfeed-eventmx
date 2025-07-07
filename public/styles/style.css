@@ -294,7 +294,6 @@ button:not(.file-preview button):hover {
 
 .mention {
   color: var(--color-primary);
-  font-size: 12px;
 }
 
 .empty-state {
