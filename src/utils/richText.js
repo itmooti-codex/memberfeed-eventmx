@@ -61,3 +61,15 @@ function applyFormat(cmd, editor, value) {
   sel.removeAllRanges();
   sel.addRange(caretRange);
 }
+$(document).on('input', '.editor', function () {
+  const html = this.innerHTML.trim().toLowerCase();
+  if (html === '<br>' || html === '<div><br></div>' || this.textContent.trim() === '') {
+    this.innerHTML = '';
+    const range = document.createRange();
+    range.selectNodeContents(this);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+});
