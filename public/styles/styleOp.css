@@ -343,6 +343,9 @@ button:not(.file-preview button):hover {
   color: var(--color-primary);
   font-size: 16px !important;
 }
+.content{
+  font-size: 16px !important;
+}
 
 .empty-state {
   color: #555;
