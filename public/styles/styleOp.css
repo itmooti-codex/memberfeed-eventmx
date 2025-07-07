@@ -244,7 +244,7 @@ button:not(.file-preview button):hover {
 
 /* Display emojis in a horizontal row with spacing */
 .emoji-picker {
-  gap: 8px;
+  gap: 32px;
   flex-wrap: wrap;
 }
 
