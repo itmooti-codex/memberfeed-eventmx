@@ -1,6 +1,9 @@
 import { restoreSelection, saveSelection } from './caret.js';
 
 export function initRichText() {
+ $(document).on('keyup mouseup input', '.editor', function () {
+  saveSelection();
+ });
   $(document).on('click', '.toolbar button', function (e) {
     e.preventDefault();
     const cmd = $(this).data('cmd');
@@ -58,4 +61,5 @@ $(document).on('input', '.editor', function () {
     sel.addRange(range);
   }
   updateToolbar(this);
+  saveSelection();
 });
