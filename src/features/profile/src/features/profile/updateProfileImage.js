@@ -55,6 +55,10 @@ export async function updateProfileImage(file) {
         payload,
     });
     await refreshCurrentUser();
+    const pageUserProfileDisplay = document.getElementById('pageUserProfileDisplay');
+    if (pageUserProfileDisplay) {
+        pageUserProfileDisplay.src = url;
+    }
     return state.currentUser?.profile_image;
 }
 
