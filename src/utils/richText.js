@@ -1,7 +1,7 @@
 import { restoreSelection, saveSelection } from './caret.js';
 
 export function initRichText() {
- $(document).on('keyup mouseup input focus', '.editor', function () {
+ $(document).on('keyup mouseup input focus touchend', '.editor', function () {
     ensureCursor(this);
     saveSelection();
     updateToolbar(this);
