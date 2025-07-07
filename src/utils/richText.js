@@ -87,12 +87,29 @@
 import { restoreSelection, saveSelection } from './caret.js';
 
 export function initRichText() {
+  // Whenever the user types, clicks, or focuses, update toolbar & save selection
   $(document).on('keyup mouseup input focus', '.editor', function () {
-    ensureCursor(this);
     saveSelection();
     updateToolbar(this);
   });
 
+  // Clean up stray <br> placeholders and re-position the caret
+  $(document).on('input', '.editor', function () {
+    const html = this.innerHTML.trim().toLowerCase();
+    const hasFormat = this.querySelector('strong, em, u, a');
+    if (
+      html === '<br>' ||
+      html === '<div><br></div>' ||
+      (!hasFormat && this.textContent.trim() === '')
+    ) {
+      this.innerHTML = '';
+      placeCursorAtEnd(this);
+    }
+    saveSelection();
+    updateToolbar(this);
+  });
+
+  // Handle toolbar clicks
   $(document).on('click', '.toolbar button', function (e) {
     e.preventDefault();
     const cmd = $(this).data('cmd');
@@ -112,75 +129,56 @@ export function initRichText() {
         if (!/^https?:\/\//i.test(url)) {
           url = `https://${url}`;
         }
-        applyFormat('link', editor, url);
+        document.execCommand('createLink', false, url);
       }
     } else {
-      applyFormat(cmd, editor);
+      document.execCommand(cmd, false, null);
     }
 
+    saveSelection();
     updateToolbar(editor);
-    saveSelection();
-  });
-
-  $(document).on('input', '.editor', function () {
-    const html = this.innerHTML.trim().toLowerCase();
-    const hasFormat = this.querySelector('strong, em, u, a');
-    if (
-      html === '<br>' ||
-      html === '<div><br></div>' ||
-      (!hasFormat && this.textContent.trim() === '')
-    ) {
-      this.innerHTML = '';
-      const range = document.createRange();
-      range.selectNodeContents(this);
-      range.collapse(false);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
-    updateToolbar(this);
-    saveSelection();
   });
 }
 
 function ensureCursor(editor) {
-  const text = editor.textContent.replace(/\u200B/g, '');
-  if (!text) {
-    editor.innerHTML = '\u200B';
-    const range = document.createRange();
-    range.setStart(editor.firstChild, 1);
-    range.collapse(true);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+  const html = editor.innerHTML.trim().toLowerCase();
+  if (!html || html === '<br>' || html === '<div><br></div>') {
+    // only when truly empty…
+    editor.innerHTML = '\u200B';      // inject zero-width space
   }
+  placeCursorAtEnd(editor);
 }
 
-function applyFormat(cmd, editor, value) {
-  if (cmd === 'link') {
-    document.execCommand('createLink', false, value);
+function placeCursorAtEnd(editor) {
+  const sel = window.getSelection();
+  const range = document.createRange();
+  let node = editor;
+  // find deepest last child
+  while (node.lastChild) node = node.lastChild;
+  if (node.nodeType === Node.TEXT_NODE) {
+    range.setStart(node, node.textContent.length);
   } else {
-    document.execCommand(cmd, false, null);
+    range.selectNodeContents(editor);
+    range.collapse(false);
   }
+  sel.removeAllRanges();
+  sel.addRange(range);
 }
 
 function updateToolbar(editor) {
   const toolbar = $(editor)
     .closest('.comment-form, #post-creation-form')
     .find('.toolbar');
-  toolbar.find('button').each(function () {
-    const cmd = $(this).data('cmd');
-    if (!cmd || cmd === 'link') return;
-    $(this).toggleClass('active', document.queryCommandState(cmd));
+  ['bold', 'italic', 'underline'].forEach(cmd => {
+    toolbar
+      .find(`button[data-cmd="${cmd}"]`)
+      .toggleClass('active', document.queryCommandState(cmd));
   });
 }
 
 /*
-This implementation ensures that:
-1. An invisible zero-width space is inserted when the editor is empty (ensureCursor),
-   giving the browser a valid text node for execCommand to act on immediately (including iOS Safari).
-2. Toolbar buttons will correctly toggle on and off—even before typing—because queryCommandState
-   is evaluated at the caret position within that zero-width space.
-3. Multiple formats can be applied or removed in combination without requiring additional keystrokes.
-4. Selection state is saved and restored around each toolbar action to maintain expected behavior.
-*/ 
+1- ensureCursor only acts on truly empty content (innerHTML '', <br>, <div><br></div>), so existing <strong>, <em>, <u>, <a> tags survive.
+2- placeCursorAtEnd walks to the last text node (or collapse at end) so the caret is always ready.
+3- updateToolbar loops through your three formatting commands—no more stale “active” states.
+4- This lets you click Bold/Italic/Underline (and combine or untoggle them) immediately, even before typing anything, on desktop or iOS Safari.
+*/
