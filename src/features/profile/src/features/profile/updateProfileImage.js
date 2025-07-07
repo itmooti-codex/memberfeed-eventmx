@@ -1,7 +1,7 @@
-import { processFileFields } from '../../utils/handleFile.js';
-import { fetchGraphQL } from '../../api/fetch.js';
-import { awsParam, awsParamUrl, GLOBAL_AUTHOR_ID, state } from '../../config.js';
-import { updateCurrentUserUI } from '../../ui/user.js';
+import { processFileFields } from '../../../../../utils/handleFile.js';
+import { fetchGraphQL } from '../../../../../api/fetch.js';
+import { awsParam, awsParamUrl, GLOBAL_AUTHOR_ID, state } from '../../../../../config.js';
+import { updateCurrentUserUI } from '../../../../../ui/user.js';
 
 export const UPDATE_CONTACT_PROFILE_IMAGE = `
 mutation updateContact($id: EventmxContactID, $payload: ContactUpdateInput = null) {
