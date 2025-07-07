@@ -27,3 +27,19 @@ export async function ensureCurrentUser() {
     console.error("Failed to fetch current user", err);
   }
 }
+export async function refreshCurrentUser() {
+  try {
+    const res = await fetchGraphQL(FETCH_CONTACTS_QUERY);
+    const contacts = res?.data?.feedContacts || [];
+    const current = contacts.find((c) => c.Contact_ID === GLOBAL_AUTHOR_ID);
+    if (current) {
+      state.currentUser = {
+        display_name: current.Display_Name || "Anonymous",
+        profile_image: current.Profile_Image || DEFAULT_AVATAR,
+      };
+      updateCurrentUserUI(state);
+    }
+  } catch (err) {
+    console.error("Failed to refresh current user", err);
+  }
+}

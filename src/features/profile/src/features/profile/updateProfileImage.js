@@ -1,7 +1,7 @@
 import { processFileFields } from '../../../../../utils/handleFile.js';
 import { fetchGraphQL } from '../../../../../api/fetch.js';
 import { awsParam, awsParamUrl, GLOBAL_AUTHOR_ID, state } from '../../../../../config.js';
-import { updateCurrentUserUI } from '../../../../../ui/user.js';
+import { refreshCurrentUser } from '../../../../posts/user.js';
 
 export const UPDATE_CONTACT_PROFILE_IMAGE = `
 mutation updateContact($id: EventmxContactID, $payload: ContactUpdateInput = null) {
@@ -23,17 +23,12 @@ export async function updateProfileImage(file) {
         awsParamUrl,
     );
     const payload = { profile_image: toSubmit.profile_image };
-    const res = await fetchGraphQL(UPDATE_CONTACT_PROFILE_IMAGE, {
+    await fetchGraphQL(UPDATE_CONTACT_PROFILE_IMAGE, {
         id: GLOBAL_AUTHOR_ID,
         payload,
     });
-    const newImage = res?.data?.updateContact?.profile_image;
-    if (newImage) {
-        if (!state.currentUser) state.currentUser = {};
-        state.currentUser.profile_image = newImage;
-        updateCurrentUserUI(state);
-    }
-    return newImage;
+    await refreshCurrentUser();
+    return state.currentUser?.profile_image;
 }
 
 export function initProfileImageUpload() {
