@@ -22,8 +22,14 @@ export async function updateProfileImage(file) {
         awsParam,
         awsParamUrl,
     );
+
+    console.log("To submit", toSubmit);
+  
     const payload = { profile_image: toSubmit.profile_image };
-    await fetchGraphQL(UPDATE_CONTACT_PROFILE_IMAGE, {
+  
+    console.log("Profile payload is", payload);
+  
+  await fetchGraphQL(UPDATE_CONTACT_PROFILE_IMAGE, {
         id: GLOBAL_AUTHOR_ID,
         payload,
     });
