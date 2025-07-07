@@ -248,6 +248,10 @@ button:not(.file-preview button):hover {
   flex-wrap: wrap;
 }
 
+.emoji-picker span{
+  display: block !important;  
+}
+
 .clearIcon.hidden {
   display: none;
 }
