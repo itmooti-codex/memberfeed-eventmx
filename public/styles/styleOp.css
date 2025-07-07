@@ -88,7 +88,7 @@ div:has(> br:only-child) {
   display: none;
 }
 
-nput {
+input {
   box-shadow: none !important;
   height: unset !important;
   pointer-events: auto !important;
