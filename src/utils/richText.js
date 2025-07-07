@@ -1,7 +1,7 @@
 import { restoreSelection, saveSelection } from './caret.js';
 
 export function initRichText() {
- $(document).on('keyup mouseup input focus', '.editor', function () {
+ $(document).on('keyup mouseup input focus touchend', '.editor', function () {
     ensureCursor(this);
     saveSelection();
     updateToolbar(this);
@@ -49,7 +49,23 @@ function ensureCursor(editor) {
 }
 
 function applyFormat(cmd, editor, value) {
-  if (cmd === 'link') {
+  const isStyle = cmd === 'bold' || cmd === 'italic' || cmd === 'underline';
+  const isEmpty = editor.textContent.replace(/\u200B/g, '').trim() === '';
+
+  if (isStyle && isEmpty) {
+    const tag =
+      cmd === 'bold' ? 'strong' : cmd === 'italic' ? 'em' : 'u';
+    document.execCommand('insertHTML', false, `<${tag}>\u200B</${tag}>`);
+    const node = editor.querySelector(`${tag}`);
+    if (node && node.firstChild) {
+      const range = document.createRange();
+      range.setStart(node.firstChild, 1);
+      range.collapse(true);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  } else if (cmd === 'link') {
     document.execCommand('createLink', false, value);
   } else {
     document.execCommand(cmd, false, null);
