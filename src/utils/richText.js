@@ -23,47 +23,17 @@ export function initRichText() {
 }
 
 function applyFormat(cmd, editor, value) {
-  const sel = window.getSelection();
-  if (!sel || sel.rangeCount === 0) return;
-  const range = sel.getRangeAt(0);
-  if (!editor.contains(range.commonAncestorContainer)) return;
-
-  let tag = null;
-  if (cmd === 'bold') tag = 'strong';
-  else if (cmd === 'italic') tag = 'em';
-  else if (cmd === 'underline') tag = 'u';
-  else if (cmd === 'link') tag = 'a';
-  if (!tag) return;
-
-  const wrapper = document.createElement(tag);
+  editor.focus();
   if (cmd === 'link') {
-    wrapper.setAttribute('href', value);
-    wrapper.setAttribute('target', '_blank');
-    wrapper.setAttribute('rel', 'noopener noreferrer');
+    document.execCommand('createLink', false, value);
+  } else {
+    document.execCommand(cmd, false, null);
   }
-
-  if (range.collapsed) {
-    range.insertNode(wrapper);
-    const caretRange = document.createRange();
-    caretRange.selectNodeContents(wrapper);
-    caretRange.collapse(false);
-    sel.removeAllRanges();
-    sel.addRange(caretRange);
-    return;
-  }
-
-  const contents = range.extractContents();
-  wrapper.appendChild(contents);
-  range.insertNode(wrapper);
-  const caretRange = document.createRange();
-  caretRange.selectNodeContents(wrapper);
-  caretRange.collapse(false);
-  sel.removeAllRanges();
-  sel.addRange(caretRange);
 }
 $(document).on('input', '.editor', function () {
   const html = this.innerHTML.trim().toLowerCase();
-  if (html === '<br>' || html === '<div><br></div>' || this.textContent.trim() === '') {
+  const hasFormat = this.querySelector('strong, em, u, a');
+  if (html === '<br>' || html === '<div><br></div>' || (!hasFormat && this.textContent.trim() === '')) {
     this.innerHTML = '';
     const range = document.createRange();
     range.selectNodeContents(this);
