@@ -59,14 +59,22 @@ export async function updateProfileImage(file) {
     if (pageUserProfileDisplay) {
         pageUserProfileDisplay.src = url;
     }
+    const loaderToUpdateProfile = document.getElementById('loaderToUpdateProfile');
+    if (loaderToUpdateProfile) {
+        loaderToUpdateProfile.classList.add('hidden');
+    }
     return state.currentUser?.profile_image;
 }
 
-export function initProfileImageUpload() {
+export async function initProfileImageUpload() {
     const input = document.getElementById('imageInput');
     const button = document.getElementById('updateProfileImage');
     if (!input || !button) return;
     button.addEventListener('click', () => {
+        const loaderToUpdateProfile = document.getElementById('loaderToUpdateProfile');
+        if (loaderToUpdateProfile) {
+            loaderToUpdateProfile.classList.remove('hidden');
+        }
         const file = input.files?.[0];
         if (file) {
             updateProfileImage(file).catch((err) => {
