@@ -229,7 +229,7 @@ button:not(.file-preview button):hover {
 
 .toolbar {
   display: flex;
-  gap: 0.25rem;
+  gap: 1rem;
 }
 .toolbar button.active {
   background-color: var(--color-primary-shade);
