@@ -88,12 +88,15 @@ div:has(> br:only-child) {
   display: none;
 }
 
-input {
+nput {
   box-shadow: none !important;
   height: unset !important;
+  pointer-events: auto !important;
+}
+
+input:not([type="range"]) {
   width: 100% !important;
   margin: 0 !important;
-  pointer-events: auto !important;
 }
 
 .h1 {
