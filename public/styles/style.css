@@ -182,6 +182,12 @@ button:not(.file-preview button):hover {
   display: flex;
   gap: 0.25rem;
 }
+.toolbar button.active {
+  background-color: var(--color-primary-shade);
+}
+.toolbar button.active path {
+  fill: var(--color-primary);
+}
 
 
 .emoji-wrapper {

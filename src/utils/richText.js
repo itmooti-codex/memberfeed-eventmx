@@ -18,6 +18,7 @@ export function initRichText() {
       }
     } else {
       applyFormat(cmd, editor);
+      updateToolbar(editor);
     }
   });
 }
@@ -29,6 +30,16 @@ function applyFormat(cmd, editor, value) {
   } else {
     document.execCommand(cmd, false, null);
   }
+}
+function updateToolbar(editor) {
+  const toolbar = $(editor)
+    .closest('.comment-form, #post-creation-form')
+    .find('.toolbar');
+  toolbar.find('button').each(function () {
+    const cmd = $(this).data('cmd');
+    if (!cmd || cmd === "link") return;
+    $(this).toggleClass('active', document.queryCommandState(cmd));
+  });
 }
 $(document).on('input', '.editor', function () {
   const html = this.innerHTML.trim().toLowerCase();
@@ -42,4 +53,5 @@ $(document).on('input', '.editor', function () {
     sel.removeAllRanges();
     sel.addRange(range);
   }
+  updateToolbar(this);
 });
