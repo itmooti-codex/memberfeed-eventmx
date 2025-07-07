@@ -10,7 +10,7 @@ export const tribute = new Tribute({
            <span class = "p3 text-[var(--color-black)]">${item.string}</span>
          </div>`,
       selectTemplate: (item) =>
-        `<span contenteditable="false" class="mention p2" data-mention-id="${item.original.value}">${item.original.key}</span>`,
+        `<span contenteditable="false" class="mention" data-mention-id="${item.original.value}">${item.original.key}</span>`,
       values: [],
     },
   ],
