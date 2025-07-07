@@ -30,7 +30,7 @@ export function initCommentHandlers() {
       console.error("Node not found for uid", uid);
       return;
     }
-    const mentionHtml = `<span class="mention p2 " data-mention-id="${node.authorId}">${node.authorName}</span>&nbsp;`;
+    const mentionHtml = `<span class="mention font-medium text-[12px] leading-[16px]" data-mention-id="${node.authorId}">${node.authorName}</span>&nbsp;`;
 
     const nextDepth = Math.min((node.depth || 0) + 1, 2);
     const nextType = nextDepth === 1 ? "Comment" : "Reply";
