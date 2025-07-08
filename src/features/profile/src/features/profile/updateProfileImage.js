@@ -6,16 +6,7 @@ import {
     GLOBAL_AUTHOR_ID,
     state,
 } from '../../../../../config.js';
-export const UPDATE_CONTACT_PROFILE_IMAGE = `
-mutation updateContact($id: EventmxContactID, $payload: ContactUpdateInput = null) {
-  updateContact(
-    query: [{ where: { id: $id } }]
-    payload: $payload
-  ) {
-    profile_image
-  }
-}
-`;
+import { UPDATE_CONTACT_PROFILE_IMAGE } from '../../../../../api/queries.js';
 async function requestUploadDetails(file) {
     const base = new URL(HTTP_ENDPOINT).origin;
     const params = new URLSearchParams({

@@ -432,6 +432,17 @@ export function GET_NOTIFICATIONS() {
   `;
 }
 
+export const UPDATE_CONTACT_PROFILE_IMAGE = `
+mutation updateContact($id: ${ACCOUNT_NAME}ContactID, $payload: ContactUpdateInput = null) {
+  updateContact(
+    query: [{ where: { id: $id } }]
+    payload: $payload
+  ) {
+    profile_image
+  }
+}
+`;
+
 export const GET__CONTACTS_NOTIFICATION_PREFERENCEE = `
 query getContact($id: ${ACCOUNT_NAME}ContactID) {
   getContact(query: [{ where: { id: $id } }]) {
