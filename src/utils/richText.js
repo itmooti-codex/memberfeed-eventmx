@@ -81,11 +81,12 @@ function applyFormat(cmd, editor, value) {
   if (isStyle && isEmpty) {
     const tag =
       cmd === 'bold' ? 'strong' : cmd === 'italic' ? 'em' : 'u';
-    document.execCommand('insertHTML', false, `<${tag}>\u200B</${tag}>`);
-    const node = editor.querySelector(`${tag}`);
+    // Clear editor and insert the tag with a zero-width space
+    editor.innerHTML = `<${tag}>\u200B</${tag}>`;
+    const node = editor.querySelector(tag);
     if (node && node.firstChild) {
+      // Place caret at the end of the tag (after the zero-width space)
       const range = document.createRange();
-      // Place caret AFTER the zero-width space (so typing replaces it)
       range.setStart(node.firstChild, 1);
       range.collapse(true);
       const sel = window.getSelection();
