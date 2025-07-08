@@ -82,7 +82,7 @@ export function initGifPicker() {
           .appendTo('#gif-grid');
       });
     } catch (err) {
-      console.error('GIF fetch failed', err);
+     
     } finally {
       hideLoading();
     }
@@ -92,7 +92,7 @@ export function initGifPicker() {
   $(document).on('click', '.gif-toggle', function (e) {
     e.stopPropagation();
     const $toggle = $(this);
-    console.log('GIF toggle clicked:', $toggle);
+  
     let actualInput;
     if (document.querySelector('#create-post-modal')?.classList.contains('show')) {
       const wrapper = document.querySelector('#create-post-modal');
@@ -101,14 +101,14 @@ export function initGifPicker() {
       actualInput = document.querySelector('.comment-form').querySelector('#file-input');
     }
     if (!actualInput) {
-      console.error('Couldn’t find the correct file input');
+     
       return;
     }
 
     pondInstance = FilePond.find(actualInput);
-    console.log('Resolved FilePond instance:', pondInstance);
+   
     if (!pondInstance) {
-      console.error('No FilePond instance found on selected input');
+     
       return;
     }
 
@@ -132,7 +132,7 @@ export function initGifPicker() {
           const file = new File([blob], filename, { type: blob.type });
           await pondInstance.addFile(file);
         } else {
-          console.warn('Fetched blob is not a GIF:', blob.type);
+         
         }
       } catch (err) {
         console.error('Failed to add GIF', err);
@@ -140,7 +140,7 @@ export function initGifPicker() {
         hidePondLoading();
       }
     } else {
-      console.error('No FilePond instance available to add the file');
+      
     }
     $('#gif-modal').addClass('hidden');
   });

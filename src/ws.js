@@ -63,7 +63,7 @@ export function connect() {
     try {
       msg = JSON.parse(data);
     } catch {
-      console.error("Invalid JSON", data);
+    
       return;
     }
     if (msg.type === "CONNECTION_ACK") {
@@ -109,7 +109,7 @@ export function connect() {
         }
       });
     } else if (msg.type === "GQL_ERROR") {
-      console.error("Subscription error", msg.payload);
+     
       } else if (msg.type === "GQL_COMPLETE") {
         if (state.socket && state.socket.readyState === WebSocket.OPEN) {
           state.socket.send(JSON.stringify({ type: "CONNECTION_TERMINATE" }));
@@ -118,7 +118,7 @@ export function connect() {
     }
   });
   state.socket.addEventListener("error", e => {
-    console.error("WebSocket error", e);
+   
     state.isConnecting = false;
   });
   state.socket.addEventListener("close", () => {

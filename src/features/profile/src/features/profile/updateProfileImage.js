@@ -69,7 +69,7 @@ export async function initProfileImageUpload() {
         const file = input.files?.[0];
         if (file) {
             updateProfileImage(file).catch((err) => {
-                console.error('Profile image update failed', err);
+             
             });
         }
     });

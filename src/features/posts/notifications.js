@@ -7,7 +7,6 @@ export async function sendNotificationsAfterPost(feedData, rootFeedId = null) {
 
 
   if (!feedData || !feedData.id || !Array.isArray(state.allContacts)) {
-    console.log("here stopped");
     return
   };
   const {
@@ -18,7 +17,6 @@ export async function sendNotificationsAfterPost(feedData, rootFeedId = null) {
     Author,
     Parent_Feed,
   } = feedData;
-  console.log('feedData', feedData);
 
   const type = feed_type || "Post";
   const isPost = type === "Post";
@@ -64,6 +62,6 @@ export async function sendNotificationsAfterPost(feedData, rootFeedId = null) {
   try {
     await fetchGraphQL(CREATE_NOTIFICATION, { payload });
   } catch (err) {
-    console.error("Failed to send notifications", err);
+   
   }
 }

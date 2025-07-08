@@ -24,7 +24,7 @@ export async function ensureCurrentUser() {
       updateCurrentUserUI(state);
     }
   } catch (err) {
-    console.error("Failed to fetch current user", err);
+  
   }
 }
 export async function refreshCurrentUser() {
@@ -40,6 +40,6 @@ export async function refreshCurrentUser() {
       updateCurrentUserUI(state);
     }
   } catch (err) {
-    console.error("Failed to refresh current user", err);
+   
   }
 }

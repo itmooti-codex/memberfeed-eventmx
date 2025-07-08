@@ -58,7 +58,6 @@ export function refreshNotificationSubscription() {
     !state.notificationSocket ||
     state.notificationSocket.readyState !== WebSocket.OPEN
   ) {
-    console.log("Notification socket is not open, cannot refresh subscription.");
     return;
   }
 
@@ -126,7 +125,6 @@ export function connectNotification() {
     try {
       msg = JSON.parse(data);
     } catch {
-      console.error("Invalid JSON", data);
       return;
     }
     const query = GET_NOTIFICATIONS();
@@ -174,7 +172,6 @@ export function connectNotification() {
 
       applyNotificationFilters();
     } else if (msg.type === "GQL_ERROR") {
-      console.error("Notification subscription error", msg.payload);
     } else if (msg.type === "GQL_COMPLETE") {
       if (
         state.notificationSocket &&
@@ -187,7 +184,7 @@ export function connectNotification() {
   });
 
   state.notificationSocket.addEventListener("error", (e) => {
-    console.error("Notification WebSocket error", e);
+    
     state.notifIsConnecting = false;
   });
 
@@ -215,7 +212,7 @@ export function initNotificationEvents() {
             body.__x.$data.showNotifications = false;
           }
         } catch {
-          console.error("Failed to hide notifications modal");
+          
         }
         const highlight = /Comment|Reply/.test(notifType) ? targetId : null;
         openPostModalById(feedId, "", highlight, false);
@@ -238,7 +235,7 @@ export function initNotificationEvents() {
     let ids = [];
 
     if (markAll) {
-      console.log("Marking all notifications as read");
+     
       const elements = [];
       targetContainers.forEach((c) => {
         elements.push(...c.querySelectorAll("[data-notification].unread"));
@@ -296,7 +293,7 @@ export function initNotificationEvents() {
       }
       applyNotificationFilters();
     } catch (error) {
-      console.error("Error marking notification(s) as read:", error);
+     
     } finally {
       if (markAllTop) {
         $(".notificationsLoader").removeClass("flex").addClass("hidden");

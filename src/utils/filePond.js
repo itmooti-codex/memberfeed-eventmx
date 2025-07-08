@@ -209,7 +209,7 @@ export function initFilePond() {
                         inputElement.files = dt.files;
                       }
                     } catch (e) {
-                      console.warn("DataTransfer unsupported", e);
+                    
                     }
                     setPendingFile(file);
                     setFileTypeCheck("Audio");
@@ -266,7 +266,7 @@ export function initFilePond() {
                       inputElement.files = dt.files;
                     }
                   } catch (e) {
-                    console.warn("DataTransfer unsupported", e);
+                   
                   }
                   setPendingFile(file);
                   setFileTypeCheck("Audio");
@@ -286,7 +286,7 @@ export function initFilePond() {
               });
             }
           }).catch((e) => {
-            console.error("Mic access failed:", e.name, e.message);
+          
 
             inputElement.disabled = false;
             canvas.style.display = "none";

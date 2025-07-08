@@ -27,7 +27,7 @@ export function initCommentHandlers() {
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid);
     if (!node) {
-      console.error("Node not found for uid", uid);
+    
       return;
     }
     const mentionHtml = `<span class="mention" data-mention-id="${node.authorId}">${node.authorName}</span>&nbsp;`;
@@ -108,7 +108,7 @@ export function initCommentHandlers() {
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid);
     if (!node) {
-      console.error("Node not found for uid", uid);
+    
       return;
     }
     const newState = !node.isCollapsed;

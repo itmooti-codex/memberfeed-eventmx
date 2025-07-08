@@ -1,7 +1,5 @@
 export function processContent(rawHtml) {
-  console.log("Processing content for posts/comments", rawHtml);
-
-  const allowedTags = ['b', 'i', 'u', 'a', 'br', 'p', 'span', 'div', 'ul', 'ol', 'li', 'strong', 'em', 'iframe'];
+   const allowedTags = ['b', 'i', 'u', 'a', 'br', 'p', 'span', 'div', 'ul', 'ol', 'li', 'strong', 'em', 'iframe'];
   const allowedAttrs = ['href', 'target', 'class', 'style', 'data-mention-id', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'];
   const sanitize = html => DOMPurify.sanitize(html, { ALLOWED_TAGS: allowedTags, ALLOWED_ATTR: allowedAttrs });
   rawHtml = sanitize(rawHtml);

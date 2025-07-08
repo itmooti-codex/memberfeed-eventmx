@@ -82,7 +82,6 @@ export async function loadModalContacts() {
       enableBodyScroll();
     }
   } catch (err) {
-    console.error("Failed to load contacts", err);
   }
 }
 
@@ -178,7 +177,6 @@ export function initScheduledPostHandler() {
       showToast("Post updated successfully!");
       btn.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
     } catch (error) {
-      console.error("Error updating post:", error);
     }
   });
 }
