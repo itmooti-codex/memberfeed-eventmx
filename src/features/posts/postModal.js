@@ -177,7 +177,7 @@ function closeModalSocket() {
   clearInterval(keepAliveTimer);
   keepAliveTimer = null;
   modalSocket = null;
-
+  state.ignoreNextModalUpdate = false;
 }
 
 export function openPostModalById(postId, author = "", highlight = null, openForm = true) {
