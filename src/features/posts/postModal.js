@@ -41,7 +41,8 @@ function expandPathToId(tree, id) {
 function renderModal(openForm = false) {
   const container = document.getElementById("modalFeedRoot");
   if (!container) return;
-  const prevScroll = container.scrollTop;
+  const scrollable = container.querySelector(".item");
+  const prevScroll = scrollable ? scrollable.scrollTop : 0;
   container.innerHTML = renderItems(modalTree, { inModal: true });
   if (
     modalTree.length &&
@@ -64,7 +65,10 @@ function renderModal(openForm = false) {
     }
   }
   requestAnimationFrame(() => {
-    container.scrollTop = prevScroll;
+    const newScrollable = container.querySelector(".item");
+    if (newScrollable) {
+      newScrollable.scrollTop = prevScroll;
+    }
     setupPlyr();
     scrollAndHighlight();
     if (openForm) {
