@@ -85,8 +85,8 @@ function applyFormat(cmd, editor, value) {
     const node = editor.querySelector(`${tag}`);
     if (node && node.firstChild) {
       const range = document.createRange();
-      // Place caret at the start of the tag, before the zero-width space
-      range.setStart(node.firstChild, 0);
+      // Place caret AFTER the zero-width space (so typing replaces it)
+      range.setStart(node.firstChild, 1);
       range.collapse(true);
       const sel = window.getSelection();
       sel.removeAllRanges();
@@ -98,7 +98,6 @@ function applyFormat(cmd, editor, value) {
     document.execCommand(cmd, false, null);
   }
 }
-
 
 
 function updateToolbar(editor) {
