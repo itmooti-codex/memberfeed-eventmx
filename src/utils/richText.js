@@ -75,29 +75,43 @@ function ensureCursor(editor) {
 
 
 function applyFormat(cmd, editor, value) {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return;
+  const range = sel.getRangeAt(0);
   const isStyle = cmd === 'bold' || cmd === 'italic' || cmd === 'underline';
-  const isEmpty = editor.textContent.replace(/\u200B/g, '').trim() === '';
 
-  if (isStyle && isEmpty) {
-    const tag =
-      cmd === 'bold' ? 'strong' : cmd === 'italic' ? 'em' : 'u';
-    // Clear editor and insert the tag with a zero-width space
-    editor.innerHTML = `<${tag}>\u200B</${tag}>`;
-    const node = editor.querySelector(tag);
-    if (node && node.firstChild) {
-      // Place caret at the end of the tag (after the zero-width space)
-      const range = document.createRange();
-      range.setStart(node.firstChild, 1);
-      range.collapse(true);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
+  let tag;
+  if (isStyle) {
+    tag = cmd === 'bold' ? 'strong' : cmd === 'italic' ? 'em' : 'u';
   } else if (cmd === 'link') {
-    document.execCommand('createLink', false, value);
+    tag = 'a';
   } else {
-    document.execCommand(cmd, false, null);
+    return;
   }
+
+  const wrapper = document.createElement(tag);
+  if (cmd === 'link') {
+    wrapper.setAttribute('href', value);
+    wrapper.setAttribute('target', '_blank');
+  }
+
+  if (range.collapsed) {
+    wrapper.textContent = '\u200B';
+    range.insertNode(wrapper);
+    range.setStart(wrapper.firstChild, 1);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    return;
+  }
+
+  const contents = range.extractContents();
+  wrapper.appendChild(contents);
+  range.insertNode(wrapper);
+  range.selectNodeContents(wrapper);
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
 }
 
 
@@ -107,9 +121,23 @@ function updateToolbar(editor) {
     .find('.toolbar');
   toolbar.find('button').each(function () {
     const cmd = $(this).data('cmd');
-    if (!cmd || cmd === "link") return;
-    $(this).toggleClass('active', document.queryCommandState(cmd));
+    if (!cmd || cmd === 'link') return;
+    $(this).toggleClass('active', isFormatActive(cmd, editor));
   });
+}
+
+function isFormatActive(cmd, editor) {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return false;
+  let node = sel.getRangeAt(0).startContainer;
+  while (node && node !== editor) {
+    const name = node.nodeName;
+    if (cmd === 'bold' && name === 'STRONG') return true;
+    if (cmd === 'italic' && name === 'EM') return true;
+    if (cmd === 'underline' && name === 'U') return true;
+    node = node.parentNode;
+  }
+  return false;
 }
 
 
@@ -131,7 +159,19 @@ function updateToolbar(editor) {
 $(document).on('input', '.editor', function () {
   // Remove leading zero-width space if present
   if (this.firstChild && this.firstChild.nodeType === 3 && this.firstChild.nodeValue.startsWith('\u200B')) {
+    const sel = window.getSelection();
+    let offset = null;
+    if (sel && sel.rangeCount && sel.getRangeAt(0).startContainer === this.firstChild) {
+      offset = sel.getRangeAt(0).startOffset;
+    }
     this.firstChild.nodeValue = this.firstChild.nodeValue.replace(/^\u200B/, '');
+    if (offset !== null) {
+      const range = document.createRange();
+      range.setStart(this.firstChild, Math.max(0, offset - 1));
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
   }
   const html = this.innerHTML.trim().toLowerCase();
   const hasFormat = this.querySelector('strong, em, u, a');
