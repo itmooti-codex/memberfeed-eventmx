@@ -1,12 +1,7 @@
-// Runtime configuration can be provided by populating `window.APP_CONFIG`
-// or via environment variables when bundling. `window.APP_CONFIG` is left
-// empty by default so secrets are not committed to the repository.
+
 window.APP_CONFIG = {};
 
 import credentials from "./credentials.js";
-console.log("Credentials loaded:", credentials)
-import { GLOBAL_PAGE_TAG } from "./tag.js";
-
 export const env =
   credentials ||
   (typeof import.meta !== "undefined" && import.meta.env) ||
