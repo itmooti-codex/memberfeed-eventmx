@@ -159,7 +159,19 @@ function isFormatActive(cmd, editor) {
 $(document).on('input', '.editor', function () {
   // Remove leading zero-width space if present
   if (this.firstChild && this.firstChild.nodeType === 3 && this.firstChild.nodeValue.startsWith('\u200B')) {
+    const sel = window.getSelection();
+    let offset = null;
+    if (sel && sel.rangeCount && sel.getRangeAt(0).startContainer === this.firstChild) {
+      offset = sel.getRangeAt(0).startOffset;
+    }
     this.firstChild.nodeValue = this.firstChild.nodeValue.replace(/^\u200B/, '');
+    if (offset !== null) {
+      const range = document.createRange();
+      range.setStart(this.firstChild, Math.max(0, offset - 1));
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
   }
   const html = this.innerHTML.trim().toLowerCase();
   const hasFormat = this.querySelector('strong, em, u, a');
