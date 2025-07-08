@@ -243,7 +243,8 @@ export async function createFeedToSubmit(
       if (feedType === "Post") {
         $("#create-post-modal").addClass("hidden").removeClass("show");
       } else {
-        $(`.${formElementId}`).remove();
+        // $(`.${formElementId}`).remove();
+        // removed
       }
     }
     if (scheduledDateUnix) scheduledDateUnix.textContent = '';
