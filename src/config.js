@@ -4,6 +4,7 @@
 window.APP_CONFIG = {};
 
 import credentials from "./credentials.js";
+console.log("Credentials loaded:", credentials)
 import { GLOBAL_PAGE_TAG } from "./tag.js";
 
 export const env =
