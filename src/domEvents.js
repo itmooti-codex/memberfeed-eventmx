@@ -87,9 +87,7 @@ export async function loadModalContacts() {
 
 function resetCreatePostModal() {
   const editor = document.getElementById("post-editor");
-  if (editor) {
-    editor.__quill ? editor.__quill.setText('') : (editor.innerHTML = "");
-  }
+  if (editor) editor.innerHTML = "";
   const fileInput = document.getElementById("file-input");
   if (fileInput) {
     if (fileInput.filepond) {
@@ -115,12 +113,7 @@ export function setupCreatePostModal() {
       modal.classList.remove("hidden");
       modal.classList.add("show");
       disableBodyScroll();
-      const pe = document.getElementById("post-editor");
-      if (pe.__quill) {
-        pe.__quill.focus();
-      } else {
-        pe.focus();
-      }
+      document.getElementById("post-editor").focus();
     });
   }
 

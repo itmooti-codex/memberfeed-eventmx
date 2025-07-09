@@ -19,7 +19,7 @@ export const emojiPickerHtml = `
 export const toolbarDesign = `
 <div class="flex items-center justify-start toolbar max-[702px]:gap-1 w-full">
 <button
-            class="flex items-center justify-start !border-none gap-2  rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
+            class="ql-bold flex items-center justify-start !border-none gap-2  rounded  !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="bold">
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -28,7 +28,7 @@ export const toolbarDesign = `
             </svg>
           </button>
           <button
-            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
+            class="ql-italic flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="italic">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -38,7 +38,7 @@ export const toolbarDesign = `
 
           </button>
           <button
-            class="flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
+            class="ql-underline flex items-center justify-start !border-none gap-2 rounded !bg-transparent  hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]"
             data-cmd="underline">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path class="group-hover:fill-[var(--color-primary)]"
@@ -151,24 +151,15 @@ export function initEmojiHandlers() {
 }
 
 function insertEmoji(editor, emoji) {
-  if (editor.__quill) {
-    const quill = editor.__quill;
-    quill.focus();
-    const range = quill.getSelection(true);
-    const index = range ? range.index : quill.getLength();
-    quill.insertText(index, emoji, 'user');
-    quill.setSelection(index + emoji.length, 0, 'user');
-  } else {
-    editor.focus();
-    restoreSelection(editor);
-    const sel = window.getSelection();
-    if (!sel || sel.rangeCount === 0) return;
-    const range = sel.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(document.createTextNode(emoji));
-    range.collapse(false);
-    sel.removeAllRanges();
-    sel.addRange(range);
-    saveSelection();
-  }
+  editor.focus();
+  restoreSelection(editor);
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return;
+  const range = sel.getRangeAt(0);
+  range.deleteContents();
+  range.insertNode(document.createTextNode(emoji));
+  range.collapse(false);
+  sel.removeAllRanges();
+  sel.addRange(range);
+  saveSelection();
 }
