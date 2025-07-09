@@ -151,15 +151,24 @@ export function initEmojiHandlers() {
 }
 
 function insertEmoji(editor, emoji) {
-  editor.focus();
-  restoreSelection(editor);
-  const sel = window.getSelection();
-  if (!sel || sel.rangeCount === 0) return;
-  const range = sel.getRangeAt(0);
-  range.deleteContents();
-  range.insertNode(document.createTextNode(emoji));
-  range.collapse(false);
-  sel.removeAllRanges();
-  sel.addRange(range);
-  saveSelection();
+  if (editor.__quill) {
+    const quill = editor.__quill;
+    quill.focus();
+    const range = quill.getSelection(true);
+    const index = range ? range.index : quill.getLength();
+    quill.insertText(index, emoji, 'user');
+    quill.setSelection(index + emoji.length, 0, 'user');
+  } else {
+    editor.focus();
+    restoreSelection(editor);
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(document.createTextNode(emoji));
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    saveSelection();
+  }
 }

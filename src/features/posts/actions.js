@@ -62,8 +62,11 @@ export async function createFeedToSubmit(
     ? $(formWrapper).find('#submitFeedPost')
     : $(this);
   const inModal = Boolean(formWrapper?.closest('#modalFeedRoot'));
-  const editor = $(`.${formElementId} .editor`);
-  const htmlContent = editor.html().trim();
+  const editor = $(`.${formElementId} .ql-editor.editor`);
+  const quillInstance = editor[0]?.__quill;
+  const htmlContent = quillInstance
+    ? quillInstance.root.innerHTML.trim()
+    : editor.html().trim();
   if (!htmlContent && !pendingFile) {
     alert("Please enter some content or upload a file.");
     return null;
@@ -248,7 +251,11 @@ export async function createFeedToSubmit(
       }
     }
     if (scheduledDateUnix) scheduledDateUnix.textContent = '';
-    editor.html("");
+    if (quillInstance) {
+      quillInstance.setText('');
+    } else {
+      editor.html("");
+    }
     setPendingFile(null);
     setFileTypeCheck("");
     $("#file-input").val("");
