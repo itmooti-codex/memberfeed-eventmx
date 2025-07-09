@@ -16,6 +16,9 @@ function updateToolbar(quill) {
 
 export function initRichText() {
   document.querySelectorAll('.editor').forEach(el => {
+    if (el.classList.contains('ql-editor') && el.parentElement?.__quill) {
+      return;
+    }
     const quill = initQuillEditor(el);
     if (quill) {
       quill.on('selection-change', () => {

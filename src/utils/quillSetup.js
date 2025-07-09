@@ -7,7 +7,11 @@ export function initQuillEditor(element) {
     placeholder,
     modules: { toolbar: false },
   });
+  // Keep the editor class only on the Quill root so
+  // reinitialization doesn't target the container again
   quill.root.classList.add('editor');
+  element.classList.remove('editor');
+  // Remove the old contenteditable attribute to avoid nested editable areas
   element.removeAttribute('contenteditable');
   return quill;
 }
