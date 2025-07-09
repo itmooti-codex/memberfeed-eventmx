@@ -4,13 +4,16 @@ export function initRichText() {
   $(document).on('keyup mouseup input focus touchend', '.editor', function () {
     ensureCursor(this);
     saveSelection();
+    syncFormatting(this);
     updateToolbar(this);
   });
 
   $(document).on('click', '.toolbar button', function (e) {
     e.preventDefault();
     const cmd = $(this).data('cmd');
-    const editor = $(this).closest('.comment-form, #post-creation-form').find('.editor')[0];
+    const editor = $(this)
+      .closest('.comment-form, #post-creation-form')
+      .find('.editor')[0];
     if (!editor) return;
 
     editor.focus();
@@ -28,7 +31,7 @@ export function initRichText() {
       const wasActive = $(this).hasClass('active');
       applyFormat(cmd, editor);
       $(this).toggleClass('active', !wasActive);
-      syncFormatting(editor); /*1*/
+      syncFormatting(editor);
     }
     saveSelection();
   });
@@ -57,7 +60,10 @@ function applyFormat(cmd, editor, value) {
   if (!sel || sel.rangeCount === 0) return;
   const range = sel.getRangeAt(0);
 
-  if (range.collapsed && editor.textContent.replace(/\u200B/g, '').trim() === '') {
+  if (
+    range.collapsed &&
+    editor.textContent.replace(/\u200B/g, '').trim() === ''
+  ) {
     const ph = document.createTextNode('\u200B');
     range.insertNode(ph);
     range.setStart(ph, 1);
@@ -74,7 +80,9 @@ function isFormatActive(cmd) {
 }
 
 function updateToolbar(editor) {
-  const toolbar = $(editor).closest('.comment-form, #post-creation-form').find('.toolbar');
+  const toolbar = $(editor)
+    .closest('.comment-form, #post-creation-form')
+    .find('.toolbar');
   toolbar.find('button').each(function () {
     const cmd = $(this).data('cmd');
     if (!cmd || cmd === 'link') return;
@@ -83,21 +91,34 @@ function updateToolbar(editor) {
 }
 
 function syncFormatting(editor) {
-  const toolbar = $(editor).closest('.comment-form, #post-creation-form').find('.toolbar');
-  const wantsBold = toolbar.find('button[data-cmd="bold"]').hasClass('active');
-  const wantsItalic = toolbar.find('button[data-cmd="italic"]').hasClass('active');
-  const wantsUnderline = toolbar.find('button[data-cmd="underline"]').hasClass('active');
-
-  if (wantsBold && !document.queryCommandState('bold')) document.execCommand('bold', false, null);
-  if (wantsItalic && !document.queryCommandState('italic')) document.execCommand('italic', false, null);
-  if (wantsUnderline && !document.queryCommandState('underline')) document.execCommand('underline', false, null);
+  const toolbar = $(editor)
+    .closest('.comment-form, #post-creation-form')
+    .find('.toolbar');
+  const formats = [
+    { cmd: 'bold', want: toolbar.find('button[data-cmd="bold"]').hasClass('active') },
+    { cmd: 'italic', want: toolbar.find('button[data-cmd="italic"]').hasClass('active') },
+    { cmd: 'underline', want: toolbar.find('button[data-cmd="underline"]').hasClass('active') }
+  ];
+  formats.forEach(f => {
+    const has = document.queryCommandState(f.cmd);
+    if (f.want && !has) document.execCommand(f.cmd, false, null);
+    if (!f.want && has) document.execCommand(f.cmd, false, null);
+  });
 }
 
 $(document).on('input', '.editor', function () {
-  if (this.firstChild && this.firstChild.nodeType === 3 && this.firstChild.nodeValue.startsWith('\u200B')) {
+  if (
+    this.firstChild &&
+    this.firstChild.nodeType === 3 &&
+    this.firstChild.nodeValue.startsWith('\u200B')
+  ) {
     const sel = window.getSelection();
     let offset = null;
-    if (sel && sel.rangeCount && sel.getRangeAt(0).startContainer === this.firstChild) {
+    if (
+      sel &&
+      sel.rangeCount &&
+      sel.getRangeAt(0).startContainer === this.firstChild
+    ) {
       offset = sel.getRangeAt(0).startOffset;
     }
     this.firstChild.nodeValue = this.firstChild.nodeValue.replace(/^\u200B/, '');
@@ -112,7 +133,11 @@ $(document).on('input', '.editor', function () {
 
   const html = this.innerHTML.trim().toLowerCase();
   const hasFormat = this.querySelector('strong, em, u, a');
-  if (html === '<br>' || html === '<div><br></div>' || (!hasFormat && this.textContent.trim() === '')) {
+  if (
+    html === '<br>' ||
+    html === '<div><br></div>' ||
+    (!hasFormat && this.textContent.trim() === '')
+  ) {
     this.innerHTML = '';
     const range = document.createRange();
     range.selectNodeContents(this);
@@ -122,6 +147,7 @@ $(document).on('input', '.editor', function () {
     sel.addRange(range);
   }
 
+  syncFormatting(this);
   updateToolbar(this);
   saveSelection();
 });
