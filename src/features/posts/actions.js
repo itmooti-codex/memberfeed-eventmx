@@ -240,6 +240,11 @@ export async function createFeedToSubmit(
       }
       state.ignoreNextSocketUpdate = true;
       showToast(feedType === "Post" ? "Post created" : "Comment added");
+      //added
+      if (feedType === "Comment") {
+        document.querySelector('.btn-comment').click();
+      }
+      
       if (feedType === "Post") {
         $("#create-post-modal").addClass("hidden").removeClass("show");
       } else {
