@@ -3,6 +3,7 @@ import { findNode } from "../../ui/render.js";
 import { toolbarDesign } from "../../ui/emoji.js";
 import { moveCursorToEnd } from "../../utils/caret.js";
 import { tribute } from "../../utils/tribute.js";
+import { initQuillEditor } from "../../utils/quillSetup.js";
 import { initFilePond } from "../../utils/filePond.js";
 import { applyFilterAndRender } from "./filters.js";
 import { rerenderModal, getModalTree } from "./postModal.js";
@@ -86,13 +87,15 @@ export function initCommentHandlers() {
     if (inserted.length) {
       const editorEl = inserted.find(".editor")[0];
       if (editorEl) {
-        tribute.attach(editorEl);
+        const quill = initQuillEditor(editorEl);
+        const target = quill ? quill.root : editorEl;
+        tribute.attach(target);
       }
       container.find(".children").addClass("visible");
       requestAnimationFrame(() => {
         inserted[0].scrollIntoView({ behavior: "smooth", block: "center" });
         if (editorEl) {
-          moveCursorToEnd(editorEl);
+          moveCursorToEnd(editorEl.__quill ? editorEl.__quill.root : editorEl);
         }
       });
     }

@@ -66,7 +66,8 @@ function startApp(tagName, contactId, displayName) {
   const hasNotifOptions = document.getElementById("notificationOptionsContainer");
 
   if (postEditor) {
-    tribute.attach(postEditor);
+    const target = postEditor.querySelector('.ql-editor') || postEditor;
+    tribute.attach(target);
   }
   fetchGraphQL(FETCH_CONTACTS_QUERY)
     .then((res) => {

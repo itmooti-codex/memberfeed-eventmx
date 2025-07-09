@@ -380,6 +380,9 @@ button:not(.file-preview button):hover {
 .editor {
   font-size: 12px !important;
 }
+.ql-editor {
+  padding: 0;
+}
 
 /* Skeleton loader styles */
 .skeleton-item {
