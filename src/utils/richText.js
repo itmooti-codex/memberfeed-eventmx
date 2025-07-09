@@ -1,36 +1,35 @@
 import { restoreSelection, saveSelection } from './caret.js';
 
 export function initRichText() {
- $(document).on('keyup mouseup input focus touchend', '.editor', function () {
+  $(document).on('keyup mouseup input focus touchend', '.editor', function () {
     ensureCursor(this);
     saveSelection();
     updateToolbar(this);
   });
+
   $(document).on('click', '.toolbar button', function (e) {
     e.preventDefault();
     const cmd = $(this).data('cmd');
-    const editor = $(this)
-      .closest('.comment-form, #post-creation-form')
-      .find('.editor')[0];
+    const editor = $(this).closest('.comment-form, #post-creation-form').find('.editor')[0];
     if (!editor) return;
-   
+
     editor.focus();
     ensureCursor(editor);
     restoreSelection(editor);
-   
+
     if (cmd === 'link') {
       let url = prompt('Enter URL');
       if (url) {
         url = url.trim();
-        if (!/^https?:\/\//i.test(url)) {
-          url = `https://${url}`;
-        }
+        if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
         applyFormat('link', editor, url);
       }
     } else {
+      const wasActive = $(this).hasClass('active');
       applyFormat(cmd, editor);
+      $(this).toggleClass('active', !wasActive);
+      syncFormatting(editor); /*1*/
     }
-    updateToolbar(editor);
     saveSelection();
   });
 }
@@ -48,116 +47,53 @@ function ensureCursor(editor) {
   }
 }
 
-// function applyFormat(cmd, editor, value) {
-//   const isStyle = cmd === 'bold' || cmd === 'italic' || cmd === 'underline';
-//   const isEmpty = editor.textContent.replace(/\u200B/g, '').trim() === '';
-
-//   if (isStyle && isEmpty) {
-//     const tag =
-//       cmd === 'bold' ? 'strong' : cmd === 'italic' ? 'em' : 'u';
-//     document.execCommand('insertHTML', false, `<${tag}>\u200B</${tag}>`);
-//     const node = editor.querySelector(`${tag}`);
-//     if (node && node.firstChild) {
-//       const range = document.createRange();
-//       range.setStart(node.firstChild, 1);
-//       range.collapse(true);
-//       const sel = window.getSelection();
-//       sel.removeAllRanges();
-//       sel.addRange(range);
-//     }
-//   } else if (cmd === 'link') {
-//     document.execCommand('createLink', false, value);
-//   } else {
-//     document.execCommand(cmd, false, null);
-//   }
-// }
-
-
-
 function applyFormat(cmd, editor, value) {
+  if (cmd === 'link') {
+    document.execCommand('createLink', false, value);
+    return;
+  }
+
   const sel = window.getSelection();
   if (!sel || sel.rangeCount === 0) return;
   const range = sel.getRangeAt(0);
-  const isStyle = cmd === 'bold' || cmd === 'italic' || cmd === 'underline';
 
-  let tag;
-  if (isStyle) {
-    tag = cmd === 'bold' ? 'strong' : cmd === 'italic' ? 'em' : 'u';
-  } else if (cmd === 'link') {
-    tag = 'a';
-  } else {
-    return;
-  }
-
-  const wrapper = document.createElement(tag);
-  if (cmd === 'link') {
-    wrapper.setAttribute('href', value);
-    wrapper.setAttribute('target', '_blank');
-  }
-
-  if (range.collapsed) {
-    wrapper.textContent = '\u200B';
-    range.insertNode(wrapper);
-    range.setStart(wrapper.firstChild, 1);
+  if (range.collapsed && editor.textContent.replace(/\u200B/g, '').trim() === '') {
+    const ph = document.createTextNode('\u200B');
+    range.insertNode(ph);
+    range.setStart(ph, 1);
     range.collapse(true);
     sel.removeAllRanges();
     sel.addRange(range);
-    return;
   }
 
-  const contents = range.extractContents();
-  wrapper.appendChild(contents);
-  range.insertNode(wrapper);
-  range.selectNodeContents(wrapper);
-  range.collapse(false);
-  sel.removeAllRanges();
-  sel.addRange(range);
+  document.execCommand(cmd, false, null);
 }
 
+function isFormatActive(cmd) {
+  return document.queryCommandState(cmd);
+}
 
 function updateToolbar(editor) {
-  const toolbar = $(editor)
-    .closest('.comment-form, #post-creation-form')
-    .find('.toolbar');
+  const toolbar = $(editor).closest('.comment-form, #post-creation-form').find('.toolbar');
   toolbar.find('button').each(function () {
     const cmd = $(this).data('cmd');
     if (!cmd || cmd === 'link') return;
-    $(this).toggleClass('active', isFormatActive(cmd, editor));
+    if (isFormatActive(cmd)) $(this).addClass('active');
   });
 }
 
-function isFormatActive(cmd, editor) {
-  const sel = window.getSelection();
-  if (!sel || sel.rangeCount === 0) return false;
-  let node = sel.getRangeAt(0).startContainer;
-  while (node && node !== editor) {
-    const name = node.nodeName;
-    if (cmd === 'bold' && name === 'STRONG') return true;
-    if (cmd === 'italic' && name === 'EM') return true;
-    if (cmd === 'underline' && name === 'U') return true;
-    node = node.parentNode;
-  }
-  return false;
+function syncFormatting(editor) {
+  const toolbar = $(editor).closest('.comment-form, #post-creation-form').find('.toolbar');
+  const wantsBold = toolbar.find('button[data-cmd="bold"]').hasClass('active');
+  const wantsItalic = toolbar.find('button[data-cmd="italic"]').hasClass('active');
+  const wantsUnderline = toolbar.find('button[data-cmd="underline"]').hasClass('active');
+
+  if (wantsBold && !document.queryCommandState('bold')) document.execCommand('bold', false, null);
+  if (wantsItalic && !document.queryCommandState('italic')) document.execCommand('italic', false, null);
+  if (wantsUnderline && !document.queryCommandState('underline')) document.execCommand('underline', false, null);
 }
 
-
-// $(document).on('input', '.editor', function () {
-//   const html = this.innerHTML.trim().toLowerCase();
-//   const hasFormat = this.querySelector('strong, em, u, a');
-//   if (html === '<br>' || html === '<div><br></div>' || (!hasFormat && this.textContent.trim() === '')) {
-//     this.innerHTML = '';
-//     const range = document.createRange();
-//     range.selectNodeContents(this);
-//     range.collapse(false);
-//     const sel = window.getSelection();
-//     sel.removeAllRanges();
-//     sel.addRange(range);
-//   }
-//   updateToolbar(this);
-//   saveSelection();
-// });
 $(document).on('input', '.editor', function () {
-  // Remove leading zero-width space if present
   if (this.firstChild && this.firstChild.nodeType === 3 && this.firstChild.nodeValue.startsWith('\u200B')) {
     const sel = window.getSelection();
     let offset = null;
@@ -173,6 +109,7 @@ $(document).on('input', '.editor', function () {
       sel.addRange(range);
     }
   }
+
   const html = this.innerHTML.trim().toLowerCase();
   const hasFormat = this.querySelector('strong, em, u, a');
   if (html === '<br>' || html === '<div><br></div>' || (!hasFormat && this.textContent.trim() === '')) {
@@ -184,6 +121,7 @@ $(document).on('input', '.editor', function () {
     sel.removeAllRanges();
     sel.addRange(range);
   }
+
   updateToolbar(this);
   saveSelection();
 });
