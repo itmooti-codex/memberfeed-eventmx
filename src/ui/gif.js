@@ -38,7 +38,7 @@ export function initGifPicker() {
         </div>
       </div>
     </div>`
-  ).appendTo('body');
+  ).prepend('body');
 
   const apiKeyGIPHY = '94CIbzCFrmRmAtulBbV6g0XRteWMqzfr';
   let pondInstance = null;
@@ -93,7 +93,7 @@ export function initGifPicker() {
     // e.stopPropagation();
     let gifModal = $('#gif-search-input');
     console.log("Input of gif modal is", gifModal);
-    $('#gif-search-input').trigger('focus');
+   
     const $toggle = $(this);
   
     let actualInput;
