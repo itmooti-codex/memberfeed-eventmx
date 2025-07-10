@@ -16,7 +16,6 @@ import focus from '@alpinejs/focus';
   }`);
 
     el.setAttribute('x-init', `
-    // toggle body scroll when the modal opens/closes
     $watch('modalForPostOpen', v => {
       if (v) {
         window.disableBodyScroll();

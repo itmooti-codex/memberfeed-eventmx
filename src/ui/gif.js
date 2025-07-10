@@ -1,3 +1,5 @@
+import * as FilePond from "filepond";
+
 export function initGifPicker() {
   const modal = $(
     `<div id="gif-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-12 !z-[2147483647]">
@@ -92,7 +94,6 @@ export function initGifPicker() {
   $(document).on('click', '.gif-toggle', function (e) {
     e.stopPropagation();
     const $toggle = $(this);
-    console.log('GIF toggle clicked:', $toggle);
     let actualInput;
     if (document.querySelector('#create-post-modal')?.classList.contains('show')) {
       const wrapper = document.querySelector('#create-post-modal');
@@ -106,7 +107,6 @@ export function initGifPicker() {
     }
 
     pondInstance = FilePond.find(actualInput);
-    console.log('Resolved FilePond instance:', pondInstance);
     if (!pondInstance) {
       console.error('No FilePond instance found on selected input');
       return;
