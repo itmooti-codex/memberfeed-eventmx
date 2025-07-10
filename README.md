@@ -39,8 +39,7 @@ from various CDNs in `public/index.html`:
 
 - `https://cdn.tailwindcss.com` – Tailwind CSS framework.
 - `https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css` – Plyr styles.
-- `https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.min.js` – Plyr
-  JavaScript.
+- `https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.min.js` – Plyr JavaScript.
 - `https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js` – FilePond file type validation plugin.
 - `https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js` – FilePond image preview plugin.
 - `https://unpkg.com/filepond-plugin-media-preview/dist/filepond-plugin-media-preview.js` – FilePond media preview plugin.
@@ -57,6 +56,7 @@ from various CDNs in `public/index.html`:
 - `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css` – Font Awesome icons.
 - `https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js` – Alpine.js framework.
 - `https://unpkg.com/mic-recorder-to-mp3@2.2.1/dist/index.min.js` – Audio recording utility.
+- `https://unpkg.com/lamejs@1.2.1/lame.min.js` – MP3 encoder library for audio recording (required by mic-recorder-to-mp3; loaded globally via CDN).
 
 ### Regenerating SRI hashes
 

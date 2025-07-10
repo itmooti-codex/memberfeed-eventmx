@@ -54,3 +54,6 @@ Desktop.ini
 *.temp
 src/keys.js
 .env
+
+# Ignore deleted lamejs shim
+src/utils/lame-global-shim.js
