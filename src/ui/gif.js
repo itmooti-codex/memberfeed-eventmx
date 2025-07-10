@@ -115,6 +115,9 @@ export function initGifPicker() {
     $('#gif-modal').removeClass('hidden');
     $('#gif-search-input').val('');
     search();
+    setTimeout(() => {
+      $('#gif-search-input').trigger('focus');
+    }, 0);
   });
 
   $('#gif-close-btn').on('click', () => $('#gif-modal').addClass('hidden'));
