@@ -126,7 +126,12 @@ export function initGifPicker() {
   });
   $('#gif-close-btn').on('click', () => $('#gif-modal').addClass('hidden'));
 
-  $('#gif-search-btn').on('click', () => search($('#gif-search-input').val().trim()));
+  $('#gif-search-btn').on('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    search($('#gif-search-input').val().trim());
+    $('#gif-search-input').trigger('focus');
+  });
 
   $('#gif-grid').on('click', 'img', async function () {
     const url = $(this).data('full');
