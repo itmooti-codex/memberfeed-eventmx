@@ -23,7 +23,6 @@ import { showToast } from "./ui/toast.js";
 import { refreshNotificationSubscription } from "./notifications.js";
 import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
 export let notificationPreferences = null;
-Alpine.start();
 window.createFeedToSubmit = createFeedToSubmit;
 window.toggleAllOff = toggleAllOff;
 window.toggleOption = toggleOption;

@@ -1,3 +1,6 @@
+import Alpine from 'alpinejs';
+import focus from '@alpinejs/focus';
+
 ; (function () {
     const el = document.documentElement;
 
@@ -27,3 +30,9 @@
     $watch('modalForCustomDateTime', v => v ? window.disableBodyScroll() : window.enableBodyScroll());
   `);
 })();
+
+// Register plugins
+Alpine.plugin(focus);
+
+// Start Alpine.js
+Alpine.start();

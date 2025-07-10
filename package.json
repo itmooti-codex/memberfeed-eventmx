@@ -2,10 +2,37 @@
   "type": "module",
   "scripts": {
     "test": "node --test test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build:css": "node build-css.js",
+    "build:js": "node build-js.js",
+    "build": "npm run build:css && npm run build:js"
   },
   "devDependencies": {
-    "@eslint/js": "^1.0.0",
-    "globals": "^15.0.0"
-  }
+    "@alpinejs/focus": "^3.14.9",
+    "@tailwindcss/postcss": "^4.1.11",
+    "alpinejs": "^3.14.9",
+    "autoprefixer": "^10.4.21",
+    "esbuild": "^0.25.6",
+    "globals": "^15.0.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11"
+  },
+  "name": "memberfeed-eventmx",
+  "description": "This repository contains a simple front-end application for viewing and creating feed posts. The project is entirely client-side and must be served from a local web server.",
+  "version": "1.0.0",
+  "main": "postcss.config.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itmooti-codex/memberfeed-eventmx.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itmooti-codex/memberfeed-eventmx/issues"
+  },
+  "homepage": "https://github.com/itmooti-codex/memberfeed-eventmx#readme"
 }

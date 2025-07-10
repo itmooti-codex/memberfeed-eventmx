@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --color-primary: #0963D8;
   /* Basic Colors */
