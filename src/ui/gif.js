@@ -1,6 +1,6 @@
 export function initGifPicker() {
   const modal = $(
-    `<div id="gif-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-12 !z-[2147483650]">
+    `<div id="gif-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-12 !z-[2147483649]">
       <div class="bg-white w-full max-w-4xl rounded-lg shadow-lg overflow-hidden relative">
         <div id="pond-loading" class="hidden absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
           <svg class="animate-spin h-12 w-12 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -118,6 +118,11 @@ export function initGifPicker() {
     }, 0);
   });
   $('#gif-search-input').on('click', e => {
+    e.stopPropagation();
+    $('#gif-search-input').trigger('focus');
+  });
+  $('#gif-search-input').on('keydown', e => {
+    e.stopPropagation();
     if (e.key === 'Enter') {
       e.preventDefault();
       $('#gif-search-btn').trigger('click');
