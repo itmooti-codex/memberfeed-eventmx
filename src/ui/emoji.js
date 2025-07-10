@@ -92,7 +92,7 @@ export const toolbarDesign = `
               <span class="cursor-pointer px-1 hover:bg-[var(--color-primary)]">🚀</span>
               <span class="cursor-pointer px-1 hover:bg-[var(--color-primary)]">🥳</span>
             </div>
-          <div class=" gif-toggle flex items-center cursor-pointer justify-start !border-none gap-2 rounded !bg-transparent hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]">
+          <div class="gif-toggle flex items-center cursor-pointer justify-start !border-none gap-2 rounded !bg-transparent hover:!bg-[var(--color-primary-shade)] cursor-pointer group p-1 max-[702px]:p-[2px]">
           <svg width="18" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7.58366 11V6H8.83366V11H7.58366ZM3.00033 11C2.75033 11 2.54894 10.9133 2.39616 10.74C2.24338 10.5667 2.16699 10.3756 2.16699 10.1667V6.83333C2.16699 6.625 2.24338 6.43417 2.39616 6.26083C2.54894 6.0875 2.75033 6.00056 3.00033 6H5.50032C5.75032 6 5.95171 6.08694 6.10449 6.26083C6.25727 6.43472 6.33366 6.62556 6.33366 6.83333V7.25H3.41699V9.75H5.08366V8.5H6.33366V10.1667C6.33366 10.375 6.25727 10.5661 6.10449 10.74C5.95171 10.9139 5.75032 11.0006 5.50032 11H3.00033ZM10.0837 11V6H13.8337V7.25H11.3337V8.08333H13.0003V9.33333H11.3337V11H10.0837Z" fill="#737373"/>
           </svg>

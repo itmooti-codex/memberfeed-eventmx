@@ -117,12 +117,14 @@ export function initGifPicker() {
     $('#gif-search-input').val('');
     search();
     setTimeout(() => {
-      $('#gif-search-input').trigger('focus');
+      const input = document.getElementById('gif-search-input');
+      input?.focus();
     }, 100);
   });
-  $('#gif-search-input').on('mousedown click', function (e) {
+  $('#gif-search-input').on('pointerdown mousedown click', function (e) {
+    e.preventDefault();
     e.stopPropagation();
-    $(this).trigger('focus');
+    this.focus();
   });
   $('#gif-search-input').on('focus focusin', e => {
     e.stopPropagation();
