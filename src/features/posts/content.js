@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 export function processContent(rawHtml) {
   console.log("Processing content for posts/comments", rawHtml);
 

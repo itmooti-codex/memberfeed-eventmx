@@ -22,6 +22,8 @@ import { toggleAllOff, toggleOption } from "./ui/notificationPreference.js";
 import { showToast } from "./ui/toast.js";
 import { refreshNotificationSubscription } from "./notifications.js";
 import { disableBodyScroll, enableBodyScroll } from "./utils/bodyScroll.js";
+import jsrender from 'jsrender';
+window.$ = jsrender;
 export let notificationPreferences = null;
 window.createFeedToSubmit = createFeedToSubmit;
 window.toggleAllOff = toggleAllOff;

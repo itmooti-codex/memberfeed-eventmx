@@ -22,6 +22,8 @@ import { initModerationHandlers } from "./features/posts/moderation.js";
 import { updateCurrentUserUI } from "./ui/user.js";
 import { initEmojiHandlers } from "./ui/emoji.js";
 import { initGifPicker } from "./ui/gif.js";
+import jsrender from 'jsrender';
+window.$ = jsrender;
 
 // Helpers used by JsRender templates. These are normally added in main.js
 // but notifications-only.js runs on its own page without main.js, so we

@@ -1,3 +1,5 @@
+import Plyr from 'plyr';
+
 export function setupPlyr() {
   const opts = {
     controls: [

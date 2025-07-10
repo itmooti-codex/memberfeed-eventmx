@@ -1,6 +1,13 @@
 import { setPendingFile, setFileTypeCheck } from '../features/uploads/handlers.js';
 import { micIcon } from '../ui/emoji.js';
-FilePond.registerPlugin(
+import { create, registerPlugin } from 'filepond';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.esm.js';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js';
+import FilePondPluginMediaPreview from 'filepond-plugin-media-preview/dist/filepond-plugin-media-preview.esm.js';
+import FilePondPluginFilePoster from 'filepond-plugin-file-poster/dist/filepond-plugin-file-poster.esm.js';
+import MicRecorder from 'mic-recorder-to-mp3';
+
+registerPlugin(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview,
   FilePondPluginMediaPreview,
@@ -16,7 +23,7 @@ export function initFilePond() {
     if (!inputElement || !dropArea || !canvas) return;
     const ctx = canvas.getContext("2d");
 
-    const pond = FilePond.create(inputElement, {
+    const pond = create(inputElement, {
       allowReplace: true,
       allowBrowse: true,
       allowDrop: false,
@@ -119,7 +126,6 @@ export function initFilePond() {
       if (cancelBtn) cancelBtn.remove();
     });
 
-    const recorder = new MicRecorder({ bitRate: 128 });
     let isRecording = false;
     let audioContext, analyser, dataArray, source, animationId, mediaStream;
 

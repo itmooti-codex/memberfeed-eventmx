@@ -13,7 +13,13 @@
     "alpinejs": "^3.14.9",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.25.6",
+    "filepond": "^4.32.8",
+    "filepond-plugin-file-poster": "^2.5.2",
+    "filepond-plugin-file-validate-type": "^1.2.9",
+    "filepond-plugin-image-preview": "^4.6.12",
+    "filepond-plugin-media-preview": "^1.0.11",
     "globals": "^15.0.0",
+    "jsrender": "^1.0.16",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11",
     "tributejs": "^5.1.3"
@@ -35,5 +41,12 @@
   "bugs": {
     "url": "https://github.com/itmooti-codex/memberfeed-eventmx/issues"
   },
-  "homepage": "https://github.com/itmooti-codex/memberfeed-eventmx#readme"
+  "homepage": "https://github.com/itmooti-codex/memberfeed-eventmx#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "dompurify": "^3.2.6",
+    "lamejs": "^1.2.1",
+    "mic-recorder-to-mp3": "^2.2.2",
+    "plyr": "^3.7.8"
+  }
 }

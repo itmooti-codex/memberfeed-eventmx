@@ -40,6 +40,9 @@ try {
     loader: {
       '.js': 'jsx',
     },
+    alias: {
+      'lamejs': 'lamejs/lame.min.js'
+    },
   });
 
   // Build the notifications JavaScript bundle

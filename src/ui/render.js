@@ -1,4 +1,6 @@
 import { safeArray, timeAgo, parseDate } from "../utils/formatter.js";
+import jsrender from 'jsrender';
+if (!window.$) window.$ = jsrender;
 
 function parseFileField(val) {
   if (!val) return {};
