@@ -38,7 +38,7 @@ export function initGifPicker() {
         </div>
       </div>
     </div>`
-  ).prepend('body');
+  ).prependTo('body');
 
   const apiKeyGIPHY = '94CIbzCFrmRmAtulBbV6g0XRteWMqzfr';
   let pondInstance = null;
