@@ -415,7 +415,6 @@ export function uploadFiles(filesToUpload, s3Params, toSubmit) {
           }
           resolve(result);
         } else {
-          console.error("File upload failed", xhr.statusText);
           resolve(null);
         }
       };

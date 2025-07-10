@@ -217,7 +217,6 @@ export function openPostModalById(postId, author = "", highlight = null, openFor
       try {
         msg = JSON.parse(data);
       } catch {
-        console.error("Invalid JSON", data);
         return;
       }
 
@@ -243,7 +242,6 @@ export function openPostModalById(postId, author = "", highlight = null, openFor
         }
         const data = msg.payload.data.subscribeToFeed;
         if (!data) {
-          console.log("Post not found or deleted");
           if (container) {
             container.innerHTML = DELETED_MODAL_HTML;
           }
@@ -261,14 +259,12 @@ export function openPostModalById(postId, author = "", highlight = null, openFor
           firstUpdate = false;
         }
       } else if (msg.type === "GQL_ERROR") {
-        console.error("Subscription error", msg.payload);
       } else if (msg.type === "GQL_COMPLETE") {
         closeModalSocket();
       }
     });
 
     modalSocket.addEventListener("error", (e) => {
-      console.error("Post modal WebSocket error", e);
       closeModalSocket();
     });
 

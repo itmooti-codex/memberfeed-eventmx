@@ -128,6 +128,7 @@ export function initFilePond() {
 
     let isRecording = false;
     let audioContext, analyser, dataArray, source, animationId, mediaStream;
+    let recorder; // Ensure recorder is declared
 
     const drawWaveform = () => {
       if (!analyser) return;
@@ -215,7 +216,7 @@ export function initFilePond() {
                         inputElement.files = dt.files;
                       }
                     } catch (e) {
-                      console.warn("DataTransfer unsupported", e);
+                      // console.warn("DataTransfer unsupported", e);
                     }
                     setPendingFile(file);
                     setFileTypeCheck("Audio");
@@ -224,7 +225,9 @@ export function initFilePond() {
                     inputElement.dispatchEvent(nativeEvent);
                     $(inputElement).trigger("change");
                   });
-                }).catch((e) => console.error(e));
+                }).catch((e) => {
+                  // console.error(e);
+                });
               }
             });
           }
@@ -272,7 +275,7 @@ export function initFilePond() {
                       inputElement.files = dt.files;
                     }
                   } catch (e) {
-                    console.warn("DataTransfer unsupported", e);
+                    // console.warn("DataTransfer unsupported", e);
                   }
                   setPendingFile(file);
                   setFileTypeCheck("Audio");
@@ -287,12 +290,13 @@ export function initFilePond() {
               isRecording = true;
               recordBtn._safariRecorder = safariRecorder;
             } else {
+              recorder = new MicRecorder({ bitRate: 128 });
               recorder.start().then(() => {
                 isRecording = true;
               });
             }
           }).catch((e) => {
-            console.error("Mic access failed:", e.name, e.message);
+            // console.error("Mic access failed:", e.name, e.message);
 
             inputElement.disabled = false;
             canvas.style.display = "none";

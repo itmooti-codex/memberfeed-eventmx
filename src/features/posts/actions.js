@@ -65,7 +65,7 @@ export async function createFeedToSubmit(
   const editor = $(`.${formElementId} .editor`);
   const htmlContent = editor.html().trim();
   if (!htmlContent && !pendingFile) {
-    alert("Please enter some content or upload a file.");
+    // alert("Please enter some content or upload a file.");
     return null;
   }
 
@@ -91,7 +91,7 @@ export async function createFeedToSubmit(
       rootFeedId = node.depth === 0 ? node.id : node.parentId;
       parentFeedTag = node.feedTag;
     } else {
-      console.log("Parent node not found, trying to find closest item");
+      // console.log("Parent node not found, trying to find closest item");
       const elemetnt = document.querySelector(`.commentContainer_${uidParam}`);
       parentFeedId = elemetnt ? elemetnt.getAttribute("data-id") : null;
       rootFeedId = parentFeedId;
@@ -260,7 +260,7 @@ export async function createFeedToSubmit(
     setFileTypeCheck("");
     $("#file-input").val("");
   } catch (err) {
-    console.error("Post failed", err);
+    // console.error("Post failed", err);
   } finally {
     $btn.prop("disabled", false);
     const filepondCloseButton = document.querySelector(

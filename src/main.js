@@ -43,7 +43,7 @@ export function getNotificationPreferences(contactId) {
       }
     })
     .catch((err) => {
-      console.error("Failed to fetch notification preferences", err);
+      // console.error("Failed to fetch notification preferences", err);
     });
 }
 function startApp(tagName, contactId, displayName) {
@@ -89,7 +89,7 @@ function startApp(tagName, contactId, displayName) {
       }
     })
     .catch((err) => {
-      console.error("Failed to fetch contacts", err);
+      // console.error("Failed to fetch contacts", err);
     });
   if (hasNotifContainer || hasNotifOptions) {
     getNotificationPreferences(contactId);
@@ -132,7 +132,7 @@ function startApp(tagName, contactId, displayName) {
       }
     })
     .catch((err) => {
-      console.error("Failed to check contact tags", err);
+      // console.error("Failed to check contact tags", err);
     });
 }
 

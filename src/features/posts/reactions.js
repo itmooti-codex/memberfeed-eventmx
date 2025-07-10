@@ -22,7 +22,6 @@ export function initReactionHandlers() {
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid);
     if (!node) {
-      console.error("Node not found for uid", uid);
       return;
     }
     $(this).addClass("state-disabled");
@@ -65,7 +64,6 @@ export function initReactionHandlers() {
         toastMsg = "Liked";
       }
     } catch (err) {
-      console.error("error is", err);
     } finally {
       $(this).removeClass("state-disabled");
     }
@@ -84,7 +82,6 @@ export function initReactionHandlers() {
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid);
     if (!node) {
-      console.error("Node not found for uid", uid);
       return;
     }
     $(this).addClass("state-disabled");
@@ -124,7 +121,6 @@ export function initReactionHandlers() {
         toastMsg = "Saved";
       }
     } catch (err) {
-      console.error("error is", err);
     } finally {
       $(this).removeClass("state-disabled");
     }

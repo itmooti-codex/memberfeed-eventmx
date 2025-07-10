@@ -36,7 +36,6 @@ export function initModerationHandlers() {
     const source = inModal ? getModalTree() : state.postsStore;
     const node = findNode(source, uid) || findNode(state.postsStore, uid);
     if (!node) {
-      console.error("Node not found for uid", uid);
       return;
     }
     const label = node.depth === 0 ? "post" : node.depth === 1 ? "comment" : "reply";
@@ -62,7 +61,6 @@ export function initModerationHandlers() {
     let node =
       findNode(state.postsStore, uid) || findNode(getModalTree(), uid);
     if (!node) {
-      console.error("Node not found for uid", uid);
       $item.removeClass("state-disabled");
       pendingDelete = null;
       return;
@@ -82,7 +80,6 @@ export function initModerationHandlers() {
         }
       })
       .catch((err) => {
-        console.error("Delete failed", err);
         $item.removeClass("state-disabled");
         showToast("Delete failed");
       })
@@ -116,7 +113,6 @@ export function initModerationHandlers() {
       }
       showToast("Marked as featured");
     } catch (err) {
-      console.error("Failed to mark featured", err);
     } finally {
       $(this).removeClass("state-disabled");
     }
@@ -147,7 +143,6 @@ export function initModerationHandlers() {
       }
       showToast("Removed featured mark");
     } catch (err) {
-      console.error("Failed to unmark featured", err);
     } finally {
       $(this).removeClass("state-disabled");
     }
@@ -184,7 +179,6 @@ export function initModerationHandlers() {
       }
       showToast("Comments disabled");
     } catch (err) {
-      console.error("Failed to disable comments", err);
     } finally {
       $(this).removeClass("state-disabled");
     }
@@ -221,7 +215,6 @@ export function initModerationHandlers() {
       }
       showToast("Comments enabled");
     } catch (err) {
-      console.error("Failed to enable comments", err);
     } finally {
       $(this).removeClass("state-disabled");
     }

@@ -57,7 +57,6 @@ function getNotificationPreferences(contactId) {
       }
     })
     .catch((err) => {
-      console.error("Failed to fetch notification preferences", err);
     });
 }
 
@@ -81,7 +80,6 @@ function fetchContactsAndCurrentUser(contactId) {
       }
     })
     .catch((err) => {
-      console.error("Failed to fetch contacts", err);
     });
 }
 
