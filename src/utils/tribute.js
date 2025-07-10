@@ -1,3 +1,4 @@
+import Tribute from "tributejs";
 import { DEFAULT_AVATAR } from "../config.js";
 
 export const tribute = new Tribute({
