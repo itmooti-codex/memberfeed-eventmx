@@ -106,9 +106,7 @@ export function initGifPicker() {
     }
 
     pondInstance = FilePond.find(actualInput);
-   
     if (!pondInstance) {
-     
       return;
     }
 
@@ -119,7 +117,13 @@ export function initGifPicker() {
       $('#gif-search-input').trigger('focus');
     }, 0);
   });
-
+  $('#gif-search-input').on('click', () => $('#gif-search-input').focus());
+  $('#gif-search-input').on('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      $('#gif-search-btn').trigger('click');
+    }
+  });
   $('#gif-close-btn').on('click', () => $('#gif-modal').addClass('hidden'));
 
   $('#gif-search-btn').on('click', () => search($('#gif-search-input').val().trim()));
