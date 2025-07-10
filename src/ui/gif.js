@@ -117,8 +117,12 @@ export function initGifPicker() {
       $('#gif-search-input').trigger('focus');
     }, 0);
   });
-  $('#gif-search-input').on('click', () => $('#gif-search-input').focus());
-  $('#gif-search-input').on('keydown', (e) => {
+  $('#gif-search-input').on('click', e => {
+    e.stopPropagation();
+    $('#gif-search-input').trigger('focus');
+  });
+  $('#gif-search-input').on('keydown', e => {
+    e.stopPropagation();
     if (e.key === 'Enter') {
       e.preventDefault();
       $('#gif-search-btn').trigger('click');
