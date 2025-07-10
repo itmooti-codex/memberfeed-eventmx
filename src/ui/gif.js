@@ -91,6 +91,7 @@ export function initGifPicker() {
   // Handle toggle click: choose input inside create-post-modal or fallback to comment-form
   $(document).on('click', '.gif-toggle', function (e) {
     // e.stopPropagation();
+    $('#gif-search-input').trigger('focus');
     const $toggle = $(this);
   
     let actualInput;
@@ -119,7 +120,7 @@ export function initGifPicker() {
   });
   $('#gif-search-input').on('click', e => {
     e.stopPropagation();
-    $('#gif-search-input').trigger('focus');
+    $(this).trigger('focus');
   });
   $('#gif-search-input').on('keydown', e => {
     e.stopPropagation();
