@@ -83,7 +83,7 @@ function updateToolbar(editor) {
   const toolbar = $(editor)
     .closest('.comment-form, #post-creation-form')
     .find('.toolbar');
-  toolbar.find('button').each(function () {
+  toolbar.find('button[data-cmd="bold"],button[data-cmd="italic"],button[data-cmd="underline"]').each(function () {
     const cmd = $(this).data('cmd');
     if (!cmd || cmd === 'link') return;
     if (isFormatActive(cmd)) $(this).addClass('active');
