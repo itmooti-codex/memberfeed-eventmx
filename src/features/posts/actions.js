@@ -14,7 +14,8 @@ import {
   setPendingFile,
   setFileTypeCheck,
 } from "../uploads/handlers.js";
-import { processFileFields } from "../../utils/handleFile.js";
+// import { processFileFields } from "../../utils/handleFile.js";
+import { uploadAndGetFileLink } from "../../utils/upload.js";
 import { applyFilterAndRender } from "./filters.js";
 import { mergeLists } from "../../utils/merge.js";
 import { showToast } from "../../ui/toast.js";
@@ -142,21 +143,14 @@ export async function createFeedToSubmit(
   let finalPayload = { ...payload };
 
   if (pendingFile) {
-    const fileFields = [{ fieldName: "file_content", file: pendingFile }];
-    const toSubmitFields = {};
-    await processFileFields(
-      toSubmitFields,
-      fileFields,
-      awsParam,
-      awsParamUrl,
-    );
-    let fileData =
-      typeof toSubmitFields.file_content === 'string'
-        ? JSON.parse(toSubmitFields.file_content)
-        : toSubmitFields.file_content;
-    fileData.name = fileData.name || pendingFile.name;
-    fileData.size = fileData.size || pendingFile.size;
-    fileData.type = fileData.type || pendingFile.type;
+    
+    const link = await uploadAndGetFileLink(pendingFile);
+    const fileData = {
+      link,
+      name: pendingFile.name,
+      size: pendingFile.size,
+      type: pendingFile.type,
+    };
     finalPayload.file_content = JSON.stringify(fileData);
     finalPayload.file_type = fileTypeCheck;
     finalPayload.file_name = pendingFile.name;

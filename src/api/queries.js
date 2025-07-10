@@ -135,6 +135,8 @@ const SUBSCRIBE_FEED_POSTS_FIELDS = `
           id
           first_name
           last_name
+          display_name
+          profile_image
         }
         reacted_to_feed_id
       }
