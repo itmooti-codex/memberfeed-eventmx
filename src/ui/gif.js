@@ -120,9 +120,12 @@ export function initGifPicker() {
       $('#gif-search-input').trigger('focus');
     }, 100);
   });
-  $('#gif-search-input').on('click', e => {
+  $('#gif-search-input').on('mousedown click', function (e) {
     e.stopPropagation();
     $(this).trigger('focus');
+  });
+  $('#gif-search-input').on('focus focusin', e => {
+    e.stopPropagation();
   });
   $('#gif-search-input').on('keydown', e => {
     e.stopPropagation();
