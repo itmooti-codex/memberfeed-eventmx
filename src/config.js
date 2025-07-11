@@ -64,6 +64,7 @@ export const state = {
   debounceTimer: null,
   currentUser: null,
   initialPostsLoaded: false,
+  initialDomRendered: false,
   isConnecting: false,
   ignoreNextSocketUpdate: false,
   ignoreNextModalUpdate: false,
