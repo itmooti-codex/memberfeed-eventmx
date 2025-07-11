@@ -34,7 +34,7 @@ export function openLikesModal(id) {
             return `<div class="flex items-center gap-2 p-2 mx-4 rounded hover:bg-[#E7F1FE] cursor-pointer"><img class="w-6 h-6 border-[1px] border-[#D9D9D9] rounded-full object-cover" src="${img}" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR}'" alt="${name}"><div>${name} ${you}</div></div>`;
         })
         .join("") || `<div class="m-auto">
-         <img src="https://static-au03.vitalstats.app/uploads/eventmx/dva4KMb33sPYMOlHVhvlR.jpg" class="size-[250px]"/>
+         <img src="https://static-au03.vitalstats.app/uploads/eventmx/H5YEE3Orzgi2nSvmZgI3x.svg" class="size-full"/>
         </div>`;
     modal.classList.remove("hidden");
     disableBodyScroll();

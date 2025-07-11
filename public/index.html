@@ -1150,7 +1150,8 @@
             <div class="p3 text-[var(--color-black)] " >{{:upvotes}}</div>
   </div>
         {{if !commentsDisabled && feedStatus !== 'Scheduled'}}
-        <div class="flex items-end justify-end gap-2 {{if depth === 1}}cursor-pointer toggle-replies{{/if}}" {{if
+        <div  data-uid="{{:uid}}"   data-id="{{:id}}" data-author="{{:authorName}}" {{if !~inModal}}
+            @click="modalForPostOpen=true" {{/if}} class="{{if !~inModal}}openPostModal{{/if}} cursor-pointer flex items-end justify-end gap-2 {{if depth === 1}}cursor-pointer toggle-replies{{/if}}" {{if
             depth===1}}data-uid="{{:uid}}" {{/if}}>
             <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
