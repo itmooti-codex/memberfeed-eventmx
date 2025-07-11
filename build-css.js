@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Read the styles.css file from public/styles/
-const inputPath = path.join(__dirname, 'public', 'styles', 'style.css');
+const inputPath = path.join(__dirname, 'public', 'styles', 'all.css');
 const outputPath = path.join(__dirname, 'dist', 'output.css');
 
 try {
