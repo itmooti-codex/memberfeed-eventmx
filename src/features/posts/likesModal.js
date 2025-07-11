@@ -1,4 +1,4 @@
-import { state, DEFAULT_AVATAR } from "../../config.js";
+import { state, DEFAULT_AVATAR,GLOBAL_AUTHOR_ID } from "../../config.js";
 import { safeArray } from "../../utils/formatter.js";
 import { findRawById } from "../../utils/posts.js";
 import { disableBodyScroll, enableBodyScroll } from "../../utils/bodyScroll.js";
@@ -22,15 +22,20 @@ export function openLikesModal(id) {
     listEl.innerHTML = reactors
         .map((r) => {
             const u = r.Feed_Reactor || {};
+            const isCurrentUser = u.id === GLOBAL_AUTHOR_ID;
+            let you = "";
+            if( isCurrentUser) {
+            you= `(You)`;
+            }
             const name =
                 u.display_name || [u.first_name, u.last_name].filter(Boolean).join(" ") ||
                 "Anonymous";
             const img = u.profile_image || DEFAULT_AVATAR;
-            return `<div class="flex items-center gap-2 p-2 mx-4 rounded hover:bg-[#E7F1FE] cursor-pointer"><img class="w-6 h-6 border-[1px] border-[#D9D9D9] rounded-full object-cover" src="${img}" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR}'" alt="${name}"><div>${name}</div></div>`;
+            return `<div class="flex items-center gap-2 p-2 mx-4 rounded hover:bg-[#E7F1FE] cursor-pointer"><img class="w-6 h-6 border-[1px] border-[#D9D9D9] rounded-full object-cover" src="${img}" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR}'" alt="${name}"><div>${name} ${you}</div></div>`;
         })
         .join("") || `<div class="m-auto">
-        
-        <img src="https://static-au03.vitalstats.app/uploads/eventmx/dva4KMb33sPYMOlHVhvlR.jpg" class="size-[250px]"/>
+         <img src=" https://static-au03.vitalstats.app/uploads/eventmx/dpYP3oQoAomii1_KBO68M.gif" class="size-[250px]"/>
+         <img src="https://static-au03.vitalstats.app/uploads/eventmx/dva4KMb33sPYMOlHVhvlR.jpg" class="!hidden size-[250px]"/>
         </div>`;
     modal.classList.remove("hidden");
     disableBodyScroll();
