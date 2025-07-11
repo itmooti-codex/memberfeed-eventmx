@@ -70,48 +70,32 @@ export function applyFilterAndRender() {
       `
     );
   } else {
-    // Preserve existing media elements to avoid reloads
-    const frames = {};
-    $container.find('.item').each(function () {
-      const uid = $(this).data('uid');
-      const els = [];
-      $(this)
-        .find('iframe, video.js-player, audio.js-player, img')
-        .each(function () {
-          const wrapper = this.closest('.plyr');
-          if (wrapper) {
-            els.push($(wrapper).detach()[0]);
-          } else {
-            els.push($(this).detach()[0]);
-          }
-        });
-      if (els.length) {
-        frames[uid] = els;
-      }
-    });
-
-    $container.html(renderItems(items, { inModal: false }));
-
-    for (const uid in frames) {
-      const $item = $container.find(`[data-uid="${uid}"]`);
-      if ($item.length) {
-        // const newFrames = $item.find('iframe, video.js-player, audio.js-player, img');
-        // newFrames.each(function (idx) {
-        const newFrames = [];
-        $item
-          .find('iframe, video.js-player, audio.js-player, img')
-          .each(function () {
-            const wrapper = this.closest('.plyr');
-            newFrames.push(wrapper || this);
-          });
-        newFrames.forEach((node, idx) => {
-          const oldFrame = frames[uid][idx];
-          if (oldFrame) {
-            // $(this).replaceWith(oldFrame);
-            $(node).replaceWith(oldFrame);
-          }
-        });
-      }
+    const container = $container[0];
+    if (!state.initialDomRendered) {
+      container.innerHTML = renderItems(items, { inModal: false });
+      state.initialDomRendered = true;
+    } else {
+      const existing = {};
+      container.querySelectorAll(".item").forEach((el) => {
+        const uid = el.dataset.uid;
+        if (uid) existing[uid] = el;
+      });
+      const frag = document.createDocumentFragment();
+      items.forEach((item) => {
+        let el = existing[item.uid];
+        if (el) {
+          frag.appendChild(el);
+          delete existing[item.uid];
+        } else {
+          const html = renderItems([item], { inModal: false });
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+          frag.appendChild(temp.firstElementChild);
+        }
+      });
+      Object.values(existing).forEach((el) => el.remove());
+      container.innerHTML = "";
+      container.appendChild(frag);
     }
   }
 }
