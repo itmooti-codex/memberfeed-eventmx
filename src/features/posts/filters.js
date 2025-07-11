@@ -74,12 +74,9 @@ export function applyFilterAndRender() {
     const frames = {};
     $container.find('.item').each(function () {
       const uid = $(this).data('uid');
-      // const f = $(this).find('iframe, video.js-player, audio.js-player');
-      // if (f.length) {
-      //   frames[uid] = f.toArray().map((el) => $(el).detach()[0]);
       const els = [];
       $(this)
-        .find('iframe, video.js-player, audio.js-player')
+        .find('iframe, video.js-player, audio.js-player, img')
         .each(function () {
           const wrapper = this.closest('.plyr');
           if (wrapper) {
@@ -98,11 +95,11 @@ export function applyFilterAndRender() {
     for (const uid in frames) {
       const $item = $container.find(`[data-uid="${uid}"]`);
       if ($item.length) {
-        // const newFrames = $item.find('iframe, video.js-player, audio.js-player');
+        // const newFrames = $item.find('iframe, video.js-player, audio.js-player, img');
         // newFrames.each(function (idx) {
         const newFrames = [];
         $item
-          .find('iframe, video.js-player, audio.js-player')
+          .find('iframe, video.js-player, audio.js-player, img')
           .each(function () {
             const wrapper = this.closest('.plyr');
             newFrames.push(wrapper || this);
