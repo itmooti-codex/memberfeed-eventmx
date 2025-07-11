@@ -910,9 +910,28 @@
         </div>
       </div>
     </div>
+    <!-- Likes modal -->
+    <div id="likes-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[9999999999]">
+      <div class="bg-white rounded shadow-lg w-[90%] min-[700px]:max-w-sm max-[700px]:w-full max-[700px]:fixed max-[700px]:bottom-0 max-[700px]:rounded-[4px_4px_0_0] pb-4">
+        <div class="flex items-center justify-between py-4 mx-4 border-b-[1px] border-[#D9D9D9] mb-4">
+          <div id="likes-modal-title" class="h2"></div>
+          <div id="likes-modal-close" class="cursor-pointer">
+            <div
+              class="flex items-center justify-start gap-2 rounded-[34px] bg-zinc-100 hover:bg-[var(--color-primary-shade)] transition-all p-2 cursor-pointer group ">
+              <svg width="16" height="16" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M18.8535 18.146C18.8999 18.1925 18.9368 18.2476 18.9619 18.3083C18.9871 18.369 19 18.4341 19 18.4997C19 18.5654 18.9871 18.6305 18.9619 18.6912C18.9368 18.7519 18.8999 18.807 18.8535 18.8535C18.807 18.8999 18.7519 18.9368 18.6912 18.9619C18.6305 18.9871 18.5654 19 18.4997 19C18.4341 19 18.369 18.9871 18.3083 18.9619C18.2476 18.9368 18.1925 18.8999 18.146 18.8535L14 14.7068L9.85398 18.8535C9.76017 18.9473 9.63292 19 9.50025 19C9.36758 19 9.24033 18.9473 9.14652 18.8535C9.0527 18.7597 9 18.6324 9 18.4997C9 18.3671 9.0527 18.2398 9.14652 18.146L13.2932 14L9.14652 9.85398C9.0527 9.76017 9 9.63292 9 9.50025C9 9.36758 9.0527 9.24033 9.14652 9.14652C9.24033 9.0527 9.36758 9 9.50025 9C9.63292 9 9.76017 9.0527 9.85398 9.14652L14 13.2932L18.146 9.14652C18.2398 9.0527 18.3671 9 18.4997 9C18.6324 9 18.7597 9.0527 18.8535 9.14652C18.9473 9.24033 19 9.36758 19 9.50025C19 9.63292 18.9473 9.76017 18.8535 9.85398L14.7068 14L18.8535 18.146Z"
+                  fill="#0E0E0E"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div id="likes-list" class="flex flex-col gap-2"></div>
+      </div>
+    </div>
 
-<!-------Js render temlates------>
-<script id="tmpl-post" type="text/x-jsrender">
+    <!-------Js render temlates------>
+    <script id="tmpl-post" type="text/x-jsrender">
             {{if (feedType === 'Post' || feedType === 'Reply' || feedType === 'Comment') && (feedStatus === 'Published - Not Flagged' || (feedStatus === 'Scheduled' && isAdmin))}}
       {{if fileType === 'Image' && ~inModal}}<div class="flex max-[702px]:h-screen bg-black items-start  min-[702px]:w-[90vw] max-[702px]:flex-col max-[702px]:w-full">{{/if}}
   {{if fileType === 'Image' && ~inModal}}
@@ -1122,13 +1141,13 @@
     {{/if}}
     {{if feedStatus === "Published - Not Flagged"}}
     <div class=" flex items-center gap-4 {{if depth === 0 }} px-4{{/if}}">
-        <div class="flex items-end justify-end gap-2 ">
+        <div class="flex items-end justify-end gap-2 like-count cursor-pointer" data-id="{{:id}}">
             <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M14.6732 6.30021C14.5455 6.15556 14.3885 6.03972 14.2127 5.96038C14.0368 5.88105 13.8461 5.84004 13.6532 5.84008H10.4798V4.93341C10.4798 4.33226 10.241 3.75572 9.81593 3.33064C9.39085 2.90556 8.81431 2.66675 8.21316 2.66675C8.12894 2.66669 8.04637 2.69009 7.9747 2.73433C7.90304 2.77857 7.84511 2.8419 7.80742 2.91721L5.66656 7.20008H3.22649C2.98603 7.20008 2.75541 7.2956 2.58538 7.46564C2.41535 7.63567 2.31982 7.86628 2.31982 8.10675V13.0934C2.31982 13.3339 2.41535 13.5645 2.58538 13.7345C2.75541 13.9046 2.98603 14.0001 3.22649 14.0001H12.9732C13.3045 14.0002 13.6245 13.8793 13.873 13.6602C14.1215 13.4411 14.2815 13.1388 14.323 12.8101L15.003 7.37008C15.0271 7.17856 15.0101 6.9841 14.9533 6.79964C14.8964 6.61517 14.8009 6.44493 14.6732 6.30021ZM3.22649 8.10675H5.49316V13.0934H3.22649V8.10675Z"
                     fill="var(--color-primary)" />
   </svg>
-            <div class="p3 text-[var(--color-black)]">{{:upvotes}}</div>
+            <div class="p3 text-[var(--color-black)] " >{{:upvotes}}</div>
   </div>
         {{if !commentsDisabled && feedStatus !== 'Scheduled'}}
         <div class="flex items-end justify-end gap-2 {{if depth === 1}}cursor-pointer toggle-replies{{/if}}" {{if
@@ -1217,7 +1236,7 @@
 </script>
 
 
-<script id="tmpl-comment" type="text/x-jsrender">
+    <script id="tmpl-comment" type="text/x-jsrender">
     <div class="item {{if depth ===1}}mb-6{{else depth > 1}} mb-4 {{else}}{{/if}}
     {{if depth === 1}}commentContainer commentContainer_{{:uid}} {{/if}} {{if depth === 1 && children.length}}has-replies{{/if}} {{if depth === 1 && isCollapsed}}is-collapsed{{/if}}"
   data-uid="{{:uid}}"
@@ -1610,13 +1629,13 @@
         {{/if}}
         {{if feedStatus === "Published - Not Flagged"}}
         <div class=" flex items-center gap-4 {{if depth === 0 }} px-4{{/if}}">
-          <div class="flex items-end justify-end gap-2 ">
+          <div class="flex items-end justify-end gap-2">
             <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M14.6732 6.30021C14.5455 6.15556 14.3885 6.03972 14.2127 5.96038C14.0368 5.88105 13.8461 5.84004 13.6532 5.84008H10.4798V4.93341C10.4798 4.33226 10.241 3.75572 9.81593 3.33064C9.39085 2.90556 8.81431 2.66675 8.21316 2.66675C8.12894 2.66669 8.04637 2.69009 7.9747 2.73433C7.90304 2.77857 7.84511 2.8419 7.80742 2.91721L5.66656 7.20008H3.22649C2.98603 7.20008 2.75541 7.2956 2.58538 7.46564C2.41535 7.63567 2.31982 7.86628 2.31982 8.10675V13.0934C2.31982 13.3339 2.41535 13.5645 2.58538 13.7345C2.75541 13.9046 2.98603 14.0001 3.22649 14.0001H12.9732C13.3045 14.0002 13.6245 13.8793 13.873 13.6602C14.1215 13.4411 14.2815 13.1388 14.323 12.8101L15.003 7.37008C15.0271 7.17856 15.0101 6.9841 14.9533 6.79964C14.8964 6.61517 14.8009 6.44493 14.6732 6.30021ZM3.22649 8.10675H5.49316V13.0934H3.22649V8.10675Z"
                 fill="var(--color-primary)" />
             </svg>
-            <div class="p3 text-[var(--color-primary)]">{{:upvotes}}</div>
+            <div class="p3 text-[var(--color-primary)] like-count">{{:upvotes}}</div>
           </div>
           {{if !commentsDisabled && feedStatus !== 'Scheduled'}}
           <div class="flex items-end justify-end gap-2 {{if depth === 1}}cursor-pointer toggle-replies{{/if}}" {{if
