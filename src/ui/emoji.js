@@ -151,8 +151,10 @@ export function initEmojiHandlers() {
 }
 
 function insertEmoji(editor, emoji) {
-  editor.focus();
+  // restore the previously saved selection **before** focusing the editor
+  // so the focus event doesn't overwrite the saved range
   restoreSelection(editor);
+  editor.focus();
   const sel = window.getSelection();
   if (!sel || sel.rangeCount === 0) return;
   const range = sel.getRangeAt(0);
