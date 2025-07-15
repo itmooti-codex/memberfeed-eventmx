@@ -105,7 +105,6 @@ export function initGifPicker() {
       actualInput = document.querySelector('.comment-form').querySelector('#file-input');
     }
     if (!actualInput) {
-     
       return;
     }
 
@@ -122,14 +121,18 @@ export function initGifPicker() {
       input?.focus();
     }, 100);
   });
+  
   $('#gif-search-input').on('pointerdown mousedown click', function (e) {
     e.preventDefault();
+    e.stopImmediatePropagation();
     e.stopPropagation();
     this.focus();
   });
+  
   $('#gif-search-input').on('focus focusin', e => {
     e.stopPropagation();
   });
+  
   $('#gif-search-input').on('keydown', e => {
     e.stopPropagation();
     if (e.key === 'Enter') {
@@ -137,6 +140,7 @@ export function initGifPicker() {
       $('#gif-search-btn').trigger('click');
     }
   });
+  
   $('#gif-close-btn').on('click', () => $('#gif-modal').addClass('hidden'));
 
   $('#gif-search-btn').on('click', e => {
