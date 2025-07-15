@@ -24,5 +24,7 @@ export function moveCursorToEnd(el) {
   sel.removeAllRanges();
   sel.addRange(range);
   el.focus();
+  if (!document.getElementById('gif-modal')?.classList.contains('hidden')) return;
+  el.focus();
   savedRange = range.cloneRange();
 }
