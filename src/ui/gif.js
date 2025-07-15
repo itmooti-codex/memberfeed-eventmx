@@ -117,9 +117,8 @@ export function initGifPicker() {
     $('#gif-search-input').val('');
     search();
     setTimeout(() => {
-      const input = document.getElementById('gif-search-input');
-      input?.focus();
-    }, 100);
+     $('#gif-search-input').focus();
+   }, 50);
   });
   
   $('#gif-search-input').on('pointerdown mousedown click', function (e) {
