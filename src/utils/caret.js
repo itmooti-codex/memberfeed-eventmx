@@ -23,8 +23,8 @@ export function moveCursorToEnd(el) {
   const sel = window.getSelection();
   sel.removeAllRanges();
   sel.addRange(range);
-  el.focus();
-  if (!document.getElementById('gif-modal')?.classList.contains('hidden')) return;
-  el.focus();
+  if (document.getElementById('gif-modal')?.classList.contains('hidden')) {
+    el.focus();
+  }
   savedRange = range.cloneRange();
 }
