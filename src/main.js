@@ -232,11 +232,3 @@ updateLines();
 // Watch for DOM changes (dynamic rendering)
 const observer = new MutationObserver(() => updateLines());
 observer.observe(document.body, { childList: true, subtree: true });
-
-$(document).on('focusin', '.editor', function (e) {
-  if ($('#gif-modal').is(':visible') && !$(e.target).closest('#gif-modal').length) {
-    e.preventDefault();
-    this.blur();
-    $('#gif-search-input').focus();
-  }
-});
