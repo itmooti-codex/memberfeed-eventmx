@@ -233,19 +233,4 @@ updateLines();
 const observer = new MutationObserver(() => updateLines());
 observer.observe(document.body, { childList: true, subtree: true });
 
-// Only block focus on .editor if GIF modal is open and the event is not inside the modal
-['focusin', 'focus', 'mousedown', 'click'].forEach(eventType => {
-  $(document).on(eventType, '.editor', function (e) {
-    if (
-      $('#gif-modal').is(':visible') &&
-      !$(e.target).closest('#gif-modal').length
-    ) {
-      e.preventDefault();
-      this.blur();
-      // Only focus the search input if the user is interacting with the modal
-      // (not on every blocked event)
-    }
-  });
-});
 
-// When the GIF modal is closed, allow normal focus again (no extra code needed, as the check is dynamic)
