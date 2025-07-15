@@ -93,10 +93,8 @@ export function initGifPicker() {
     e.preventDefault();
     e.stopImmediatePropagation();
     e.stopPropagation();
-    this.focus();
     let gifModal = $('#gif-search-input');
-    console.log("Input of gif modal is", gifModal);
-   
+    gifModal.focus();
     const $toggle = $(this);
   
     let actualInput;
