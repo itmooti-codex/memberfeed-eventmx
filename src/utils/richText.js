@@ -16,7 +16,9 @@ export function initRichText() {
       .find('.editor')[0];
     if (!editor) return;
 
-    editor.focus();
+    if (!$('#gif-modal').is(':visible')) {
+      editor.focus();
+    }
     ensureCursor(editor);
     restoreSelection(editor);
 
