@@ -37,6 +37,8 @@ export function processContent(rawHtml) {
 
   doc.body.querySelectorAll('a').forEach(a => {
     a.classList.add('underline', 'text-[var(--color-primary)]');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener noreferrer');
   });
 
   function replaceUrls(node) {
