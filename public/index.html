@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Event Feed</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/styleOp.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.css" />
   <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
   <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
@@ -31,7 +31,14 @@
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.2/dist/purify.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tributejs@5.1.3/dist/tribute.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <script src="../src/keys.js"></script>
+  <script>
+    let feedUserContactId = "74";
+    const graphQlApiKey = "lZirodvxO8LO6cD1QnA7C";
+    const graphQlApiEndpoint = "https://eventmx.vitalstats.app/api/v1/graphql";
+    const graphQlWsEndpoint = "wss://eventmx.vitalstats.app/api/v1/graphql?apiKey=lZirodvxO8LO6cD1QnA7C";
+    let ACCOUNT_NAME = "Eventmx";
+    let classTag = "Demo_Feed";
+  </script>
 </head>
 
 <body>
@@ -912,7 +919,8 @@
     </div>
     <!-- Likes modal -->
     <div id="likes-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[9999999999]">
-      <div class="bg-white rounded shadow-lg w-[90%] min-[700px]:max-w-sm max-[700px]:w-full max-[700px]:fixed max-[700px]:bottom-0 max-[700px]:rounded-[4px_4px_0_0] pb-4">
+      <div
+        class="bg-white rounded shadow-lg w-[90%] min-[700px]:max-w-sm max-[700px]:w-full max-[700px]:fixed max-[700px]:bottom-0 max-[700px]:rounded-[4px_4px_0_0] pb-4">
         <div class="flex items-center justify-between py-4 mx-4 border-b-[1px] border-[#D9D9D9] mb-4">
           <div id="likes-modal-title" class="h2"></div>
           <div id="likes-modal-close" class="cursor-pointer">

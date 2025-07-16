@@ -8,7 +8,7 @@ export function initRichText() {
     updateToolbar(this);
   });
 
-  $(document).on('click', '.toolbar button[data-cmd="bold"], .toolbar button[data-cmd="italic"], .toolbar button[data-cmd="underline"]', function (e) {
+  $(document).on('click', '.toolbar button[data-cmd="bold"], .toolbar button[data-cmd="italic"], .toolbar button[data-cmd="underline"], .toolbar button[data-cmd="link"]', function (e) {
     e.preventDefault();
     const cmd = $(this).data('cmd');
     const editor = $(this)

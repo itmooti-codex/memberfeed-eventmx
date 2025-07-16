@@ -82,7 +82,7 @@ export function initGifPicker() {
           .appendTo('#gif-grid');
       });
     } catch (err) {
-     
+
     } finally {
       hideLoading();
     }
@@ -96,7 +96,7 @@ export function initGifPicker() {
     let gifModal = $('#gif-search-input');
     gifModal.focus();
     const $toggle = $(this);
-  
+
     let actualInput;
     if (document.querySelector('#create-post-modal')?.classList.contains('show')) {
       const wrapper = document.querySelector('#create-post-modal');
@@ -117,21 +117,21 @@ export function initGifPicker() {
     $('#gif-search-input').val('');
     search();
     setTimeout(() => {
-     $('#gif-search-input').focus();
-   }, 50);
+      $('#gif-search-input').focus();
+    }, 50);
   });
-  
+
   $('#gif-search-input').on('pointerdown mousedown click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
     e.stopPropagation();
     this.focus();
   });
-  
+
   $('#gif-search-input').on('focus focusin', e => {
     e.stopPropagation();
   });
-  
+
   $('#gif-search-input').on('keydown', e => {
     e.stopPropagation();
     if (e.key === 'Enter') {
@@ -139,7 +139,7 @@ export function initGifPicker() {
       $('#gif-search-btn').trigger('click');
     }
   });
-  
+
   $('#gif-close-btn').on('click', () => $('#gif-modal').addClass('hidden'));
 
   $('#gif-search-btn').on('click', e => {
@@ -160,7 +160,7 @@ export function initGifPicker() {
           const file = new File([blob], filename, { type: blob.type });
           await pondInstance.addFile(file);
         } else {
-         
+
         }
       } catch (err) {
         console.error('Failed to add GIF', err);
@@ -168,7 +168,7 @@ export function initGifPicker() {
         hidePondLoading();
       }
     } else {
-      
+
     }
     $('#gif-modal').addClass('hidden');
   });
